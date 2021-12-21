@@ -1,0 +1,2 @@
+# ShopMob
+Collaborative shopping
