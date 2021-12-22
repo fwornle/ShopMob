@@ -151,6 +151,8 @@ Several **collections** will be maintained:
 
 **Documents** in each of these collections include the following data:
 
+##### Outline of Data Model
+
 1. Documents in _Users_ include...
    1. UUID
    2. Name
@@ -191,13 +193,125 @@ Several **collections** will be maintained:
       2. Item: Date and time of last state transition 
    5. Status (list: open <-> in progress <-> done
       1. Level of completion (0% ... 100%)
-      
+
+##### JSON Schema of Database Documents
+
+###### User
+
+```json
+{
+  "id": "UUID-user",
+  "name": {
+    "first": "Ace",
+    "last": "Ventura"
+  },
+  "image": "URL-to-profile-picture-or-avatar",
+  "shops": [],
+  "groups": [],
+  "lists": []
+}
+```
+
+###### Group
+
+```json
+{
+  "id": "UUID-group",
+  "name": "group name",
+  "description": "daily groceries",
+  "type": "family",
+  "members": [
+    { "id": "UUID #1", "firstname": "fina #1", "lastname": "lana #1", "image": "URL #1" },
+    { "id": "UUID #2", "firstname": "fina #2", "lastname": "lana #2", "image": "URL #2" },
+    { }
+  ],
+  "activity": {
+    "date": "date-of-last-change",
+    "frequency": "frequency-of-changes"
+  }
+}
+```
+
+###### Store
+
+```json
+{
+  "id": "UUID-store",
+  "name": "store name",
+  "description": "",
+  "type": "chain|individual",
+  "category": "(default)other|supermarket|drugstore|hardware|clothing|accessories|supplies",
+  "business": {
+    "monday": "09:00 - 12:00, 14:00 - 22:00",
+    "tuesday": "09:00 - 12:00, 14:00 - 22:00",
+    "wednesday": "09:00 - 12:00",
+    "thursday": "09:00 - 12:00, 14:00 - 22:00",
+    "friday": "09:00 - 12:00, 14:00 - 22:00",
+    "saturday": "09:00 - 12:00, 14:00 - 18:00",
+    "sunday": "closed"
+  }
+}
+```
+
+###### Product
+
+```json
+{
+  "id": "UUID-product",
+  "name": "product name",
+  "description": "lactose free",
+  "image": "URL",
+  "category": {
+    "main": "(default)other|foods|hardware|supplies|clothing",
+    "sub": "{(default)none|fruit-n-vegetables|bread|dairy|frozen|cans|beverages}|{...}"
+  },
+  "type": "recurring|event",
+  "activity": {
+    "date": "date-of-last-purchase",
+    "frequency": "frequency-of-purchase"
+  }
+}
+```
+
+###### Smob List
+
+```json
+{
+  "id": "UUID-list",
+  "name": "smob list name",
+  "description": "our daily groceries",
+  "products": {
+    "(cat)fruit-n-veg": [
+      { "id": "UUID #1", "name": "item #1", "image (opt)": "URL #1" },
+      { "id": "UUID #2", "name": "item #2", "image (opt)": "URL #2" },
+      { "id": "UUID #3", "name": "item #3", "image (opt)": "URL #3" },
+      { }
+    ],
+    "(cat)dairy": [
+      { "id": "UUID #1", "name": "item #1", "image (opt)": "URL #1" },
+      { "id": "UUID #2", "name": "item #2", "image (opt)": "URL #2" },
+      { "id": "UUID #3", "name": "item #3", "image (opt)": "URL #3" },
+      { }
+    ],
+    "etc.": []
+  },
+  "lifecycle": {
+    "state": "open",
+    "completion": "0"
+  }
+}
+```
+
 ---
 
 ## Architecture
 
-The app includes several activities to separate principal collections of use cases
-from one another:
+The app includes several _activities_ to separate principal collections of use cases
+from one another. Each of these principal activities featues a number of _fragments_
+to further separate distinct aspects of each phase of the flow. Navigation between activities is done by Intents. Navigation between fragments is done
+using a NavController instance.
+
+### Overview
 
 1. Authentication
    1. Login & Sign-up with email/password
@@ -208,12 +322,12 @@ from one another:
    3. Product management
    4. Shopping list management
 3. Shopping
-   1. List view
+   1. Smob List item view (RecyclerView)
    2. Store details (floor plan with route and zones + stats of shopping items in each zone)
    3. Zone details (location of items in zone)
    4. Section details (image of shelf with location of selected shopping item on shelf)
 
-
+### Activity Level Architecture
 
 At _activity_ level, ShopMob has the following fundamental architecture:
 
@@ -245,11 +359,40 @@ activity_shop -> activity_auth
 
 ![main architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/puml/architecture_main.puml)
 
+### Activity Level Architecture
+
+At _activity_ level, ShopMob has the following fundamental architecture:
+
+```plantuml
+@startuml component
+component activity_auth
+component activity_list
+component activity_shop
+actor mobber
+node app_main
+node service_provider
+node repo
+database DB
+database net
+
+mobber -> app_main
+DB <-> repo
+net <-> repo
+repo <-> service_provider
+service_provider <-> app_main
+app_main -> activity_auth
+activity_auth -> activity_list
+activity_auth <- activity_list
+activity_list -> activity_shop
+activity_list <- activity_shop
+activity_shop -> activity_auth
+@enduml
+```
+
+### Detailed Flow
+
 ![workflow test](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/master/doc/puml/workflow.puml)
 
 
 ---
 
-```kotlin
-val dataSource: Repo
-```
