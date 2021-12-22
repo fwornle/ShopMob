@@ -76,6 +76,8 @@ dependencies {
     // ... when using the BoM, you don't specify versions in the associated library dependencies
     implementation platform("com.google.firebase:firebase-bom:$firebaseBomVersion")
     implementation "com.google.firebase:firebase-common-ktx"
+    implementation "com.google.firebase:firebase-storage-ktx"
+    implementation "com.google.firebase:firebase-analytics-ktx"
 
     // use open source library firebaseui to simplify auth flows
     implementation "com.firebaseui:firebase-ui-auth:$firebaseUiVersion"
