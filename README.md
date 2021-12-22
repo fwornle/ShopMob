@@ -13,7 +13,7 @@ having to eat spinach for weeks after the panicky last-minute Xmas shopping trip
    their wife told them to get.
 3. Multiple lists can be shared with each group (e.g. groceries, DIY, ...)
    a. A list can be associated with one or more shops
-   b. Arriving in the vicinity of any of these shops, a notification is sent, reminding the user
+   b. Arriving in the vicinity of any such shop, a notification is sent, reminding the user
       that there's mob shopping to be done
    c. This location reminder is cleared, if the list has zero items on it (as other members
       of the shop mob may have already been able to buy everything)
@@ -22,6 +22,9 @@ having to eat spinach for weeks after the panicky last-minute Xmas shopping trip
 6. Once near a shop, a reminder is sent with the remaining items on the corresponding shopping list.
 7. From the reminder, the list view can be opened, to allow the shopping to commence.
 
+## Design
+
+The design of the app can be found [here](doc/Design.md).
 
 ## Getting Started
 
