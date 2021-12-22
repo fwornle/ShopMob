@@ -533,6 +533,16 @@ At the writing of this document (21.12.21), this submission is expected for
   - [ ] Storage in the local DB
   - [ ] Upload to the backend (and reduction in size)
 
+### Project Plan
+
+This overview attempts to map the above milestones onto the timeline until submission. Deadline is 31.01.2022 (extended
+by one month).
+
+| CW-21/51 | CW-21/52 | CW-22/01 | CW-22/02 | CW-22/03 | CW-22/04 |
+|:---------|:---------|:---------|:---------|:---------|:---------|
+| DSGN-1 .. DSGN-3, IMPL-1 .. IMPL-2.5.9 | IMPL-2.6 | IMPL-2.6 | IMPL-3 | IMPL-3 | IMPL-4 |
+
+
 ### Project Rubrics
 
 The following specification items need to be included in the app: 
