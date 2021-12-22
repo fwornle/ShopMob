@@ -393,6 +393,181 @@ activity_shop -> activity_auth
 
 ![workflow test](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/master/doc/puml/workflow.puml)
 
+---
+
+## Project Planning
+
+This app is the capstone project of a udacity Kotlin/Android nano degree. The
+project needs to be submitted by the end of the course. Deliverables are a
+
+- production ready app
+- design document (this document)
+- evidence of coverage of required design criteria ([rubric](https://review.udacity.com/#!/rubrics/2848/view)))
+
+### Milestone Plan
+
+As such, the following milestones need to have been reached by the submission date of the project.
+At the writing of this document (21.12.21), this submission is expected for 
+31.01.2022.
+
+#### Design
+
+- [x] DSGN-1: Brainstorm app idea and write down idea and principal use cases
+  - [x] Purpose: why this app?
+  - [x] Name of the app (ShopMob)
+  - [x] Naming of essential building blocks to allow for consistent naming and clean code 
+- [x] DSGN-2: Set-up project at GitHub
+  - [x] DSGN-2.1: Create new repository
+  - [x] DSGN-2.2: Initial commit: README & Design document
+  - [x] DSGN-2.3: PlantUML diagram support - commit example and link to design document ("fit for GH --> no-cache indirection via puml server)
+- [x] DSNG-3: Write design document (this document)
+  - [x] DSNG-3.1: Synopsis - what this app is all about
+  - [x] DSNG-3.2: Describe Use Cases
+  - [x] DSNG-3.3: Design Data Model, taking into consideration the noSQL structure of the backend data storage (& potential scalability concerns)
+    - [x] Pseudo-code modelling
+    - [x] JSON schema modelling
+  - [x] DSNG-3.4: Architecture: Customer visible
+    - [x] Activities and activity navigation
+    - [ ] Fragments and fragment navigation
+  - [x] DSNG-3.5: Architecture: Internal app
+    - [ ] Data source abstraction via a repository class
+    - [ ] Service provider pattern
+    - [ ] Model View / View Model (MVVM) 
+  - [ ] DSNG-3.5: Data flow modelling (optional)
+    - [x] Sample sequence diagram integrated in design document (puml)
+  - [ ] DSNG-3.7: Project Milestone planning (this section)
+    - [x] Major milestones defined and filled with content
+    - [ ] Project planning - milestones vs. time
+  - [ ] [Project rubic](https://review.udacity.com/#!/rubrics/2848/view) coverage evidence
+    - [ ] Rubic mapping to project milestones (to be sure, all nano degree requirements are covered)
+
+#### Implementation
+
+- [x] IMPL-1: Create initial 'Android' project with 'working set' of expected (up-to-date) dependencies
+  - [x] Structure gradle.build (app) and gradle.build (project) to include  
+- [x] IMPL-2: Integrate and adjust base set of required modules from last course exercise (location reminder) to provide a fundamental structure of the app:
+  - [x] IMPL-2.1: Manifest with compatibility information, activities and permissions
+    - Compatibility information (API levels)
+    - activities
+      - Authentication
+      - Main activity (with fragments)
+      - Details activity (triggered "from outside", e.g. by a notification event)
+    - Permissions for location access (foreground / background)
+    - Permissions for internet access
+  - [x] IMPL-2.2: Application module with Koin service provider for...
+    - Application context
+    - Repository service (using the location reminders example as basis)
+    - View models (using the location reminders example as basis - incl. generalized functionality within a base view model)
+  - [x] IMPL-2.3: Test projects (migration from last course work - location reminder)
+    - [x] Unit tests
+    - [x] Instrumented tests
+  - [x] IMPL-2.4: Activities and Fragments to have some fundamental navigation elements set up
+    - [x] Configure initial fragment navigation via a Androidx navController
+  - [x] IMPL-2.5: Integrate major building blocks from the course exercises (where needed for this app):
+    - [x] IMPL-2.5.1: Set-up firebase project for this app
+      - [x] Retrieve configuration file (w/h API keys - not to be committed to the GH repo --> .gitignore)
+      - [x] Configure firebase authentication for email & google
+    - [x] IMPL-2.5.2: Generate new Google Maps API key (debug) 
+      - [x] Install API key in the corresponding configuration files (not to be committed to the GH repo --> .gitignore)
+      - [x] Integrate map-based location selection from C4 (location reminder)
+      - [x] Refactoring (app): Adapt map support to use ShopMob (smob) nomenclature, instead of "reminders" - logic still as in C4
+      - [x] Refactoring (app): Adjust permission handling to use ShopMob (smob) nomenclature, instead of "reminders" - logic still as in C4
+      - [x] Refactoring (test): Adjust all integrated instrumented map handling tests (from C4)
+    - [x] IMPL-2.5.3: GeoFencing and notification support / geoFencing notifications
+        - [x] Integrate geoFencing modules from C4 (location reminder)
+        - [x] Refactoring (app): Adapt geoFencing support to use ShopMob (smob) nomenclature, instead of "reminders" - logic still as in C4
+        - [x] Refactoring (app): Adjust permission handling to use ShopMob (smob) nomenclature, instead of "reminders" - logic still as in C4
+        - [x] Refactoring (test): Adjust all integrated instrumented geoFencing tests (from C4)
+        - [ ] Refactoring (app): Make notification support an extension function of the Context (as proposed by the reviewers)
+        - [ ] Refactoring (app): Replace deprecated _JobIntentService_ by recommended _WorkManager_ approach (notification when triggering a geoFence)
+    - [x] IMPL-2.5.4: Integrate authentication support (based on building block from location reminders)
+      - [x] Integrate user authentication from C4 (location reminder)
+      - [x] Refactoring (app): Adapt authentication support to use ShopMob (smob) nomenclature, instead of "reminders" - logic still as in C4
+      - [x] Adjust instrumented "end-to-end" (e2e) test with UI Automator to test login functionality
+    - [x] IMPL-2.5.5: Set-up local database (loc-DB) and abstraction through repository class
+      - [x] Integrate building blocks from course work modules (C4, location reminder)
+      - [x] Refactoring (app): Adapt loc-DB to use ShopMob (smob) nomenclature, instead of "reminders" - data records still as in C4
+      - [x] Refactoring (test): Adjust all integrated unit test as well as the instrumented DAO and repository tests (from C4)
+    - [ ] IMPL-2.5.6: Set-up network access modules and integrate them into the repository
+        - [ ] Integrate major building blocks of the network layer (from C2, Asteroids), e.g. retrofit, moshi converters
+        - [ ] Refactoring (app): Adapt network modules to use ShopMob (smob) nomenclature, instead of "asteroids" - content still as in C2
+        - [ ] Refactoring (test): Add unit test and instrumented tests for the network layer
+    - [x] IMPL-2.5.7: Set-up UI - view models, fragments, RecyclerView handling, LifeData observer, bi-directional data binding
+        - [x] Integrate major building blocks for UI layer (from C4)
+        - [x] Refactoring (app): Adapt UI to use ShopMob (smob) nomenclature, instead of "reminders" - content still as in C4
+        - [x] Refactoring (test): Adjust all integrated UI unit test as well as the instrumented UI tests (from C4)
+        - [ ] Integrate major building blocks for advanced UI elements (Canvas based elements, MotionLayout) (from C3, Advanced Android App)
+        - [ ] Refactoring (app): Adapt advanced UI elements to use ShopMob (smob) nomenclature - content still as in C3
+        - [ ] Refactoring (test): Add instrumented tests for the advanced UI elements
+    - [ ] IMPL-2.5.8: Develop floor plan UI elements (canvas)
+      - [ ] Design layout view for shop floor plans 
+      - [ ] Design data model for storing parameterized shop floor plans (JSON)
+      - [ ] Integrate shop floor plans in the local DB and the backend DB
+      - [ ] Implement displaying of floor plans including _zones_ with product stats (zone level "overview" display)
+      - [ ] Implement displaying of "best route through shop", e.g.: zone level --> zone-1 (+ product stats) --> zone-4 (+ stats) --> checkout 
+      - [ ] Implement displaying of zone plans including more detailed _sections_ (aisles/shelves) and products per zone
+      - [ ] Implement displaying of _shelf_ view (image from DB) 
+    - [ ] IMPL-2.5.9: Develop floor plan UI elements (canvas)
+        - [ ] Design layout view for shop floor plans
+        - [ ] Design data model for storing parameterized shop floor plans (JSON)
+        - [ ] Integrate shop floor plans in the local DB and the backend DB
+        - [ ] Implement displaying of floor plans including _zones_ with product stats (zone level "overview" display)
+        - [ ] Implement displaying of "best route through shop", e.g.: zone level --> zone-1 (+ product stats) --> zone-4 (+ stats) --> checkout
+        - [ ] Implement displaying of zone plans including more detailed _sections_ (aisles/shelves) and products per zone
+        - [ ] Implement displaying of _shelf_ view (image from DB)
+  - [ ] IMPL-2.6: App development against local DB
+    - [ ] Complete activities and fragments (incl. navigation) as required by the app architecture
+    - [ ] Seed local DB with test data for UI design
+    - [ ] Complete UI layout of each activity / fragment
+    - [ ] Extend UI elements to animate them using MotionLayout
+    - [ ] Complete all view models with required business logic
+- [ ] IMPL-3: App development against backend DB
+  - [ ] Set-up backend DB (firebase document DB)
+  - [ ] Seed backend DB with test data (same as in IMPL-2.6)
+  - [ ] Implement CRUD functionality for the backend DB
+  - [ ] Implement synchronization between backend and app (WorkManager)
+  - [ ] Push notifications when data has changed at backend level
+- [ ] IMPL-4: Add camera access to take pictures of products and their shelf location
+  - [ ] Permissions
+  - [ ] Access and storage in the repository
+  - [ ] Storage in the local DB
+  - [ ] Upload to the backend (and reduction in size)
+
+### Project Rubrics
+
+The following specification items need to be included in the app: 
+
+#### Android UI/UX
+
+| Category | Specification Item | Milestone Mapping |
+| ---------------|----------------|----------------------|
+| Multi-screen UI | At least three screens with distinct features | IMPL-2.6 |
+| Navigable UI | Navigation via NavController (fragments) or Intents (activities) | IMPL-2.6 |
+| Navigable UI | Passing of data during navigation via bundles | IMPL-2.6 |
+| UI design/display | UI adheres to Android standards (material theme) | IMPL-2.6 |
+| UI design/display | UI displays data in an easily consumable way | IMPL-2.6 |
+| UI design/display | UI displays data using string values, drawables, colors, dimensions | IMPL-2.6 |
+| UI design/display | UI uses _Constraint Layouts_ with flat UI structure | IMPL-2.6 |
+| UI design/display | Constraint Layouts have IDs and use (at least one) vertical constraint(s) | IMPL-2.6 |
+| UI design/display | UI display appropriately on screens of different size and resolution| IMPL-2.6 |
+| UI design/display | UI display uses ViewHolder pattern to load data into the visual areas | IMPL-2.6 |
+| UI animation/transitions | UI uses MotionLayout to adapt UI elements to a given function | IMPL-2.6 |
+| UI animation/transitions | UI defines MotionLayout in a _MotionScene_ using one or more _Transition nodes_ and a _ConstraintSet block_| IMPL-2.6 |
+| UI animation/transitions | UI uses (custom) parameters to configure the animations | IMPL-2.6 |
+
+#### Local and Network Data
+
+| Category | Specification Item | Milestone Mapping |
+| ---------------|----------------|----------------------|
+| RESTful API to connect/consume network data | ... | IMPL-3|
+| RESTful API to connect/consume network data | ... | IMPL-3 |
+
+#### Android System and Hardware Integration
+
+| Category | Specification Item | Milestone Mapping |
+| ---------------|----------------|----------------------|
+| MVVM architecture | ... | IMPL-2|
+| MVVM architecture | ... | IMPL-2 |
 
 ---
 
