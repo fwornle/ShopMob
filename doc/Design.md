@@ -423,9 +423,12 @@ At the writing of this document (21.12.21), this submission is expected for
     - [x] Activities and activity navigation
     - [ ] Fragments and fragment navigation
   - [x] DSNG-3.5: Architecture: Internal app
-    - [ ] Data source abstraction via a repository class
-    - [ ] Service provider pattern
-    - [ ] Model View / View Model (MVVM) 
+    - [ ] Data source abstraction via a repository class(es)
+      - [x] One DAO per table
+      - [x] One repository class per DAO - to maintain modularity / improve testability
+    - [ ] Service provider pattern (using _Koin_)
+    - [ ] Model View / View Model (MVVM)
+    - [ ] Migrate from _LiveData_ to _Flow_
   - [ ] DSNG-3.5: Data flow modelling (optional)
     - [x] Sample sequence diagram integrated in design document (puml)
   - [ ] DSNG-3.7: Project Milestone planning (this section)
