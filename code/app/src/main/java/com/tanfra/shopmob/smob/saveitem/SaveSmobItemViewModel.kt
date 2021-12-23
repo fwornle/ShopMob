@@ -6,15 +6,15 @@ import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.base.BaseViewModel
 import com.tanfra.shopmob.base.NavigationCommand
-import com.tanfra.shopmob.smob.data.SmobItemDataSource
-import com.tanfra.shopmob.smob.data.dto.SmobItemDTO
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.smoblist.SmobDataItem
+import com.tanfra.shopmob.smob.types.SmobItem
 import kotlinx.coroutines.launch
 
 // note: all three concrete viewModels (SmobItemList, SaveSmobItem, SelectLocation) inherit from
 //       a common "base viewModel" (BaseViewModel)
 //       ... which defines the LiveData/Event elements shared by all three (derived) viewModels
-class SaveSmobItemViewModel(val app: Application, private val dataSource: SmobItemDataSource) :
+class SaveSmobItemViewModel(val app: Application, private val itemDataSource: SmobItemDataSource) :
     BaseViewModel(app) {
 
     val smobItemTitle = MutableLiveData<String?>()
@@ -58,9 +58,9 @@ class SaveSmobItemViewModel(val app: Application, private val dataSource: SmobIt
     private fun saveSmobItem(shopMobData: SmobDataItem) {
         showLoading.value = true
         viewModelScope.launch {
-            with(dataSource) {
+            with(itemDataSource) {
                 saveSmobItem(
-                    SmobItemDTO(
+                    SmobItem(
                         shopMobData.title,
                         shopMobData.description,
                         shopMobData.location,

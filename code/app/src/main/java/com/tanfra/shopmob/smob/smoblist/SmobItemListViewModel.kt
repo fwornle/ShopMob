@@ -4,14 +4,14 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.base.BaseViewModel
-import com.tanfra.shopmob.smob.data.SmobItemDataSource
-import com.tanfra.shopmob.smob.data.dto.SmobItemDTO
-import com.tanfra.shopmob.smob.data.dto.Result
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
+import com.tanfra.shopmob.smob.data.local.dto.SmobItemDTO
+import com.tanfra.shopmob.smob.data.repo.Result
 import kotlinx.coroutines.launch
 
 class SmobItemListViewModel(
     app: Application,
-    private val dataSource: SmobItemDataSource
+    private val itemDataSource: SmobItemDataSource
 ) : BaseViewModel(app) {
 
     // list that holds the smob data items to be displayed on the UI
@@ -31,7 +31,7 @@ class SmobItemListViewModel(
         viewModelScope.launch {
 
             // fetch all items of the active shopping list
-            val result = dataSource.getSmobItems()
+            val result = itemDataSource.getSmobItems()
 
             // deactivate loading spinner
             showLoading.postValue(false)

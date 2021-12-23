@@ -5,7 +5,8 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.tanfra.shopmob.smob.data.dto.SmobItemDTO
+import com.tanfra.shopmob.smob.data.local.dao.SmobItemDao
+import com.tanfra.shopmob.smob.data.local.dto.SmobItemDTO
 
 import org.junit.Before
 import org.junit.runner.RunWith
@@ -28,8 +29,8 @@ import java.util.*
 class SmobItemDaoTest {
 
     // fake DB (room, in-memory)
-    private lateinit var fakeDB: SmobItemDatabase
-    private lateinit var dao: SmobItemDao
+    private lateinit var fakeDB: SmobDatabase
+    private lateinit var itemDao: SmobItemDao
 
     // test data for (fake) DB
     private lateinit var shopMobItemDto: SmobItemDTO
@@ -45,13 +46,13 @@ class SmobItemDaoTest {
         // create fake datasource
         fakeDB = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
-            SmobItemDatabase::class.java,
+            SmobDatabase::class.java,
         )
             .allowMainThreadQueries()
             .build()
 
         // fetch DAO
-        dao = fakeDB.smobItemDao()
+        itemDao = fakeDB.smobItemDao()
 
         // test database item
         shopMobItemDto = SmobItemDTO(
@@ -77,10 +78,10 @@ class SmobItemDaoTest {
     fun saveSmobItem_storesDataInDB() = runBlockingTest {
 
         // store one smob item in (fake) DB
-        dao.saveSmobItem(shopMobItemDto)
+        itemDao.saveSmobItem(shopMobItemDto)
 
         // read it back
-        val readBackSmobItem = dao.getSmobItemById(shopMobItemDto.id)
+        val readBackSmobItem = itemDao.getSmobItemById(shopMobItemDto.id)
 
         // check for equality
         assertThat(readBackSmobItem, notNullValue())

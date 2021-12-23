@@ -3,13 +3,13 @@ package com.tanfra.shopmob.smob.smoblist
 import android.os.Looper
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.tanfra.shopmob.smob.data.FakeDataSource
-import com.tanfra.shopmob.smob.data.SmobItemDataSource
-import com.tanfra.shopmob.smob.data.dto.SmobItemDTO
+import com.tanfra.shopmob.smob.data.FakeItemDataSource
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.testutils.MainCoroutineRule
 import com.tanfra.shopmob.smob.testutils.getOrAwaitValue
 
-import com.tanfra.shopmob.smob.data.dto.Result
+import com.tanfra.shopmob.smob.data.repo.Result
+import com.tanfra.shopmob.smob.types.SmobItem
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -32,9 +32,7 @@ class SmobItemListViewModelTest: AutoCloseKoinTest() {
 
     // smob item repository and fake data
     private lateinit var smobItemRepo: SmobItemDataSource
-    private lateinit var shopMobItemDtoList: MutableList<SmobItemDTO>
-    private lateinit var dataList: ArrayList<SmobDataItem>
-
+    private lateinit var smobItemList: MutableList<SmobItem>
 
     // use our own dispatcher for coroutine testing (swaps out Dispatcher.Main to a version which
     // can be used for testing, where asynchronous tasks should run synchronously)
@@ -50,9 +48,9 @@ class SmobItemListViewModelTest: AutoCloseKoinTest() {
         // run BEFORE EACH individual test ----------------------------------------
 
         // generate some test database items (location smob items)
-        shopMobItemDtoList = mutableListOf<SmobItemDTO>()
-        shopMobItemDtoList.add(
-            SmobItemDTO(
+        smobItemList = mutableListOf<SmobItem>()
+        smobItemList.add(
+            SmobItem(
                 "test title 1",
                 "test description 1",
                 "test location 1",
@@ -61,8 +59,8 @@ class SmobItemListViewModelTest: AutoCloseKoinTest() {
                 UUID.randomUUID().toString(),
             )
         )
-        shopMobItemDtoList.add(
-            SmobItemDTO(
+        smobItemList.add(
+            SmobItem(
                 "test title 2",
                 "test description 2",
                 "test location 2",
@@ -71,8 +69,8 @@ class SmobItemListViewModelTest: AutoCloseKoinTest() {
                 UUID.randomUUID().toString(),
             )
         )
-        shopMobItemDtoList.add(
-            SmobItemDTO(
+        smobItemList.add(
+            SmobItem(
                 "test title 3",
                 "test description 3",
                 "test location 3",
@@ -81,20 +79,6 @@ class SmobItemListViewModelTest: AutoCloseKoinTest() {
                 UUID.randomUUID().toString(),
             )
         )
-
-        // turn list of SmobItemDTO items (fake local data source) to array of SmobItemDataItem-s
-        dataList = ArrayList<SmobDataItem>()
-        dataList.addAll(shopMobItemDtoList.map { smobItemDTO ->
-            //map the smob item data from the DTOs to the format for the UI
-            SmobDataItem(
-                smobItemDTO.title,
-                smobItemDTO.description,
-                smobItemDTO.location,
-                smobItemDTO.latitude,
-                smobItemDTO.longitude,
-                smobItemDTO.id
-            )
-        })
 
     }  // setupTest()
 
@@ -109,7 +93,7 @@ class SmobItemListViewModelTest: AutoCloseKoinTest() {
 
         // GIVEN...
         // ... some data in the (fake) data source
-        smobItemRepo = FakeDataSource(shopMobItemDtoList)
+        smobItemRepo = FakeItemDataSource(smobItemList)
 
         // ... and a fresh viewModel with this data source injected (via constructor)
         _viewModel = SmobItemListViewModel(
@@ -121,7 +105,7 @@ class SmobItemListViewModelTest: AutoCloseKoinTest() {
         _viewModel.loadSmobItems()
 
         // THEN the smob item is verified and stored in the repository
-        assertThat(_viewModel.smobItemList.getOrAwaitValue(), equalTo(dataList))
+        assertThat(_viewModel.smobItemList.getOrAwaitValue(), equalTo(smobItemList))
 
     }
 
@@ -131,7 +115,7 @@ class SmobItemListViewModelTest: AutoCloseKoinTest() {
 
         // GIVEN...
         // ... a broken (fake) data source (to simulate a read error)
-        smobItemRepo = FakeDataSource(null)
+        smobItemRepo = FakeItemDataSource(null)
 
         // ... and a fresh viewModel with this data source injected (via constructor)
         _viewModel = SmobItemListViewModel(
@@ -160,10 +144,10 @@ class SmobItemListViewModelTest: AutoCloseKoinTest() {
 
             // GIVEN...
             // ... a broken (fake) data source (to simulate a read error)
-            smobItemRepo = FakeDataSource(null)
+            smobItemRepo = FakeItemDataSource(null)
 
             // ... and 'simulating an error when reading the smob items from the DB'
-            (smobItemRepo as FakeDataSource).setReturnError(true)
+            (smobItemRepo as FakeItemDataSource).setReturnError(true)
 
             // ... and a fresh viewModel with this data source injected (via constructor)
             _viewModel = SmobItemListViewModel(
@@ -196,7 +180,7 @@ class SmobItemListViewModelTest: AutoCloseKoinTest() {
 
             // GIVEN...
             // ... some data in the (fake) data source
-            smobItemRepo = FakeDataSource(shopMobItemDtoList)
+            smobItemRepo = FakeItemDataSource(smobItemList)
 
             // ... and a fresh viewModel with this data source injected (via constructor)
             _viewModel = SmobItemListViewModel(
@@ -241,13 +225,13 @@ class SmobItemListViewModelTest: AutoCloseKoinTest() {
 
             // GIVEN...
             // ... some data in the (fake) data source
-            smobItemRepo = FakeDataSource(shopMobItemDtoList)
+            smobItemRepo = FakeItemDataSource(smobItemList)
 
             // ... and 'simulating an error when reading the smob item from the DB'
-            (smobItemRepo as FakeDataSource).setReturnError(true)
+            (smobItemRepo as FakeItemDataSource).setReturnError(true)
 
             // WHEN trying to read
-            val result = smobItemRepo.getSmobItem(shopMobItemDtoList[0].id) as Result.Error
+            val result = smobItemRepo.getSmobItem(smobItemList[0].id) as Result.Error
 
             // THEN...
             // ... a Result.Error should be returned with message "Test exception"

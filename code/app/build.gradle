@@ -4,7 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'  // .kotlin --> KTX: nav.action accepts param. ("it")
     id 'com.google.gms.google-services'
-    id 'kotlin-parcelize'
+    id 'kotlinx-serialization'
 }
 
 android {
@@ -25,6 +25,11 @@ android {
         // "pm clear" command after each test invocation. This command ensures
         // that the app's state is completely cleared between tests.
         testInstrumentationRunnerArguments.clearPackageData = "true"
+        
+        // read API key from environment variable "SMOD_NET_API_KEY"
+        // ... see: https://medium.com/@alexzaitsev/how-to-move-password-to-system-environment-variables-and-load-it-with-gradle-837bc18e6c8f
+        def smodNetApiKey = System.getenv("SMOD_NET_API_KEY")
+        buildConfigField("String", "SMOD_NET_API_KEY", "\"${smodNetApiKey}\"")
     }
 
     testOptions {
@@ -54,7 +59,6 @@ android {
         dataBinding true
     }
 
-
     // workaround to avoid build errors when running fragment-test dependent tests
     // https://www.codegrepper.com/code-examples/java/More+than+one+file+was+found+with+OS+independent+path+%27META-INF%2FAL2.0%27.+when+running+android+test
     packagingOptions {
@@ -63,12 +67,18 @@ android {
         exclude "META-INF/AL2.0"
         exclude "META-INF/LGPL2.1"
     }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+
+    // serialization using kotlinx-serialization (avoids reflection [parcelize] and works with the
+    // gradle "serialization" plugin (see above) --> does the "introspection" at compile time to
+    // add possibly needed serializer code (for complex data structures)
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion"
 
     // https://console.firebase.google.com/project/shopmob-335809/overview
     //
@@ -81,6 +91,13 @@ dependencies {
 
     // use open source library firebaseui to simplify auth flows
     implementation "com.firebaseui:firebase-ui-auth:$firebaseUiVersion"
+
+    // retrofit & moshi
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
+    implementation "com.squareup.moshi:moshi:$moshiVersion"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshiVersion"
 
     // workManager
     implementation "androidx.work:work-runtime-ktx:$workVersion"

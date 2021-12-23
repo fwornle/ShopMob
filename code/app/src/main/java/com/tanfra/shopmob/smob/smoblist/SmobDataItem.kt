@@ -1,13 +1,12 @@
 package com.tanfra.shopmob.smob.smoblist
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 import java.util.*
 
 /**
  * data class acts as a data mapper between the DB and the UI
  */
-@Parcelize
+@Serializable
 data class SmobDataItem(
     var title: String?,
     var description: String?,
@@ -15,4 +14,4 @@ data class SmobDataItem(
     var latitude: Double?,
     var longitude: Double?,
     val id: String = UUID.randomUUID().toString()
-) : Parcelable
+) : java.io.Serializable

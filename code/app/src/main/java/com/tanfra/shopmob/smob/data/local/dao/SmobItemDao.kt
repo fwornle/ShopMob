@@ -1,13 +1,13 @@
-package com.tanfra.shopmob.smob.data.local
+package com.tanfra.shopmob.smob.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.tanfra.shopmob.smob.data.dto.SmobItemDTO
+import com.tanfra.shopmob.smob.data.local.dto.SmobItemDTO
 
 /**
- * Data Access Object for the smob item table.
+ * Data Access Object for the smobItems table.
  */
 @Dao
 interface SmobItemDao {

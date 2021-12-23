@@ -3,14 +3,13 @@ package com.tanfra.shopmob.smob.saveitem
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.data.FakeDataSource
-import com.tanfra.shopmob.smob.data.SmobItemDataSource
-import com.tanfra.shopmob.smob.data.dto.SmobItemDTO
-import com.tanfra.shopmob.smob.data.dto.Result
-import com.tanfra.shopmob.smob.saveitem.SaveSmobItemViewModel
+import com.tanfra.shopmob.smob.data.FakeItemDataSource
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
+import com.tanfra.shopmob.smob.data.repo.Result
 import com.tanfra.shopmob.smob.smoblist.SmobDataItem
 import com.tanfra.shopmob.smob.testutils.MainCoroutineRule
 import com.tanfra.shopmob.smob.testutils.getOrAwaitValue
+import com.tanfra.shopmob.smob.types.SmobItem
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -40,8 +39,8 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
 
     // smob item repository and fake data
     private lateinit var smobItemRepo: SmobItemDataSource
-    private lateinit var smobItemDtoList: MutableList<SmobItemDTO>
-    private lateinit var smobItemNew: SmobItemDTO
+    private lateinit var smobItemList: MutableList<SmobItem>
+    private lateinit var smobItemNew: SmobItem
 
     
     // test liveData
@@ -73,9 +72,9 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         )
 
         // generate some test database items (smob items)
-        smobItemDtoList = mutableListOf<SmobItemDTO>()
-        smobItemDtoList.add(
-            SmobItemDTO(
+        smobItemList = mutableListOf<SmobItem>()
+        smobItemList.add(
+            SmobItem(
                 "test title 1",
                 "test description 1",
                 "test location 1",
@@ -84,8 +83,8 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
                 UUID.randomUUID().toString(),
             )
         )
-        smobItemDtoList.add(
-            SmobItemDTO(
+        smobItemList.add(
+            SmobItem(
                 "test title 2",
                 "test description 2",
                 "test location 2",
@@ -94,8 +93,8 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
                 UUID.randomUUID().toString(),
             )
         )
-        smobItemDtoList.add(
-            SmobItemDTO(
+        smobItemList.add(
+            SmobItem(
                 "test title 3",
                 "test description 3",
                 "test location 3",
@@ -106,7 +105,7 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         )
 
         // new entry to be added to the repo
-        smobItemNew = SmobItemDTO(
+        smobItemNew = SmobItem(
             "test title 4",
             "test description 4",
             "test location 4",
@@ -116,7 +115,7 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         )
 
         // get a fresh fake data source (repository)
-        smobItemRepo = FakeDataSource(smobItemDtoList)
+        smobItemRepo = FakeItemDataSource(smobItemList)
 
         // get a fresh viewModel
         _viewModelSmob = SaveSmobItemViewModel(
@@ -403,7 +402,7 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         val smobItem = smobItemRepo.getSmobItems() as Result.Success
 
         // THEN smob items are loaded from the local data source
-        assertThat(smobItem.data, IsEqual(smobItemDtoList))
+        assertThat(smobItem.data, IsEqual(smobItemList))
 
     }
 
@@ -413,10 +412,10 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         mainCoroutineRule.runBlockingTest {
 
         // WHEN an existent smob item is requested from the location smob item repository
-        val smobItem = smobItemRepo.getSmobItem(smobItemDtoList.first().id) as Result.Success
+        val smobItem = smobItemRepo.getSmobItem(smobItemList.first().id) as Result.Success
 
         // THEN this smob item is loaded from the repository / location smob item repository
-        assertThat(smobItem.data, IsEqual(smobItemDtoList.first()))
+        assertThat(smobItem.data, IsEqual(smobItemList.first()))
 
     }
 

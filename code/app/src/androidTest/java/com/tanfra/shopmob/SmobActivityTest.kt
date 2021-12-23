@@ -22,15 +22,16 @@ import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.*
 import com.tanfra.shopmob.authentication.AuthenticationActivity
 import com.tanfra.shopmob.smob.SmobActivity
-import com.tanfra.shopmob.smob.data.SmobItemDataSource
-import com.tanfra.shopmob.smob.data.dto.SmobItemDTO
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
+import com.tanfra.shopmob.smob.data.local.dto.SmobItemDTO
 import com.tanfra.shopmob.smob.data.local.LocalDB
 import com.tanfra.shopmob.smob.smoblist.SmobItemListViewModel
 import com.tanfra.shopmob.smob.saveitem.SaveSmobItemViewModel
 import com.tanfra.shopmob.util.DataBindingIdlingResource
 import com.tanfra.shopmob.util.monitorActivity
 import com.tanfra.shopmob.utils.EspressoIdlingResource
-import com.tanfra.shopmop.smob.data.local.SmobItemsLocalRepository
+import com.tanfra.shopmob.smob.data.repo.SmobItemRepository
+import com.tanfra.shopmob.smob.types.SmobItem
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matcher
@@ -62,7 +63,7 @@ class SmobActivityTest: AutoCloseKoinTest() {
     private val dataBindingIdlingResource = DataBindingIdlingResource()
 
     // test data
-    private lateinit var testSmobItem: SmobItemDTO
+    private lateinit var testSmobItem: SmobItem
 
     // UI Automator - used to click on system elements during test
     // ... see: https://alexzh.com/ui-testing-of-android-runtime-permissions/ for some background
@@ -134,15 +135,30 @@ class SmobActivityTest: AutoCloseKoinTest() {
                     get() as SmobItemDataSource
                 )
             }
-            single { SmobItemsLocalRepository(get()) }
+            single { SmobItemRepository(get()) }
 
             // ... expose SmobItemDataSource, so that the fetching ot the repository works with
             //     a simple 'get()' (see below)
             single<SmobItemDataSource> {
-                get<SmobItemsLocalRepository>()
+                get<SmobItemRepository>()
             }
 
-            single { LocalDB.createSmobItemDao(appContext) }
+            // Room DB ----------------------------------------------------------------
+
+            // local DB singleton "Room" object representing smob database
+            // ... used as (local) data source for all repositories of the app
+            single { LocalDB.createSmobDatabase(appContext) }
+
+            // DAOs -------------------------------------------------------------------
+
+            // DAO to access table smobItems in the above DB (smob.db)
+            single { LocalDB.createSmobItemDao(get()) }
+
+            // DataSources ------------------------------------------------------------
+
+            // declare a (singleton) repository service with interface "SmobItemDataSource"
+            single<SmobItemDataSource> { SmobItemRepository(get()) }
+
         }
 
         // declare a new koin module
@@ -159,7 +175,7 @@ class SmobActivityTest: AutoCloseKoinTest() {
         }
 
         // initialize test smob item (used to populate smob item list)
-        testSmobItem = SmobItemDTO(
+        testSmobItem = SmobItem(
             "e2e.title",
             "e2e.description",
             "e2e.location",

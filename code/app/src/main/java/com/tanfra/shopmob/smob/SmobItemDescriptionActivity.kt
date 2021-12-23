@@ -11,7 +11,6 @@ import com.tanfra.shopmob.databinding.ActivitySmobItemDescriptionBinding
 import com.tanfra.shopmob.smob.smoblist.SmobDataItem
 
 
-
 // create inline function and reified type to simplify usage of creating an intent
 // ... usage: see below - function 'newIntent'
 inline fun <reified T : Activity> Context.createIntent(vararg args: Pair<String, Any>) : Intent {
@@ -19,6 +18,13 @@ inline fun <reified T : Activity> Context.createIntent(vararg args: Pair<String,
     intent.putExtras(bundleOf(*args))
     return intent
 }
+
+//inline fun <reified T : Activity> Context.createIntentSerializable(arg: Pair<String, Serializable>) : Intent {
+//    val intent = Intent(this, T::class.java)
+//    val bundle = Bundle().apply { putSerializable(arg.first, arg.second) }
+//    intent.putExtras(bundle)
+//    return intent
+//}
 
 /**
  * Activity that displays the smob item details after the user clicks on the notification
@@ -33,12 +39,12 @@ class SmobItemDescriptionActivity : AppCompatActivity() {
             return context.createIntent<SmobItemDescriptionActivity>(EXTRA_SmobDataItem to shopMobDataItem)
         }
 
-        // old way of doing this (without the
-        //        fun newIntent(context: Context, smobDataItem: SmobDataItem): Intent {
-        //            val intent = Intent(context, SmobItemDescriptionActivity::class.java)
-        //            intent.putExtra(EXTRA_SmobDataItem, smobDataItem)
-        //            return intent
-        //        }
+//                // old way of doing this
+//                fun newIntent(context: Context, smobDataItem: SmobDataItem): Intent {
+//                    val intent = Intent(context, SmobItemDescriptionActivity::class.java)
+//                    intent.putExtra(EXTRA_SmobDataItem, smobDataItem)
+//                    return intent
+//                }
     }
 
     // data binding
@@ -64,11 +70,11 @@ class SmobItemDescriptionActivity : AppCompatActivity() {
         )
 
         // attempt to read extra data from notification
-        val extras = intent.extras
+        val extras: Bundle? = intent.extras
         extras?.let {
             if (it.containsKey(EXTRA_SmobDataItem)) {
                 // extract the extra-data in the notification
-                smobDataItem = it.getParcelable<SmobDataItem>(EXTRA_SmobDataItem)!!
+                smobDataItem = it.getSerializable("EXTRA_SmobDataItem") as SmobDataItem
             }
         }
 

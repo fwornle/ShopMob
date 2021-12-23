@@ -5,10 +5,10 @@ import android.content.Intent
 import androidx.core.app.JobIntentService
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
-import com.tanfra.shopmob.smob.data.SmobItemDataSource
-import com.tanfra.shopmob.smob.data.dto.SmobItemDTO
-import com.tanfra.shopmob.smob.data.dto.Result
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
+import com.tanfra.shopmob.smob.data.repo.Result
 import com.tanfra.shopmob.smob.smoblist.SmobDataItem
+import com.tanfra.shopmob.smob.types.SmobItem
 import com.tanfra.shopmob.utils.sendNotification
 import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
@@ -78,11 +78,11 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
                         val result = smobItemLocalRepository.getSmobItem(geoFenceItem.requestId)
 
                         // smob location found in DB?
-                        if (result is Result.Success<SmobItemDTO>) {
+                        if (result is Result.Success<SmobItem>) {
 
                             // yes --> fetch associated smob item data
                             //         ... and send it down the notification channel
-                            val smobItemDTO = result.data
+                            val smobItem = result.data
 
                             // send a notification to the user with the smob item details
                             // note: polymorphism
@@ -90,12 +90,12 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
                             //       --> implementation of sendNotificatino from NotificationUtils.kt is used
                             sendNotification(
                                 this@GeofenceTransitionsJobIntentService, SmobDataItem(
-                                    smobItemDTO.title,
-                                    smobItemDTO.description,
-                                    smobItemDTO.location,
-                                    smobItemDTO.latitude,
-                                    smobItemDTO.longitude,
-                                    smobItemDTO.id
+                                    smobItem.title,
+                                    smobItem.description,
+                                    smobItem.location,
+                                    smobItem.latitude,
+                                    smobItem.longitude,
+                                    smobItem.id
                                 )
                             )
 

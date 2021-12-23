@@ -25,10 +25,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Test
 import org.junit.runner.RunWith
 
-import com.tanfra.shopmob.smob.data.SmobItemDataSource
-import com.tanfra.shopmob.smob.data.dto.SmobItemDTO
-import com.tanfra.shopmob.smob.data.local.FakeDataSource
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
+import com.tanfra.shopmob.smob.data.local.FakeItemDataSource
 import com.tanfra.shopmob.smob.saveitem.SaveSmobItemViewModel
+import com.tanfra.shopmob.smob.types.SmobItem
 import com.tanfra.shopmob.util.DataBindingIdlingResource
 import com.tanfra.shopmob.util.monitorFragment
 import org.junit.Before
@@ -52,10 +52,10 @@ import java.util.*
 class SmobItemListFragmentTest: AutoCloseKoinTest() {
 
     // test data for (fake) DB
-    private lateinit var shopMobItemDtoList: MutableList<SmobItemDTO>
+    private lateinit var shopMobItemList: MutableList<SmobItem>
 
     // fake data source (repo)
-    private lateinit var shopMobItemRepo: SmobItemDataSource
+    private lateinit var shopMobRepo: SmobItemDataSource
 
     // need to launch a fragment scenario to test it...
     // ... and configure it with the mock(ito)ed NavController
@@ -85,12 +85,12 @@ class SmobItemListFragmentTest: AutoCloseKoinTest() {
     fun setUp() {
 
         // generate some test database items (smob items)
-        shopMobItemDtoList = mutableListOf<SmobItemDTO>()
+        shopMobItemList = mutableListOf<SmobItem>()
 
         // generate some test data
         for (idx in 0..19) {
-            shopMobItemDtoList.add(
-                SmobItemDTO(
+            shopMobItemList.add(
+                SmobItem(
                     "test title $idx",
                     "test description $idx",
                     "test location $idx",
@@ -102,7 +102,7 @@ class SmobItemListFragmentTest: AutoCloseKoinTest() {
         }
 
         // get a fresh fake data source (repository)
-        shopMobItemRepo = FakeDataSource(shopMobItemDtoList)
+        shopMobRepo = FakeItemDataSource(shopMobItemList)
 
 
         /**
@@ -142,7 +142,7 @@ class SmobItemListFragmentTest: AutoCloseKoinTest() {
             // SmobItemDataSource
             //
             // declare a (singleton) repository service with interface "SmobItemDataSource"
-            single<SmobItemDataSource> { shopMobItemRepo }
+            single<SmobItemDataSource> { shopMobRepo }
 
         }  // myModule
 
@@ -188,7 +188,7 @@ class SmobItemListFragmentTest: AutoCloseKoinTest() {
 
         // index of item in the list to be tested (off screen)
         val testItemIdx = 17
-        val testSmobItem = shopMobItemDtoList[testItemIdx]
+        val testSmobItem = shopMobItemList[testItemIdx]
 
         // attempt to scroll to selected list item
         onView(withId(R.id.smobItemsRecyclerView)) // scrollTo will fail the test if no item matches.
@@ -205,7 +205,7 @@ class SmobItemListFragmentTest: AutoCloseKoinTest() {
 
         // index of item in the list to be tested
         val testItemIdx = 1
-        val testSmobItem = shopMobItemDtoList[testItemIdx]
+        val testSmobItem = shopMobItemList[testItemIdx]
 
         // select a specific item in the list and check title
         onView(withId(R.id.smobItemsRecyclerView))

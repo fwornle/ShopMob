@@ -1,9 +1,10 @@
-package com.tanfra.shopmop.smob.data.local
+package com.tanfra.shopmob.smob.data.repo
 
-import com.tanfra.shopmob.smob.data.SmobItemDataSource
-import com.tanfra.shopmob.smob.data.dto.SmobItemDTO
-import com.tanfra.shopmob.smob.data.dto.Result
-import com.tanfra.shopmob.smob.data.local.SmobItemDao
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
+import com.tanfra.shopmob.smob.data.local.dao.SmobItemDao
+import com.tanfra.shopmob.smob.types.SmobItem
+import com.tanfra.shopmob.utils.asDatabaseModel
+import com.tanfra.shopmob.utils.asDomainModel
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 
@@ -12,10 +13,10 @@ import kotlinx.coroutines.*
  *
  * The repository is implemented so that you can focus on only testing it.
  *
- * @param smobItemDao the dao that does the Room db operations
+ * @param smobItemDao the dao that does the Room db operations for table smobItems
  * @param ioDispatcher a coroutine dispatcher to offload the blocking IO tasks
  */
-class SmobItemsLocalRepository(
+class SmobItemRepository(
     private val smobItemDao: SmobItemDao,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : SmobItemDataSource {
@@ -24,11 +25,11 @@ class SmobItemsLocalRepository(
      * Get the smob item list from the local db
      * @return Result the holds a Success with all the smob items or an Error object with the error message
      */
-    override suspend fun getSmobItems(): Result<List<SmobItemDTO>> = withContext(ioDispatcher) {
+    override suspend fun getSmobItems(): Result<List<SmobItem>> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             return@withContext try {
-                Result.Success(smobItemDao.getSmobItems())
+                Result.Success(smobItemDao.getSmobItems().asDomainModel())
             } catch (ex: Exception) {
                 Result.Error(ex.localizedMessage)
             }
@@ -39,11 +40,11 @@ class SmobItemsLocalRepository(
      * Insert a smob item in the db.
      * @param smobItem the smob item to be inserted
      */
-    override suspend fun saveSmobItem(smobItem: SmobItemDTO) =
+    override suspend fun saveSmobItem(smobItem: SmobItem) =
         withContext(ioDispatcher) {
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
-                smobItemDao.saveSmobItem(smobItem)
+                smobItemDao.saveSmobItem(smobItem.asDatabaseModel())
             }
         }
 
@@ -52,13 +53,13 @@ class SmobItemsLocalRepository(
      * @param id to be used to get the smob item
      * @return Result the holds a Success object with the SmobItem or an Error object with the error message
      */
-    override suspend fun getSmobItem(id: String): Result<SmobItemDTO> = withContext(ioDispatcher) {
+    override suspend fun getSmobItem(id: String): Result<SmobItem> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             try {
                 val smobItemDTO = smobItemDao.getSmobItemById(id)
                 if (smobItemDTO != null) {
-                    return@withContext Result.Success(smobItemDTO)
+                    return@withContext Result.Success(smobItemDTO.asDomainModel())
                 } else {
                     return@withContext Result.Error("SmobItem not found!")
                 }

@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.data.dto
+package com.tanfra.shopmob.smob.data.repo
 
 
 /**

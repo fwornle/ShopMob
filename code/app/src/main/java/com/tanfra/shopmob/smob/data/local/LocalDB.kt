@@ -2,21 +2,48 @@ package com.tanfra.shopmob.smob.data.local
 
 import android.content.Context
 import androidx.room.Room
+import com.tanfra.shopmob.smob.data.local.dao.*
 
 
 /**
- * Singleton class that is used to create a smob item database
+ * Singleton class that is used to create a smob database
  */
 object LocalDB {
 
     /**
-     * static method that creates a smob item class and returns the DAO of the smob item
+     * static method that creates a SmobDatabase "Room" class, representing local DB file smob.db
      */
-    fun createSmobItemDao(context: Context): SmobItemDao {
+    fun createSmobDatabase(context: Context): SmobDatabase {
         return Room.databaseBuilder(
             context.applicationContext,
-            SmobItemDatabase::class.java, "smobItems.db"
-        ).build().smobItemDao()
+            SmobDatabase::class.java, "smob.db"
+        ).build()
+    }
+
+    // TODO: change to smobLists
+    // DAO to table smobItems
+    fun createSmobItemDao(db: SmobDatabase): SmobItemDao {
+        return db.smobItemDao()
+    }
+
+    // DAO to table smobUsers
+    fun createSmobUserDao(db: SmobDatabase): SmobUserDao {
+        return db.smobUserDao()
+    }
+
+    // DAO to table smobGroups
+    fun createSmobGroupDao(db: SmobDatabase): SmobGroupDao {
+        return db.smobGroupDao()
+    }
+
+    // DAO to table smobShops
+    fun createSmobShopDao(db: SmobDatabase): SmobShopDao {
+        return db.smobShopDao()
+    }
+
+    // DAO to table smobProducts
+    fun createSmobProductDao(db: SmobDatabase): SmobProductDao {
+        return db.smobProductDao()
     }
 
 }
