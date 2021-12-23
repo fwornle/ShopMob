@@ -180,8 +180,8 @@ Several **collections** will be maintained:
    2. Name
    3. Description (optional)
    4. Image (optional)
-   5. Product Category (other //= default//, dairy, hardware, supplies, clothes...)
-   6. Type (e.g. recurring //groceries, toiletries//, event ["tom's party"], ...
+   5. Product main category (other //= default//, foods, hardware, supplies, clothes, ...)
+   5. Product sub category (other //= default//, dairy, bread, fruit_vegetable, canned_food, beverages, ...)
    7. Date of last purchase (by any Mobber)
    8. Frequency of purchase (by any Mobber)
 5. Documents in _Smob Lists_ include...
@@ -194,66 +194,69 @@ Several **collections** will be maintained:
    5. Status (list: open <-> in progress <-> done
       1. Level of completion (0% ... 100%)
 
-##### JSON Schema of Database Documents
+##### Local DB Schema of Database Tables
+
+The local DB is a mySQL database (DB). Therefore, the following schemata have been designed for the tables in the DB.
 
 ###### User
+
+The _smobUser_ entries of the _smobUsers_ table adheres to the following schema:
 
 ```json
 {
   "id": "UUID-user",
-  "name": {
-    "first": "Ace",
-    "last": "Ventura"
-  },
-  "image": "URL-to-profile-picture-or-avatar",
-  "shops": [],
-  "groups": [],
-  "lists": []
+  "name": "username",
+  "imageUrl": "URL-to-profile-picture-or-avatar",
+  "shops": "shopId1,shopId2,shopId3,...",
+  "groups": "groupId1,groupId2,...",
+  "lists": "listId1,listId2,..."
 }
 ```
 
 ###### Group
+
+The _smobGroup_ entries of the _smobGroups_ table adheres to the following schema:
 
 ```json
 {
   "id": "UUID-group",
   "name": "group name",
   "description": "daily groceries",
-  "type": "family",
-  "members": [
-    { "id": "UUID #1", "firstname": "fina #1", "lastname": "lana #1", "image": "URL #1" },
-    { "id": "UUID #2", "firstname": "fina #2", "lastname": "lana #2", "image": "URL #2" },
-    { }
-  ],
+  "type": "(default)other|family|friends|work",
+  "members": "userId1,userId2,userId3,...",
   "activity": {
-    "date": "date-of-last-change",
-    "frequency": "frequency-of-changes"
+    "date": "date-of-last-event",
+    "frequency": 0.4
   }
 }
 ```
 
 ###### Store
 
+The _smobStore_ entries of the _smobStores_ table adheres to the following schema:
+
 ```json
 {
   "id": "UUID-store",
   "name": "store name",
-  "description": "",
+  "description": "it's a good-e store",
   "type": "chain|individual",
   "category": "(default)other|supermarket|drugstore|hardware|clothing|accessories|supplies",
-  "business": {
-    "monday": "09:00 - 12:00, 14:00 - 22:00",
-    "tuesday": "09:00 - 12:00, 14:00 - 22:00",
-    "wednesday": "09:00 - 12:00",
-    "thursday": "09:00 - 12:00, 14:00 - 22:00",
-    "friday": "09:00 - 12:00, 14:00 - 22:00",
-    "saturday": "09:00 - 12:00, 14:00 - 18:00",
-    "sunday": "closed"
-  }
+  "business": [
+    "09:00 - 12:00, 14:00 - 22:00",
+    "09:00 - 12:00, 14:00 - 22:00",
+    "09:00 - 12:00",
+    "09:00 - 12:00, 14:00 - 22:00",
+    "09:00 - 12:00, 14:00 - 22:00",
+    "09:00 - 12:00, 14:00 - 18:00",
+    "closed"
+  ]
 }
 ```
 
 ###### Product
+
+The _smobProduct_ entries of the _smobProducts_ table adheres to the following schema:
 
 ```json
 {
@@ -261,43 +264,33 @@ Several **collections** will be maintained:
   "name": "product name",
   "description": "lactose free",
   "image": "URL",
-  "category": {
-    "main": "(default)other|foods|hardware|supplies|clothing",
-    "sub": "{(default)none|fruit-n-vegetables|bread|dairy|frozen|cans|beverages}|{...}"
-  },
-  "type": "recurring|event",
+  "category_main": "(default)other|foods|hardware|supplies|clothing",
+  "category_sub": "{(default)none|fruit-n-vegetables|bread|dairy|frozen|cans|beverages}|{...}",
   "activity": {
     "date": "date-of-last-purchase",
-    "frequency": "frequency-of-purchase"
+    "frequency": 0.4
   }
 }
 ```
 
 ###### Smob List
 
+The _smobList_ entries of the _smobLists_ table adheres to the following schema:
+
 ```json
 {
   "id": "UUID-list",
   "name": "smob list name",
   "description": "our daily groceries",
-  "products": {
-    "(cat)fruit-n-veg": [
-      { "id": "UUID #1", "name": "item #1", "image (opt)": "URL #1" },
-      { "id": "UUID #2", "name": "item #2", "image (opt)": "URL #2" },
-      { "id": "UUID #3", "name": "item #3", "image (opt)": "URL #3" },
-      { }
-    ],
-    "(cat)dairy": [
-      { "id": "UUID #1", "name": "item #1", "image (opt)": "URL #1" },
-      { "id": "UUID #2", "name": "item #2", "image (opt)": "URL #2" },
-      { "id": "UUID #3", "name": "item #3", "image (opt)": "URL #3" },
-      { }
-    ],
-    "etc.": []
-  },
+  "products": [
+    { "id": "productId1", "status": "open|in progress|done" },
+    { "id": "productId2", "status": "open|in progress|done" },
+    { "id": "productId3", "status": "open|in progress|done" },
+    { }
+  ],
   "lifecycle": {
-    "state": "open",
-    "completion": "0"
+    "state": "open|in progress|done",
+    "completion": 0.3
   }
 }
 ```
