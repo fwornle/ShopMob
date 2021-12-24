@@ -156,10 +156,11 @@ Several **collections** will be maintained:
 1. Documents in _Users_ include...
    1. UUID
    2. Name
-   3. Image (optional //Avatar or picture//)
-   4. Shops (list of UUIDs of shops the user has visited //+visiting frequency, +last visited//)
-   5. Groups (list of UUIDs of groups the user is affiliated with //+group name, +group activity level//)
-   6. Lists (list of UUIDs of shopping lists the user has subscribed to //+list name, +group name, +list activity level//)
+   3. Email
+   4. Image (optional //Avatar or picture//)
+   5. Shops (list of UUIDs of shops the user has visited //+visiting frequency, +last visited//)
+   6. Groups (list of UUIDs of groups the user is affiliated with //+group name, +group activity level//)
+   7. Lists (list of UUIDs of shopping lists the user has subscribed to //+list name, +group name, +list activity level//)
 2. Documents in _Groups_ include...
    1. UUID
    2. Name
@@ -190,8 +191,10 @@ Several **collections** will be maintained:
    3. Description (optional)
    4. Products (list of UUIDs //+name, +p-category//). Per item:
       1. Item: Status (//open <-> in progress <-> done//)
-      2. Item: Date and time of last state transition 
-   5. Status (list: open <-> in progress <-> done
+      2. Item: Date and time of last state transition
+   5. Mobbers (list of user UUIDs - the mobbers who are sharing this list)
+   6. Mobs (list of group UUIDs - the groups who are sharing this list)
+   7. Status (list: open <-> in progress <-> done
       1. Level of completion (0% ... 100%)
 
 ##### Local DB Schema of Database Tables
@@ -206,10 +209,9 @@ The _smobUser_ entries of the _smobUsers_ table adheres to the following schema:
 {
   "id": "UUID-user",
   "name": "username",
+  "email": "max@mustermann.com",
   "imageUrl": "URL-to-profile-picture-or-avatar",
-  "shops": "shopId1,shopId2,shopId3,...",
-  "groups": "groupId1,groupId2,...",
-  "lists": "listId1,listId2,..."
+  "activity": "date-of-last-seen"
 }
 ```
 
@@ -223,11 +225,13 @@ The _smobGroup_ entries of the _smobGroups_ table adheres to the following schem
   "name": "group name",
   "description": "daily groceries",
   "type": "(default)other|family|friends|work",
-  "members": "userId1,userId2,userId3,...",
-  "activity": {
-    "date": "date-of-last-event",
-    "frequency": 0.4
-  }
+  "mobbers": [
+    "userId1",
+    "userId2",
+    "userId3",
+    "..."
+  ],
+  "activity": "date-of-last-change"
 }
 ```
 
@@ -240,6 +244,8 @@ The _smobStore_ entries of the _smobStores_ table adheres to the following schem
   "id": "UUID-store",
   "name": "store name",
   "description": "it's a good-e store",
+  "latitude": "where the shop is",
+  "longitude": "where the shop is",
   "type": "chain|individual",
   "category": "(default)other|supermarket|drugstore|hardware|clothing|accessories|supplies",
   "business": [
@@ -264,11 +270,13 @@ The _smobProduct_ entries of the _smobProducts_ table adheres to the following s
   "name": "product name",
   "description": "lactose free",
   "image": "URL",
-  "category_main": "(default)other|foods|hardware|supplies|clothing",
-  "category_sub": "{(default)none|fruit-n-vegetables|bread|dairy|frozen|cans|beverages}|{...}",
+  "category": {
+    "main": "(default)other|foods|hardware|supplies|clothing",
+    "sub": "{(default)none|fruit-n-vegetables|bread|dairy|frozen|cans|beverages}|{...}"
+  },
   "activity": {
     "date": "date-of-last-purchase",
-    "frequency": 0.4
+    "repetitions": 17
   }
 }
 ```
@@ -282,15 +290,21 @@ The _smobList_ entries of the _smobLists_ table adheres to the following schema:
   "id": "UUID-list",
   "name": "smob list name",
   "description": "our daily groceries",
-  "products": [
+  "items": [
     { "id": "productId1", "status": "open|in progress|done" },
     { "id": "productId2", "status": "open|in progress|done" },
     { "id": "productId3", "status": "open|in progress|done" },
     { }
   ],
+  "mobbers": [
+    "userId1",
+    "userId2",
+    "userId3",
+    "..."
+  ],
   "lifecycle": {
     "state": "open|in progress|done",
-    "completion": 0.3
+    "completion": 35
   }
 }
 ```

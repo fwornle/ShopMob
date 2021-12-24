@@ -1,0 +1,14 @@
+{
+  "name": "smobbe",
+  "version": "1.0.0",
+  "description": "ShopMob backend (fake9",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "fw",
+  "license": "ISC",
+  "dependencies": {
+    "faker": "^5.5.3"
+  }
+}
