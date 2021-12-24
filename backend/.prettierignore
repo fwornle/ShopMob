@@ -1,0 +1,10 @@
+# file types
+*.css
+*.scss
+*.md
+*.html
+*.php
+*.erb
+*.htm
+
+/public/codebase/*
