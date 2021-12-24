@@ -13,4 +13,4 @@ data class SmobShop(
     var type: ShopType,
     var category: ShopCategory,
     var business: List<String?>,
-)
+) : java.io.Serializable

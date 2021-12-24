@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.base.BaseViewModel
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
-import com.tanfra.shopmob.smob.data.local.dto.SmobItemDTO
 import com.tanfra.shopmob.smob.data.repo.Result
+import com.tanfra.shopmob.smob.types.SmobItem
 import kotlinx.coroutines.launch
 
 class SmobItemListViewModel(
@@ -40,16 +40,16 @@ class SmobItemListViewModel(
             when (result) {
                 is Result.Success<*> -> {
                     val dataList = ArrayList<SmobDataItem>()
-                    dataList.addAll((result.data as List<SmobItemDTO>).map { smobItemDTO ->
+                    dataList.addAll((result.data as List<SmobItem>).map { smobItem ->
                         // map the smob item data from DB format (SmobItemDTO) to the format used
                         // when displaying on the UI
                         SmobDataItem(
-                            smobItemDTO.title,
-                            smobItemDTO.description,
-                            smobItemDTO.location,
-                            smobItemDTO.latitude,
-                            smobItemDTO.longitude,
-                            smobItemDTO.id
+                            smobItem.title,
+                            smobItem.description,
+                            smobItem.location,
+                            smobItem.latitude,
+                            smobItem.longitude,
+                            smobItem.id
                         )
                     })
                     smobItemList.value = dataList

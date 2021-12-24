@@ -13,4 +13,4 @@ data class SmobGroup(
     var members: List<String?>,
     // serialization strategy decided at run-time (@Contextual)
     var activityState: @Contextual ActivityState,
-)
+) : java.io.Serializable

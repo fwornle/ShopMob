@@ -10,4 +10,4 @@ data class SmobUser(
     var shops: List<String?>,
     var groups: List<String?>,
     var lists: List<String?>,
-)
+) : java.io.Serializable

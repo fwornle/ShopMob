@@ -11,4 +11,4 @@ data class SmobItem(
     var latitude: Double?,
     var longitude: Double?,
     val id: String,
-)
+) : java.io.Serializable

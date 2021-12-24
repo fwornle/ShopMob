@@ -169,16 +169,16 @@ class SmobRepositoryTest {
         // successfully fetch smob item from (fake) repo
         val result = shopMobRepo
             .getSmobItem(shopMobItemList[idx].id) as Result.Success<SmobItem>
-        val smobItemDTO = result.data
+        val smobItem = result.data
 
         // check for equality
-        assertThat(smobItemDTO, CoreMatchers.notNullValue())
-        assertThat(smobItemDTO.id, `is`(shopMobItemList[idx].id))
-        assertThat(smobItemDTO.title, `is`(shopMobItemList[idx].title))
-        assertThat(smobItemDTO.description, `is`(shopMobItemList[idx].description))
-        assertThat(smobItemDTO.location, `is`(shopMobItemList[idx].location))
-        assertThat(smobItemDTO.latitude, `is`(shopMobItemList[idx].latitude))
-        assertThat(smobItemDTO.longitude, `is`(shopMobItemList[idx].longitude))
+        assertThat(smobItem, CoreMatchers.notNullValue())
+        assertThat(smobItem.id, `is`(shopMobItemList[idx].id))
+        assertThat(smobItem.title, `is`(shopMobItemList[idx].title))
+        assertThat(smobItem.description, `is`(shopMobItemList[idx].description))
+        assertThat(smobItem.location, `is`(shopMobItemList[idx].location))
+        assertThat(smobItem.latitude, `is`(shopMobItemList[idx].latitude))
+        assertThat(smobItem.longitude, `is`(shopMobItemList[idx].longitude))
 
     }
 
