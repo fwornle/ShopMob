@@ -12,4 +12,5 @@ interface SmobUserDataSource {
     suspend fun saveSmobUser(smobUser: SmobUser)
     suspend fun getSmobUser(id: String): Result<SmobUser>
     suspend fun deleteAllSmobUsers()
+    suspend fun refreshSmobUserDataInDB()
 }

@@ -30,6 +30,12 @@ android {
         // ... see: https://medium.com/@alexzaitsev/how-to-move-password-to-system-environment-variables-and-load-it-with-gradle-837bc18e6c8f
         def smodNetApiKey = System.getenv("SMOD_NET_API_KEY")
         buildConfigField("String", "SMOD_NET_API_KEY", "\"${smodNetApiKey}\"")
+
+        // network base URL
+        // ... fake backend (emulator maps this to localhost@host)
+        // ... production: BASE_URL = "https://shopmob.tanfra.com"
+        buildConfigField "String", "BASE_URL", "\"http://10.0.2.2:3000\""
+
     }
 
     testOptions {

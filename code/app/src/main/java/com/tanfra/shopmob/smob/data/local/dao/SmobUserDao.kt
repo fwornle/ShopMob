@@ -39,4 +39,9 @@ interface SmobUserDao {
     @Query("DELETE FROM smobUsers")
     suspend fun deleteAllSmobUsers()
 
+    // Insert all at once the UserData records retrieved from the network
+    // ... using vararg to allow an array of smobUser items to be spread as call-up params
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(vararg smobUser: SmobUserDTO)
+
 }

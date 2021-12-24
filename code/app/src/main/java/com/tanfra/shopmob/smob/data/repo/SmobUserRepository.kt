@@ -1,25 +1,22 @@
 package com.tanfra.shopmob.smob.data.repo
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.tanfra.shopmob.BuildConfig
 import com.tanfra.shopmob.smob.types.SmobUser
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
 import com.tanfra.shopmob.smob.data.local.dao.SmobUserDao
+import com.tanfra.shopmob.smob.data.net.api.ApiSmobUsers
 import com.tanfra.shopmob.smob.data.net.SmodUserProfilePicture
 import com.tanfra.shopmob.utils.NetApiStatus
 import com.tanfra.shopmob.utils.asDatabaseModel
 import com.tanfra.shopmob.utils.asDomainModel
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
-import org.json.JSONObject
+import org.koin.java.KoinJavaComponent.inject
 import retrofit2.Response
 import timber.log.Timber
-import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Concrete implementation of a data source as a db.
@@ -107,10 +104,10 @@ class SmobUserRepository(
     // NET-2-LOCAL_DB update  ------------------------------------------------------------
 
 
-/*
 
-    // fetch API key from build config parameter SMOD_NET_API_KEY, see: build.gradle (:app)
-    private val API_KEY = BuildConfig.SMOD_NET_API_KEY
+
+    // get API to net resource SmobUsers
+    val apiSmobUsers = inject<ApiSmobUsers>(ApiSmobUsers::class.java).value
 
     // TODO: move this to viewModel?? replace LiveData by Flow??
     // LiveData user profile picture / avatar
@@ -119,14 +116,14 @@ class SmobUserRepository(
         get() = _profilePicture
 
     // LiveData for storing the status of the most recent RESTful API request - fetch profile pict.
-    private val _statusProfilePicture = MutableLiveData<NetApiStatus>()
-    val statusProfilePicture: LiveData<NetApiStatus>
-        get() = _statusProfilePicture
+    private val _statusSmobUserProfilePicture = MutableLiveData<NetApiStatus>()
+    val statusSmobUserProfilePicture: LiveData<NetApiStatus>
+        get() = _statusSmobUserProfilePicture
 
-//    // LiveData for storing the status of the most recent RESTful API request
-//    private val _statusNeoWs = MutableLiveData<NetApiStatus>()
-//    val statusNeoWs: LiveData<NetApiStatus>
-//        get() = _statusNeoWs
+    // LiveData for storing the status of the most recent RESTful API request
+    private val _statusSmobUserDataSync = MutableLiveData<NetApiStatus>()
+    val statusSmobUserDataSync: LiveData<NetApiStatus>
+        get() = _statusSmobUserDataSync
 
 
     // upon instantiating the repository class...
@@ -138,24 +135,17 @@ class SmobUserRepository(
         //       receiving invalid data (null)
         //     - possibly the crash happens in the BindingAdapter, when fetching
         //       statusProfilePicture
-        _statusProfilePicture.value = NetApiStatus.DONE
-//        _statusNeoWs.value = NetApiStatus.DONE
+        _statusSmobUserProfilePicture.value = NetApiStatus.DONE
+        _statusSmobUserDataSync.value = NetApiStatus.DONE
         _profilePicture.value = null
 
     }
 
-    // fetch different scopes of data from DB: all asteroids stored in DB
-    fun fetchAsteroidsAll(): LiveData<List<Asteroid>> {
-        return asteroidsDao.getAllAsteroids().map {
-            it.asDomainModel()
-        }
-    }
-
-    // sync method to retrieve list of users from backend and store it in the local DB
-    suspend fun refreshUsersInDB() {
+    // sync method to retrieve UserData from backend and store it in the local DB
+    override suspend fun refreshSmobUserDataInDB() {
 
         // set initial status
-        _statusProfilePicture.postValue(NetApiStatus.LOADING)
+        _statusSmobUserProfilePicture.postValue(NetApiStatus.LOADING)
 
         // send GET request to server - coroutine to avoid blocking the main (UI) thread
         withContext(Dispatchers.IO) {
@@ -164,37 +154,37 @@ class SmobUserRepository(
             try{
                 // initiate the (HTTP) GET request using the provided query parameters
                 // (... the URL ends on '?start_date=<startDate.value>&end_date=<...>&...' )
-                Timber.i("Sending GET request for NASA/NeoWs data from ${dateToday} to ${dateNextWeek}")
-                val response: Response<String> = AsteroidsNeoWsApi.retrofitServiceScalars
-                    .getAsteroids(dateToday, dateNextWeek, API_KEY)
+                Timber.i("Sending GET request for UserData data...")
+                val response: Response<ArrayList<SmobUserDTO>> = apiSmobUsers.getSmobUsers()
 
                 // got any valid data back?
                 // ... see: https://johncodeos.com/how-to-parse-json-with-retrofit-converters-using-kotlin/
                 if (response.isSuccessful) {
-                    Timber.i("NeoWs GET response received (parsing...)")
+                    Timber.i("UserData GET response received (parsing...)")
 
                     // new network data
-                    val netAsteroidData =
-                        parseAsteroidsJsonResult(JSONObject(response.body()!!)).asDatabaseModel()
+//                    val netSmobUserData =
+//                        parseSmobUserJsonResult(JSONObject(response.body()!!)).asDatabaseModel()
 
                     // set status to keep UI updated
-                    _statusNeoWs.postValue(NetApiStatus.DONE)
-                    Timber.i("NeoWs GET request complete (success)")
+                    _statusSmobUserDataSync.postValue(NetApiStatus.DONE)
+                    Timber.i("UserData GET request complete (success)")
 
                     // store network data in DB
                     //
                     // DAO method 'insertAll' allows to be called with 'varargs'
                     // --> convert to (typed) array and use 'spread operator' to turn to 'varargs'
-                    asteroidsDao.insertAll(*netAsteroidData.toTypedArray())
-                    Timber.i("NeoWs data stored in DB")
+//                    smobUserDao.insertAll(*netSmobUserData.toTypedArray())
+                    smobUserDao.insertAll(*response.body()!!.toTypedArray())
+                    Timber.i("UserData items stored in local DB")
 
                 }  // if(response.isSuccessful)
 
             } catch (e: java.lang.Exception) {
 
                 // something went wrong
-                _statusNeoWs.postValue(NetApiStatus.ERROR)
-                Timber.i("NeoWs GET request complete (failure)")
+                _statusSmobUserDataSync.postValue(NetApiStatus.ERROR)
+                Timber.i("SmobUser GET request complete (failure)")
                 Timber.i("Exception: ${e.message} // ${e.cause}")
 
             }
@@ -204,19 +194,23 @@ class SmobUserRepository(
     }  // refreshAsteroidsInDB()
 
 
-    // sync method to update profile pictures in local storage (filesystem) from backend
-    suspend fun fetchProfilePicture(smobUser: SmobUserDTO) {
+    /*
+
+    // sync method to update SmobUser profile pictures in local storage (filesystem) from backend
+    suspend fun refreshSmobUserProfilePictures(smobUser: SmobUserDTO) {
+
+        // TODO: should loop over all pictures in local storage
 
         // send GET request to server - coroutine to avoid blocking the UI thread
         withContext(Dispatchers.IO) {
 
             // set initial status
-            _statusApod.postValue(NetApiStatus.LOADING)
+            _statusSmobUserProfilePicture.postValue(NetApiStatus.LOADING)
 
             // attempt to read data from server
             try{
                 // initiate the (HTTP) GET request
-                Timber.i("Sending GET request for NASA/APOD data")
+                Timber.i("Sending GET request for SmobUser Profile Picture / Avatar")
                 val response: Response<SmodUserProfilePicture> =
                     ApodApi.retrofitServiceMoshi.getSmodUserProfilePicture(API_KEY)
 
@@ -229,45 +223,24 @@ class SmobUserRepository(
                 }
 
                 // set status to keep UI updated
-                _statusApod.postValue(NetApiStatus.DONE)
-                Timber.i("APOD GET request complete (success)")
+                _statusSmobUserProfilePicture.postValue(NetApiStatus.DONE)
+                Timber.i("SmobUser Profile Picture GET request complete (success)")
 
             } catch (e: java.lang.Exception) {
 
-                // something went wrong --> reset Picture of Day LiveData
+                // something went wrong --> reset Profile Picture LiveData
                 _profilePicture.postValue(null)
-                _statusApod.postValue(NetApiStatus.ERROR)
-                Timber.i("APOD GET request complete (failure)")
+                _statusSmobUserProfilePicture.postValue(NetApiStatus.ERROR)
+                Timber.i("SmobUser Profile Picture GET request complete (failure)")
                 Timber.i("Exception: ${e.message} // ${e.cause}")
 
             }
 
         }  // coroutine scope (IO)
 
-    }  // refreshSmodUserProfilePicture()
+    }  // refreshSmobUserProfilePictures()
 
 
-    // determine start_date, end_date for download from NASA/NeoWs
-    @SuppressLint("WeekBasedYear")
-    private fun getNeoWsDownloadDates(): ArrayList<String> {
-        val formattedDateList = ArrayList<String>()
-
-        val calendar = Calendar.getInstance()
-
-        // start_date, end_date
-        for (i in 1..2) {
-            val currentTime = calendar.time
-            val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
-            formattedDateList.add(dateFormat.format(currentTime))
-            calendar.add(Calendar.DAY_OF_YEAR, Constants.DEFAULT_END_DATE_DAYS)
-        }
-
-        // array with 2 strings: start_date, end_date
-        return formattedDateList
-
-    }  // getNeoWsDownloadDates()
-
-
-*/
+     */
 
 }
