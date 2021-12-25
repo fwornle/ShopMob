@@ -7,7 +7,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 // Koin module for viewModel (services)
-val viewModelModule = module {
+val vmServices = module {
 
     // declare a ViewModel - to be injected into Fragment with dedicated injector using
     // "by viewModel()"

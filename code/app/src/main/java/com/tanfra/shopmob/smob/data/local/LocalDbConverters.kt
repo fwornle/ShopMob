@@ -76,7 +76,7 @@ data class SmobListLifecycle(
 
 // serialization/de-serialization of data types for storage in Room DB (mySQL)
 // ... ref: https://github.com/Kotlin/kotlinx.serialization
-class RoomConverters {
+class LocalDbConverters {
 
     // ItemActivity converter
     @TypeConverter

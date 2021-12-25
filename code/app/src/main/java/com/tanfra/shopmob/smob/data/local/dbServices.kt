@@ -3,11 +3,10 @@ package com.tanfra.shopmob.smob.data.local.dto
 import com.tanfra.shopmob.smob.data.local.LocalDB
 import com.tanfra.shopmob.smob.data.repo.*
 import com.tanfra.shopmob.smob.data.repo.dataSource.*
-import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 // Koin module for (local) DB services
-val dbModule = module {
+val dbServices = module {
 
     // Room DB ----------------------------------------------------------------
 
@@ -33,21 +32,4 @@ val dbModule = module {
     // DAO to access table smobProducts in the above DB (smob.db)
     single { LocalDB.createSmobProductDao(get()) }
 
-    // DataSources ------------------------------------------------------------
-
-    // declare a (singleton) repository service with interface "SmobItemDataSource"
-    single<SmobItemDataSource> { SmobItemRepository(get()) }
-
-    // declare a (singleton) repository service with interface "SmobUserDataSource"
-    single<SmobUserDataSource> { SmobUserRepository(get()) }
-
-    // declare a (singleton) repository service with interface "SmobGroupDataSource"
-    single<SmobGroupDataSource> { SmobGroupRepository(get()) }
-
-    // declare a (singleton) repository service with interface "SmobShopDataSource"
-    single<SmobShopDataSource> { SmobShopRepository(get()) }
-
-    // declare a (singleton) repository service with interface "SmobProductDataSource"
-    single<SmobProductDataSource> { SmobProductRepository(get()) }
-
-}  // dbModule
+}  // dbServices

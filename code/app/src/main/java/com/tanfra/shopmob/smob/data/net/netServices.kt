@@ -3,7 +3,7 @@ package com.tanfra.shopmob.smob.data.net
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tanfra.shopmob.BuildConfig
-import com.tanfra.shopmob.smob.data.net.api.ApiSmobUsers
+import com.tanfra.shopmob.smob.data.net.api.SmobUsersApi
 import com.udacity.asteroidradar.api.AuthInterceptor
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
@@ -11,9 +11,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 // Koin module for network services
-val netModule = module {
+val netServices = module {
 
     // singleton objects - only initialize Retrofit once (converter factory: Moshi - for plain JSON)
+    // ... this is an instance of a Retrofit object, implementing i/f SmobUsersApi (see below)
     single { provideRetrofitMoshi(get()) }
 
     // objects recreated at each 'injection'
@@ -45,6 +46,6 @@ private fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient 
 // all APIs to be provided to the app --------------------------------------------------
 
 // ApiSmobUsers
-private fun provideApiForSmobUsers(retrofit: Retrofit): ApiSmobUsers = retrofit.create(ApiSmobUsers::class.java)
+private fun provideApiForSmobUsers(retrofit: Retrofit): SmobUsersApi = retrofit.create(SmobUsersApi::class.java)
 
 

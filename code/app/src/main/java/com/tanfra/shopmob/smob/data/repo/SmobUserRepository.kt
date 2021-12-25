@@ -6,14 +6,12 @@ import com.tanfra.shopmob.smob.types.SmobUser
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
 import com.tanfra.shopmob.smob.data.local.dao.SmobUserDao
-import com.tanfra.shopmob.smob.data.net.api.ApiSmobUsers
 import com.tanfra.shopmob.smob.data.net.SmodUserProfilePicture
-import com.tanfra.shopmob.utils.NetApiStatus
+import com.tanfra.shopmob.smob.data.net.StatusNetApi
 import com.tanfra.shopmob.utils.asDatabaseModel
 import com.tanfra.shopmob.utils.asDomainModel
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
-import org.koin.java.KoinJavaComponent.inject
 import retrofit2.Response
 import timber.log.Timber
 import java.util.*
@@ -24,17 +22,19 @@ import java.util.*
  * The repository is implemented so that you can focus on only testing it.
  *
  * @param smobUserDao the dao that does the Room db operations for table smobUsers
+ * @param smobUserApi the api that does the network operations for table smobUsers
  * @param ioDispatcher a coroutine dispatcher to offload the blocking IO tasks
  */
 class SmobUserRepository(
     private val smobUserDao: SmobUserDao,
+    private val smobUserApi: SmobUserApi,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : SmobUserDataSource {
 
 
-    // CRUD OVERRIDES (abstracting interface: SmobUserDataSource) ------------------------
-    // CRUD OVERRIDES (abstracting interface: SmobUserDataSource) ------------------------
-    // CRUD OVERRIDES (abstracting interface: SmobUserDataSource) ------------------------
+    // --- overrides of general data interface 'SmobUserDataSource': CRUD access to DB data ---
+    // --- overrides of general data interface 'SmobUserDataSource': CRUD access to DB data ---
+    // --- overrides of general data interface 'SmobUserDataSource': CRUD access to DB data ---
 
     /**
      * Get the smob user list from the local db
@@ -99,15 +99,39 @@ class SmobUserRepository(
     }
 
 
-    // NET-2-LOCAL_DB update  ------------------------------------------------------------
-    // NET-2-LOCAL_DB update  ------------------------------------------------------------
-    // NET-2-LOCAL_DB update  ------------------------------------------------------------
+
+    // --- overrides of general data interface 'SmobUserDataSource': Refreshing of NET data ---
+    // --- overrides of general data interface 'SmobUserDataSource': Refreshing of NET data ---
+    // --- overrides of general data interface 'SmobUserDataSource': Refreshing of NET data ---
+
+
+//    // get API to net resource SmobUsers (from Koin service provider)
+//    private val smobUserApi: SmobUsersApi by inject(SmobUsersApi::class.java)
+
+
+
+    // net facing getter
+    // ... wrap in Response (as opposed to Result - see above) to also provide "loading" state
+    private suspend fun getSmobUsersFromApi(): Response<List<SmobUser>> = withContext(ioDispatcher) {
+
+        // support espresso testing (w/h coroutines)
+        wrapEspressoIdlingResource {
+
+            return@withContext try {
+                // success --> turn DB data type (DTO) to domain data type
+                Response.Success(smobUserApi.getSmobUsers().asDomainModel())
+            } catch (ex: Exception) {
+                Response.Error(ex.localizedMessage)
+            }
+
+        }  // espresso: idlingResource
+
+    }
 
 
 
 
-    // get API to net resource SmobUsers
-    val apiSmobUsers = inject<ApiSmobUsers>(ApiSmobUsers::class.java).value
+
 
     // TODO: move this to viewModel?? replace LiveData by Flow??
     // LiveData user profile picture / avatar
@@ -116,13 +140,13 @@ class SmobUserRepository(
         get() = _profilePicture
 
     // LiveData for storing the status of the most recent RESTful API request - fetch profile pict.
-    private val _statusSmobUserProfilePicture = MutableLiveData<NetApiStatus>()
-    val statusSmobUserProfilePicture: LiveData<NetApiStatus>
+    private val _statusSmobUserProfilePicture = MutableLiveData<StatusNetApi>()
+    val statusNetApiSmobUserProfilePicture: LiveData<StatusNetApi>
         get() = _statusSmobUserProfilePicture
 
     // LiveData for storing the status of the most recent RESTful API request
-    private val _statusSmobUserDataSync = MutableLiveData<NetApiStatus>()
-    val statusSmobUserDataSync: LiveData<NetApiStatus>
+    private val _statusSmobUserDataSync = MutableLiveData<StatusNetApi>()
+    val statusNetApiSmobUserDataSync: LiveData<StatusNetApi>
         get() = _statusSmobUserDataSync
 
 
@@ -135,8 +159,8 @@ class SmobUserRepository(
         //       receiving invalid data (null)
         //     - possibly the crash happens in the BindingAdapter, when fetching
         //       statusProfilePicture
-        _statusSmobUserProfilePicture.value = NetApiStatus.DONE
-        _statusSmobUserDataSync.value = NetApiStatus.DONE
+        _statusSmobUserProfilePicture.value = StatusNetApi.DONE
+        _statusSmobUserDataSync.value = StatusNetApi.DONE
         _profilePicture.value = null
 
     }
@@ -145,7 +169,7 @@ class SmobUserRepository(
     override suspend fun refreshSmobUserDataInDB() {
 
         // set initial status
-        _statusSmobUserProfilePicture.postValue(NetApiStatus.LOADING)
+        _statusSmobUserProfilePicture.postValue(StatusNetApi.LOADING)
 
         // send GET request to server - coroutine to avoid blocking the main (UI) thread
         withContext(Dispatchers.IO) {
@@ -155,7 +179,7 @@ class SmobUserRepository(
                 // initiate the (HTTP) GET request using the provided query parameters
                 // (... the URL ends on '?start_date=<startDate.value>&end_date=<...>&...' )
                 Timber.i("Sending GET request for UserData data...")
-                val response: Response<ArrayList<SmobUserDTO>> = apiSmobUsers.getSmobUsers()
+                val response: Response<ArrayList<SmobUserDTO>> = smobUserApi.getSmobUsers()
 
                 // got any valid data back?
                 // ... see: https://johncodeos.com/how-to-parse-json-with-retrofit-converters-using-kotlin/
@@ -167,7 +191,7 @@ class SmobUserRepository(
 //                        parseSmobUserJsonResult(JSONObject(response.body()!!)).asDatabaseModel()
 
                     // set status to keep UI updated
-                    _statusSmobUserDataSync.postValue(NetApiStatus.DONE)
+                    _statusSmobUserDataSync.postValue(StatusNetApi.DONE)
                     Timber.i("UserData GET request complete (success)")
 
                     // store network data in DB
@@ -183,7 +207,7 @@ class SmobUserRepository(
             } catch (e: java.lang.Exception) {
 
                 // something went wrong
-                _statusSmobUserDataSync.postValue(NetApiStatus.ERROR)
+                _statusSmobUserDataSync.postValue(StatusNetApi.ERROR)
                 Timber.i("SmobUser GET request complete (failure)")
                 Timber.i("Exception: ${e.message} // ${e.cause}")
 

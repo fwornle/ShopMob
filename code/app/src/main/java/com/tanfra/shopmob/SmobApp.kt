@@ -3,17 +3,17 @@ package com.tanfra.shopmob
 import android.app.Application
 import androidx.work.*
 import com.tanfra.shopmob.smob.data.*
-import com.tanfra.shopmob.smob.data.local.dto.dbModule
-import com.tanfra.shopmob.smob.data.net.netModule
+import com.tanfra.shopmob.smob.data.local.dto.dbServices
+import com.tanfra.shopmob.smob.data.local.dto.repoServices
+import com.tanfra.shopmob.smob.data.net.netServices
 import com.tanfra.shopmob.smob.data.repo.*
 import com.tanfra.shopmob.smob.data.repo.dataSource.*
-import com.tanfra.shopmob.smob.viewModelModule
+import com.tanfra.shopmob.smob.vmServices
 import com.tanfra.shopmob.smob.work.RefreshSmobStaticDataWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
 import org.koin.android.logger.AndroidLogger
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -38,12 +38,11 @@ class SmobApp : Application(), Configuration.Provider {
             // ... allows Context to be retrieved/used via 'get()' (see 'myModule', above)
             androidContext(this@SmobApp)
 
-            // declare modules
-            modules(listOf(viewModelModule, netModule, dbModule))
+            // declare modules of provided services
+            modules(listOf(vmServices, netServices, dbServices, repoServices))
 
             // set-up as per: https://medium.com/@harmittaa/setting-up-koin-2-0-1-for-android-ebf11de01816
             AndroidLogger()
-
 
         }
 

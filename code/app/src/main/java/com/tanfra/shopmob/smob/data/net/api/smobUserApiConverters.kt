@@ -1,12 +1,12 @@
-package com.tanfra.shopmob.utils
+package com.tanfra.shopmob.smob.data.net.api
 
 import com.tanfra.shopmob.smob.types.SmobUser
 import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
 
 // extension functions to convert between database types and domain data types (both directions)
 
-// List<SmobUserDTO> --> List<SmobUser>
-fun List<SmobUserDTO>.asDomainModel(): List<SmobUser> {
+// ArrayList<SmobUserDTO> --> List<SmobUser>
+fun ArrayList<SmobUserDTO>.asDomainModel(): List<SmobUser> {
     return map {
         SmobUser (
             id = it.userId,
@@ -19,8 +19,8 @@ fun List<SmobUserDTO>.asDomainModel(): List<SmobUser> {
     }
 }
 
-// List<SmobUser> --> List<SmobUserDTO>
-fun List<SmobUser>.asDatabaseModel(): List<SmobUserDTO> {
+// List<SmobUser> --> ArrayList<SmobUserDTO>
+fun List<SmobUser>.asNetworkModel(): ArrayList<SmobUserDTO> {
     return map {
         SmobUserDTO (
             userId = it.id,
@@ -46,7 +46,7 @@ fun SmobUserDTO.asDomainModel(): SmobUser {
 }
 
 // SmobUser --> SmobUserDTO
-fun SmobUser.asDatabaseModel(): SmobUserDTO {
+fun SmobUser.asNetworkModel(): SmobUserDTO {
     return SmobUserDTO (
         userId = this.id,
         username = this.name,
