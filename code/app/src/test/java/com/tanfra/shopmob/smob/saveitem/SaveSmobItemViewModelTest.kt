@@ -6,7 +6,6 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.FakeItemDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.data.repo.Result
-import com.tanfra.shopmob.smob.smoblist.SmobDataItem
 import com.tanfra.shopmob.smob.testutils.MainCoroutineRule
 import com.tanfra.shopmob.smob.testutils.getOrAwaitValue
 import com.tanfra.shopmob.smob.types.SmobItem
@@ -31,7 +30,7 @@ import java.util.*
 class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
 
     // declare globally used variables
-    private lateinit var smobData: SmobDataItem
+    private lateinit var smobData: com.tanfra.shopmob.smob.types.SmobItem
     private lateinit var privateTestFun: Method
 
     // viewModel
@@ -39,8 +38,8 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
 
     // smob item repository and fake data
     private lateinit var smobItemRepo: SmobItemDataSource
-    private lateinit var smobItemList: MutableList<SmobItem>
-    private lateinit var smobItemNew: SmobItem
+    private lateinit var smobItemList: MutableList<com.tanfra.shopmob.smob.types.SmobItem>
+    private lateinit var smobItemNew: com.tanfra.shopmob.smob.types.SmobItem
 
     
     // test liveData
@@ -62,7 +61,7 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         // run BEFORE EACH individual test ----------------------------------------
 
         // re-initialize smobItemData with a valid data record
-        smobData = SmobDataItem(
+        smobData = SmobItem(
             "test title",
             "test description",
             "test location",

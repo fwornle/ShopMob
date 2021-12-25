@@ -7,7 +7,6 @@ import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.data.repo.Result
-import com.tanfra.shopmob.smob.smoblist.SmobDataItem
 import com.tanfra.shopmob.smob.types.SmobItem
 import com.tanfra.shopmob.utils.sendNotification
 import kotlinx.coroutines.*
@@ -86,10 +85,10 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
 
                             // send a notification to the user with the smob item details
                             // note: polymorphism
-                            //       --> call-up parameter is a SmobDataItem
+                            //       --> call-up parameter is a SmobItem
                             //       --> implementation of sendNotificatino from NotificationUtils.kt is used
                             sendNotification(
-                                this@GeofenceTransitionsJobIntentService, SmobDataItem(
+                                this@GeofenceTransitionsJobIntentService, SmobItem(
                                     smobItem.title,
                                     smobItem.description,
                                     smobItem.location,

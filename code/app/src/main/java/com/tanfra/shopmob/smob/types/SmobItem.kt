@@ -1,6 +1,7 @@
 package com.tanfra.shopmob.smob.types
 
 import kotlinx.serialization.Serializable
+import java.util.*
 
 // domain independent data type
 @Serializable
@@ -10,5 +11,5 @@ data class SmobItem(
     var location: String?,
     var latitude: Double?,
     var longitude: Double?,
-    val id: String,
+    val id: String = UUID.randomUUID().toString()
 ) : java.io.Serializable

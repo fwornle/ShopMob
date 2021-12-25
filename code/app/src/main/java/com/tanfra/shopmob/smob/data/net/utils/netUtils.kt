@@ -1,10 +1,7 @@
 package com.udacity.asteroidradar.api
 
 import com.tanfra.shopmob.BuildConfig
-import com.tanfra.shopmob.smob.types.SmobUser
-import org.json.JSONObject
-import java.util.*
-import kotlin.collections.ArrayList
+
 
 
 import okhttp3.Interceptor

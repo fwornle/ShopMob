@@ -7,7 +7,6 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.base.BaseViewModel
 import com.tanfra.shopmob.base.NavigationCommand
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
-import com.tanfra.shopmob.smob.smoblist.SmobDataItem
 import com.tanfra.shopmob.smob.types.SmobItem
 import kotlinx.coroutines.launch
 
@@ -46,7 +45,7 @@ class SaveSmobItemViewModel(val app: Application, private val itemDataSource: Sm
     /**
      * Validate the entered data then saves the smob item to the DataSource
      */
-    fun validateAndSaveSmobItem(shopMobData: SmobDataItem) {
+    fun validateAndSaveSmobItem(shopMobData: SmobItem) {
         if (validateEnteredData(shopMobData)) {
             saveSmobItem(shopMobData)
         }
@@ -55,7 +54,7 @@ class SaveSmobItemViewModel(val app: Application, private val itemDataSource: Sm
     /**
      * Save the smob item to the data source
      */
-    private fun saveSmobItem(shopMobData: SmobDataItem) {
+    private fun saveSmobItem(shopMobData: SmobItem) {
         showLoading.value = true
         viewModelScope.launch {
             with(itemDataSource) {
@@ -79,7 +78,7 @@ class SaveSmobItemViewModel(val app: Application, private val itemDataSource: Sm
     /**
      * Validate the entered data and show error to the user if there's any invalid data
      */
-    private fun validateEnteredData(shopMobData: SmobDataItem): Boolean {
+    private fun validateEnteredData(shopMobData: SmobItem): Boolean {
         if (shopMobData.title.isNullOrEmpty()) {
             showSnackBarInt.value = R.string.err_enter_title
             return false

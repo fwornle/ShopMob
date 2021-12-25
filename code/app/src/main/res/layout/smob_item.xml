@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.tanfra.shopmob.smob.smoblist.SmobDataItem" />
+            type="com.tanfra.shopmob.smob.types.SmobItem" />
     </data>
 
     <androidx.cardview.widget.CardView

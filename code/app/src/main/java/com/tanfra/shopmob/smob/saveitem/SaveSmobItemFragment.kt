@@ -26,12 +26,12 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.base.BaseFragment
 import com.tanfra.shopmob.base.NavigationCommand
 import com.tanfra.shopmob.smob.geofence.GeofenceBroadcastReceiver
-import com.tanfra.shopmob.smob.smoblist.SmobDataItem
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import com.google.android.gms.location.LocationServices
 import com.tanfra.shopmob.databinding.FragmentSaveSmobItemBinding
+import com.tanfra.shopmob.smob.types.SmobItem
 
 
 @SuppressLint("UnspecifiedImmutableFlag")
@@ -83,7 +83,7 @@ class SaveSmobItemFragment : BaseFragment() {
     private lateinit var geofencingClient: GeofencingClient
 
     // assemble smob data item - this creates the ID we can use as geoFence ID
-    private lateinit var daSmobItem: SmobDataItem
+    private lateinit var daSmobItem: SmobItem
 
 
     // A PendingIntent for the Broadcast Receiver that handles geofence transitions.
@@ -144,7 +144,7 @@ class SaveSmobItemFragment : BaseFragment() {
             // initialize data record to be written to DB
             // ... if no better values have been provided by the user (taken from viewModel), this
             //     is going to be the data record written to the DB
-            daSmobItem = SmobDataItem(
+            daSmobItem = SmobItem(
                 _viewModel.smobItemTitle.value ?: "mystery item",
                 _viewModel.smobItemDescription.value ?: "something strange",
                 _viewModel.smobItemSelectedLocationStr.value ?: "mystery location",

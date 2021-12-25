@@ -8,7 +8,7 @@
         <!-- data item that holds the smob item details -->
         <variable
             name="smobDataItem"
-            type="com.tanfra.shopmob.smob.smoblist.SmobDataItem" />
+            type="com.tanfra.shopmob.smob.types.SmobItem" />
     </data>
 
 

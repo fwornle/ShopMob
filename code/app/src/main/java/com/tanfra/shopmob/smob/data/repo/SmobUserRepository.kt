@@ -6,15 +6,20 @@ import com.tanfra.shopmob.smob.types.SmobUser
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
 import com.tanfra.shopmob.smob.data.local.dao.SmobUserDao
+import com.tanfra.shopmob.smob.data.local.dao.asDatabaseModel
+import com.tanfra.shopmob.smob.data.local.dao.asDomainModel
+import com.tanfra.shopmob.smob.data.net.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.SmodUserProfilePicture
-import com.tanfra.shopmob.smob.data.net.StatusNetApi
-import com.tanfra.shopmob.utils.asDatabaseModel
-import com.tanfra.shopmob.utils.asDomainModel
+import com.tanfra.shopmob.smob.data.net.api.SmobUserApi
+import com.tanfra.shopmob.smob.data.net.nto.SmobUserNTO
+import com.tanfra.shopmob.smob.data.net.utils.Status
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
+import org.koin.java.KoinJavaComponent.inject
 import retrofit2.Response
 import timber.log.Timber
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Concrete implementation of a data source as a db.
@@ -104,24 +109,25 @@ class SmobUserRepository(
     // --- overrides of general data interface 'SmobUserDataSource': Refreshing of NET data ---
     // --- overrides of general data interface 'SmobUserDataSource': Refreshing of NET data ---
 
-
-//    // get API to net resource SmobUsers (from Koin service provider)
-//    private val smobUserApi: SmobUsersApi by inject(SmobUsersApi::class.java)
-
+    // get singleton instance of network response handler from (Koin) service provider
+    // ... so that we don't have to get a separate instance in every repository
+    private val responseHandler: ResponseHandler by inject(ResponseHandler::class.java)
 
 
     // net facing getter
     // ... wrap in Response (as opposed to Result - see above) to also provide "loading" state
-    private suspend fun getSmobUsersFromApi(): Response<List<SmobUser>> = withContext(ioDispatcher) {
+    // ... note: no 'override', as this is not exposed in the repository interface (network access
+    //           is fully abstracted by the repo - all data access done via local DB)
+    private suspend fun getSmobUsersFromApi(): Response<List<SmobUserDTO>> = withContext(ioDispatcher) {
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
+            // network access - could fail --> handle consistently via ResponseHandler class
             return@withContext try {
-                // success --> turn DB data type (DTO) to domain data type
-                Response.Success(smobUserApi.getSmobUsers().asDomainModel())
+                responseHandler.handleSuccess<ArrayList<SmobUserNTO>>(smobUserApi.getSmobUsers()).asRepoModel()
             } catch (ex: Exception) {
-                Response.Error(ex.localizedMessage)
+                responseHandler.handleException(ex.localizedMessage)
             }
 
         }  // espresso: idlingResource
@@ -140,13 +146,13 @@ class SmobUserRepository(
         get() = _profilePicture
 
     // LiveData for storing the status of the most recent RESTful API request - fetch profile pict.
-    private val _statusSmobUserProfilePicture = MutableLiveData<StatusNetApi>()
-    val statusNetApiSmobUserProfilePicture: LiveData<StatusNetApi>
+    private val _statusSmobUserProfilePicture = MutableLiveData<Status>()
+    val statusNetApiSmobUserProfilePicture: LiveData<Status>
         get() = _statusSmobUserProfilePicture
 
     // LiveData for storing the status of the most recent RESTful API request
-    private val _statusSmobUserDataSync = MutableLiveData<StatusNetApi>()
-    val statusNetApiSmobUserDataSync: LiveData<StatusNetApi>
+    private val _statusSmobUserDataSync = MutableLiveData<Status>()
+    val statusNetApiSmobUserDataSync: LiveData<Status>
         get() = _statusSmobUserDataSync
 
 
@@ -159,8 +165,8 @@ class SmobUserRepository(
         //       receiving invalid data (null)
         //     - possibly the crash happens in the BindingAdapter, when fetching
         //       statusProfilePicture
-        _statusSmobUserProfilePicture.value = StatusNetApi.DONE
-        _statusSmobUserDataSync.value = StatusNetApi.DONE
+        _statusSmobUserProfilePicture.value = Status.SUCCESS
+        _statusSmobUserDataSync.value = Status.SUCCESS
         _profilePicture.value = null
 
     }
@@ -169,7 +175,7 @@ class SmobUserRepository(
     override suspend fun refreshSmobUserDataInDB() {
 
         // set initial status
-        _statusSmobUserProfilePicture.postValue(StatusNetApi.LOADING)
+        _statusSmobUserProfilePicture.postValue(Status.LOADING)
 
         // send GET request to server - coroutine to avoid blocking the main (UI) thread
         withContext(Dispatchers.IO) {
@@ -191,7 +197,7 @@ class SmobUserRepository(
 //                        parseSmobUserJsonResult(JSONObject(response.body()!!)).asDatabaseModel()
 
                     // set status to keep UI updated
-                    _statusSmobUserDataSync.postValue(StatusNetApi.DONE)
+                    _statusSmobUserDataSync.postValue(Status.SUCCESS)
                     Timber.i("UserData GET request complete (success)")
 
                     // store network data in DB
@@ -207,7 +213,7 @@ class SmobUserRepository(
             } catch (e: java.lang.Exception) {
 
                 // something went wrong
-                _statusSmobUserDataSync.postValue(StatusNetApi.ERROR)
+                _statusSmobUserDataSync.postValue(Status.ERROR)
                 Timber.i("SmobUser GET request complete (failure)")
                 Timber.i("Exception: ${e.message} // ${e.cause}")
 
@@ -247,7 +253,7 @@ class SmobUserRepository(
                 }
 
                 // set status to keep UI updated
-                _statusSmobUserProfilePicture.postValue(NetApiStatus.DONE)
+                _statusSmobUserProfilePicture.postValue(NetApiStatus.SUCCESS)
                 Timber.i("SmobUser Profile Picture GET request complete (success)")
 
             } catch (e: java.lang.Exception) {

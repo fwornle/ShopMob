@@ -15,7 +15,7 @@ class SmobItemListViewModel(
 ) : BaseViewModel(app) {
 
     // list that holds the smob data items to be displayed on the UI
-    val smobItemList = MutableLiveData<List<SmobDataItem>>()
+    val smobItemList = MutableLiveData<List<SmobItem>>()
 
     /**
      * Get all the smob items from the DataSource and add them to the smobItemList to be shown on
@@ -39,11 +39,11 @@ class SmobItemListViewModel(
             // convert data from DTO format to app format
             when (result) {
                 is Result.Success<*> -> {
-                    val dataList = ArrayList<SmobDataItem>()
+                    val dataList = ArrayList<SmobItem>()
                     dataList.addAll((result.data as List<SmobItem>).map { smobItem ->
                         // map the smob item data from DB format (SmobItemDTO) to the format used
                         // when displaying on the UI
-                        SmobDataItem(
+                        SmobItem(
                             smobItem.title,
                             smobItem.description,
                             smobItem.location,
