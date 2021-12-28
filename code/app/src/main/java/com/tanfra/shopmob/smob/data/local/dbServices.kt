@@ -32,4 +32,7 @@ val dbServices = module {
     // DAO to access table smobProducts in the above DB (smob.db)
     single { LocalDB.createSmobProductDao(get()) }
 
+    // DAO to access table smobLists in the above DB (smob.db)
+    single { LocalDB.createSmobListDao(get()) }
+
 }  // dbServices

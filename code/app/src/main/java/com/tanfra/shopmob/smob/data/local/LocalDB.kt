@@ -46,4 +46,9 @@ object LocalDB {
         return db.smobProductDao()
     }
 
+    // DAO to table smobProducts
+    fun createSmobListDao(db: SmobDatabase): SmobListDao {
+        return db.smobListDao()
+    }
+
 }

@@ -17,8 +17,9 @@ import com.tanfra.shopmob.utils.LocalDbConverters
         SmobItemDTO::class,
         SmobUserDTO::class,
         SmobGroupDTO::class,
-        SmobProductDTO::class,
         SmobShopDTO::class,
+        SmobProductDTO::class,
+        SmobListDTO::class,
     ],
     version = 1,
     exportSchema = false
@@ -29,4 +30,5 @@ import com.tanfra.shopmob.utils.LocalDbConverters
         abstract fun smobGroupDao(): SmobGroupDao
         abstract fun smobShopDao(): SmobShopDao
         abstract fun smobProductDao(): SmobProductDao
+        abstract fun smobListDao(): SmobListDao
     }

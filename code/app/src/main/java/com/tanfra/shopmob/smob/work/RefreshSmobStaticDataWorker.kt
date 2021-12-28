@@ -30,8 +30,8 @@ class RefreshSmobStaticDataWorker(appContext: Context, params: WorkerParameters)
             // ... received data is used to update the DB
             Timber.i("Running scheduled work (refreshSmobStaticDataInDB)")
 
-            // fetch user data repro from Koin service provider
-            val smobUserRepository = inject<SmobUserDataSource>(SmobUserRepository::class.java).value
+            // fetch user data repro from Koin service locator
+            val smobUserRepository: SmobUserDataSource by inject(SmobUserDataSource::class.java)
             smobUserRepository.refreshSmobUserDataInDB()
             
             // return 'success' - done

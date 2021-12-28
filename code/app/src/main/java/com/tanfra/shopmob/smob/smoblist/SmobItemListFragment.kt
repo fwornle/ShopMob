@@ -11,13 +11,19 @@ import com.tanfra.shopmob.utils.setTitle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
 import android.widget.Toast
+import androidx.lifecycle.viewModelScope
 
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.authentication.AuthenticationActivity
 import com.tanfra.shopmob.databinding.FragmentSmobItemsBinding
 import com.tanfra.shopmob.smob.SmobItemDescriptionActivity
+import com.tanfra.shopmob.smob.data.local.dao.SmobUserDao
+import com.tanfra.shopmob.smob.data.net.api.SmobUserApi
+import com.tanfra.shopmob.smob.data.repo.SmobUserRepository
 import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
+import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent.inject
 
 
 class SmobItemListFragment : BaseFragment() {
@@ -40,7 +46,7 @@ class SmobItemListFragment : BaseFragment() {
                 R.layout.fragment_smob_items, container, false
             )
 
-        // set injected viewModel (from KOIN service provider)
+        // set injected viewModel (from KOIN service locator)
         binding.viewModel = _viewModel
 
         setHasOptionsMenu(true)
@@ -71,7 +77,16 @@ class SmobItemListFragment : BaseFragment() {
         binding.lifecycleOwner = this
         setupRecyclerView()
         binding.addSmobItemFab.setOnClickListener {
-            navigateToAddshopmobItem()
+
+            // test HTTP
+            val smobUserDao: SmobUserDao by inject(SmobUserDao::class.java)
+            val smobUserApi: SmobUserApi by inject(SmobUserApi::class.java)
+            val userRepo = SmobUserRepository(smobUserDao, smobUserApi)
+            _viewModel.viewModelScope.launch {
+                userRepo.refreshSmobUserDataInDB()
+            }
+
+            // navigateToAddshopmobItem()
         }
     }
 

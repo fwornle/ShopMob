@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest 
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.tanfra.shopmob">
 
     <!--
@@ -21,6 +22,7 @@
          traffic from/to 10.0.2.2 (= localhost on the host running the emulator). This is needed
          to work with the fake backend, which is used during development.
          https://stackoverflow.com/questions/6760585/accessing-localhostport-from-android-emulator/56769746#56769746
+         https://medium.com/livefront/how-to-connect-your-android-emulator-to-a-local-web-service-47c380bff350
          TODO: This can/should be removed in production.
      -->
     <application
@@ -72,6 +74,23 @@
             android:exported="true"
             android:name=".smob.SmobItemDescriptionActivity">
         </activity>
+
+        <!-- WorkManager >= 2.6 needs to remove the androidx-startup code / the WorkManager
+             initialization from androidx-startup to allow for 'on-demand initialization' /
+             work properly, see:
+             https://developer.android.com/topic/libraries/architecture/workmanager/advanced/custom-configuration#on-demand
+         -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <!-- if you are using androidx.startup to initialize other components -->
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
 
     </application>
 
