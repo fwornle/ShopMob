@@ -2,20 +2,23 @@ package com.tanfra.shopmob.smob.data.net.api
 
 import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
 import com.tanfra.shopmob.smob.data.net.nto.SmobUserNTO
+import com.tanfra.shopmob.smob.data.net.utils.Resource
 
 // extension functions to convert between database types and domain data types (both directions)
 
+// Resource.success: (already checked via ResponseHandler)
 // ArrayList<SmobUserNTO> --> List<SmobUserDTO>
 fun ArrayList<SmobUserNTO>.asRepoModel(): List<SmobUserDTO> {
-    return map {
-        SmobUserDTO (
-            userId = it.userId,
-            username = it.username,
-            imageUrl = it.imageUrl,
-            shops = it.shops,
-            groups = it.groups,
-            lists = it.lists,
-        )
+    return this.let {
+        it.map {
+            SmobUserDTO(
+                id = it.id,
+                username = it.username,
+                name = it.name,
+                email = it.email,
+                imageUrl = it.imageUrl,
+            )
+        }
     }
 }
 
@@ -26,12 +29,11 @@ fun ArrayList<SmobUserNTO>.asRepoModel(): List<SmobUserDTO> {
 fun List<SmobUserDTO>.asNetworkModel(): ArrayList<SmobUserNTO> {
     return map {
         SmobUserNTO (
-            userId = it.userId,
+            id = it.id,
             username = it.username,
+            name = it.name,
+            email = it.email,
             imageUrl = it.imageUrl,
-            shops = it.shops,
-            groups = it.groups,
-            lists = it.lists,
         )
     }}
 
@@ -40,24 +42,22 @@ fun List<SmobUserDTO>.asNetworkModel(): ArrayList<SmobUserNTO> {
 // SmobUserNTO --> SmobUserDTO
 fun SmobUserNTO.asRepoModel(): SmobUserDTO {
     return SmobUserDTO (
-        userId = this.userId,
+        id = this.id,
         username = this.username,
+        name = this.name,
+        email = this.email,
         imageUrl = this.imageUrl,
-        shops = this.shops,
-        groups = this.groups,
-        lists = this.lists,
     )
 }
 
 // SmobUserDTO --> SmobUserNTO
 fun SmobUserDTO.asNetworkModel(): SmobUserNTO {
     return SmobUserNTO (
-        userId = this.userId,
+        id = this.id,
         username = this.username,
+        name = this.name,
+        email = this.email,
         imageUrl = this.imageUrl,
-        shops = this.shops,
-        groups = this.groups,
-        lists = this.lists,
     )
 }
 

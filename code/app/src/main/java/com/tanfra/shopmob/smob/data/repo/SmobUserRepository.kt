@@ -11,12 +11,12 @@ import com.tanfra.shopmob.smob.data.local.dao.asDomainModel
 import com.tanfra.shopmob.smob.data.net.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.SmodUserProfilePicture
 import com.tanfra.shopmob.smob.data.net.api.SmobUserApi
-import com.tanfra.shopmob.smob.data.net.nto.SmobUserNTO
+import com.tanfra.shopmob.smob.data.net.api.asNetworkModel
+import com.tanfra.shopmob.smob.data.net.api.asRepoModel
 import com.tanfra.shopmob.smob.data.net.utils.Status
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 import org.koin.java.KoinJavaComponent.inject
-import retrofit2.Response
 import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
@@ -37,9 +37,9 @@ class SmobUserRepository(
 ) : SmobUserDataSource {
 
 
-    // --- overrides of general data interface 'SmobUserDataSource': CRUD access to DB data ---
-    // --- overrides of general data interface 'SmobUserDataSource': CRUD access to DB data ---
-    // --- overrides of general data interface 'SmobUserDataSource': CRUD access to DB data ---
+    // --- overrides of general data interface 'SmobUserDataSource': CRUD, local DB data ---
+    // --- overrides of general data interface 'SmobUserDataSource': CRUD, local DB data ---
+    // --- overrides of general data interface 'SmobUserDataSource': CRUD, local DB data ---
 
     /**
      * Get the smob user list from the local db
@@ -105,36 +105,109 @@ class SmobUserRepository(
 
 
 
-    // --- overrides of general data interface 'SmobUserDataSource': Refreshing of NET data ---
-    // --- overrides of general data interface 'SmobUserDataSource': Refreshing of NET data ---
-    // --- overrides of general data interface 'SmobUserDataSource': Refreshing of NET data ---
+    // --- overrides of general data interface 'SmobUserDataSource': CRUD, NET data ---
+    // --- overrides of general data interface 'SmobUserDataSource': CRUD, NET data ---
+    // --- overrides of general data interface 'SmobUserDataSource': CRUD, NET data ---
 
-    // get singleton instance of network response handler from (Koin) service provider
+    // get singleton instance of network response handler from (Koin) service locator
     // ... so that we don't have to get a separate instance in every repository
     private val responseHandler: ResponseHandler by inject(ResponseHandler::class.java)
 
 
-    // net facing getter
+    // net-facing getter: all users
     // ... wrap in Response (as opposed to Result - see above) to also provide "loading" state
     // ... note: no 'override', as this is not exposed in the repository interface (network access
     //           is fully abstracted by the repo - all data access done via local DB)
-    private suspend fun getSmobUsersFromApi(): Response<List<SmobUserDTO>> = withContext(ioDispatcher) {
+    private suspend fun getSmobUsersFromApi(): List<SmobUserDTO> = withContext(ioDispatcher) {
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
             // network access - could fail --> handle consistently via ResponseHandler class
             return@withContext try {
-                responseHandler.handleSuccess<ArrayList<SmobUserNTO>>(smobUserApi.getSmobUsers()).asRepoModel()
+                // return successfully received data object (from Moshi --> PoJo)
+                responseHandler.handleSuccess(smobUserApi.getSmobUsers())
+                    .data
+                    ?.body()
+                    ?.asRepoModel()
+                    ?: listOf()  // GET request returned empty handed --> return empty list
+
             } catch (ex: Exception) {
-                responseHandler.handleException(ex.localizedMessage)
+                // return with exception --> handle it...
+                val daException = responseHandler.handleException<ArrayList<SmobUserDTO>>(ex)
+                Timber.e(daException.message)
+
+                // ... then return empty handed
+                listOf()
             }
 
         }  // espresso: idlingResource
 
-    }
+    }  // getSmobUsersFromApi
 
 
+    // net-facing getter: a specific user
+    private suspend fun getSmobUserFromApi(id: String): SmobUserDTO? = withContext(ioDispatcher) {
+
+        // support espresso testing (w/h coroutines)
+        wrapEspressoIdlingResource {
+
+            // network access - could fail --> handle consistently via ResponseHandler class
+            return@withContext try {
+                // return successfully received data object (from Moshi --> PoJo)
+                responseHandler.handleSuccess(smobUserApi.getSmobUserById(id))
+                    .data
+                    ?.body()
+                    ?.asRepoModel()    // returns 'null' if requested user cannot be found
+
+            } catch (ex: Exception) {
+                // return with exception --> handle it...
+                val daException = responseHandler.handleException<SmobUserDTO>(ex)
+                Timber.e(daException.message)
+
+                // ... then return empty handed
+                null
+            }
+
+        }  // espresso: idlingResource
+
+    }  // getSmobUserFromApi
+
+
+    // net-facing setter: save a specific (new) user
+    private suspend fun saveSmobUserViaApi(smobUserDTO: SmobUserDTO) = withContext(ioDispatcher) {
+
+        // support espresso testing (w/h coroutines)
+        wrapEspressoIdlingResource {
+            smobUserApi.saveSmobUser(smobUserDTO.asNetworkModel())
+        }
+
+    }  // saveSmobUserToApi
+
+
+    // net-facing setter: update a specific (existing) user
+    private suspend fun updateSmobUserViaApi(
+        id: String,
+        smobUserDTO: SmobUserDTO,
+    ) = withContext(ioDispatcher) {
+
+        // support espresso testing (w/h coroutines)
+        wrapEspressoIdlingResource {
+            smobUserApi.updateSmobUserById(id, smobUserDTO.asNetworkModel())
+        }
+
+    }  // updateSmobUserToApi
+
+
+    // net-facing setter: delete a specific (existing) user
+    private suspend fun deleteSmobUserViaApi(id: String) = withContext(ioDispatcher) {
+
+        // support espresso testing (w/h coroutines)
+        wrapEspressoIdlingResource {
+            smobUserApi.deleteSmobUserById(id)
+        }
+
+    }  // deleteSmobUserToApi
 
 
 
@@ -163,13 +236,13 @@ class SmobUserRepository(
         // ... omitting this, appears to cause an ('obscure') crash
         //     - presumably caused by Android calling the LD observer (to update the UI) and
         //       receiving invalid data (null)
-        //     - possibly the crash happens in the BindingAdapter, when fetching
-        //       statusProfilePicture
+        //     - possibly the crash happens in the BindingAdapter, when trying to use this null ref
         _statusSmobUserProfilePicture.value = Status.SUCCESS
         _statusSmobUserDataSync.value = Status.SUCCESS
         _profilePicture.value = null
 
     }
+
 
     // sync method to retrieve UserData from backend and store it in the local DB
     override suspend fun refreshSmobUserDataInDB() {
@@ -180,97 +253,53 @@ class SmobUserRepository(
         // send GET request to server - coroutine to avoid blocking the main (UI) thread
         withContext(Dispatchers.IO) {
 
-            // attempt to read data from server
-            try{
-                // initiate the (HTTP) GET request using the provided query parameters
-                // (... the URL ends on '?start_date=<startDate.value>&end_date=<...>&...' )
-                Timber.i("Sending GET request for UserData data...")
-                val response: Response<ArrayList<SmobUserDTO>> = smobUserApi.getSmobUsers()
+            // initiate the (HTTP) GET request using the provided query parameters
+            Timber.i("Sending GET request for SmobUser data...")
+            val response: List<SmobUserDTO> = getSmobUsersFromApi()
 
-                // got any valid data back?
-                // ... see: https://johncodeos.com/how-to-parse-json-with-retrofit-converters-using-kotlin/
-                if (response.isSuccessful) {
-                    Timber.i("UserData GET response received (parsing...)")
+            // smoke test for net-CRUD (quick workaround... to avoid having to set up proper tests)
+//            val response2: SmobUserDTO? = getSmobUserFromApi("07c295ad-b286-41f7-b2ea-e81a75875d02")
+//            Timber.i(response2?.toString())
+//
+//            val testTxUser: SmobUserDTO = SmobUserDTO(
+//                username = "maMu",
+//                name = "Max Mustermann",
+//                email = "max@mustermann.org",
+//                imageUrl = null
+//            )
+//            saveSmobUserViaApi(testTxUser)
+//
+//            // read back 'first' max mustermann
+//            testTxUser.imageUrl = Date().time.toString()
+//            updateSmobUserViaApi(
+//                "0794b744-7fa4-4440-b284-8c72012ed6cf",
+//                testTxUser
+//            )
+//
+//            deleteSmobUserViaApi("1bbd2da1-e028-4e42-b6b8-7d944013abca")
 
-                    // new network data
-//                    val netSmobUserData =
-//                        parseSmobUserJsonResult(JSONObject(response.body()!!)).asDatabaseModel()
-
-                    // set status to keep UI updated
-                    _statusSmobUserDataSync.postValue(Status.SUCCESS)
-                    Timber.i("UserData GET request complete (success)")
-
-                    // store network data in DB
-                    //
-                    // DAO method 'insertAll' allows to be called with 'varargs'
-                    // --> convert to (typed) array and use 'spread operator' to turn to 'varargs'
-//                    smobUserDao.insertAll(*netSmobUserData.toTypedArray())
-                    smobUserDao.insertAll(*response.body()!!.toTypedArray())
-                    Timber.i("UserData items stored in local DB")
-
-                }  // if(response.isSuccessful)
-
-            } catch (e: java.lang.Exception) {
-
-                // something went wrong
-                _statusSmobUserDataSync.postValue(Status.ERROR)
-                Timber.i("SmobUser GET request complete (failure)")
-                Timber.i("Exception: ${e.message} // ${e.cause}")
-
-            }
-
-        }  // coroutine scope (IO)
-
-    }  // refreshAsteroidsInDB()
-
-
-    /*
-
-    // sync method to update SmobUser profile pictures in local storage (filesystem) from backend
-    suspend fun refreshSmobUserProfilePictures(smobUser: SmobUserDTO) {
-
-        // TODO: should loop over all pictures in local storage
-
-        // send GET request to server - coroutine to avoid blocking the UI thread
-        withContext(Dispatchers.IO) {
-
-            // set initial status
-            _statusSmobUserProfilePicture.postValue(NetApiStatus.LOADING)
-
-            // attempt to read data from server
-            try{
-                // initiate the (HTTP) GET request
-                Timber.i("Sending GET request for SmobUser Profile Picture / Avatar")
-                val response: Response<SmodUserProfilePicture> =
-                    ApodApi.retrofitServiceMoshi.getSmodUserProfilePicture(API_KEY)
-
-
-                // received anything useful?
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                        _profilePicture.postValue(it)
-                    }
-                }
+            // got any valid data back?
+            if (!response.isEmpty()) {
 
                 // set status to keep UI updated
-                _statusSmobUserProfilePicture.postValue(NetApiStatus.SUCCESS)
-                Timber.i("SmobUser Profile Picture GET request complete (success)")
+                _statusSmobUserDataSync.postValue(Status.SUCCESS)
+                Timber.i("SmobUser data GET request complete (success)")
 
-            } catch (e: java.lang.Exception) {
+                // store user data in DB
+                //
+                // DAO method 'insertAll' allows to be called with 'varargs'
+                // --> convert to (typed) array and use 'spread operator' to turn to 'varargs'
+                smobUserDao.insertAll(*response.toTypedArray())
+                Timber.i("SmobUser data items stored in local DB")
 
-                // something went wrong --> reset Profile Picture LiveData
-                _profilePicture.postValue(null)
-                _statusSmobUserProfilePicture.postValue(NetApiStatus.ERROR)
-                Timber.i("SmobUser Profile Picture GET request complete (failure)")
-                Timber.i("Exception: ${e.message} // ${e.cause}")
-
-            }
+            }  // if (valid response)
 
         }  // coroutine scope (IO)
 
-    }  // refreshSmobUserProfilePictures()
+    }  // refreshSmobUserDataInDB()
 
 
-     */
+    // TODO: should loop over all user pictures and move them to local storage
+    // TODO: make refresSmogUserDataInDB sensitive to User data relevant to this user only
 
 }

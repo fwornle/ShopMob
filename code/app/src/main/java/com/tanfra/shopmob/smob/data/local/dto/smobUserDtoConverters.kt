@@ -9,12 +9,11 @@ import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
 fun List<SmobUserDTO>.asDomainModel(): List<SmobUser> {
     return map {
         SmobUser (
-            id = it.userId,
-            name = it.username,
+            id = it.id,
+            username = it.username,
+            name = it.name,
+            email = it.email,
             imageUrl = it.imageUrl,
-            shops = it.shops,
-            groups = it.groups,
-            lists = it.lists,
         )
     }
 }
@@ -23,12 +22,11 @@ fun List<SmobUserDTO>.asDomainModel(): List<SmobUser> {
 fun List<SmobUser>.asDatabaseModel(): List<SmobUserDTO> {
     return map {
         SmobUserDTO (
-            userId = it.id,
-            username = it.name,
+            id = it.id,
+            username = it.username,
+            name = it.name,
+            email = it.email,
             imageUrl = it.imageUrl,
-            shops = it.shops,
-            groups = it.groups,
-            lists = it.lists,
         )
     }
 }
@@ -36,24 +34,22 @@ fun List<SmobUser>.asDatabaseModel(): List<SmobUserDTO> {
 // SmobUserDTO --> SmobUser
 fun SmobUserDTO.asDomainModel(): SmobUser {
     return SmobUser (
-        id = this.userId,
-        name = this.username,
+        id = this.id,
+        username = this.username,
+        name = this.name,
+        email = this.email,
         imageUrl = this.imageUrl,
-        shops = this.shops,
-        groups = this.groups,
-        lists = this.lists,
     )
 }
 
 // SmobUser --> SmobUserDTO
 fun SmobUser.asDatabaseModel(): SmobUserDTO {
     return SmobUserDTO (
-        userId = this.id,
-        username = this.name,
+        id = this.id,
+        username = this.username,
+        name = this.name,
+        email = this.email,
         imageUrl = this.imageUrl,
-        shops = this.shops,
-        groups = this.groups,
-        lists = this.lists,
     )
 }
 

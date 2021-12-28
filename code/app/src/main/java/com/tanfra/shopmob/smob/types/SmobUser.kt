@@ -5,9 +5,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SmobUser(
     val id: String,
+    var username: String,
     var name: String,
+    var email: String,
     var imageUrl: String?,
-    var shops: List<String?>,
-    var groups: List<String?>,
-    var lists: List<String?>,
 ) : java.io.Serializable
