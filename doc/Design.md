@@ -119,18 +119,15 @@ A firestore document DB will be used to provide this functionality. A local
 DB on the device will provide a cache, mirroring the backend DB. Synchronization
 between these two DBs will be done by worker jobs. 
 
-#### Data Handling Milestones
-
-##### [MS-DH-1] Off-line persistence
+#### Data Handling - Repositories
 
 During app development, this data model will be created as objects in a local DB,
 abstracted by a repository class. As such, the app will be able to access and
 manage a persistent data store without the additional burden of fist having to set
 up a backend DB and networked data access.
 
-##### [MS-DH-2] Backend persistence
 
-In a second phase, the (firestore) backend and network access classes will be
+In a second phase, a cloud-based backend and network access classes will be
 added. All off-device data will be synchronized with the local DB - the UI will
 only ever use data from the local DB. This ensures the smooth working of the app
 in areas with poor network connectivity.
@@ -143,9 +140,9 @@ Several **collections** will be maintained:
 
 1. Users ("Mobbers")
 2. Groups ("ShopMobs")
-4. Stores
-5. Products
-6. Shopping Lists ("smob lists")
+3. Stores
+4. Products 
+5. Lists ("smob community shopping lists")
 
 #### Documents
 
@@ -153,14 +150,18 @@ Several **collections** will be maintained:
 
 ##### Outline of Data Model
 
+Each table includes nothing but the data which truly belongs to it. Optional properties are _nullable_. This may not be
+the optimal structure for a scalable noSQL database within a backend (as it increases the number of queries needed to 
+collect all data a specific UI screen / piece of business logic might need), but it simplifies the maintenance of 
+consistent data records (as there is no need for unnecessary synchronization between different tables with partially 
+redundant information). This may be optimized for scalability at a later stage.
+
 1. Documents in _Users_ include...
    1. UUID
-   2. Name
-   3. Email
-   4. Image (optional //Avatar or picture//)
-   5. Shops (list of UUIDs of shops the user has visited //+visiting frequency, +last visited//)
-   6. Groups (list of UUIDs of groups the user is affiliated with //+group name, +group activity level//)
-   7. Lists (list of UUIDs of shopping lists the user has subscribed to //+list name, +group name, +list activity level//)
+   2. Username
+   3. Name (firstname, lastname)
+   4. Email
+   5. Image (optional //Avatar or picture//)
 2. Documents in _Groups_ include...
    1. UUID
    2. Name
@@ -168,23 +169,26 @@ Several **collections** will be maintained:
    4. Type (optional - family, department, ad-hoc, ...)
    5. Members (list of UUIDs //+name, +Avatar// of users who are part of this group)
    6. Date of last activity
-   7. Frequency of activity
 3. Documents in _Stores_ include...
    1. UUID
    2. Name
    3. Description (optional)
-   4. Type (chain //shop exists several times//, individual //unique//)
-   5. Shop Category (other //= default//, supermarket, drugstore, DIY, clothing, accessories, office supplies,...)
-   6. Opening hours (optional - //week days, times//)
+   4. Longitude
+   5. Latitude
+   6. Type (chain //shop exists several times//, individual //unique//)
+   7. Shop Category (other //= default//, supermarket, drugstore, DIY, clothing, accessories, office supplies,...)
+   8. Opening hours (optional - //week days, times//)
 4. Documents in _Products_ include...
    1. UUID
    2. Name
    3. Description (optional)
    4. Image (optional)
-   5. Product main category (other //= default//, foods, hardware, supplies, clothes, ...)
-   5. Product sub category (other //= default//, dairy, bread, fruit_vegetable, canned_food, beverages, ...)
-   7. Date of last purchase (by any Mobber)
-   8. Frequency of purchase (by any Mobber)
+   5. Product Category
+      1. Main (other //= default//, foods, hardware, supplies, clothes, ...)
+      2. Sub (other //= default//, dairy, bread, fruit_vegetable, canned_food, beverages, ...)
+   6. Activity
+      1. Date of last purchase (by any Mobber)
+      2. Repetitions of purchase (by any Mobber, since creation of this product)
 5. Documents in _Smob Lists_ include...
    1. UUID
    2. Name
@@ -193,13 +197,15 @@ Several **collections** will be maintained:
       1. Item: Status (//open <-> in progress <-> done//)
       2. Item: Date and time of last state transition
    5. Mobbers (list of user UUIDs - the mobbers who are sharing this list)
-   6. Mobs (list of group UUIDs - the groups who are sharing this list)
-   7. Status (list: open <-> in progress <-> done
-      1. Level of completion (0% ... 100%)
+   6. List lifecycle
+      1. Aggregated state of the list (open <-> in progress <-> done)
+      2. Level of completion of the list (0% ... 100%)
 
-##### Local DB Schema of Database Tables
 
-The local DB is a mySQL database (DB). Therefore, the following schemata have been designed for the tables in the DB.
+##### Data Schemata of Backend stored Data Items
+
+The backend offers persistent data storage using noSQL databases. Used correctly, this promises fast queries even at 
+scale (incl. distributed storage). The following independent data sets have been defined as backend storage items:
 
 ###### User
 
@@ -308,6 +314,47 @@ The _smobList_ entries of the _smobLists_ table adheres to the following schema:
   }
 }
 ```
+
+##### Local DB Schemata of Database Tables
+
+The local DB is a mySQL database (DB). As such, all potential query items should be modelled as separate fields (as
+opposed to nested structures, etc.)
+
+
+#### Data Type Transformations
+
+For each persistently stored item, the app defines three sets of data representations:
+
+- <<item>>NTO
+    - Network Transfer Object (the datatype of an item as stored in the backend)
+    - the moshi JSON converters work with NTOs
+- <<item>>DTO
+    - Database Transfer Object (the datatype of an item as stored in the local DB)
+    - the room JSON converters work with DTOs
+    - this datatype is also used as repository level datatype.
+- <<item>>
+    - Domain datatype ("above the repository", the app works with this storage independent datatype
+
+Both scalar and array type variants of these data objects can be converted from/to one another:
+
+
+##### Datatype Converter asRepoModel()
+
+... turns an NTO into a DTO.
+
+##### Datatype Converter asNetworkModel()
+
+... turns a DTO into an NTO.
+
+
+##### Datatype Converter asDomainModel()
+
+... turns a DTO into an application level datatype.
+
+##### Datatype Converter asDatabaseModel()
+
+... turns an application level datatype into a DTO.
+
 
 ---
 
