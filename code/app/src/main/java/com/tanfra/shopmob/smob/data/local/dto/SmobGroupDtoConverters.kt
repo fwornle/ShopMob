@@ -1,10 +1,7 @@
 package com.tanfra.shopmob.utils
 
-import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
 import com.tanfra.shopmob.smob.data.local.dto.SmobGroupDTO
 import com.tanfra.shopmob.smob.types.SmobGroup
-import java.util.*
 
 // extension functions to convert between database types and domain data types (both directions)
 
@@ -12,7 +9,7 @@ import java.util.*
 fun List<SmobGroupDTO>.asDomainModel(): List<SmobGroup> {
     return map {
         SmobGroup (
-            id = it.groupId,
+            id = it.id,
             name = it.name,
             description = it.description,
             type = it.type,
@@ -26,7 +23,7 @@ fun List<SmobGroupDTO>.asDomainModel(): List<SmobGroup> {
 fun List<SmobGroup>.asDatabaseModel(): List<SmobGroupDTO> {
     return map {
         SmobGroupDTO (
-            groupId = it.id,
+            id = it.id,
             name = it.name,
             description = it.description,
             type = it.type,
@@ -39,7 +36,7 @@ fun List<SmobGroup>.asDatabaseModel(): List<SmobGroupDTO> {
 // SmobGroupDTO --> SmobGroup
 fun SmobGroupDTO.asDomainModel(): SmobGroup {
     return SmobGroup (
-        id = this.groupId,
+        id = this.id,
         name = this.name,
         description = this.description,
         type = this.type,
@@ -51,7 +48,7 @@ fun SmobGroupDTO.asDomainModel(): SmobGroup {
 // SmobGroup --> SmobGroupDTO
 fun SmobGroup.asDatabaseModel(): SmobGroupDTO {
     return SmobGroupDTO (
-        groupId = this.id,
+        id = this.id,
         name = this.name,
         description = this.description,
         type = this.type,

@@ -9,7 +9,7 @@ import com.tanfra.shopmob.smob.data.local.dto.SmobListDTO
 fun List<SmobListDTO>.asDomainModel(): List<SmobList> {
     return map {
         SmobList (
-            id = it.listId,
+            id = it.id,
             name = it.name,
             description = it.description,
             products = it.products,
@@ -22,7 +22,7 @@ fun List<SmobListDTO>.asDomainModel(): List<SmobList> {
 fun List<SmobList>.asDatabaseModel(): List<SmobListDTO> {
     return map {
         SmobListDTO (
-            listId = it.id,
+            id = it.id,
             name = it.name,
             description = it.description,
             products = it.products,
@@ -34,7 +34,7 @@ fun List<SmobList>.asDatabaseModel(): List<SmobListDTO> {
 // SmobListDTO --> SmobList
 fun SmobListDTO.asDomainModel(): SmobList {
     return SmobList (
-        id = this.listId,
+        id = this.id,
         name = this.name,
         description = this.description,
         products = this.products,
@@ -45,7 +45,7 @@ fun SmobListDTO.asDomainModel(): SmobList {
 // SmobList --> SmobListDTO
 fun SmobList.asDatabaseModel(): SmobListDTO {
     return SmobListDTO (
-        listId = this.id,
+        id = this.id,
         name = this.name,
         description = this.description,
         products = this.products,

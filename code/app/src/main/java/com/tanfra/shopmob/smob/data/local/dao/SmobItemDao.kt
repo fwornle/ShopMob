@@ -22,7 +22,7 @@ interface SmobItemDao {
      * @param smobItemId the id of the smob item
      * @return the smob item object with the smobItemId
      */
-    @Query("SELECT * FROM smobItems where entry_id = :smobItemId")
+    @Query("SELECT * FROM smobItems where id = :smobItemId")
     suspend fun getSmobItemById(smobItemId: String): SmobItemDTO?
 
     /**

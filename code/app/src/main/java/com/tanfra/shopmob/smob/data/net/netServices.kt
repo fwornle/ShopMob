@@ -61,7 +61,7 @@ private fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient 
     // add logging (in debug mode only)
     // ... even during debug mode: disable when working (by adding hardcoded 'false &&')
     if (
-        //false &&
+        false &&
         BuildConfig.DEBUG
     ) {
 

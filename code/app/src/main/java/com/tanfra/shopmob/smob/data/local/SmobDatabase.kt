@@ -14,7 +14,7 @@ import com.tanfra.shopmob.utils.LocalDbConverters
 @TypeConverters(LocalDbConverters::class)
 @Database(
     entities = [
-        SmobItemDTO::class,
+        SmobItemDTO::class,  // Todo: delete, when no longer needed
         SmobUserDTO::class,
         SmobGroupDTO::class,
         SmobShopDTO::class,
