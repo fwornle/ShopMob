@@ -5,8 +5,6 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.data.repo.SmobUserRepository
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
 import retrofit2.HttpException
 import timber.log.Timber
@@ -31,9 +29,9 @@ class RefreshSmobStaticDataWorker(appContext: Context, params: WorkerParameters)
             Timber.i("Running scheduled work (refreshSmobStaticDataInDB)")
 
             // fetch user data repro from Koin service locator
-            val smobUserRepository: SmobUserDataSource by inject(SmobUserDataSource::class.java)
-            smobUserRepository.refreshSmobUserDataInDB()
-            
+            val smobUserDataSource: SmobUserDataSource by inject(SmobUserRepository::class.java)
+            smobUserDataSource.refreshSmobUserDataInDB()
+
             // return 'success' - done
             Timber.i("Scheduled work (refreshAsteroidsInDB) run successfully")
             Result.success()

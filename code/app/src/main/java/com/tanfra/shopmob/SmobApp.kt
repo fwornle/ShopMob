@@ -14,7 +14,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.logger.AndroidLogger
 import org.koin.core.context.startKoin
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -40,9 +39,6 @@ class SmobApp : Application(), Configuration.Provider {
 
             // declare modules of provided services
             modules(listOf(vmServices, netServices, dbServices, repoServices))
-
-            // set-up as per: https://medium.com/@harmittaa/setting-up-koin-2-0-1-for-android-ebf11de01816
-            AndroidLogger()
 
         }
 

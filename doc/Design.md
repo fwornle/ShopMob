@@ -398,8 +398,8 @@ database DB
 database net
 
 mobber -> app_main
-DB <-> repo
-net <-> repo
+DB <-> repo : DAO
+net <--> repo : API
 repo <-> service_provider
 service_provider <-> app_main
 app_main -> activity_auth
