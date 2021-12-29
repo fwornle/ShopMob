@@ -14,11 +14,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.component.KoinComponent
 import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-class SmobApp : Application(), Configuration.Provider {
+class SmobApp : Application(), KoinComponent, Configuration.Provider {
 
     // add a coroutine scope to be used with WorkManger scheduled work
     val applicationScope = CoroutineScope(Dispatchers.Default)
@@ -32,6 +35,8 @@ class SmobApp : Application(), Configuration.Provider {
         // instantiate viewModels, repos and DBs and inject them as services into consuming classes
         // ... using KOIN framework (as "service locator"): https://insert-koin.io/
         startKoin {
+
+            //androidLogger(Level.DEBUG)
 
             // inject application context into Koin module
             // ... allows Context to be retrieved/used via 'get()' (see 'myModule', above)
