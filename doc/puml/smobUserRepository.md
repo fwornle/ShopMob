@@ -50,7 +50,7 @@ class SmobUserNTO {
     +imageUrl
 }
 
-SmobUserApi -up-|> SmobUserNTO : uses >    
+SmobUserApi .up.> SmobUserNTO : uses >    
 
 annotation HTTP #pink;line:red;line.dotted;text:red {
    **Retrofit** annotations
@@ -60,7 +60,7 @@ annotation HTTP #pink;line:red;line.dotted;text:red {
    {method} @DELETE
 }
 
-SmobUserApi o-right. HTTP
+SmobUserApi .right.> HTTP
 
 frame "netServices" #Lightblue {
     class netObject << (S,#FF7700) SmobUserApi>> implements SmobUserApi {
@@ -82,7 +82,7 @@ class SmobUserDTO {
     +imageUrl
 }
     
-SmobUserDao -up-|> SmobUserDTO : uses >
+SmobUserDao .up.> SmobUserDTO : uses >
 
 annotation Entity #pink;line:red;line.dotted;text:red {
    **Room** annotations
@@ -91,7 +91,7 @@ annotation Entity #pink;line:red;line.dotted;text:red {
    {method} @ColumnInfo (...)
 }
 
-SmobUserDTO o-right. Entity
+SmobUserDTO .right.> Entity
 
 annotation Dao #pink;line:red;line.dotted;text:red {
    **Room** annotations
@@ -100,7 +100,7 @@ annotation Dao #pink;line:red;line.dotted;text:red {
    {method} @Insert (...)
 }
 
-SmobUserDao o-left. Dao
+SmobUserDao .left.> Dao
 
 frame "dbServices" #Lightblue {
     class dbObject << (S,#FF7700) SmobUserDao>> implements SmobUserDao {
@@ -140,10 +140,10 @@ for **SmobUser** items
 +imageUrl
 }
 
-SmobUserDataSource -up-|> SmobUser : uses >
+SmobUserDataSource .up.> SmobUser : uses >
 
 
-SmobUserRepository <|-down-- dbObject : "\n     get()\n (DI: **smobUserDao**)" " "
-SmobUserRepository <|-down-- netObject :"\nget()\n (DI: **smobUserApi**)     " " "
+SmobUserRepository o-down-- dbObject : "\n     get()\n (DI: **smobUserDao**)" " "
+SmobUserRepository o-down-- netObject :"\nget()\n (DI: **smobUserApi**)     " " "
 @enduml
 ```
