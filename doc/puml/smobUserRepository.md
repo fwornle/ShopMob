@@ -48,10 +48,10 @@ frame "dbServices" #Lightblue {
 
     annotation HTTP #pink;line:red;line.dotted;text:red {
        **Retrofit** annotations
-       {method} GET
-       {method} POST
-       {method} PUT
-       {method} DELETE
+       {method} @GET
+       {method} @POST
+       {method} @PUT
+       {method} @DELETE
     }
     
     
@@ -80,17 +80,27 @@ frame "netServices" #Lightblue {
     
     annotation Entity #pink;line:red;line.dotted;text:red {
        **Room** annotations
-       {method} tableName = "smobUsers"
+       {method} @Entity ("**smobUsers**")
+       {method} @PrimaryKey
+       {method} @ColumnInfo (...)
     }
     
     SmobUserDTO o-right. Entity
+
+    annotation Dao #pink;line:red;line.dotted;text:red {
+       **Room** annotations
+       {method} @Dao
+       {method} @Query (...)
+       {method} @Insert (...)
+    }
+    
+    SmobUserDao o-left. Dao
 
 }
 
 interface SmobUserApi #aliceblue;line:blue;line.dotted;text:blue {
   **API** for the smobUsers table
   [async]
-  [data class: **SmobUserNTO**]
   +getSmobUsers()
   +getSmobUserById()
   +saveSmobUser()
@@ -101,7 +111,6 @@ interface SmobUserApi #aliceblue;line:blue;line.dotted;text:blue {
 interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
   **DAO** for the smobUsers table
   [async]
-  [data class: **SmobUserDTO**]
   +getSmobUsers()
   +getSmobUser()
   +saveSmobUser()
@@ -111,7 +120,6 @@ interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
 interface SmobUserDataSource #aliceblue;line:blue;line.dotted;text:blue {
   **app facing IF**
   [async]
-  [data class: **SmobUser**]
   +getSmobUsers() : Result<List<SmobUser>>
   +getSmobUserById(...) : Result<SmobUser>
   +saveSmobUser(...)
