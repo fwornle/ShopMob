@@ -16,7 +16,8 @@ import com.tanfra.shopmob.smob.data.net.api.asRepoModel
 import com.tanfra.shopmob.smob.data.net.utils.Status
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
-import org.koin.java.KoinJavaComponent.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
@@ -34,7 +35,7 @@ class SmobUserRepository(
     private val smobUserDao: SmobUserDao,
     private val smobUserApi: SmobUserApi,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-) : SmobUserDataSource {
+) : SmobUserDataSource, KoinComponent {
 
 
     // --- overrides of general data interface 'SmobUserDataSource': CRUD, local DB data ---
@@ -111,7 +112,7 @@ class SmobUserRepository(
 
     // get singleton instance of network response handler from (Koin) service locator
     // ... so that we don't have to get a separate instance in every repository
-    private val responseHandler: ResponseHandler by inject(ResponseHandler::class.java)
+    private val responseHandler: ResponseHandler by inject()
 
     // net-facing getter: all users
     // ... wrap in Response (as opposed to Result - see above) to also provide "loading" state

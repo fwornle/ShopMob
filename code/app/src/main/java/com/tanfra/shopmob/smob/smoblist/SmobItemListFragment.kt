@@ -23,10 +23,11 @@ import com.tanfra.shopmob.smob.data.repo.SmobUserRepository
 import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 
-class SmobItemListFragment : BaseFragment() {
+class SmobItemListFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
     override val _viewModel: SmobItemListViewModel by viewModel()
@@ -79,8 +80,8 @@ class SmobItemListFragment : BaseFragment() {
         binding.addSmobItemFab.setOnClickListener {
 
             // test HTTP
-            val smobUserDao: SmobUserDao by inject(SmobUserDao::class.java)
-            val smobUserApi: SmobUserApi by inject(SmobUserApi::class.java)
+            val smobUserDao: SmobUserDao by inject()
+            val smobUserApi: SmobUserApi by inject()
             val userRepo = SmobUserRepository(smobUserDao, smobUserApi)
             _viewModel.viewModelScope.launch {
                 userRepo.refreshSmobUserDataInDB()
