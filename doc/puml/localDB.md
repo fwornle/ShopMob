@@ -81,7 +81,7 @@ class Room #lightgray ##gray {
  + **databaseBuilder**()
  }
 
-LocalDB o-left- SmobDatabase : factory for >
+LocalDB -left-o SmobDatabase : factory for >
 LocalDB o.down. Room : uses >
 
 
