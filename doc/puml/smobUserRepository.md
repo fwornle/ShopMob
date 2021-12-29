@@ -143,7 +143,7 @@ for **SmobUser** items
 SmobUserDataSource -up-|> SmobUser : uses >
 
 
-SmobUserRepository <|-down-- dbObject : "     get() (DI: **smobUserDao**)" " "
-SmobUserRepository <|-down-- netObject :"get() (DI: **smobUserApi**)     " " "
+SmobUserRepository <|-down-- dbObject : "\n     get()\n (DI: **smobUserDao**)" " "
+SmobUserRepository <|-down-- netObject :"\nget()\n (DI: **smobUserApi**)     " " "
 @enduml
 ```
