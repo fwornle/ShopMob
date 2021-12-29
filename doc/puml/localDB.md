@@ -119,33 +119,55 @@ SmobUserDao -left-> Dao
 
 frame "dbServices" #Lightblue {
 
-    class SmobDatabaseImpl << (S,#FF7700) Object >> implements SmobDatabase {
-        **Singleton**
-        from **Koin** Service Locator
+    class SmobDatabaseImpl << (S,#FF7700) Singleton >> implements SmobDatabase {
+        from **Koin** Service Locator:
+        LocalDB.**createSmobDatabase**(context = get())
         ---
-        (dbServices)
+        +smobItemDao(): SmobItemDao
+        +smobUserDao(): **SmobUserDao**
+        +smobGroupDao(): SmobGroupDao
+        +smobShopDao(): SmobShopDao
+        +smobProductDao(): SmobProductDao
+        +smobListDao(): SmobListDao
     }
     
-    class SmobUserDaoImpl << (S,#FF7700) Object >> implements SmobUserDao {
-        **Singleton**
+    class SmobUserDaoImpl << (S,#FF7700) Singleton >> implements SmobUserDao {
         from **Koin** Service Locator
+        LocalDB.**createSmobUserDao**(get())
         ---
-        (dbServices)
+        +getSmobUsers(): List<SmobUserDTO>
+        +getSmobUserById(...): SmobUserDTO?
+        +saveSmobUser(...)
+        +deleteAllSmobUsers()
+        +insertAll(...)
     }
     
-    class SmobItemDaoImpl << (S,#FF7700) Object >> implements SmobItemDao {
-        **Singleton**
+    class SmobItemDaoImpl << (S,#FF7700) Singleton >> implements SmobItemDao {
         from **Koin** Service Locator
+        LocalDB.**createSmobUserDao**(get())
         ---
-        (dbServices)
+        +getSmobItems(): List<SmobItemDTO>
+        +getSmobItemById(...): SmobItemDTO?
+        +saveSmobItem(...)
+        +deleteAllSmobItems()
+        +insertAll(...)    
     }
     
-        class SmobXxxxDaoImpl << (S,#FF7700) Object >> implements SmobXxxxDao {
-        **Singleton**
+    class SmobXxxxDaoImpl << (S,#FF7700) Singleton >> implements SmobXxxxDao {
         from **Koin** Service Locator
+        LocalDB.**createSmobXxxxDao**(get())
         ---
-        (dbServices)
+        +getSmobXxxxs(): List<SmobXxxxDTO>
+        +getSmobXxxxById(...): SmobXxxxDTO?
+        +saveSmobXxxx(...)
+        +deleteAllSmobXxxxs()
+        +insertAll(...)  
     }
+    
+    SmobDatabaseImpl <-up- SmobUserDaoImpl 
+    SmobDatabaseImpl <-up- SmobItemDaoImpl 
+    SmobDatabaseImpl <-up- SmobXxxxDaoImpl 
+    
 }
 
 together {
