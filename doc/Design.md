@@ -388,6 +388,12 @@ The SmobUserRepository has the following architecture:
 
 ![main architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/puml/smobUserRepository.puml)
 
+### Architecture of the Local Database
+
+The Local DB is instantiated as follows:
+
+![main architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/puml/localDB.puml)
+
 
 ### Architecture of the Koin Service Locator Modules 
 
