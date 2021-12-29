@@ -28,4 +28,8 @@ val repoServices = module {
     // ... the repo requires two constructor provided dependencies: dao & api
     single<SmobProductDataSource> { SmobProductRepository(get()) }
 
+    // declare a (singleton) repository service with interface "SmobListDataSource"
+    // ... the repo requires two constructor provided dependencies: dao & api
+    single<SmobListDataSource> { SmobListRepository(get()) }
+
 }  // repoServices
