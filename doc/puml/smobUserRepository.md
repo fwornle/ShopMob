@@ -26,7 +26,7 @@ class SmobUserRepository implements SmobUserDataSource {
   +refreshSmobUserDataInDB()
 }
 
-frame "dbServices" #Lightblue {
+frame "netServices" #Lightblue {
     class netObject << (S,#FF7700) SmobUserApi>> implements SmobUserApi {
         **Singleton**
         from **Koin** Service Locator
@@ -58,7 +58,7 @@ frame "dbServices" #Lightblue {
     SmobUserApi o-right. HTTP
 }
 
-frame "netServices" #Lightblue {
+frame "dbServices" #Lightblue {
     class dbObject << (S,#FF7700) SmobUserDao>> implements SmobUserDao {
         **Singleton**
         from **Koin** Service Locator
