@@ -1,3 +1,4 @@
+```plantuml
 @startuml
 class SmobUserRepository implements SmobUserDataSource {
   (**LivData** --> replace by **Flow**)
@@ -73,3 +74,4 @@ interface SmobUserDataSource #aliceblue;line:blue;line.dotted;text:blue {
 SmobUserRepository <|-left- dbObject : IN (DI: smobUserDao)
 SmobUserRepository <|-right- netObject : IN (DI: smobUserApi)
 @enduml
+```

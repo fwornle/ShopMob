@@ -1,3 +1,4 @@
+```plantuml
 @startuml
 package "startKoin lambda" #Lightgray {
 
@@ -36,3 +37,4 @@ package "startKoin lambda" #Lightgray {
         }
     }
 @enduml
+```
