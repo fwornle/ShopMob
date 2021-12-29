@@ -1,8 +1,5 @@
-package com.tanfra.shopmob.smob.data.local.dto
+package com.tanfra.shopmob.smob.data.repo
 
-import com.tanfra.shopmob.smob.data.local.dao.SmobUserDao
-import com.tanfra.shopmob.smob.data.net.api.SmobUserApi
-import com.tanfra.shopmob.smob.data.repo.*
 import com.tanfra.shopmob.smob.data.repo.dataSource.*
 import org.koin.dsl.module
 

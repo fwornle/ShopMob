@@ -1,8 +1,5 @@
-package com.tanfra.shopmob.smob.data.local.dto
+package com.tanfra.shopmob.smob.data.local
 
-import com.tanfra.shopmob.smob.data.local.LocalDB
-import com.tanfra.shopmob.smob.data.repo.*
-import com.tanfra.shopmob.smob.data.repo.dataSource.*
 import org.koin.dsl.module
 
 // Koin module for (local) DB services

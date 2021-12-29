@@ -113,19 +113,11 @@ class SmobUserRepository(
     // ... so that we don't have to get a separate instance in every repository
     private val responseHandler: ResponseHandler by inject(ResponseHandler::class.java)
 
-
-
-    // TODO: this needs to go outside the repo
-    // TODO: this needs to go outside the repo
-    // TODO: this needs to go outside the repo
-    // TODO: this needs to go outside the repo
-    // TODO: this needs to go outside the repo
-
     // net-facing getter: all users
     // ... wrap in Response (as opposed to Result - see above) to also provide "loading" state
     // ... note: no 'override', as this is not exposed in the repository interface (network access
     //           is fully abstracted by the repo - all data access done via local DB)
-    private suspend fun getSmobUsersFromApi(): List<SmobUserDTO> = withContext(ioDispatcher) {
+    private suspend fun getSmobUsersViaApi(): List<SmobUserDTO> = withContext(ioDispatcher) {
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
@@ -154,7 +146,7 @@ class SmobUserRepository(
 
 
     // net-facing getter: a specific user
-    private suspend fun getSmobUserFromApi(id: String): SmobUserDTO? = withContext(ioDispatcher) {
+    private suspend fun getSmobUserViaApi(id: String): SmobUserDTO? = withContext(ioDispatcher) {
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
@@ -262,7 +254,7 @@ class SmobUserRepository(
 
             // initiate the (HTTP) GET request using the provided query parameters
             Timber.i("Sending GET request for SmobUser data...")
-            val response: List<SmobUserDTO> = getSmobUsersFromApi()
+            val response: List<SmobUserDTO> = getSmobUsersViaApi()
 
             // smoke test for net-CRUD (quick workaround... to avoid having to set up proper tests)
 //            val response2: SmobUserDTO? = getSmobUserFromApi("07c295ad-b286-41f7-b2ea-e81a75875d02")

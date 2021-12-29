@@ -3,9 +3,9 @@ package com.tanfra.shopmob
 import android.app.Application
 import androidx.work.*
 import com.tanfra.shopmob.smob.data.*
-import com.tanfra.shopmob.smob.data.local.dto.dbServices
-import com.tanfra.shopmob.smob.data.local.dto.repoServices
+import com.tanfra.shopmob.smob.data.local.dbServices
 import com.tanfra.shopmob.smob.data.net.netServices
+import com.tanfra.shopmob.smob.data.repo.repoServices
 import com.tanfra.shopmob.smob.data.repo.*
 import com.tanfra.shopmob.smob.data.repo.dataSource.*
 import com.tanfra.shopmob.smob.vmServices
@@ -14,10 +14,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
 import org.koin.core.component.KoinComponent
 import org.koin.core.context.startKoin
-import org.koin.core.logger.Level
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 

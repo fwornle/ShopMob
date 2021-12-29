@@ -381,67 +381,33 @@ using a NavController instance.
    3. Zone details (location of items in zone)
    4. Section details (image of shelf with location of selected shopping item on shelf)
 
+
+### Architecture of the SmobUserRepository
+
+The SmobUserRepository has the following architecture:
+
+![main architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/puml/smobUserRepository.puml)
+
+
+### Architecture of the Koin Service Locator Modules 
+
+The Koin service locator modules have the following architecture:
+
+![main architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/puml/modulesKoin.puml)
+
+
 ### Activity Level Architecture
 
 At _activity_ level, ShopMob has the following fundamental architecture:
-
-```plantuml
-@startuml component
-component activity_auth
-component activity_list
-component activity_shop
-actor mobber
-node app_main
-node service_provider
-node repo
-database DB
-database net
-
-mobber -> app_main
-DB <-> repo : DAO
-net <--> repo : API
-repo <-> service_provider
-service_provider <-> app_main
-app_main -> activity_auth
-activity_auth -> activity_list
-activity_auth <- activity_list
-activity_list -> activity_shop
-activity_list <- activity_shop
-activity_shop -> activity_auth
-@enduml
-```
 
 ![main architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/puml/architecture_main.puml)
 
-### Activity Level Architecture
+### Navigation
 
-At _activity_ level, ShopMob has the following fundamental architecture:
+TODO:
 
-```plantuml
-@startuml component
-component activity_auth
-component activity_list
-component activity_shop
-actor mobber
-node app_main
-node service_provider
-node repo
-database DB
-database net
+![main architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/puml/navigation.puml)
 
-mobber -> app_main
-DB <-> repo
-net <-> repo
-repo <-> service_provider
-service_provider <-> app_main
-app_main -> activity_auth
-activity_auth -> activity_list
-activity_auth <- activity_list
-activity_list -> activity_shop
-activity_list <- activity_shop
-activity_shop -> activity_auth
-@enduml
-```
 
 ### Detailed Flow
 

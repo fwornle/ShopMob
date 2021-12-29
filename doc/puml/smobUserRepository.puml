@@ -1,0 +1,59 @@
+@startuml
+class SmobUserRepository implements SmobUserData {
+  (**LivData** --> replace by **Flow**)
+  +profilePicture
+  +statusNetApiSmobUserProfilePicture
+  +statusNetApiSmobUserDataSync
+  **Injected** Dependencies
+  -smobUserDao
+  -smobUserApi
+  -ioDispatcher [= Dispatchers.IO]
+  ---
+  **DAO**
+  +getSmobUsers()
+  +getSmobUser()
+  +saveSmobUser()
+  +deleteAllSmobUsers()
+  ---
+  **API**
+  -getSmobUsersViaApi()
+  -getSmobUserViaApi()
+  -saveSmobUserViaApi()
+  -updateSmobUserViaApi()
+  -deleteSmobUserViaApi()
+  +refreshSmobUserDataInDB()
+}
+
+interface SmobUserApi #aliceblue;line:blue;line.dotted;text:blue {
+  API for the smobUsers table
+  [async]
+  +getSmobUsers()
+  +getSmobUserById()
+  +saveSmobUser()
+  +updateSmobUserById()
+  +deleteSmobUserById()
+}
+
+interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
+  DAO for the smobUsers table
+  [async]
+  +getSmobUsers()
+  +getSmobUser()
+  +saveSmobUser()
+  +deleteAllSmobUsers()
+}
+
+interface SmobUserData #aliceblue;line:blue;line.dotted;text:blue {
+  **app facing IF**
+  [async]
+  +getSmobUsers()
+  +getSmobUserById()
+  +saveSmobUser()
+  +updateSmobUserById()
+  +deleteSmobUserById()
+  +refreshSmobUserDataInDB()
+}
+
+SmobUserRepository <|-left- SmobUserDao : IN (DI, constr.)
+SmobUserRepository <|-down- SmobUserApi : IN (DI, constr.)
+@enduml
