@@ -3,14 +3,16 @@
 
 class RoomDatabase #lightgray ##gray
 
-abstract SmobDatabase #palegreen ##[dashed]green implements RoomDatabase {
-  {abstract} mobItemDao(): SmobItemDao
+abstract SmobDatabase #palegreen ##[dashed]green {
+  {abstract} smobItemDao(): SmobItemDao
   {abstract} **smobUserDao(): SmobUserDao**
   {abstract} smobGroupDao(): SmobGroupDao
   {abstract} smobShopDao(): SmobShopDao
   {abstract} smobProductDao(): SmobProductDao
   {abstract} smobListDao(): SmobListDao
 }
+
+SmobDatabase -up-|> RoomDatabase : implements >
 
 annotation Database #pink;line:red;line.dotted;text:red {
     **Room Database** annotation:
@@ -33,8 +35,8 @@ annotation TypeConverters #pink;line:red;line.dotted;text:red {
 }
 
 together {
-    SmobDatabase o-right- Database
-    SmobDatabase o-right- TypeConverters
+    SmobDatabase -left-> Database
+    SmobDatabase -right-> TypeConverters
 }
 
 interface SmobItemDao #aliceblue;line:blue;line.dotted;text:blue {
@@ -59,9 +61,9 @@ interface SmobXxxxDao #aliceblue;line:blue;line.dotted;text:blue {
 }
 
 together {
-    SmobDatabase o-down- SmobItemDao
-    SmobDatabase o-down- SmobUserDao
-    SmobDatabase o-down- SmobXxxxDao
+    SmobDatabase -down-> SmobItemDao
+    SmobDatabase -down-> SmobUserDao
+    SmobDatabase -down-> SmobXxxxDao
 }
 
 
@@ -81,8 +83,8 @@ class Room #lightgray ##gray {
  + **databaseBuilder**()
  }
 
-LocalDB -left-o SmobDatabase : factory for >
-LocalDB o.down. Room : uses >
+LocalDB .left.> SmobDatabase : factory for >
+LocalDB -down-> Room : uses >
 
 
 class SmobUserDTO {
@@ -95,7 +97,7 @@ class SmobUserDTO {
     +imageUrl
 }
     
-SmobUserDao -up-|> SmobUserDTO : uses >
+SmobUserDao -up-> SmobUserDTO : uses >
 
 annotation Entity #pink;line:red;line.dotted;text:red {
    **Room** annotations
@@ -104,7 +106,7 @@ annotation Entity #pink;line:red;line.dotted;text:red {
    {method} @ColumnInfo (...)
 }
 
-SmobUserDTO o-left. Entity
+SmobUserDTO -left-> Entity
 
 annotation Dao #pink;line:red;line.dotted;text:red {
    **Room** annotations
@@ -113,10 +115,32 @@ annotation Dao #pink;line:red;line.dotted;text:red {
    {method} @Insert (...)
 }
 
-SmobUserDao o-down. Dao
+SmobUserDao -left-> Dao
 
 frame "dbServices" #Lightblue {
-    class dbObject << (S,#FF7700) SmobUserDao>> implements SmobUserDao, SmobItemDao, SmobXxxxDao {
+
+    class SmobDatabaseImpl << (S,#FF7700) Object >> implements SmobDatabase {
+        **Singleton**
+        from **Koin** Service Locator
+        ---
+        (dbServices)
+    }
+    
+    class SmobUserDaoImpl << (S,#FF7700) Object >> implements SmobUserDao {
+        **Singleton**
+        from **Koin** Service Locator
+        ---
+        (dbServices)
+    }
+    
+    class SmobItemDaoImpl << (S,#FF7700) Object >> implements SmobItemDao {
+        **Singleton**
+        from **Koin** Service Locator
+        ---
+        (dbServices)
+    }
+    
+        class SmobXxxxDaoImpl << (S,#FF7700) Object >> implements SmobXxxxDao {
         **Singleton**
         from **Koin** Service Locator
         ---
@@ -124,7 +148,12 @@ frame "dbServices" #Lightblue {
     }
 }
 
-LocalDB o-up-- dbObject : uses <
+together {
+    LocalDB <-up-- SmobDatabaseImpl : uses <
+    LocalDB <-up-- SmobUserDaoImpl : uses <
+    LocalDB <-up-- SmobItemDaoImpl : uses <
+    LocalDB <-up-- SmobXxxxDaoImpl : uses <
+}
 
 @enduml
 ```
