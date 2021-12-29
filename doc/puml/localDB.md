@@ -1,5 +1,17 @@
 ```plantuml
 @startuml
+
+class RoomDatabase #lightgray ##gray
+
+abstract SmobDatabase #palegreen ##[dashed]green implements RoomDatabase {
+  {abstract} mobItemDao(): SmobItemDao
+  {abstract} **smobUserDao(): SmobUserDao**
+  {abstract} smobGroupDao(): SmobGroupDao
+  {abstract} smobShopDao(): SmobShopDao
+  {abstract} smobProductDao(): SmobProductDao
+  {abstract} smobListDao(): SmobListDao
+}
+
 annotation Database #pink;line:red;line.dotted;text:red {
     **Room Database** annotation:
     entities = { see classes below }
@@ -20,6 +32,17 @@ annotation TypeConverters #pink;line:red;line.dotted;text:red {
   +**LocalDbConverters**::class
 }
 
+together {
+    SmobDatabase o-right- Database
+    SmobDatabase o-right- TypeConverters
+}
+
+interface SmobItemDao #aliceblue;line:blue;line.dotted;text:blue {
+  DAO for the **smobItems** table
+  [async]
+  +...()
+}
+
 interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
   DAO for the **smobUsers** table
   [async]
@@ -29,22 +52,18 @@ interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
   +deleteAllSmobUsers()
 }
 
-interface SmobItemDao #aliceblue;line:blue;line.dotted;text:blue {
-  DAO for the **smobItems** table
+interface SmobXxxxDao #aliceblue;line:blue;line.dotted;text:blue {
+  DAO for the **smobXxxx** table
   [async]
   +...()
 }
 
-abstract SmobDatabase #palegreen ##[dashed]green implements RoomDatabase {
-  {abstract} mobItemDao(): SmobItemDao
-  {abstract} **smobUserDao(): SmobUserDao**
-  {abstract} smobGroupDao(): SmobGroupDao
-  {abstract} smobShopDao(): SmobShopDao
-  {abstract} smobProductDao(): SmobProductDao
-  {abstract} smobListDao(): SmobListDao
+together {
+    SmobDatabase o-down- SmobItemDao
+    SmobDatabase o-down- SmobUserDao
+    SmobDatabase o-down- SmobXxxxDao
 }
 
-class RoomDatabase #lightgray ##gray
 
 class LocalDB << (S,#FF7700) Singleton >> {
   Singleton class, providing **factory functions** for the
@@ -62,18 +81,50 @@ class Room #lightgray ##gray {
  + **databaseBuilder**()
  }
 
-LocalDB *-left- SmobDatabase : implements >
-LocalDB *.up. Room : uses >
+LocalDB o-left- SmobDatabase : factory for >
+LocalDB o.down. Room : uses >
 
-together {
-SmobDatabase o-down- Database
-SmobDatabase o-down- TypeConverters
+
+class SmobUserDTO {
+    Data Transfer Object
+    for **SmobUser** items
+    ---
+    +username
+    +name
+    +email
+    +imageUrl
+}
+    
+SmobUserDao -up-|> SmobUserDTO : uses >
+
+annotation Entity #pink;line:red;line.dotted;text:red {
+   **Room** annotations
+   {method} @Entity ("**smobUsers**")
+   {method} @PrimaryKey
+   {method} @ColumnInfo (...)
 }
 
-together {
-    SmobDatabase -left-|> SmobUserDao
-    SmobDatabase -left-|> SmobItemDao
+SmobUserDTO o-left. Entity
+
+annotation Dao #pink;line:red;line.dotted;text:red {
+   **Room** annotations
+   {method} @Dao
+   {method} @Query (...)
+   {method} @Insert (...)
 }
+
+SmobUserDao o-down. Dao
+
+frame "dbServices" #Lightblue {
+    class dbObject << (S,#FF7700) SmobUserDao>> implements SmobUserDao, SmobItemDao, SmobXxxxDao {
+        **Singleton**
+        from **Koin** Service Locator
+        ---
+        (dbServices)
+    }
+}
+
+LocalDB o-up-- dbObject : uses <
+
 @enduml
 ```
-est
