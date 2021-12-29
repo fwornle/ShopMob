@@ -411,6 +411,7 @@ At _activity_ level, ShopMob has the following fundamental architecture:
 ### Navigation
 
 TODO:
+![main architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/puml/test.md)
 
 ![main architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/puml/navigation.puml)
 

@@ -21,6 +21,7 @@ class SmobUserRepository implements SmobUserDataSource {
   -saveSmobUserViaApi()
   -updateSmobUserViaApi()
   -deleteSmobUserViaApi()
+  ---
   +refreshSmobUserDataInDB()
 }
 
@@ -40,7 +41,7 @@ frame #Lightblue {
     }
 }
 interface SmobUserApi #aliceblue;line:blue;line.dotted;text:blue {
-  API for the smobUsers table
+  **API** for the smobUsers table
   [async]
   +getSmobUsers()
   +getSmobUserById()
@@ -50,7 +51,7 @@ interface SmobUserApi #aliceblue;line:blue;line.dotted;text:blue {
 }
 
 interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
-  DAO for the smobUsers table
+  **DAO** for the smobUsers table
   [async]
   +getSmobUsers()
   +getSmobUser()
@@ -60,12 +61,12 @@ interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
 
 interface SmobUserDataSource #aliceblue;line:blue;line.dotted;text:blue {
   **app facing IF**
-  [async]
-  +getSmobUsers()
-  +getSmobUserById()
-  +saveSmobUser()
-  +updateSmobUserById()
-  +deleteSmobUserById()
+  [async -- uses data class **SmobUser** as items]
+  +getSmobUsers() : Result<List<SmobUser>>
+  +getSmobUserById(...) : Result<SmobUser>
+  +saveSmobUser(...)
+  +updateSmobUserById(...)
+  +deleteSmobUserById(...)
   +refreshSmobUserDataInDB()
 }
 
