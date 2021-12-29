@@ -20,7 +20,7 @@ annotation TypeConverters #pink;line:red;line.dotted;text:red {
 }
 
 interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
-  DAO for the smobUsers table
+  DAO for the **smobUsers** table
   [async]
   +getSmobUsers()
   +getSmobUser()
@@ -29,7 +29,7 @@ interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
 }
 
 interface SmobItemDao #aliceblue;line:blue;line.dotted;text:blue {
-  DAO for the smobItems table
+  DAO for the **smobItems** table
   [async]
   +...()
 }
@@ -58,7 +58,7 @@ class LocalDB << (S,#FF7700) Singleton >> {
 
 class Room #lightgray ##gray {
  {field} (imported class)
- + databaseBuilder()
+ + **databaseBuilder**()
  }
 
 LocalDB *-left- SmobDatabase : implements >

@@ -1,5 +1,5 @@
 @startuml
-class SmobUserRepository implements SmobUserData {
+class SmobUserRepository implements SmobUserDataSource {
   (**LivData** --> replace by **Flow**)
   +profilePicture
   +statusNetApiSmobUserProfilePicture
@@ -24,6 +24,21 @@ class SmobUserRepository implements SmobUserData {
   +refreshSmobUserDataInDB()
 }
 
+frame #Lightblue {
+    class netObject <<SmobUserApi>> implements SmobUserApi {
+        from Koin Service Locator
+        ---
+        (netServices)
+    }
+}
+
+frame #Lightblue {
+    class dbObject <<SmobUserDao>> implements SmobUserDao {
+        from Koin Service Locator
+        ---
+        (dbServices)
+    }
+}
 interface SmobUserApi #aliceblue;line:blue;line.dotted;text:blue {
   API for the smobUsers table
   [async]
@@ -43,7 +58,7 @@ interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
   +deleteAllSmobUsers()
 }
 
-interface SmobUserData #aliceblue;line:blue;line.dotted;text:blue {
+interface SmobUserDataSource #aliceblue;line:blue;line.dotted;text:blue {
   **app facing IF**
   [async]
   +getSmobUsers()
@@ -54,6 +69,6 @@ interface SmobUserData #aliceblue;line:blue;line.dotted;text:blue {
   +refreshSmobUserDataInDB()
 }
 
-SmobUserRepository <|-left- SmobUserDao : IN (DI, constr.)
-SmobUserRepository <|-down- SmobUserApi : IN (DI, constr.)
+SmobUserRepository <|-left- dbObject : IN (DI: smobUserDao)
+SmobUserRepository <|-right- netObject : IN (DI: smobUserApi)
 @enduml
