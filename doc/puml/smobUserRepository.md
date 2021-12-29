@@ -26,24 +26,71 @@ class SmobUserRepository implements SmobUserDataSource {
   +refreshSmobUserDataInDB()
 }
 
-frame #Lightblue {
-    class netObject <<SmobUserApi>> implements SmobUserApi {
-        from Koin Service Locator
+frame "dbServices" #Lightblue {
+    class netObject << (S,#FF7700) SmobUserApi>> implements SmobUserApi {
+        **Singleton**
+        from **Koin** Service Locator
         ---
         (netServices)
     }
+    
+    class SmobUserNTO {
+    Network Transfer Object
+    for **SmobUser** items
+    ---
+    +username
+    +name
+    +email
+    +imageUrl
+    }
+    
+    SmobUserApi -left-|> SmobUserNTO : uses >    
+
+    annotation HTTP #pink;line:red;line.dotted;text:red {
+       **Retrofit** annotations
+       {method} GET
+       {method} POST
+       {method} PUT
+       {method} DELETE
+    }
+    
+    
+    SmobUserApi o-right. HTTP
 }
 
-frame #Lightblue {
-    class dbObject <<SmobUserDao>> implements SmobUserDao {
-        from Koin Service Locator
+frame "netServices" #Lightblue {
+    class dbObject << (S,#FF7700) SmobUserDao>> implements SmobUserDao {
+        **Singleton**
+        from **Koin** Service Locator
         ---
         (dbServices)
     }
+    
+    class SmobUserDTO {
+    Data Transfer Object
+    for **SmobUser** items
+    ---
+    +username
+    +name
+    +email
+    +imageUrl
+    }
+    
+    SmobUserDao -right-|> SmobUserDTO : uses >
+    
+    annotation Entity #pink;line:red;line.dotted;text:red {
+       **Room** annotations
+       {method} tableName = "smobUsers"
+    }
+    
+    SmobUserDTO o-right. Entity
+
 }
+
 interface SmobUserApi #aliceblue;line:blue;line.dotted;text:blue {
   **API** for the smobUsers table
   [async]
+  [data class: **SmobUserNTO**]
   +getSmobUsers()
   +getSmobUserById()
   +saveSmobUser()
@@ -54,6 +101,7 @@ interface SmobUserApi #aliceblue;line:blue;line.dotted;text:blue {
 interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
   **DAO** for the smobUsers table
   [async]
+  [data class: **SmobUserDTO**]
   +getSmobUsers()
   +getSmobUser()
   +saveSmobUser()
@@ -62,7 +110,8 @@ interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
 
 interface SmobUserDataSource #aliceblue;line:blue;line.dotted;text:blue {
   **app facing IF**
-  [async -- uses data class **SmobUser** as items]
+  [async]
+  [data class: **SmobUser**]
   +getSmobUsers() : Result<List<SmobUser>>
   +getSmobUserById(...) : Result<SmobUser>
   +saveSmobUser(...)
@@ -71,7 +120,20 @@ interface SmobUserDataSource #aliceblue;line:blue;line.dotted;text:blue {
   +refreshSmobUserDataInDB()
 }
 
-SmobUserRepository <|-left- dbObject : IN (DI: smobUserDao)
-SmobUserRepository <|-right- netObject : IN (DI: smobUserApi)
+class SmobUser {
+Domain Datatype
+for **SmobUser** items
+---
++username
++name
++email
++imageUrl
+}
+
+SmobUserDataSource -left-|> SmobUser : uses >
+
+
+SmobUserRepository <|-down-- dbObject : "     IN (DI: **smobUserDao**)" " "
+SmobUserRepository <|-down-- netObject :"IN (DI: **smobUserApi**)     " " "
 @enduml
 ```
