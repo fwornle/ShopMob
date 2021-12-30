@@ -15,8 +15,8 @@ interface SmobUserDataSource #aliceblue;line:blue;line.dotted;text:blue {
 }
 
 class Resource {
-    Retrofit **Resource** type
-    for HTTP requests
+    **Resource** data type
+    {field} (application level data)
     +success()
     +error()
     +loading()
