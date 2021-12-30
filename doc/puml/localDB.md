@@ -1,7 +1,9 @@
 ```plantuml
 @startuml
 
-class RoomDatabase #lightgray ##gray
+class RoomDatabase #lightgray ##gray {
+    {field} (imported class)
+} 
 
 abstract SmobDatabase #palegreen ##[dashed]green {
   {abstract} smobItemDao(): SmobItemDao
@@ -40,9 +42,15 @@ together {
 }
 
 interface SmobItemDao #aliceblue;line:blue;line.dotted;text:blue {
-  DAO for the **smobItems** table
-  [async]
-  +...()
+    DAO for the **smobItems** table
+    [async]
+    +getSmobItemById(...): SmobItemDTO
+    +getSmobItems(): List<SmobItemDTO>
+    +saveSmobItem(...)
+    +updateSmobItem(...)
+    +updateSmobItems(...)
+    +deleteSmobItemById(...)
+    +deleteAllSmobItems()
 }
 
 interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
@@ -58,9 +66,15 @@ interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
 }
 
 interface SmobXxxxDao #aliceblue;line:blue;line.dotted;text:blue {
-  DAO for the **smobXxxx** table
-  [async]
-  +...()
+    DAO for the **smobXxxx** table
+    [async]
+    +getSmobXxxxById(...): SmobXxxxDTO
+    +getSmobXxxxs(): List<SmobXxxxDTO>
+    +saveSmobXxxx(...)
+    +updateSmobXxxx(...)
+    +updateSmobXxxxs(...)
+    +deleteSmobXxxxById(...)
+    +deleteAllSmobXxxxs()
 }
 
 together {
@@ -86,7 +100,7 @@ class Room #lightgray ##gray {
  + **databaseBuilder**()
  }
 
-LocalDB .left.> SmobDatabase : factory for >
+LocalDB -left-> SmobDatabase : uses >
 LocalDB -down-> Room : uses >
 
 
@@ -151,14 +165,26 @@ frame "dbServices" #Lightblue {
         from **Koin** Service Locator
         LocalDB.**createSmobUserDao**(get())
         ---
-        +...() 
+        +getSmobItemById(...): SmobItemDTO
+        +getSmobItems(): List<SmobItemDTO>
+        +saveSmobItem(...)
+        +updateSmobItem(...)
+        +updateSmobItems(...)
+        +deleteSmobItemById(...)
+        +deleteAllSmobItems()
     }
     
     class SmobXxxxDaoImpl << (S,#FF7700) Singleton >> implements SmobXxxxDao {
         from **Koin** Service Locator
         LocalDB.**createSmobXxxxDao**(get())
         ---
-        +...() 
+        +getSmobXxxxById(...): SmobXxxxDTO
+        +getSmobXxxxs(): List<SmobXxxxDTO>
+        +saveSmobXxxx(...)
+        +updateSmobXxxx(...)
+        +updateSmobXxxxs(...)
+        +deleteSmobXxxxById(...)
+        +deleteAllSmobXxxxs()
     }
     
     SmobDatabaseImpl <-up- SmobUserDaoImpl 
