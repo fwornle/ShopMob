@@ -237,9 +237,9 @@ class SmobUserRepository(
         //     - presumably caused by Android calling the LD observer (to update the UI) and
         //       receiving invalid data (null)
         //     - possibly the crash happens in the BindingAdapter, when trying to use this null ref
-        _statusSmobUserProfilePicture.value = Status.SUCCESS
-        _statusSmobUserDataSync.value = Status.SUCCESS
-        _profilePicture.value = null
+        _statusSmobUserProfilePicture.postValue(Status.SUCCESS)
+        _statusSmobUserDataSync.postValue(Status.SUCCESS)
+        _profilePicture.postValue(null)
 
     }
 
