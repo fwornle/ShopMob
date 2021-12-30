@@ -79,15 +79,16 @@ class SmobItemListFragment : BaseFragment(), KoinComponent {
         setupRecyclerView()
         binding.addSmobItemFab.setOnClickListener {
 
-            // test HTTP
-            val smobUserDao: SmobUserDao by inject()
-            val smobUserApi: SmobUserApi by inject()
-            val userRepo = SmobUserRepository(smobUserDao, smobUserApi)
-            _viewModel.viewModelScope.launch {
-                userRepo.refreshSmobUserDataInDB()
-            }
+//            // TODO: remove again
+//            // test HTTP
+//            val smobUserDao: SmobUserDao by inject()
+//            val smobUserApi: SmobUserApi by inject()
+//            val userRepo = SmobUserRepository(smobUserDao, smobUserApi)
+//            _viewModel.viewModelScope.launch {
+//                userRepo.refreshSmobUserDataInDB()
+//            }
 
-            // navigateToAddshopmobItem()
+            navigateToAddshopmobItem()
         }
     }
 

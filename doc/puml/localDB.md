@@ -46,12 +46,15 @@ interface SmobItemDao #aliceblue;line:blue;line.dotted;text:blue {
 }
 
 interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
-  DAO for the **smobUsers** table
-  [async]
-  +getSmobUsers()
-  +getSmobUser()
-  +saveSmobUser()
-  +deleteAllSmobUsers()
+    DAO for the **smobUsers** table
+    [async]
+    +getSmobUserById(...)
+    +getSmobUsers()
+    +saveSmobUser(...)
+    +updateSmobUser(...)
+    +updateSmobUsers(...)
+    +deleteSmobUserById(...)
+    +deleteAllSmobUsers()
 }
 
 interface SmobXxxxDao #aliceblue;line:blue;line.dotted;text:blue {
@@ -135,33 +138,27 @@ frame "dbServices" #Lightblue {
         from **Koin** Service Locator
         LocalDB.**createSmobUserDao**(get())
         ---
+        +getSmobUserById(...): SmobUserDTO
         +getSmobUsers(): List<SmobUserDTO>
-        +getSmobUserById(...): SmobUserDTO?
         +saveSmobUser(...)
+        +updateSmobUser(...)
+        +updateSmobUsers(...)
+        +deleteSmobUserById(...)
         +deleteAllSmobUsers()
-        +insertAll(...)
     }
     
     class SmobItemDaoImpl << (S,#FF7700) Singleton >> implements SmobItemDao {
         from **Koin** Service Locator
         LocalDB.**createSmobUserDao**(get())
         ---
-        +getSmobItems(): List<SmobItemDTO>
-        +getSmobItemById(...): SmobItemDTO?
-        +saveSmobItem(...)
-        +deleteAllSmobItems()
-        +insertAll(...)    
+        +...() 
     }
     
     class SmobXxxxDaoImpl << (S,#FF7700) Singleton >> implements SmobXxxxDao {
         from **Koin** Service Locator
         LocalDB.**createSmobXxxxDao**(get())
         ---
-        +getSmobXxxxs(): List<SmobXxxxDTO>
-        +getSmobXxxxById(...): SmobXxxxDTO?
-        +saveSmobXxxx(...)
-        +deleteAllSmobXxxxs()
-        +insertAll(...)  
+        +...() 
     }
     
     SmobDatabaseImpl <-up- SmobUserDaoImpl 

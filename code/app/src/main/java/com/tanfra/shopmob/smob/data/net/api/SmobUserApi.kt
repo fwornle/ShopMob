@@ -9,19 +9,19 @@ import retrofit2.http.*
 // ... using retrofit's built-in coroutine capabilities (>= 2.6.0)
 interface SmobUserApi {
 
-        // HTTP GET (fetch all users)
-        @GET("${Constants.SMOB_API_URL}/users")
-        suspend fun getSmobUsers(
-                // --> @Query annotation can be used to provide additional query parameters
-                // @Query("q") searchText: String,
-        ): Response<ArrayList<SmobUserNTO>>
-
         // HTTP GET (fetch a specific user)
         @GET("${Constants.SMOB_API_URL}/users/{id}")
         suspend fun getSmobUserById(
                 @Path(value = "id", encoded = true) id: String
                 // @Query("q") searchText: String,
         ): Response<SmobUserNTO>
+
+        // HTTP GET (fetch all users)
+        @GET("${Constants.SMOB_API_URL}/users")
+        suspend fun getSmobUsers(
+                // --> @Query annotation can be used to provide additional query parameters
+                // @Query("q") searchText: String,
+        ): Response<ArrayList<SmobUserNTO>>
 
         // HTTP POST (insert a new user)
         @POST("${Constants.SMOB_API_URL}/users")

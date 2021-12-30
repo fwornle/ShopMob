@@ -38,15 +38,15 @@ class SmobUserRepository(
 ) : SmobUserDataSource, KoinComponent {
 
 
-    // --- overrides of general data interface 'SmobUserDataSource': CRUD, local DB data ---
-    // --- overrides of general data interface 'SmobUserDataSource': CRUD, local DB data ---
-    // --- overrides of general data interface 'SmobUserDataSource': CRUD, local DB data ---
+    // --- overrides of public data interface 'SmobUserDataSource': CRUD, local DB data ---
+    // --- overrides of public data interface 'SmobUserDataSource': CRUD, local DB data ---
+    // --- overrides of public data interface 'SmobUserDataSource': CRUD, local DB data ---
 
     /**
      * Get the smob user list from the local db
      * @return Result the holds a Success with all the smob users or an Error object with the error message
      */
-    override suspend fun getSmobUsers(): Result<List<SmobUser>> = withContext(ioDispatcher) {
+    override suspend fun getAllSmobUsers(): Result<List<SmobUser>> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             return@withContext try {
@@ -70,6 +70,28 @@ class SmobUserRepository(
             }
         }
 
+
+    // insert all smob users into the db
+    override suspend fun saveSmobUsers(smobUsers: List<SmobUser>) {
+        // TODO - call repeatedly upon smobUserDao.saveSmobUser
+    }
+
+    /**
+     * Update an existing smob user in the db.
+     * @param smobUser the smob user to be updated
+     */
+    override suspend fun updateSmobUser(smobUser: SmobUser) {
+        // TODO
+    }
+
+    /**
+     * Update an existing smob user in the db.
+     * @param smobUser the smob user to be updated
+     */
+    override suspend fun updateSmobUsers(smobUsers: List<SmobUser>) {
+        // TODO
+    }
+
     /**
      * Get a smob user by its id
      * @param id to be used to get the smob user
@@ -88,6 +110,16 @@ class SmobUserRepository(
                 }
             } catch (e: Exception) {
                 return@withContext Result.Error(e.localizedMessage)
+            }
+        }
+    }
+
+    // delete individual user
+    override suspend fun deleteSmobUser(id: String) {
+        withContext(ioDispatcher) {
+            // support espresso testing (w/h coroutines)
+            wrapEspressoIdlingResource {
+                smobUserDao.deleteSmobUserById(id)
             }
         }
     }
@@ -232,11 +264,13 @@ class SmobUserRepository(
     // upon instantiating the repository class...
     init {
 
-        // make sure all LiveData elements have defined values
-        // ... omitting this, appears to cause an ('obscure') crash
-        //     - presumably caused by Android calling the LD observer (to update the UI) and
-        //       receiving invalid data (null)
-        //     - possibly the crash happens in the BindingAdapter, when trying to use this null ref
+        // make sure all LiveData elements have defined values which are set using 'postValue', in
+        // case the repository class is initialized from within a background task, e.g. when using
+        // WorkManager to schedule a background update (and this happens to be the first access of
+        // a repository service)
+        // ... omitting proper initialization of LD can cause ('obscure') crashes
+        //     - ... e.g. when Android calls the LD observer (to update the UI) and the
+        //       BindingAdapter tries to de-reference a null pointer (invalid LD)
         _statusSmobUserProfilePicture.postValue(Status.SUCCESS)
         _statusSmobUserDataSync.postValue(Status.SUCCESS)
         _profilePicture.postValue(null)
@@ -289,7 +323,7 @@ class SmobUserRepository(
                 //
                 // DAO method 'insertAll' allows to be called with 'varargs'
                 // --> convert to (typed) array and use 'spread operator' to turn to 'varargs'
-                smobUserDao.insertAll(*response.toTypedArray())
+                smobUserDao.saveAllSmobUsers(*response.toTypedArray())
                 Timber.i("SmobUser data items stored in local DB")
 
             }  // if (valid response)

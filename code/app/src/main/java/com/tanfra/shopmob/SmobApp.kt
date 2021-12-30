@@ -80,9 +80,9 @@ class SmobApp : Application(), KoinComponent, Configuration.Provider {
 
         // define configuration of WorkManager job: scheduling frequency, constraints (see above)
         // ... this is for the background updates of 'quasi static' user data, shop data, etc.
-        //     --> slow (twice a day)
+        //     --> slow (every hour - if conditions are met [UNMETERED])
         val repeatingRequest = PeriodicWorkRequestBuilder<RefreshSmobStaticDataWorker>(
-            12,
+            1,
             TimeUnit.HOURS
         )
             .setConstraints(constraints)

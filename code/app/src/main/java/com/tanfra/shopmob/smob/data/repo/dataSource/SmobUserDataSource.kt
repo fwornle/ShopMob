@@ -1,5 +1,6 @@
 package com.tanfra.shopmob.smob.data.repo.dataSource
 
+import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
 import com.tanfra.shopmob.smob.types.SmobUser
 import com.tanfra.shopmob.smob.data.repo.Result
 
@@ -8,9 +9,13 @@ import com.tanfra.shopmob.smob.data.repo.Result
  * ... using domain data types (to further abstract DB details)
  */
 interface SmobUserDataSource {
-    suspend fun getSmobUsers(): Result<List<SmobUser>>
-    suspend fun saveSmobUser(smobUser: SmobUser)
     suspend fun getSmobUser(id: String): Result<SmobUser>
+    suspend fun getAllSmobUsers(): Result<List<SmobUser>>
+    suspend fun saveSmobUser(smobUser: SmobUser)
+    suspend fun saveSmobUsers(smobUsers: List<SmobUser>)
+    suspend fun updateSmobUser(smobUser: SmobUser)
+    suspend fun updateSmobUsers(smobUsers: List<SmobUser>)
+    suspend fun deleteSmobUser(id: String)
     suspend fun deleteAllSmobUsers()
     suspend fun refreshSmobUserDataInDB()
 }

@@ -1,42 +1,62 @@
 ```plantuml
 @startuml
 interface SmobUserDataSource #aliceblue;line:blue;line.dotted;text:blue {
-  **app facing IF**
-  [async]
-  +getSmobUsers() : Result<List<SmobUser>>
-  +getSmobUserById(...) : Result<SmobUser>
-  +saveSmobUser(...)
-  +updateSmobUserById(...)
-  +deleteSmobUserById(...)
-  +refreshSmobUserDataInDB()
+    **app facing IF**
+    [async]
+    +getSmobUser(...) : Result<SmobUser>
+    +getAllSmobUsers() : Result<List<SmobUser>>
+    +saveSmobUser(...)
+    +saveSmobUsers(...)
+    +updateSmobUser(...)
+    +updateSmobUsers(...)
+    +deleteSmobUser(...)
+    +deleteAllSmobUsers()
+    +refreshSmobUserDataInDB()
 }
 
 frame "repoServices" #Lightblue {
     class SmobUserRepository implements SmobUserDataSource {
-      (**LivData** --> replace by **Flow**)
-      +profilePicture
-      +statusNetApiSmobUserProfilePicture
-      +statusNetApiSmobUserDataSync
-      **Injected** Dependencies
-      -smobUserDao
-      -smobUserApi
-      -ioDispatcher [= Dispatchers.IO]
-      ---
-      **DAO**
-      +getSmobUsers()
-      +getSmobUser()
-      +saveSmobUser()
-      +deleteAllSmobUsers()
-      ---
-      **API**
-      -getSmobUsersViaApi()
-      -getSmobUserViaApi()
-      -saveSmobUserViaApi()
-      -updateSmobUserViaApi()
-      -deleteSmobUserViaApi()
-      ---
-      +refreshSmobUserDataInDB()
-    }
+        (**LivData** --> replace by **Flow**)
+        +profilePicture
+        +statusNetApiSmobUserProfilePicture
+        +statusNetApiSmobUserDataSync
+        **Injected** Dependencies
+        -**smobUserDao**
+        -**smobUserApi**
+        -ioDispatcher [= Dispatchers.IO]
+        ---
+        **DataSource** (<color:Blue>SmobUser</color>)
+        +getSmobUser(...)
+        +getAllSmobUsers()
+        +saveSmobUser(...)
+        +saveSmobUsers(...)
+        +updateSmobUser(...)
+        +updateSmobUsers(...)
+        +deleteSmobUser(...)
+        +deleteAllSmobUsers()
+        +refreshSmobUserDataInDB()
+        ---
+        **DAO** (<color:Blue>SmobUserDTO</color>)
+        -(DI) **smobUserDao.**getSmobUserById(...)
+        -(DI) **smobUserDao.**getSmobUsers()
+        -(DI) **smobUserDao.**saveSmobUser(...)
+        -(DI) **smobUserDao.**updateSmobUser(...)
+        -(DI) **smobUserDao.**updateSmobUsers(...)
+        -(DI) **smobUserDao.**deleteSmobUsersById(...)
+        -(DI) **smobUserDao.**deleteAllSmobUsers()
+        ---
+        **API** (<color:Blue>SmobUserNTO</color>)
+        -getSmobUsersViaApi()
+        -getSmobUserViaApi()
+        -saveSmobUserViaApi()
+        -updateSmobUserViaApi()
+        -deleteSmobUserViaApi()
+        -(DI) **smobUserApi**.getSmobUserById(...)
+        -(DI) **smobUserApi.**getSmobUsers()
+        -(DI) **smobUserApi**.saveSmobUser(...)
+        -(DI) **smobUserApi**.updateSmobUserById(...)
+        -(DI) **smobUserApi**.deleteSmobUserById(...)
+     }
 }
 
     
@@ -53,11 +73,11 @@ class SmobUserNTO {
 SmobUserApi .up.> SmobUserNTO : uses >    
 
 annotation HTTP #pink;line:red;line.dotted;text:red {
-   **Retrofit** annotations
-   {method} @GET
-   {method} @POST
-   {method} @PUT
-   {method} @DELETE
+    **Retrofit** annotations
+    {method} @GET
+    {method} @POST
+    {method} @PUT
+    {method} @DELETE
 }
 
 SmobUserApi .right.> HTTP
@@ -112,22 +132,25 @@ frame "dbServices" #Lightblue {
 }
 
 interface SmobUserApi #aliceblue;line:blue;line.dotted;text:blue {
-  **API** for the smobUsers table
-  [async]
-  +getSmobUsers()
-  +getSmobUserById()
-  +saveSmobUser()
-  +updateSmobUserById()
-  +deleteSmobUserById()
+    **API** for the smobUsers table
+    [async]
+    +getSmobUserById(...)
+    +getSmobUsers()
+    +saveSmobUser(...)
+    +updateSmobUserById(...)
+    +deleteSmobUserById(...)
 }
 
 interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
-  **DAO** for the smobUsers table
-  [async]
-  +getSmobUsers()
-  +getSmobUser()
-  +saveSmobUser()
-  +deleteAllSmobUsers()
+    **DAO** for the smobUsers table
+    [async]
+    +getSmobUserById(...)
+    +getSmobUsers()
+    +saveSmobUser(...)
+    +updateSmobUser(...)
+    +updateSmobUsers(...)
+    +deleteSmobUserById(...)
+    +deleteAllSmobUsers()
 }
 
 class SmobUser {
