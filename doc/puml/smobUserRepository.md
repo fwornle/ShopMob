@@ -3,8 +3,8 @@
 interface SmobUserDataSource #aliceblue;line:blue;line.dotted;text:blue {
     **app facing IF**
     [async]
-    +getSmobUser(...) : Resource<SmobUser>
-    +getAllSmobUsers() : Resource<List<SmobUser>>
+    +getSmobUser(...) : Resource<SmobUserATO>
+    +getAllSmobUsers() : Resource<List<SmobUserATO>>
     +saveSmobUser(...)
     +saveSmobUsers(...)
     +updateSmobUser(...)
@@ -35,7 +35,7 @@ frame "repoServices" #Lightblue {
         -**smobUserApi**
         -ioDispatcher [= Dispatchers.IO]
         ---
-        **DataSource** (<color:Blue>SmobUser</color>)
+        **DataSource** (<color:Blue>SmobUserATO</color>)
         +getSmobUser(...)
         +getAllSmobUsers()
         +saveSmobUser(...)
@@ -171,7 +171,7 @@ interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
     +deleteAllSmobUsers()
 }
 
-class SmobUser {
+class SmobUserATO {
 Domain Datatype
 for **SmobUser** items
 ---
@@ -181,7 +181,7 @@ for **SmobUser** items
 +imageUrl
 }
 
-SmobUserDataSource -left-> SmobUser
+SmobUserDataSource -left-> SmobUserATO
 
 
 SmobUserRepository o-down-- dbObject : "\n     get()\n (DI: **smobUserDao**)" " "
