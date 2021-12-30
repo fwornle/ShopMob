@@ -85,8 +85,8 @@ class SmobUserRepository(
     }
 
     /**
-     * Update an existing smob user in the db.
-     * @param smobUser the smob user to be updated
+     * Update an set of existing smob users in the db.
+     * @param smobUsers the smob user to be updated
      */
     override suspend fun updateSmobUsers(smobUsers: List<SmobUser>) {
         // TODO
@@ -320,10 +320,7 @@ class SmobUserRepository(
                 Timber.i("SmobUser data GET request complete (success)")
 
                 // store user data in DB
-                //
-                // DAO method 'insertAll' allows to be called with 'varargs'
-                // --> convert to (typed) array and use 'spread operator' to turn to 'varargs'
-                smobUserDao.saveAllSmobUsers(*response.toTypedArray())
+                response.map { smobUserDao.saveSmobUser(it) }
                 Timber.i("SmobUser data items stored in local DB")
 
             }  // if (valid response)
