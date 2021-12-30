@@ -6,7 +6,6 @@ import androidx.core.app.JobIntentService
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
-import com.tanfra.shopmob.smob.data.repo.Result
 import com.tanfra.shopmob.smob.types.SmobItem
 import com.tanfra.shopmob.utils.sendNotification
 import kotlinx.coroutines.*
@@ -77,7 +76,7 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
                         val result = smobItemLocalRepository.getSmobItem(geoFenceItem.requestId)
 
                         // smob location found in DB?
-                        if (result is Result.Success<SmobItem>) {
+                        if (result is Resource.success<SmobItem>) {
 
                             // yes --> fetch associated smob item data
                             //         ... and send it down the notification channel

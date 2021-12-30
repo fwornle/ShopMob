@@ -5,13 +5,15 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.FakeItemDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
-import com.tanfra.shopmob.smob.data.repo.Result
+import com.tanfra.shopmob.smob.data.repo.utils.Resource
+import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.testutils.MainCoroutineRule
 import com.tanfra.shopmob.smob.testutils.getOrAwaitValue
 import com.tanfra.shopmob.smob.types.SmobItem
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
 import org.hamcrest.core.Is
@@ -213,15 +215,18 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
 
         // WHEN calling function validateAndSaveSmobItem
         _viewModelSmob.validateAndSaveSmobItem(smobData)
-        val smobItemReadBack = smobItemRepo.getSmobItem(smobData.id) as Result.Success
+        val smobItemReadBack = smobItemRepo.getSmobItem(smobData.id)
+
+        // check that result is valid
+        assertThat(smobItemReadBack.status, CoreMatchers.`is`(Status.SUCCESS))
 
         // THEN the smob item is verified and stored in the repository
-        assertThat(smobItemReadBack.data.title, IsEqual(smobData.title))
-        assertThat(smobItemReadBack.data.description, IsEqual(smobData.description))
-        assertThat(smobItemReadBack.data.location, IsEqual(smobData.location))
-        assertThat(smobItemReadBack.data.latitude, IsEqual(smobData.latitude))
-        assertThat(smobItemReadBack.data.longitude, IsEqual(smobData.longitude))
-        assertThat(smobItemReadBack.data.id, IsEqual(smobData.id))
+        assertThat(smobItemReadBack.data?.title, IsEqual(smobData.title))
+        assertThat(smobItemReadBack.data?.description, IsEqual(smobData.description))
+        assertThat(smobItemReadBack.data?.location, IsEqual(smobData.location))
+        assertThat(smobItemReadBack.data?.latitude, IsEqual(smobData.latitude))
+        assertThat(smobItemReadBack.data?.longitude, IsEqual(smobData.longitude))
+        assertThat(smobItemReadBack.data?.id, IsEqual(smobData.id))
 
     }
 
@@ -235,7 +240,10 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
 
         // WHEN calling function validateAndSaveSmobItem
         _viewModelSmob.validateAndSaveSmobItem(smobData)
-        val smobItemReadBack = smobItemRepo.getSmobItem(smobData.id) as Result.Error
+        val smobItemReadBack = smobItemRepo.getSmobItem(smobData.id)
+
+        // check that result is invalid
+        assertThat(smobItemReadBack.status, CoreMatchers.`is`(Status.ERROR))
 
         // THEN the smob item is verified and stored in the repository
         assertThat(smobItemReadBack.message, IsEqual("SmobItem with ID ${smobData.id} not found in (fake) local storage."))
@@ -398,34 +406,41 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         mainCoroutineRule.runBlockingTest {
 
         // WHEN smob items are requested from the repository / location smob item repository
-        val smobItem = smobItemRepo.getSmobItems() as Result.Success
+        val smobItem = smobItemRepo.getSmobItems()
+
 
         // THEN smob items are loaded from the local data source
         assertThat(smobItem.data, IsEqual(smobItemList))
 
     }
 
-    // getSmobItem --> Result.Success
+    // getSmobItem --> Resource.success
     @Test
     fun `getSmobItem requests existing smob item from repository`() =
         mainCoroutineRule.runBlockingTest {
 
         // WHEN an existent smob item is requested from the location smob item repository
-        val smobItem = smobItemRepo.getSmobItem(smobItemList.first().id) as Result.Success
+        val smobItem = smobItemRepo.getSmobItem(smobItemList.first().id)
+
+        // check that result is valid
+        assertThat(smobItem.status, CoreMatchers.`is`(Status.SUCCESS))
 
         // THEN this smob item is loaded from the repository / location smob item repository
         assertThat(smobItem.data, IsEqual(smobItemList.first()))
 
     }
 
-    // getSmobItem --> Result.Error
+    // getSmobItem --> Resource.error
     @Test
     fun `getSmobItem requests non-existing smob item from repository`() =
         mainCoroutineRule.runBlockingTest {
 
         // WHEN a non-existent smob item is requested from the location smob item repository
         val fakeId = "this is a fake ID"
-        val noSmobItem = smobItemRepo.getSmobItem(fakeId) as Result.Error
+        val noSmobItem = smobItemRepo.getSmobItem(fakeId)
+
+        // check that result is valid
+        assertThat(noSmobItem.status, CoreMatchers.`is`(Status.ERROR))
 
         // THEN the return value is an error message
         assertThat(noSmobItem.message, IsEqual("SmobItem with ID $fakeId not found in (fake) local storage."))
@@ -439,9 +454,12 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
 
         // WHEN a new smob item is added to the location smob item repository
         smobItemRepo.saveSmobItem(smobItemNew)
-        val smobItemReadBack = smobItemRepo.getSmobItem(smobItemNew.id) as Result.Success
+        val smobItemReadBack = smobItemRepo.getSmobItem(smobItemNew.id)
 
-        // THEN this smobitem is stored in the repository
+        // THEN this smob item is stored in the repository
+
+        // check that result is valid
+        assertThat(smobItemReadBack.status, CoreMatchers.`is`(Status.SUCCESS))
         assertThat(smobItemReadBack.data, IsEqual(smobItemNew))
 
     }
@@ -455,7 +473,10 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         smobItemRepo.deleteAllSmobItems()
 
         // THEN the repository is empty
-        val smobItemReadBack = smobItemRepo.getSmobItems() as Result.Success
+        val smobItemReadBack = smobItemRepo.getSmobItems()
+
+        // check that result is valid
+        assertThat(smobItemReadBack.status, CoreMatchers.`is`(Status.SUCCESS))
         assertThat(smobItemReadBack.data, Is(empty()))
 
     }

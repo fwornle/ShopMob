@@ -25,13 +25,13 @@ class SmobProductRepository(
      * Get the smob item list from the local db
      * @return Result the holds a Success with all the smob items or an Error object with the error message
      */
-    override suspend fun getSmobProducts(): Result<List<SmobProduct>> = withContext(ioDispatcher) {
+    override suspend fun getSmobProducts(): Resource<List<SmobProduct>> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             return@withContext try {
-                Result.Success(smobProductDao.getSmobProducts().asDomainModel())
+                Resource.success(smobProductDao.getSmobProducts().asDomainModel())
             } catch (ex: Exception) {
-                Result.Error(ex.localizedMessage)
+                Resource.error(ex.localizedMessage)
             }
         }
     }
@@ -53,18 +53,18 @@ class SmobProductRepository(
      * @param id to be used to get the smob item
      * @return Result the holds a Success object with the SmobProduct or an Error object with the error message
      */
-    override suspend fun getSmobProduct(id: String): Result<SmobProduct> = withContext(ioDispatcher) {
+    override suspend fun getSmobProduct(id: String): Resource<SmobProduct> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             try {
                 val smobProductDTO = smobProductDao.getSmobProductById(id)
                 if (smobProductDTO != null) {
-                    return@withContext Result.Success(smobProductDTO.asDomainModel())
+                    return@withContext Resource.success(smobProductDTO.asDomainModel())
                 } else {
-                    return@withContext Result.Error("SmobProduct not found!")
+                    return@withContext Resource.error("SmobProduct not found!")
                 }
             } catch (e: Exception) {
-                return@withContext Result.Error(e.localizedMessage)
+                return@withContext Resource.error(e.localizedMessage)
             }
         }
     }

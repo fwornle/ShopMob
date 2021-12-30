@@ -8,7 +8,6 @@ import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.testutils.MainCoroutineRule
 import com.tanfra.shopmob.smob.testutils.getOrAwaitValue
 
-import com.tanfra.shopmob.smob.data.repo.Result
 import com.tanfra.shopmob.smob.types.SmobItem
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -231,10 +230,10 @@ class SmobItemListViewModelTest: AutoCloseKoinTest() {
             (smobItemRepo as FakeItemDataSource).setReturnError(true)
 
             // WHEN trying to read
-            val result = smobItemRepo.getSmobItem(smobItemList[0].id) as Result.Error
+            val result = smobItemRepo.getSmobItem(smobItemList[0].id) as Resource.error
 
             // THEN...
-            // ... a Result.Error should be returned with message "Test exception"
+            // ... a Resource.error should be returned with message "Test exception"
             assertThat(result.message, equalTo("Test exception"))
 
         }

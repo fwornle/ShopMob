@@ -7,8 +7,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.data.local.dao.SmobItemDao
-import com.tanfra.shopmob.smob.data.repo.Result
 import com.tanfra.shopmob.smob.data.repo.SmobItemRepository
+import com.tanfra.shopmob.smob.data.repo.utils.Resource
+import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.types.SmobItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.asExecutor
@@ -115,9 +116,9 @@ class SmobRepositoryTest {
      * to be tested: repo class
      *
      *  interface SmobItemDataSource {
-     *      suspend fun getSmobItems(): Result<List<SmobItemDTO>>
+     *      suspend fun getSmobItems(): Resource<List<SmobItemDTO>>
      *      suspend fun saveSmobItem(smobItem: SmobItemDTO)
-     *      suspend fun getSmobItem(id: String): Result<SmobItemDTO>
+     *      suspend fun getSmobItem(id: String): Resource<SmobItemDTO>
      *      suspend fun deleteAllSmobItems()
      *  }
      *
@@ -138,10 +139,14 @@ class SmobRepositoryTest {
         populateFakeDB()
 
         // successfully fetch smob items from (fake) repo
-        val result = shopMobRepo.getSmobItems() as Result.Success<List<SmobItem>>
+        val result = shopMobRepo.getSmobItems()
+
+        // should return a success and with some data
+        assertThat(result.status, `is`(Status.SUCCESS))
+        assertThat(result.data, CoreMatchers.notNullValue())
 
         // check all data records
-        result.data.mapIndexed { idx, smobItem ->
+        result.data?.mapIndexed { idx, smobItem ->
             // check for equality
             assertThat(smobItem, CoreMatchers.notNullValue())
             assertThat(smobItem.id, `is`(shopMobItemList[idx].id))
@@ -167,18 +172,21 @@ class SmobRepositoryTest {
         val idx = 4
 
         // successfully fetch smob item from (fake) repo
-        val result = shopMobRepo
-            .getSmobItem(shopMobItemList[idx].id) as Result.Success<SmobItem>
-        val smobItem = result.data
+        val result = shopMobRepo.getSmobItem(shopMobItemList[idx].id)
+
+        // should return a success and with some data
+        assertThat(result.status, `is`(Status.SUCCESS))
+        assertThat(result.data, CoreMatchers.notNullValue())
 
         // check for equality
+        val smobItem = result.data
         assertThat(smobItem, CoreMatchers.notNullValue())
-        assertThat(smobItem.id, `is`(shopMobItemList[idx].id))
-        assertThat(smobItem.title, `is`(shopMobItemList[idx].title))
-        assertThat(smobItem.description, `is`(shopMobItemList[idx].description))
-        assertThat(smobItem.location, `is`(shopMobItemList[idx].location))
-        assertThat(smobItem.latitude, `is`(shopMobItemList[idx].latitude))
-        assertThat(smobItem.longitude, `is`(shopMobItemList[idx].longitude))
+        assertThat(smobItem?.id, `is`(shopMobItemList[idx].id))
+        assertThat(smobItem?.title, `is`(shopMobItemList[idx].title))
+        assertThat(smobItem?.description, `is`(shopMobItemList[idx].description))
+        assertThat(smobItem?.location, `is`(shopMobItemList[idx].location))
+        assertThat(smobItem?.latitude, `is`(shopMobItemList[idx].latitude))
+        assertThat(smobItem?.longitude, `is`(shopMobItemList[idx].longitude))
 
     }
 
@@ -191,8 +199,9 @@ class SmobRepositoryTest {
 
         // attempt to fetch non-existing smob item from (fake) repo
         val nonId = "this-index-does-not-exist-in-DB"
-        val result = shopMobRepo.getSmobItem(nonId) as Result.Error
+        val result = shopMobRepo.getSmobItem(nonId)
 
+        assertThat(result.status, `is`(Status.ERROR))
         assertThat(result.message, `is`("SmobItem not found!"))
 
     }
@@ -209,10 +218,11 @@ class SmobRepositoryTest {
         shopMobRepo.deleteAllSmobItems()
 
         // read back smob items
-        val result = shopMobRepo.getSmobItems() as Result.Success<List<SmobItem>>
+        val result = shopMobRepo.getSmobItems()
 
-        // should be empty
-        assertThat(result.data.size, `is`(0))
+        // should be valid and empty
+        assertThat(result.status, `is`(Status.SUCCESS))
+        assertThat(result.data?.size, `is`(0))
 
     }
 
@@ -227,18 +237,21 @@ class SmobRepositoryTest {
         // save new smob item to (fake) repo, then read it back
         shopMobRepo.saveSmobItem(newSmobItem)
 
-        val result = shopMobRepo.getSmobItem(newSmobItem.id) as Result.Success<SmobItem>
+        val result = shopMobRepo.getSmobItem(newSmobItem.id)
+
+        // check that result is valid
+        assertThat(result.status, `is`(Status.SUCCESS))
 
         // check the read back data record
         result.data.let {
             // check for equality
             assertThat(it, CoreMatchers.notNullValue())
-            assertThat(it.id, `is`(newSmobItem.id))
-            assertThat(it.title, `is`(newSmobItem.title))
-            assertThat(it.description, `is`(newSmobItem.description))
-            assertThat(it.location, `is`(newSmobItem.location))
-            assertThat(it.latitude, `is`(newSmobItem.latitude))
-            assertThat(it.longitude, `is`(newSmobItem.longitude))
+            assertThat(it?.id, `is`(newSmobItem.id))
+            assertThat(it?.title, `is`(newSmobItem.title))
+            assertThat(it?.description, `is`(newSmobItem.description))
+            assertThat(it?.location, `is`(newSmobItem.location))
+            assertThat(it?.latitude, `is`(newSmobItem.latitude))
+            assertThat(it?.longitude, `is`(newSmobItem.longitude))
         }
 
     }

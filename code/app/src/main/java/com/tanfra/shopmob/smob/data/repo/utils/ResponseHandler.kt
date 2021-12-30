@@ -1,6 +1,6 @@
 package com.tanfra.shopmob.smob.data.net
 
-import com.tanfra.shopmob.smob.data.net.utils.Resource
+import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import retrofit2.HttpException
 import java.lang.Exception
 import java.net.SocketTimeoutException

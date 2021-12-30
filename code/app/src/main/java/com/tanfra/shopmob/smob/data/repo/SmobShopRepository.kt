@@ -26,13 +26,13 @@ class SmobShopRepository(
      * Get the smob item list from the local db
      * @return Result the holds a Success with all the smob items or an Error object with the error message
      */
-    override suspend fun getSmobShops(): Result<List<SmobShop>> = withContext(ioDispatcher) {
+    override suspend fun getSmobShops(): Resource<List<SmobShop>> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             return@withContext try {
-                Result.Success(smobShopDao.getSmobShops().asDomainModel())
+                Resource.success(smobShopDao.getSmobShops().asDomainModel())
             } catch (ex: Exception) {
-                Result.Error(ex.localizedMessage)
+                Resource.error(ex.localizedMessage)
             }
         }
     }
@@ -54,18 +54,18 @@ class SmobShopRepository(
      * @param id to be used to get the smob item
      * @return Result the holds a Success object with the SmobShop or an Error object with the error message
      */
-    override suspend fun getSmobShop(id: String): Result<SmobShop> = withContext(ioDispatcher) {
+    override suspend fun getSmobShop(id: String): Resource<SmobShop> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             try {
                 val smobShopDTO = smobShopDao.getSmobShopById(id)
                 if (smobShopDTO != null) {
-                    return@withContext Result.Success(smobShopDTO.asDomainModel())
+                    return@withContext Resource.success(smobShopDTO.asDomainModel())
                 } else {
-                    return@withContext Result.Error("SmobShop not found!")
+                    return@withContext Resource.error("SmobShop not found!")
                 }
             } catch (e: Exception) {
-                return@withContext Result.Error(e.localizedMessage)
+                return@withContext Resource.error(e.localizedMessage)
             }
         }
     }

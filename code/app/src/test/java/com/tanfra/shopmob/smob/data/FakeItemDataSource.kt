@@ -1,12 +1,12 @@
 package com.tanfra.shopmob.smob.data
 
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
-import com.tanfra.shopmob.smob.data.repo.Result
+import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.types.SmobItem
 
 // use FakeDataSource that acts as a test double to the LocalDataSource
 // inject the smob items stored in this source via the constructor of the class
-class FakeItemDataSource(var smobItems: MutableList<SmobItem>? = mutableListOf()) :
+class FakeItemDataSource(private var smobItems: MutableList<SmobItem>? = mutableListOf()) :
     SmobItemDataSource {
 
     // test for errors
@@ -17,19 +17,19 @@ class FakeItemDataSource(var smobItems: MutableList<SmobItem>? = mutableListOf()
         shouldReturnError = value
     }
 
-    override suspend fun getSmobItems(): Result<List<SmobItem>> {
+    override suspend fun getSmobItems(): Resource<List<SmobItem>> {
 
         // testing for errors...
         if (shouldReturnError) {
-            return Result.Error("Test exception")
+            return Resource.error("Test exception", null)
         }
 
         // return the entire list of smob items from fake local data source... if any
         smobItems?.let {
-            return Result.Success(ArrayList(it))
+            return Resource.success(ArrayList(it))
         }
-        return Result.Error(
-            "Could not fetch smob items from (fake) local storage."
+        return Resource.error(
+            "Could not fetch smob items from (fake) local storage.", null
         )
     }
 
@@ -38,22 +38,22 @@ class FakeItemDataSource(var smobItems: MutableList<SmobItem>? = mutableListOf()
         smobItems?.add(smobItem)
     }
 
-    override suspend fun getSmobItem(id: String): Result<SmobItem> {
+    override suspend fun getSmobItem(id: String): Resource<SmobItem> {
 
         // testing for errors...
         if (shouldReturnError) {
-            return Result.Error("Test exception")
+            return Resource.error("Test exception", null)
         }
 
         // fetch smob item associated with provided id
         smobItems?.firstOrNull {it.id == id} ?.let {
             // found it
-            return Result.Success(it)
+            return Resource.success(it)
         }
 
         // smob item with ID not found
-        return Result.Error(
-            "SmobItem with ID $id not found in (fake) local storage."
+        return Resource.error(
+            "SmobItem with ID $id not found in (fake) local storage.", null
         )
     }
 

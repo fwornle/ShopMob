@@ -40,15 +40,6 @@ interface SmobUserDao {
     suspend fun updateSmobUser(smobUser: SmobUserDTO)
 
     /**
-     * Update several existing smob users in the database. If any of the smob user already exists,
-     * replace it. If not, do nothing.
-     *
-     * @param smobUsers the list of smob users to be updated
-     */
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateSmobUsers(smobUsers: List<SmobUserDTO>)
-
-    /**
      * Delete a smob user in the database.
      *
      * @param smobUserId the ID of the smob user

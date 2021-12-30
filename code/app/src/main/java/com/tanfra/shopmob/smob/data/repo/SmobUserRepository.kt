@@ -13,7 +13,8 @@ import com.tanfra.shopmob.smob.data.net.SmodUserProfilePicture
 import com.tanfra.shopmob.smob.data.net.api.SmobUserApi
 import com.tanfra.shopmob.smob.data.net.api.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.api.asRepoModel
-import com.tanfra.shopmob.smob.data.net.utils.Status
+import com.tanfra.shopmob.smob.data.repo.utils.Resource
+import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
@@ -38,22 +39,22 @@ class SmobUserRepository(
 ) : SmobUserDataSource, KoinComponent {
 
 
-    // --- overrides of public data interface 'SmobUserDataSource': CRUD, local DB data ---
-    // --- overrides of public data interface 'SmobUserDataSource': CRUD, local DB data ---
-    // --- overrides of public data interface 'SmobUserDataSource': CRUD, local DB data ---
+    // --- impl. of public, app facing data interface 'SmobUserDataSource': CRUD, local DB data ---
+    // --- impl. of public, app facing data interface 'SmobUserDataSource': CRUD, local DB data ---
+    // --- impl. of public, app facing data interface 'SmobUserDataSource': CRUD, local DB data ---
 
     /**
      * Get the smob user list from the local db
      * @return Result holds a Success with all the smob users or an Error object with the error message
      */
-    override suspend fun getAllSmobUsers(): Result<List<SmobUser>> = withContext(ioDispatcher) {
+    override suspend fun getAllSmobUsers(): Resource<List<SmobUser>> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             return@withContext try {
                 // success --> turn DB data type (DTO) to domain data type
-                Result.Success(smobUserDao.getSmobUsers().asDomainModel())
+                Resource.success(smobUserDao.getSmobUsers().asDomainModel())
             } catch (ex: Exception) {
-                Result.Error(ex.localizedMessage)
+                Resource.error(ex.localizedMessage, null)
             }
         }
     }
@@ -110,19 +111,19 @@ class SmobUserRepository(
      * @param id to be used to get the smob user
      * @return Result the holds a Success object with the SmobUser or an Error object with the error message
      */
-    override suspend fun getSmobUser(id: String): Result<SmobUser> = withContext(ioDispatcher) {
+    override suspend fun getSmobUser(id: String): Resource<SmobUser> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             try {
                 val smobUserDTO = smobUserDao.getSmobUserById(id)
                 if (smobUserDTO != null) {
                     // success --> turn DB data type (DTO) to domain data type
-                    return@withContext Result.Success(smobUserDTO.asDomainModel())
+                    return@withContext Resource.success(smobUserDTO.asDomainModel())
                 } else {
-                    return@withContext Result.Error("SmobUser not found!")
+                    return@withContext Resource.error("SmobUser not found!", null)
                 }
             } catch (e: Exception) {
-                return@withContext Result.Error(e.localizedMessage)
+                return@withContext Resource.error(e.localizedMessage, null)
             }
         }
     }
@@ -169,7 +170,7 @@ class SmobUserRepository(
 
             // initiate the (HTTP) GET request using the provided query parameters
             Timber.i("Sending GET request for SmobUser data...")
-            val response: List<SmobUserDTO> = getSmobUsersViaApi()
+            val response: Resource<List<SmobUserDTO>> = getSmobUsersViaApi()
 
             // smoke test for net-CRUD (quick workaround... to avoid having to set up proper tests)
 //            val response2: SmobUserDTO? = getSmobUserFromApi("07c295ad-b286-41f7-b2ea-e81a75875d02")
@@ -193,15 +194,17 @@ class SmobUserRepository(
 //            deleteSmobUserViaApi("1bbd2da1-e028-4e42-b6b8-7d944013abca")
 
             // got any valid data back?
-            if (!response.isEmpty()) {
+            if (response.status.equals(Status.SUCCESS)) {
 
                 // set status to keep UI updated
                 _statusSmobUserDataSync.postValue(Status.SUCCESS)
                 Timber.i("SmobUser data GET request complete (success)")
 
-                // store user data in DB
-                response.map { smobUserDao.saveSmobUser(it) }
-                Timber.i("SmobUser data items stored in local DB")
+                // store user data in DB - if any
+                response.data?.let {
+                    it.map { smobUserDao.saveSmobUser(it) }
+                    Timber.i("SmobUser data items stored in local DB")
+                }
 
             }  // if (valid response)
 
@@ -220,33 +223,45 @@ class SmobUserRepository(
     private val responseHandler: ResponseHandler by inject()
 
     // net-facing getter: all users
-    // ... wrap in Response (as opposed to Result - see above) to also provide "loading" state
+    // ... wrap in Resource (as opposed to Result - see above) to also provide "loading" state
     // ... note: no 'override', as this is not exposed in the repository interface (network access
     //           is fully abstracted by the repo - all data access done via local DB)
-    private suspend fun getSmobUsersViaApi(): List<SmobUserDTO> = withContext(ioDispatcher) {
+    private suspend fun getSmobUsersViaApi(): Resource<List<SmobUserDTO>> = withContext(ioDispatcher) {
+
+        // overall result - haven't got anything yet
+        // ... this is useless here --> but needs to be done like this in the viewModel
+        var result = Resource.loading(listOf<SmobUserDTO>())
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
             // network access - could fail --> handle consistently via ResponseHandler class
-            return@withContext try {
+            result = try {
                 // return successfully received data object (from Moshi --> PoJo)
-                responseHandler.handleSuccess(smobUserApi.getSmobUsers())
-                    .data
+                val netResult = smobUserApi.getSmobUsers()
                     ?.body()
                     ?.asRepoModel()
                     ?: listOf()  // GET request returned empty handed --> return empty list
 
+                // return as successfully completed GET call to the backend
+                responseHandler.handleSuccess(netResult)
+
             } catch (ex: Exception) {
+
                 // return with exception --> handle it...
                 val daException = responseHandler.handleException<ArrayList<SmobUserDTO>>(ex)
+
+                // local logging
                 Timber.e(daException.message)
 
-                // ... then return empty handed
-                listOf()
+                // return handled exception
+                daException
+
             }
 
         }  // espresso: idlingResource
+
+        return@withContext result
 
     }  // getSmobUsersFromApi
 

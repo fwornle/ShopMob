@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.tanfra.shopmob.smob.data.net.utils
+package com.tanfra.shopmob.smob.data.repo.utils
 
-import com.tanfra.shopmob.smob.data.net.utils.Status.ERROR
-import com.tanfra.shopmob.smob.data.net.utils.Status.LOADING
-import com.tanfra.shopmob.smob.data.net.utils.Status.SUCCESS
+import com.tanfra.shopmob.smob.data.repo.utils.Status.ERROR
+import com.tanfra.shopmob.smob.data.repo.utils.Status.LOADING
+import com.tanfra.shopmob.smob.data.repo.utils.Status.SUCCESS
 
 /**
  * A generic class that holds a value with its loading status.

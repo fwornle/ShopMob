@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.tanfra.shopmob.smob.data.net.utils
+package com.tanfra.shopmob.smob.data.repo.utils
 
 /**
  * Status of a resource that is provided to the UI.

@@ -70,7 +70,7 @@ class SmobUserNTO {
     +imageUrl
 }
 
-SmobUserApi .up.> SmobUserNTO : uses >    
+SmobUserApi -down-> SmobUserNTO   
 
 annotation HTTP #pink;line:red;line.dotted;text:red {
     **Retrofit** annotations
@@ -80,7 +80,16 @@ annotation HTTP #pink;line:red;line.dotted;text:red {
     {method} @DELETE
 }
 
-SmobUserApi .right.> HTTP
+SmobUserApi -left-> HTTP
+
+class Response {
+    Retrofit **Response** type
+    for HTTP requests
+    +success()
+    +error()
+}
+
+SmobUserApi -up-> Response
 
 frame "netServices" #Lightblue {
     class netObject << (S,#FF7700) SmobUserApi>> implements SmobUserApi {
@@ -102,7 +111,7 @@ class SmobUserDTO {
     +imageUrl
 }
     
-SmobUserDao .up.> SmobUserDTO : uses >
+SmobUserDao -down-> SmobUserDTO : uses >
 
 annotation Entity #pink;line:red;line.dotted;text:red {
    **Room** annotations
@@ -111,7 +120,7 @@ annotation Entity #pink;line:red;line.dotted;text:red {
    {method} @ColumnInfo (...)
 }
 
-SmobUserDTO .right.> Entity
+SmobUserDTO -right-> Entity
 
 annotation Dao #pink;line:red;line.dotted;text:red {
    **Room** annotations
@@ -120,7 +129,7 @@ annotation Dao #pink;line:red;line.dotted;text:red {
    {method} @Insert (...)
 }
 
-SmobUserDao .left.> Dao
+SmobUserDao -left-> Dao
 
 frame "dbServices" #Lightblue {
     class dbObject << (S,#FF7700) SmobUserDao>> implements SmobUserDao {

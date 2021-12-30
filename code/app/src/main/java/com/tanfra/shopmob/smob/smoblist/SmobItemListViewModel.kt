@@ -5,9 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.base.BaseViewModel
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
-import com.tanfra.shopmob.smob.data.repo.Result
+import com.tanfra.shopmob.smob.data.repo.utils.Resource
+import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.types.SmobItem
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class SmobItemListViewModel(
     app: Application,
@@ -16,6 +18,18 @@ class SmobItemListViewModel(
 
     // list that holds the smob data items to be displayed on the UI
     val smobItemList = MutableLiveData<List<SmobItem>>()
+
+//    //
+//    private val _myUiState = MutableLiveData<Resource<>>(Result.Loading)
+//    val myUiState: LiveData<Resource<UiState>> = _myUiState
+//
+//    // Load data from a suspend fun and mutate state
+//    init {
+//        viewModelScope.launch {
+//            val result = ...
+//            _myUiState.value = result
+//        }
+//    }
 
     /**
      * Get all the smob items from the DataSource and add them to the smobItemList to be shown on
@@ -37,8 +51,8 @@ class SmobItemListViewModel(
             showLoading.postValue(false)
 
             // convert data from DTO format to app format
-            when (result) {
-                is Result.Success<*> -> {
+            when (result.status) {
+                Status.SUCCESS -> {
                     val dataList = ArrayList<SmobItem>()
                     dataList.addAll((result.data as List<SmobItem>).map { smobItem ->
                         // map the smob item data from DB format (SmobItemDTO) to the format used
@@ -54,8 +68,12 @@ class SmobItemListViewModel(
                     })
                     smobItemList.value = dataList
                 }
-                is Result.Error ->
+                Status.ERROR ->
                     showSnackBar.value = result.message!!
+                else -> {
+                    // (still) LOADING -- this should never be reached
+                    Timber.w("Stuck in state ${result.status} (should never happen)")
+                }
             }
 
             // check if no data has to be shown

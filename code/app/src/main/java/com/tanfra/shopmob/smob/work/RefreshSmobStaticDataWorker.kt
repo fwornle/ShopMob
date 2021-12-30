@@ -21,7 +21,7 @@ class RefreshSmobStaticDataWorker(appContext: Context, params: WorkerParameters)
     }
 
     // fetch user data repro from Koin service locator
-    val smobUserDataSource: SmobUserDataSource by inject()
+    private val smobUserDataSource: SmobUserDataSource by inject()
 
     // define work to be done
     override suspend fun doWork(): Result {

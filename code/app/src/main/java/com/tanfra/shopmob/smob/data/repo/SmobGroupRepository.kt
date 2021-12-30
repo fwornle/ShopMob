@@ -26,13 +26,13 @@ class SmobGroupRepository(
      * Get the smob item list from the local db
      * @return Result the holds a Success with all the smob items or an Error object with the error message
      */
-    override suspend fun getSmobGroups(): Result<List<SmobGroup>> = withContext(ioDispatcher) {
+    override suspend fun getSmobGroups(): Resource<List<SmobGroup>> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             return@withContext try {
-                Result.Success(smobGroupDao.getSmobGroups().asDomainModel())
+                Resource.success(smobGroupDao.getSmobGroups().asDomainModel())
             } catch (ex: Exception) {
-                Result.Error(ex.localizedMessage)
+                Resource.error(ex.localizedMessage)
             }
         }
     }
@@ -54,18 +54,18 @@ class SmobGroupRepository(
      * @param id to be used to get the smob item
      * @return Result the holds a Success object with the SmobGroup or an Error object with the error message
      */
-    override suspend fun getSmobGroup(id: String): Result<SmobGroup> = withContext(ioDispatcher) {
+    override suspend fun getSmobGroup(id: String): Resource<SmobGroup> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             try {
                 val smobGroupDTO = smobGroupDao.getSmobGroupById(id)
                 if (smobGroupDTO != null) {
-                    return@withContext Result.Success(smobGroupDTO.asDomainModel())
+                    return@withContext Resource.success(smobGroupDTO.asDomainModel())
                 } else {
-                    return@withContext Result.Error("SmobGroup not found!")
+                    return@withContext Resource.error("SmobGroup not found!")
                 }
             } catch (e: Exception) {
-                return@withContext Result.Error(e.localizedMessage)
+                return@withContext Resource.error(e.localizedMessage)
             }
         }
     }
