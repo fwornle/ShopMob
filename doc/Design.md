@@ -217,7 +217,7 @@ The _smobUser_ entries of the _smobUsers_ table adheres to the following schema:
   "username": "username",
   "name": "name",
   "email": "max@mustermann.com",
-  "imageUrl": "URL-to-profile-picture-or-avatar",
+  "imageUrl": "URL-to-profile-picture-or-avatar"
 }
 ```
 
@@ -252,7 +252,7 @@ The _smobStore_ entries of the _smobStores_ table adheres to the following schem
   "description": "it's a good-e store",
   "location": {
     "latitude": "where the shop is",
-    "longitude": "where the shop is",
+    "longitude": "where the shop is"
   },
   "type": "chain|individual",
   "category": "(default)other|supermarket|drugstore|hardware|clothing|accessories|supplies",
@@ -325,7 +325,7 @@ opposed to nested structures, etc.)
 
 #### Data Type Transformations
 
-For each persistently stored item, the app defines three sets of data representations:
+For each persistently stored item, the app defines **three sets of data representations**:
 
 - <<item>>NTO
     - Network Transfer Object (the datatype of an item as stored in the backend)
@@ -334,8 +334,8 @@ For each persistently stored item, the app defines three sets of data representa
     - Database Transfer Object (the datatype of an item as stored in the local DB)
     - the room JSON converters work with DTOs
     - this datatype is also used as repository level datatype.
-- <<item>>
-    - Domain datatype ("above the repository", the app works with this storage independent datatype
+- <<item>>ATO
+    - Application Transfer Object (domain datatype, "above" the repository, the app works with this storage independent datatype)
 
 Both scalar and array type variants of these data objects can be converted from/to one another:
 
@@ -348,14 +348,13 @@ Both scalar and array type variants of these data objects can be converted from/
 
 ... turns a DTO into an NTO.
 
-
 ##### Datatype Converter asDomainModel()
 
-... turns a DTO into an application level datatype.
+... turns a DTO into ATO.
 
 ##### Datatype Converter asDatabaseModel()
 
-... turns an application level datatype into a DTO.
+... turns an ATO into a DTO.
 
 
 ---
