@@ -5,8 +5,9 @@ import com.tanfra.shopmob.smob.data.net.nto.SmobUserNTO
 import retrofit2.Response
 import retrofit2.http.*
 
-// service interface (exposed by retrofit library) for "SmobUsers" at API endpoint "api/1/users"
-// ... using retrofit's built-in coroutine capabilities (>= 2.6.0)
+/**
+ * Service interface (exposed by retrofit library) for "SmobUsers".
+ */
 interface SmobUserApi {
 
         // HTTP GET (fetch a specific user)

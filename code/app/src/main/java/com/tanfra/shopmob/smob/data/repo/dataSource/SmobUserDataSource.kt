@@ -6,7 +6,7 @@ import com.tanfra.shopmob.smob.data.repo.Result
 
 /**
  * Main entry point for accessing smob user data.
- * ... using domain data types (to further abstract DB details)
+ * ... using domain data types (to abstract details of the underlying persistent storage)
  */
 interface SmobUserDataSource {
     suspend fun getSmobUser(id: String): Result<SmobUser>
