@@ -54,7 +54,7 @@ enum class SmobEntryState {
 }
 
 data class ActivityState(
-    val date: LocalDate,
+    val date: String,
     val reps: Long,
 )
 

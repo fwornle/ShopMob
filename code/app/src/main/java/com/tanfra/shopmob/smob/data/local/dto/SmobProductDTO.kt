@@ -27,6 +27,6 @@ data class SmobProductDTO(
     @ColumnInfo(name = "imageUrl") var imageUrl: String?,
     @ColumnInfo(name = "category_main") var categoryMain: ProductMainCategory,
     @ColumnInfo(name = "category_sub") var categorySub: ProductSubCategory,
-    @ColumnInfo(name = "activity_date") var activityDate: LocalDate,
+    @ColumnInfo(name = "activity_date") var activityDate: String,
     @ColumnInfo(name = "activity_reps") var activityReps: Long,
 )

@@ -9,7 +9,7 @@ val repoServices = module {
     // DataSources ------------------------------------------------------------
 
     // declare a (singleton) repository service with interface "SmobItemDataSource"
-    // ... the repo requires two constructor provided dependencies: dao & api
+    // ... the repo requires one constructor provided dependency: dao
     single<SmobItemDataSource> { SmobItemRepository(get()) }
 
     // declare a (singleton) repository service with interface "SmobUserDataSource"
@@ -18,18 +18,18 @@ val repoServices = module {
 
     // declare a (singleton) repository service with interface "SmobGroupDataSource"
     // ... the repo requires two constructor provided dependencies: dao & api
-    single<SmobGroupDataSource> { SmobGroupRepository(get()) }
+    single<SmobGroupDataSource> { SmobGroupRepository(get(), get()) }
 
     // declare a (singleton) repository service with interface "SmobShopDataSource"
     // ... the repo requires two constructor provided dependencies: dao & api
-    single<SmobShopDataSource> { SmobShopRepository(get()) }
+    single<SmobShopDataSource> { SmobShopRepository(get(), get()) }
 
     // declare a (singleton) repository service with interface "SmobProductDataSource"
     // ... the repo requires two constructor provided dependencies: dao & api
-    single<SmobProductDataSource> { SmobProductRepository(get()) }
+    single<SmobProductDataSource> { SmobProductRepository(get(), get()) }
 
     // declare a (singleton) repository service with interface "SmobListDataSource"
     // ... the repo requires two constructor provided dependencies: dao & api
-    single<SmobListDataSource> { SmobListRepository(get()) }
+    single<SmobListDataSource> { SmobListRepository(get(), get()) }
 
 }  // repoServices

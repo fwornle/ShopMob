@@ -24,6 +24,6 @@ data class SmobGroupDTO(
     @ColumnInfo(name = "description") var description: String?,
     @ColumnInfo(name = "type") var type: GroupType,
     @ColumnInfo(name = "members") var members: List<String>,
-    @ColumnInfo(name = "activity_date") var activityDate: LocalDate,
+    @ColumnInfo(name = "activity_date") var activityDate: String,
     @ColumnInfo(name = "activity_reps") var activityReps: Long,
 )

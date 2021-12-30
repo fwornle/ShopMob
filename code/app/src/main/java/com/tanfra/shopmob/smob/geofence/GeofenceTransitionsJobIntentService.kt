@@ -7,6 +7,8 @@ import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
+import com.tanfra.shopmob.smob.data.repo.utils.Resource
+import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.utils.sendNotification
 import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
@@ -76,7 +78,7 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
                         val result = smobItemLocalRepository.getSmobItem(geoFenceItem.requestId)
 
                         // smob location found in DB?
-                        if (result is Resource.success<SmobItemATO>) {
+                        if (result.status.equals(Status.SUCCESS)) {
 
                             // yes --> fetch associated smob item data
                             //         ... and send it down the notification channel
@@ -85,17 +87,18 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
                             // send a notification to the user with the smob item details
                             // note: polymorphism
                             //       --> call-up parameter is a SmobItem
-                            //       --> implementation of sendNotificatino from NotificationUtils.kt is used
-                            sendNotification(
-                                this@GeofenceTransitionsJobIntentService, SmobItemATO(
-                                    smobItem.title,
-                                    smobItem.description,
-                                    smobItem.location,
-                                    smobItem.latitude,
-                                    smobItem.longitude,
-                                    smobItem.id
+                            //       --> implementation of sendNotification from NotificationUtils.kt is used
+                            if (smobItem != null) {
+                                sendNotification(
+                                    this@GeofenceTransitionsJobIntentService, SmobItemATO(
+                                        smobItem.title,
+                                        smobItem.description,
+                                        smobItem.location,
+                                        smobItem.latitude,
+                                        smobItem.longitude
+                                    )
                                 )
-                            )
+                            }
 
                         }  // if (smob location found in DB)
 

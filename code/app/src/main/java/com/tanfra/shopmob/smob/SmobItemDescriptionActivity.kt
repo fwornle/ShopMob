@@ -63,10 +63,9 @@ class SmobItemDescriptionActivity : AppCompatActivity() {
         var smobDataItem = SmobItemATO(
             "<not set>",
             "<not set>",
-            "<not set>",
+            "invalid",
             -1.0,
             -1.0,
-            "invalid"
         )
 
         // attempt to read extra data from notification

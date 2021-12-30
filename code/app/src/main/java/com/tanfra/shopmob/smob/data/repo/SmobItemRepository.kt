@@ -2,7 +2,10 @@ package com.tanfra.shopmob.smob.data.repo
 
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.data.local.dao.SmobItemDao
+import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
+import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
 import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
+import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 
@@ -29,7 +32,7 @@ class SmobItemRepository(
             return@withContext try {
                 Resource.success(smobItemDao.getSmobItems().asDomainModel())
             } catch (ex: Exception) {
-                Resource.error(ex.localizedMessage)
+                Resource.error(ex.localizedMessage, null)
             }
         }
     }
@@ -59,10 +62,10 @@ class SmobItemRepository(
                 if (smobItemDTO != null) {
                     return@withContext Resource.success(smobItemDTO.asDomainModel())
                 } else {
-                    return@withContext Resource.error("SmobItem not found!")
+                    return@withContext Resource.error("SmobItem not found!", null)
                 }
             } catch (e: Exception) {
-                return@withContext Resource.error(e.localizedMessage)
+                return@withContext Resource.error(e.localizedMessage, null)
             }
         }
     }

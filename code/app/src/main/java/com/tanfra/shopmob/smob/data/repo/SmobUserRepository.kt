@@ -11,6 +11,8 @@ import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
 import com.tanfra.shopmob.smob.data.net.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.SmodUserProfilePicture
 import com.tanfra.shopmob.smob.data.net.api.SmobUserApi
+import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
+import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
@@ -72,12 +74,12 @@ class SmobUserRepository(
 
     /**
      * Insert several smob users in the db. Replace any potentially existing smob user record.
-     * @param smobUserATOES a list of smob users to be inserted
+     * @param smobUsersATO a list of smob users to be inserted
      */
-    override suspend fun saveSmobUsers(smobUserATOES: List<SmobUserATO>) {
+    override suspend fun saveSmobUsers(smobUsersATO: List<SmobUserATO>) {
         // store all provided smob users by repeatedly calling upon saveSmobUser
         withContext(ioDispatcher) {
-            smobUserATOES.map { saveSmobUser(it) }
+            smobUsersATO.map { saveSmobUser(it) }
         }
     }
 
@@ -95,12 +97,12 @@ class SmobUserRepository(
 
     /**
      * Update an set of existing smob users in the db. Ignore smob users which do not exist.
-     * @param smobUserATOES the list of smob users to be updated
+     * @param smobUsersATO the list of smob users to be updated
      */
-    override suspend fun updateSmobUsers(smobUserATOES: List<SmobUserATO>) {
+    override suspend fun updateSmobUsers(smobUsersATO: List<SmobUserATO>) {
         // update all provided smob users by repeatedly calling upon updateSmobUser
         withContext(ioDispatcher) {
-            smobUserATOES.map { updateSmobUser(it) }
+            smobUsersATO.map { updateSmobUser(it) }
         }
     }
 
@@ -237,7 +239,7 @@ class SmobUserRepository(
             result = try {
                 // return successfully received data object (from Moshi --> PoJo)
                 val netResult = smobUserApi.getSmobUsers()
-                    ?.body()
+                    .body()
                     ?.asRepoModel()
                     ?: listOf()  // GET request returned empty handed --> return empty list
 
