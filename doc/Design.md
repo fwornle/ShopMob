@@ -457,14 +457,20 @@ At the writing of this document (21.12.21), this submission is expected for
     - [ ] Fragments and fragment navigation
   - [x] DSNG-3.5: Architecture: Internal app
     - [x] Data source abstraction via a repository class(es)
-      - [x] One DAO per table
-      - [x] One repository class per DAO - to maintain modularity / improve testability
-    - [x] Service provider pattern (using _Koin_)
+      - [x] Multi-table DB: One DTO/DAO per table
+      - [x] One repository class per table (/DTO/DAO) - to maintain modularity / improve SW quality & testability
+    - [x] Service Locator pattern (using _Koin_)
+      - [x] Modularize Koins: DB, NET, REPO, VM
     - [ ] Model View / View Model (MVVM)
+      - [ ] move all LiveData to VM (from Repo - replace loading status by Resource wrappers)
     - [ ] Migrate from _LiveData_ to _Flow_
-  - [ ] DSNG-3.5: Data flow modelling (optional)
+  - [ ] DSNG-3.5: Architecture: Data flow modelling (optional)
+    - [x] UML diagram of Repository Architecture
+    - [x] UML diagram of Koin Service Locator mmodules
+    - [x] UML diagram of local DB
     - [x] Sample sequence diagram integrated in design document (puml)
-  - [ ] DSNG-3.7: Project Milestone planning (this section)
+    - [ ] Real sequence diagrams
+  - [x] DSNG-3.7: Project Milestone planning (this section)
     - [x] Major milestones defined and filled with content
     - [x] Project planning - milestones vs. time
   - [ ] [Project rubic](https://review.udacity.com/#!/rubrics/2848/view) coverage evidence
