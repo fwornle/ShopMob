@@ -455,17 +455,17 @@ At the writing of this document (21.12.21), this submission is expected for
     - [x] Activities and activity navigation
     - [ ] Fragments and fragment navigation
   - [x] DSNG-3.5: Architecture: Internal app
-    - [ ] Data source abstraction via a repository class(es)
+    - [x] Data source abstraction via a repository class(es)
       - [x] One DAO per table
       - [x] One repository class per DAO - to maintain modularity / improve testability
-    - [ ] Service provider pattern (using _Koin_)
+    - [x] Service provider pattern (using _Koin_)
     - [ ] Model View / View Model (MVVM)
     - [ ] Migrate from _LiveData_ to _Flow_
   - [ ] DSNG-3.5: Data flow modelling (optional)
     - [x] Sample sequence diagram integrated in design document (puml)
   - [ ] DSNG-3.7: Project Milestone planning (this section)
     - [x] Major milestones defined and filled with content
-    - [ ] Project planning - milestones vs. time
+    - [x] Project planning - milestones vs. time
   - [ ] [Project rubic](https://review.udacity.com/#!/rubrics/2848/view) coverage evidence
     - [ ] Rubic mapping to project milestones (to be sure, all nano degree requirements are covered)
 
@@ -506,7 +506,7 @@ At the writing of this document (21.12.21), this submission is expected for
         - [x] Refactoring (app): Adapt geoFencing support to use ShopMob (smob) nomenclature, instead of "reminders" - logic still as in C4
         - [x] Refactoring (app): Adjust permission handling to use ShopMob (smob) nomenclature, instead of "reminders" - logic still as in C4
         - [x] Refactoring (test): Adjust all integrated instrumented geoFencing tests (from C4)
-        - [ ] Refactoring (app): Make notification support an extension function of the Context (as proposed by the reviewers)
+        - [x] Refactoring (app): Make notification support an extension function of the Context (as proposed by the reviewers)
         - [ ] Refactoring (app): Replace deprecated _JobIntentService_ by recommended _WorkManager_ approach (notification when triggering a geoFence)
     - [x] IMPL-2.5.4: Integrate authentication support (based on building block from location reminders)
       - [x] Integrate user authentication from C4 (location reminder)
@@ -517,8 +517,8 @@ At the writing of this document (21.12.21), this submission is expected for
       - [x] Refactoring (app): Adapt loc-DB to use ShopMob (smob) nomenclature, instead of "reminders" - data records still as in C4
       - [x] Refactoring (test): Adjust all integrated unit test as well as the instrumented DAO and repository tests (from C4)
     - [ ] IMPL-2.5.6: Set-up network access modules and integrate them into the repository
-        - [ ] Integrate major building blocks of the network layer (from C2, Asteroids), e.g. retrofit, moshi converters
-        - [ ] Refactoring (app): Adapt network modules to use ShopMob (smob) nomenclature, instead of "asteroids" - content still as in C2
+        - [x] Integrate major building blocks of the network layer (from C2, Asteroids), e.g. retrofit, moshi converters
+        - [x] Refactoring (app): Adapt network modules to use ShopMob (smob) nomenclature, instead of "asteroids" - content still as in C2
         - [ ] Refactoring (test): Add unit test and instrumented tests for the network layer
     - [x] IMPL-2.5.7: Set-up UI - view models, fragments, RecyclerView handling, LifeData observer, bi-directional data binding
         - [x] Integrate major building blocks for UI layer (from C4)
@@ -550,11 +550,16 @@ At the writing of this document (21.12.21), this submission is expected for
     - [ ] Extend UI elements to animate them using MotionLayout
     - [ ] Complete all view models with required business logic
 - [ ] IMPL-3: App development against backend DB
-  - [ ] Set-up backend DB (firebase document DB)
-  - [ ] Seed backend DB with test data (same as in IMPL-2.6)
+  - [x] Set-up development backend DB (json-server)
+  - [x] Seed backend DB with test data (same as in IMPL-2.6)
   - [ ] Implement CRUD functionality for the backend DB
+      - [x] In-principle implementation (one table)
+      - [ ] Full implementation as needed by the app
   - [ ] Implement synchronization between backend and app (WorkManager)
+    - [x] In-principle implementation (one table)
+    - [ ] Full implementation as needed by the app
   - [ ] Push notifications when data has changed at backend level
+  - [ ] Set-up actual backend DB (firebase document DB / AWS Document DB)
 - [ ] IMPL-4: Add camera access to take pictures of products and their shelf location
   - [ ] Permissions
   - [ ] Access and storage in the repository
