@@ -1,4 +1,4 @@
-package com.udacity.asteroidradar.api
+package com.tanfra.shopmob.smob.data.net.utils
 
 import com.tanfra.shopmob.BuildConfig
 

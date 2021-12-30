@@ -1,14 +1,14 @@
-package com.tanfra.shopmob.utils
+package com.tanfra.shopmob.smob.data.local.dto2ato
 
-import com.tanfra.shopmob.smob.types.SmobItem
+import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 import com.tanfra.shopmob.smob.data.local.dto.SmobItemDTO
 
 // extension functions to convert between database types and domain data types (both directions)
 
 // List<SmobItemDTO> --> List<SmobItem>
-fun List<SmobItemDTO>.asDomainModel(): List<SmobItem> {
+fun List<SmobItemDTO>.asDomainModel(): List<SmobItemATO> {
     return map {
-        SmobItem (
+        SmobItemATO (
             id = it.id,
             title = it.title,
             description = it.description,
@@ -20,7 +20,7 @@ fun List<SmobItemDTO>.asDomainModel(): List<SmobItem> {
 }
 
 // List<SmobItem> --> List<SmobItemDTO>
-fun List<SmobItem>.asDatabaseModel(): List<SmobItemDTO> {
+fun List<SmobItemATO>.asDatabaseModel(): List<SmobItemDTO> {
     return map {
         SmobItemDTO (
             id = it.id,
@@ -34,8 +34,8 @@ fun List<SmobItem>.asDatabaseModel(): List<SmobItemDTO> {
 }
 
 // SmobItemDTO --> SmobItem
-fun SmobItemDTO.asDomainModel(): SmobItem {
-    return SmobItem (
+fun SmobItemDTO.asDomainModel(): SmobItemATO {
+    return SmobItemATO (
         id = this.id,
         title = this.title,
         description = this.description,
@@ -46,7 +46,7 @@ fun SmobItemDTO.asDomainModel(): SmobItem {
 }
 
 // SmobItem --> SmobItemDTO
-fun SmobItem.asDatabaseModel(): SmobItemDTO {
+fun SmobItemATO.asDatabaseModel(): SmobItemDTO {
     return SmobItemDTO (
         id = this.id,
         title = this.title,

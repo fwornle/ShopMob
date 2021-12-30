@@ -11,7 +11,7 @@ import androidx.core.content.getSystemService
 import com.tanfra.shopmob.BuildConfig
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.SmobItemDescriptionActivity
-import com.tanfra.shopmob.smob.types.SmobItem
+import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 
 private const val NOTIFICATION_CHANNEL_ID = BuildConfig.APPLICATION_ID + ".channel"
 
@@ -26,7 +26,7 @@ fun ifSupportsOreo(f: () -> Unit) {
 val Context.notificationManager: NotificationManager?
     get() = getSystemService<NotificationManager>()
 
-fun sendNotification(context: Context, shopMobDataItem: SmobItem) {
+fun sendNotification(context: Context, shopMobDataItemATO: SmobItemATO) {
 
     // old way...
     //
@@ -57,7 +57,7 @@ fun sendNotification(context: Context, shopMobDataItem: SmobItem) {
 
     // create intent which starts activity SmobItemDescriptionActivity, with extra data
     // 'SmobItem'
-    val intent = SmobItemDescriptionActivity.newIntent(context.applicationContext, shopMobDataItem)
+    val intent = SmobItemDescriptionActivity.newIntent(context.applicationContext, shopMobDataItemATO)
 
     // create a pending intent that opens SmobItemDescriptionActivity when the user clicks on the notification
     val stackBuilder = TaskStackBuilder.create(context)
@@ -69,8 +69,8 @@ fun sendNotification(context: Context, shopMobDataItem: SmobItem) {
     // build the notification object with the data to be shown
     val notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
         .setSmallIcon(R.mipmap.ic_launcher)
-        .setContentTitle(shopMobDataItem.title)
-        .setContentText(shopMobDataItem.location)
+        .setContentTitle(shopMobDataItemATO.title)
+        .setContentText(shopMobDataItemATO.location)
         .setContentIntent(notificationPendingIntent)
         .setAutoCancel(true)
         //.setPriority(NotificationCompat.PRIORITY_HIGH)

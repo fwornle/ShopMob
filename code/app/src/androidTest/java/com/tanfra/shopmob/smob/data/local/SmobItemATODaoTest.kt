@@ -26,7 +26,7 @@ import java.util.*
 @RunWith(AndroidJUnit4::class)
 // unit test the DAO
 @SmallTest
-class SmobItemDaoTest {
+class SmobItemATODaoTest {
 
     // fake DB (room, in-memory)
     private lateinit var fakeDB: SmobDatabase

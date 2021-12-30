@@ -28,7 +28,7 @@ import org.junit.runner.RunWith
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.data.local.FakeItemDataSource
 import com.tanfra.shopmob.smob.saveitem.SaveSmobItemViewModel
-import com.tanfra.shopmob.smob.types.SmobItem
+import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 import com.tanfra.shopmob.util.DataBindingIdlingResource
 import com.tanfra.shopmob.util.monitorFragment
 import org.junit.Before
@@ -49,10 +49,10 @@ import java.util.*
 @Suppress("UNCHECKED_CAST")
 // UI Testing
 @MediumTest
-class SmobItemListFragmentTest: AutoCloseKoinTest() {
+class SmobItemATOListFragmentTest: AutoCloseKoinTest() {
 
     // test data for (fake) DB
-    private lateinit var shopMobItemList: MutableList<SmobItem>
+    private lateinit var shopMobItemATOList: MutableList<SmobItemATO>
 
     // fake data source (repo)
     private lateinit var shopMobRepo: SmobItemDataSource
@@ -85,12 +85,12 @@ class SmobItemListFragmentTest: AutoCloseKoinTest() {
     fun setUp() {
 
         // generate some test database items (smob items)
-        shopMobItemList = mutableListOf<SmobItem>()
+        shopMobItemATOList = mutableListOf<SmobItemATO>()
 
         // generate some test data
         for (idx in 0..19) {
-            shopMobItemList.add(
-                SmobItem(
+            shopMobItemATOList.add(
+                SmobItemATO(
                     "test title $idx",
                     "test description $idx",
                     "test location $idx",
@@ -102,7 +102,7 @@ class SmobItemListFragmentTest: AutoCloseKoinTest() {
         }
 
         // get a fresh fake data source (repository)
-        shopMobRepo = FakeItemDataSource(shopMobItemList)
+        shopMobRepo = FakeItemDataSource(shopMobItemATOList)
 
 
         /**
@@ -188,7 +188,7 @@ class SmobItemListFragmentTest: AutoCloseKoinTest() {
 
         // index of item in the list to be tested (off screen)
         val testItemIdx = 17
-        val testSmobItem = shopMobItemList[testItemIdx]
+        val testSmobItem = shopMobItemATOList[testItemIdx]
 
         // attempt to scroll to selected list item
         onView(withId(R.id.smobItemsRecyclerView)) // scrollTo will fail the test if no item matches.
@@ -205,7 +205,7 @@ class SmobItemListFragmentTest: AutoCloseKoinTest() {
 
         // index of item in the list to be tested
         val testItemIdx = 1
-        val testSmobItem = shopMobItemList[testItemIdx]
+        val testSmobItem = shopMobItemATOList[testItemIdx]
 
         // select a specific item in the list and check title
         onView(withId(R.id.smobItemsRecyclerView))

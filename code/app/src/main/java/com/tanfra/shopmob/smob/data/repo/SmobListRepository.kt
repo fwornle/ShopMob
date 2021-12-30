@@ -2,9 +2,7 @@ package com.tanfra.shopmob.smob.data.repo
 
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.local.dao.SmobListDao
-import com.tanfra.shopmob.smob.types.SmobList
-import com.tanfra.shopmob.utils.asDatabaseModel
-import com.tanfra.shopmob.utils.asDomainModel
+import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 
@@ -25,7 +23,7 @@ class SmobListRepository(
      * Get the smob list list from the local db
      * @return Result the holds a Success with all the smob lists or an Error object with the error message
      */
-    override suspend fun getSmobLists(): Resource<List<SmobList>> = withContext(ioDispatcher) {
+    override suspend fun getSmobLists(): Resource<List<SmobListATO>> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             return@withContext try {
@@ -38,13 +36,13 @@ class SmobListRepository(
 
     /**
      * Insert a smob list in the db.
-     * @param smobList the smob list to be inserted
+     * @param smobListATO the smob list to be inserted
      */
-    override suspend fun saveSmobList(smobList: SmobList) =
+    override suspend fun saveSmobList(smobListATO: SmobListATO) =
         withContext(ioDispatcher) {
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
-                smobListDao.saveSmobList(smobList.asDatabaseModel())
+                smobListDao.saveSmobList(smobListATO.asDatabaseModel())
             }
         }
 
@@ -53,7 +51,7 @@ class SmobListRepository(
      * @param id to be used to get the smob list
      * @return Result the holds a Success object with the SmobList or an Error object with the error message
      */
-    override suspend fun getSmobList(id: String): Resource<SmobList> = withContext(ioDispatcher) {
+    override suspend fun getSmobList(id: String): Resource<SmobListATO> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             try {

@@ -2,9 +2,7 @@ package com.tanfra.shopmob.smob.data.repo
 
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
 import com.tanfra.shopmob.smob.data.local.dao.SmobProductDao
-import com.tanfra.shopmob.smob.types.SmobProduct
-import com.tanfra.shopmob.utils.asDatabaseModel
-import com.tanfra.shopmob.utils.asDomainModel
+import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 
@@ -25,7 +23,7 @@ class SmobProductRepository(
      * Get the smob item list from the local db
      * @return Result the holds a Success with all the smob items or an Error object with the error message
      */
-    override suspend fun getSmobProducts(): Resource<List<SmobProduct>> = withContext(ioDispatcher) {
+    override suspend fun getSmobProducts(): Resource<List<SmobProductATO>> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             return@withContext try {
@@ -38,13 +36,13 @@ class SmobProductRepository(
 
     /**
      * Insert a smob item in the db.
-     * @param smobProduct the smob item to be inserted
+     * @param smobProductATO the smob item to be inserted
      */
-    override suspend fun saveSmobProduct(smobProduct: SmobProduct) =
+    override suspend fun saveSmobProduct(smobProductATO: SmobProductATO) =
         withContext(ioDispatcher) {
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
-                smobProductDao.saveSmobProduct(smobProduct.asDatabaseModel())
+                smobProductDao.saveSmobProduct(smobProductATO.asDatabaseModel())
             }
         }
 
@@ -53,7 +51,7 @@ class SmobProductRepository(
      * @param id to be used to get the smob item
      * @return Result the holds a Success object with the SmobProduct or an Error object with the error message
      */
-    override suspend fun getSmobProduct(id: String): Resource<SmobProduct> = withContext(ioDispatcher) {
+    override suspend fun getSmobProduct(id: String): Resource<SmobProductATO> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             try {

@@ -6,7 +6,7 @@ import com.tanfra.shopmob.BuildConfig
 import com.tanfra.shopmob.smob.data.net.api.SmobUserApi
 import com.tanfra.shopmob.smob.data.net.nto.SmobUserNTO
 import com.tanfra.shopmob.smob.data.net.utils.ArrayListAdapter
-import com.udacity.asteroidradar.api.AuthInterceptor
+import com.tanfra.shopmob.smob.data.net.utils.AuthInterceptor
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
 import retrofit2.Retrofit

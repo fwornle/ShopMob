@@ -7,7 +7,7 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.base.BaseViewModel
 import com.tanfra.shopmob.base.NavigationCommand
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
-import com.tanfra.shopmob.smob.types.SmobItem
+import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 import kotlinx.coroutines.launch
 
 // note: all three concrete viewModels (SmobItemList, SaveSmobItem, SelectLocation) inherit from
@@ -45,7 +45,7 @@ class SaveSmobItemViewModel(val app: Application, private val itemDataSource: Sm
     /**
      * Validate the entered data then saves the smob item to the DataSource
      */
-    fun validateAndSaveSmobItem(shopMobData: SmobItem) {
+    fun validateAndSaveSmobItem(shopMobData: SmobItemATO) {
         if (validateEnteredData(shopMobData)) {
             saveSmobItem(shopMobData)
         }
@@ -54,12 +54,12 @@ class SaveSmobItemViewModel(val app: Application, private val itemDataSource: Sm
     /**
      * Save the smob item to the data source
      */
-    private fun saveSmobItem(shopMobData: SmobItem) {
+    private fun saveSmobItem(shopMobData: SmobItemATO) {
         showLoading.value = true
         viewModelScope.launch {
             with(itemDataSource) {
                 saveSmobItem(
-                    SmobItem(
+                    SmobItemATO(
                         shopMobData.title,
                         shopMobData.description,
                         shopMobData.location,
@@ -78,7 +78,7 @@ class SaveSmobItemViewModel(val app: Application, private val itemDataSource: Sm
     /**
      * Validate the entered data and show error to the user if there's any invalid data
      */
-    private fun validateEnteredData(shopMobData: SmobItem): Boolean {
+    private fun validateEnteredData(shopMobData: SmobItemATO): Boolean {
         if (shopMobData.title.isNullOrEmpty()) {
             showSnackBarInt.value = R.string.err_enter_title
             return false

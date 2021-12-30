@@ -1,11 +1,10 @@
 package com.tanfra.shopmob.smob.data.repo
 
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
-import com.tanfra.shopmob.smob.data.local.dto.SmobShopDTO
 import com.tanfra.shopmob.smob.data.local.dao.SmobShopDao
-import com.tanfra.shopmob.smob.types.SmobShop
-import com.tanfra.shopmob.utils.asDatabaseModel
-import com.tanfra.shopmob.utils.asDomainModel
+import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
+import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
+import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 
@@ -26,7 +25,7 @@ class SmobShopRepository(
      * Get the smob item list from the local db
      * @return Result the holds a Success with all the smob items or an Error object with the error message
      */
-    override suspend fun getSmobShops(): Resource<List<SmobShop>> = withContext(ioDispatcher) {
+    override suspend fun getSmobShops(): Resource<List<SmobShopATO>> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             return@withContext try {
@@ -39,13 +38,13 @@ class SmobShopRepository(
 
     /**
      * Insert a smob item in the db.
-     * @param smobShop the smob item to be inserted
+     * @param smobShopATO the smob item to be inserted
      */
-    override suspend fun saveSmobShop(smobShop: SmobShop) =
+    override suspend fun saveSmobShop(smobShopATO: SmobShopATO) =
         withContext(ioDispatcher) {
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
-                smobShopDao.saveSmobShop(smobShop.asDatabaseModel())
+                smobShopDao.saveSmobShop(smobShopATO.asDatabaseModel())
             }
         }
 
@@ -54,7 +53,7 @@ class SmobShopRepository(
      * @param id to be used to get the smob item
      * @return Result the holds a Success object with the SmobShop or an Error object with the error message
      */
-    override suspend fun getSmobShop(id: String): Resource<SmobShop> = withContext(ioDispatcher) {
+    override suspend fun getSmobShop(id: String): Resource<SmobShopATO> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             try {

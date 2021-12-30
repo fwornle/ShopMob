@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.utils
+package com.tanfra.shopmob.smob.data.local.utils
 
 import androidx.room.TypeConverter
 import java.time.LocalDate
@@ -55,7 +55,7 @@ enum class SmobEntryState {
 
 data class ActivityState(
     val date: LocalDate,
-    val frequency: Double,
+    val reps: Long,
 )
 
 data class ProductCategory(
@@ -63,13 +63,18 @@ data class ProductCategory(
     val sub: ProductSubCategory,
 )
 
-data class SmobListEntry(
+data class ShopLocation(
+    val latitude: Double,
+    val longitude: Double,
+)
+
+data class SmobListItem(
     val id: String,
-    val status: SmobEntryState,
+    val state: SmobEntryState,
 )
 
 data class SmobListLifecycle(
-    val status: SmobEntryState,
+    val state: SmobEntryState,
     val completion: Double
 )
 
@@ -87,10 +92,10 @@ class LocalDbConverters {
 
     // SmobListEntry converter
     @TypeConverter
-    fun listEntryToJson(value: List<SmobListEntry?>) = Json.encodeToString(value)
+    fun listEntryToJson(value: List<SmobListItem?>) = Json.encodeToString(value)
 
     @TypeConverter
-    fun jsonToListEntry(value: String) = Json.decodeFromString<Array<SmobListEntry>>(value).toList()
+    fun jsonToListEntry(value: String) = Json.decodeFromString<Array<SmobListItem>>(value).toList()
 
     // SmobListLifecycle converter
     @TypeConverter

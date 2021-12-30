@@ -1,11 +1,8 @@
 package com.tanfra.shopmob.smob.data.repo
 
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobGroupDataSource
-import com.tanfra.shopmob.smob.data.local.dto.SmobGroupDTO
 import com.tanfra.shopmob.smob.data.local.dao.SmobGroupDao
-import com.tanfra.shopmob.smob.types.SmobGroup
-import com.tanfra.shopmob.utils.asDatabaseModel
-import com.tanfra.shopmob.utils.asDomainModel
+import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 
@@ -26,7 +23,7 @@ class SmobGroupRepository(
      * Get the smob item list from the local db
      * @return Result the holds a Success with all the smob items or an Error object with the error message
      */
-    override suspend fun getSmobGroups(): Resource<List<SmobGroup>> = withContext(ioDispatcher) {
+    override suspend fun getSmobGroups(): Resource<List<SmobGroupATO>> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             return@withContext try {
@@ -39,13 +36,13 @@ class SmobGroupRepository(
 
     /**
      * Insert a smob item in the db.
-     * @param smobGroup the smob item to be inserted
+     * @param smobGroupATO the smob item to be inserted
      */
-    override suspend fun saveSmobGroup(smobGroup: SmobGroup) =
+    override suspend fun saveSmobGroup(smobGroupATO: SmobGroupATO) =
         withContext(ioDispatcher) {
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
-                smobGroupDao.saveSmobGroup(smobGroup.asDatabaseModel())
+                smobGroupDao.saveSmobGroup(smobGroupATO.asDatabaseModel())
             }
         }
 
@@ -54,7 +51,7 @@ class SmobGroupRepository(
      * @param id to be used to get the smob item
      * @return Result the holds a Success object with the SmobGroup or an Error object with the error message
      */
-    override suspend fun getSmobGroup(id: String): Resource<SmobGroup> = withContext(ioDispatcher) {
+    override suspend fun getSmobGroup(id: String): Resource<SmobGroupATO> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             try {

@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.tanfra.shopmob.smob.data.local.dao.*
 import com.tanfra.shopmob.smob.data.local.dto.*
-import com.tanfra.shopmob.utils.LocalDbConverters
+import com.tanfra.shopmob.smob.data.local.utils.LocalDbConverters
 
 // Room database for the app - local storage
 // ... using separate DAO per DB table to keep things tidy

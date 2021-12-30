@@ -5,11 +5,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.FakeItemDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
-import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.testutils.MainCoroutineRule
 import com.tanfra.shopmob.smob.testutils.getOrAwaitValue
-import com.tanfra.shopmob.smob.types.SmobItem
+import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -29,10 +28,10 @@ import java.util.*
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
+class SaveSmobItemATOViewModelTest: AutoCloseKoinTest() {
 
     // declare globally used variables
-    private lateinit var smobData: com.tanfra.shopmob.smob.types.SmobItem
+    private lateinit var smobDataATO: com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
     private lateinit var privateTestFun: Method
 
     // viewModel
@@ -40,8 +39,8 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
 
     // smob item repository and fake data
     private lateinit var smobItemRepo: SmobItemDataSource
-    private lateinit var smobItemList: MutableList<com.tanfra.shopmob.smob.types.SmobItem>
-    private lateinit var smobItemNew: com.tanfra.shopmob.smob.types.SmobItem
+    private lateinit var smobItemATOList: MutableList<com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO>
+    private lateinit var smobItemATONew: com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 
     
     // test liveData
@@ -63,7 +62,7 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         // run BEFORE EACH individual test ----------------------------------------
 
         // re-initialize smobItemData with a valid data record
-        smobData = SmobItem(
+        smobDataATO = SmobItemATO(
             "test title",
             "test description",
             "test location",
@@ -73,9 +72,9 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         )
 
         // generate some test database items (smob items)
-        smobItemList = mutableListOf<SmobItem>()
-        smobItemList.add(
-            SmobItem(
+        smobItemATOList = mutableListOf<SmobItemATO>()
+        smobItemATOList.add(
+            SmobItemATO(
                 "test title 1",
                 "test description 1",
                 "test location 1",
@@ -84,8 +83,8 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
                 UUID.randomUUID().toString(),
             )
         )
-        smobItemList.add(
-            SmobItem(
+        smobItemATOList.add(
+            SmobItemATO(
                 "test title 2",
                 "test description 2",
                 "test location 2",
@@ -94,8 +93,8 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
                 UUID.randomUUID().toString(),
             )
         )
-        smobItemList.add(
-            SmobItem(
+        smobItemATOList.add(
+            SmobItemATO(
                 "test title 3",
                 "test description 3",
                 "test location 3",
@@ -106,7 +105,7 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         )
 
         // new entry to be added to the repo
-        smobItemNew = SmobItem(
+        smobItemATONew = SmobItemATO(
             "test title 4",
             "test description 4",
             "test location 4",
@@ -116,7 +115,7 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         )
 
         // get a fresh fake data source (repository)
-        smobItemRepo = FakeItemDataSource(smobItemList)
+        smobItemRepo = FakeItemDataSource(smobItemATOList)
 
         // get a fresh viewModel
         _viewModelSmob = SaveSmobItemViewModel(
@@ -137,14 +136,14 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         // ... access to the PRIVATE method to be tested via REFLECTION (see:
         //     https://medium.com/mindorks/how-to-unit-test-private-methods-in-java-and-kotlin-d3cae49dccd)
         privateTestFun = _viewModelSmob.javaClass
-            .getDeclaredMethod("validateEnteredData", smobData.javaClass)
+            .getDeclaredMethod("validateEnteredData", smobDataATO.javaClass)
             .apply { isAccessible = true }
 
         // WHEN validating the data item with the following 'impairment'
-        smobData.title = null
+        smobDataATO.title = null
 
         // THEN false should be returned
-        Assert.assertEquals(false, privateTestFun(_viewModelSmob, smobData))
+        Assert.assertEquals(false, privateTestFun(_viewModelSmob, smobDataATO))
 
     }
 
@@ -155,14 +154,14 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         // ... access to the PRIVATE method to be tested via REFLECTION (see:
         //     https://medium.com/mindorks/how-to-unit-test-private-methods-in-java-and-kotlin-d3cae49dccd)
         privateTestFun = _viewModelSmob.javaClass
-            .getDeclaredMethod("validateEnteredData", smobData.javaClass)
+            .getDeclaredMethod("validateEnteredData", smobDataATO.javaClass)
             .apply { isAccessible = true }
 
         // WHEN validating the data item with the following 'impairment'
-        smobData.location = ""
+        smobDataATO.location = ""
 
         // THEN false should be returned
-        Assert.assertEquals(false, privateTestFun(_viewModelSmob, smobData))
+        Assert.assertEquals(false, privateTestFun(_viewModelSmob, smobDataATO))
 
     }
 
@@ -173,15 +172,15 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         // ... access to the PRIVATE method to be tested via REFLECTION (see:
         //     https://medium.com/mindorks/how-to-unit-test-private-methods-in-java-and-kotlin-d3cae49dccd)
         privateTestFun = _viewModelSmob.javaClass
-            .getDeclaredMethod("validateEnteredData", smobData.javaClass)
+            .getDeclaredMethod("validateEnteredData", smobDataATO.javaClass)
             .apply { isAccessible = true }
 
         // WHEN validating the data item with the following 'impairment'
-        smobData.title = null
-        smobData.location = ""
+        smobDataATO.title = null
+        smobDataATO.location = ""
 
         // THEN false should be returned
-        Assert.assertEquals(false, privateTestFun(_viewModelSmob, smobData))
+        Assert.assertEquals(false, privateTestFun(_viewModelSmob, smobDataATO))
 
     }
 
@@ -192,14 +191,14 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         // ... access to the PRIVATE method to be tested via REFLECTION (see:
         //     https://medium.com/mindorks/how-to-unit-test-private-methods-in-java-and-kotlin-d3cae49dccd)
         privateTestFun = _viewModelSmob.javaClass
-            .getDeclaredMethod("validateEnteredData", smobData.javaClass)
+            .getDeclaredMethod("validateEnteredData", smobDataATO.javaClass)
             .apply { isAccessible = true }
 
         // WHEN validating the data item with the following 'impairment'
         // -- none --
 
         // THEN true should be returned
-        Assert.assertEquals(true, privateTestFun(_viewModelSmob, smobData))
+        Assert.assertEquals(true, privateTestFun(_viewModelSmob, smobDataATO))
 
     }
 
@@ -214,19 +213,19 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         // ... some VALID smob item
 
         // WHEN calling function validateAndSaveSmobItem
-        _viewModelSmob.validateAndSaveSmobItem(smobData)
-        val smobItemReadBack = smobItemRepo.getSmobItem(smobData.id)
+        _viewModelSmob.validateAndSaveSmobItem(smobDataATO)
+        val smobItemReadBack = smobItemRepo.getSmobItem(smobDataATO.id)
 
         // check that result is valid
         assertThat(smobItemReadBack.status, CoreMatchers.`is`(Status.SUCCESS))
 
         // THEN the smob item is verified and stored in the repository
-        assertThat(smobItemReadBack.data?.title, IsEqual(smobData.title))
-        assertThat(smobItemReadBack.data?.description, IsEqual(smobData.description))
-        assertThat(smobItemReadBack.data?.location, IsEqual(smobData.location))
-        assertThat(smobItemReadBack.data?.latitude, IsEqual(smobData.latitude))
-        assertThat(smobItemReadBack.data?.longitude, IsEqual(smobData.longitude))
-        assertThat(smobItemReadBack.data?.id, IsEqual(smobData.id))
+        assertThat(smobItemReadBack.data?.title, IsEqual(smobDataATO.title))
+        assertThat(smobItemReadBack.data?.description, IsEqual(smobDataATO.description))
+        assertThat(smobItemReadBack.data?.location, IsEqual(smobDataATO.location))
+        assertThat(smobItemReadBack.data?.latitude, IsEqual(smobDataATO.latitude))
+        assertThat(smobItemReadBack.data?.longitude, IsEqual(smobDataATO.longitude))
+        assertThat(smobItemReadBack.data?.id, IsEqual(smobDataATO.id))
 
     }
 
@@ -236,17 +235,17 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
 
         // GIVEN...
         // ... some INVALID smob item
-        smobData.title = null
+        smobDataATO.title = null
 
         // WHEN calling function validateAndSaveSmobItem
-        _viewModelSmob.validateAndSaveSmobItem(smobData)
-        val smobItemReadBack = smobItemRepo.getSmobItem(smobData.id)
+        _viewModelSmob.validateAndSaveSmobItem(smobDataATO)
+        val smobItemReadBack = smobItemRepo.getSmobItem(smobDataATO.id)
 
         // check that result is invalid
         assertThat(smobItemReadBack.status, CoreMatchers.`is`(Status.ERROR))
 
         // THEN the smob item is verified and stored in the repository
-        assertThat(smobItemReadBack.message, IsEqual("SmobItem with ID ${smobData.id} not found in (fake) local storage."))
+        assertThat(smobItemReadBack.message, IsEqual("SmobItem with ID ${smobDataATO.id} not found in (fake) local storage."))
 
     }
 
@@ -262,14 +261,14 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         // ... access to the PRIVATE method to be tested via REFLECTION (see:
         //     https://medium.com/mindorks/how-to-unit-test-private-methods-in-java-and-kotlin-d3cae49dccd)
         privateTestFun = _viewModelSmob.javaClass
-            .getDeclaredMethod("validateEnteredData", smobData.javaClass)
+            .getDeclaredMethod("validateEnteredData", smobDataATO.javaClass)
             .apply { isAccessible = true }
 
         // WHEN...
         // ... validating the data item with the following 'impairment' and after triggering the
         //     method to be tested (private --> indirection via reflected method for access)
-        smobData.title = ""
-        privateTestFun(_viewModelSmob, smobData)
+        smobDataATO.title = ""
+        privateTestFun(_viewModelSmob, smobDataATO)
 
         // THEN the snackbar event (showSnackBarInt) should be triggered
         //
@@ -289,14 +288,14 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         // ... access to the PRIVATE method to be tested via REFLECTION (see:
         //     https://medium.com/mindorks/how-to-unit-test-private-methods-in-java-and-kotlin-d3cae49dccd)
         privateTestFun = _viewModelSmob.javaClass
-            .getDeclaredMethod("validateEnteredData", smobData.javaClass)
+            .getDeclaredMethod("validateEnteredData", smobDataATO.javaClass)
             .apply { isAccessible = true }
 
         // WHEN...
         // ... validating the data item with the following 'impairment' and after triggering the
         //     method to be tested (private --> indirection via reflected method for access)
-        smobData.location = ""
-        privateTestFun(_viewModelSmob, smobData)
+        smobDataATO.location = ""
+        privateTestFun(_viewModelSmob, smobDataATO)
 
         // THEN the snackbar event (showSnackBarInt) should be triggered
         //
@@ -410,7 +409,7 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
 
 
         // THEN smob items are loaded from the local data source
-        assertThat(smobItem.data, IsEqual(smobItemList))
+        assertThat(smobItem.data, IsEqual(smobItemATOList))
 
     }
 
@@ -420,13 +419,13 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         mainCoroutineRule.runBlockingTest {
 
         // WHEN an existent smob item is requested from the location smob item repository
-        val smobItem = smobItemRepo.getSmobItem(smobItemList.first().id)
+        val smobItem = smobItemRepo.getSmobItem(smobItemATOList.first().id)
 
         // check that result is valid
         assertThat(smobItem.status, CoreMatchers.`is`(Status.SUCCESS))
 
         // THEN this smob item is loaded from the repository / location smob item repository
-        assertThat(smobItem.data, IsEqual(smobItemList.first()))
+        assertThat(smobItem.data, IsEqual(smobItemATOList.first()))
 
     }
 
@@ -453,14 +452,14 @@ class SaveSmobItemViewModelTest: AutoCloseKoinTest() {
         mainCoroutineRule.runBlockingTest {
 
         // WHEN a new smob item is added to the location smob item repository
-        smobItemRepo.saveSmobItem(smobItemNew)
-        val smobItemReadBack = smobItemRepo.getSmobItem(smobItemNew.id)
+        smobItemRepo.saveSmobItem(smobItemATONew)
+        val smobItemReadBack = smobItemRepo.getSmobItem(smobItemATONew.id)
 
         // THEN this smob item is stored in the repository
 
         // check that result is valid
         assertThat(smobItemReadBack.status, CoreMatchers.`is`(Status.SUCCESS))
-        assertThat(smobItemReadBack.data, IsEqual(smobItemNew))
+        assertThat(smobItemReadBack.data, IsEqual(smobItemATONew))
 
     }
 

@@ -1,7 +1,8 @@
 package com.tanfra.shopmob.smob.data.local.dto
 
 import androidx.room.*
-import com.tanfra.shopmob.utils.*
+import com.tanfra.shopmob.smob.data.local.utils.SmobEntryState
+import com.tanfra.shopmob.smob.data.local.utils.SmobListItem
 import java.util.*
 
 /**
@@ -10,8 +11,10 @@ import java.util.*
  * @param id             id of the smobList
  * @param name           name of the smobList
  * @param description    optional description
- * @param products       list of product descriptors (id, state) of the smobList
- * @param lifecycle      lifecycle information of the list (state, completion)
+ * @param items          list of descriptors (id, state) of items on the smobList
+ * @param members        list of IDs of the smob users sharing this list
+ * @param lcState        lifecycle state information of the list (OPEN|IN PROGRESS|DONE)
+ * @param lcCompletion   lifecycle completion information of the list (degree of completion, %)
  */
 @Entity(tableName = "smobLists")
 @RewriteQueriesToDropUnusedColumns
@@ -19,6 +22,8 @@ data class SmobListDTO(
     @PrimaryKey @ColumnInfo(name = "id") val id: String = UUID.randomUUID().toString(),
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "description") var description: String?,
-    @ColumnInfo(name = "products") var products: List<SmobListEntry>,
-    @ColumnInfo(name = "lifecycle") var lifecycle: SmobListLifecycle
+    @ColumnInfo(name = "items") var items: List<SmobListItem>,
+    @ColumnInfo(name = "members") var members: List<String>,
+    @ColumnInfo(name = "lifecycle_state") var lcState: SmobEntryState,
+    @ColumnInfo(name = "lifecycle_completion") var lcCompletion: Double,
 )

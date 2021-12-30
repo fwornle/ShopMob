@@ -1,11 +1,11 @@
-package com.tanfra.shopmob.smob.types
+package com.tanfra.shopmob.smob.data.repo.ato
 
 import kotlinx.serialization.Serializable
 import java.util.*
 
-// domain independent data type
+// domain independent data type (Application Transfer Object)
 @Serializable
-data class SmobItem(
+data class SmobItemATO(
     var title: String?,
     var description: String?,
     var location: String?,

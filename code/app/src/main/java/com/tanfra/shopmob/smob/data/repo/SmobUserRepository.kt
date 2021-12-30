@@ -2,17 +2,15 @@ package com.tanfra.shopmob.smob.data.repo
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.tanfra.shopmob.smob.types.SmobUser
+import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
 import com.tanfra.shopmob.smob.data.local.dao.SmobUserDao
-import com.tanfra.shopmob.smob.data.local.dao.asDatabaseModel
-import com.tanfra.shopmob.smob.data.local.dao.asDomainModel
+import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
+import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
 import com.tanfra.shopmob.smob.data.net.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.SmodUserProfilePicture
 import com.tanfra.shopmob.smob.data.net.api.SmobUserApi
-import com.tanfra.shopmob.smob.data.net.api.asNetworkModel
-import com.tanfra.shopmob.smob.data.net.api.asRepoModel
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
@@ -47,7 +45,7 @@ class SmobUserRepository(
      * Get the smob user list from the local db
      * @return Result holds a Success with all the smob users or an Error object with the error message
      */
-    override suspend fun getAllSmobUsers(): Resource<List<SmobUser>> = withContext(ioDispatcher) {
+    override suspend fun getAllSmobUsers(): Resource<List<SmobUserATO>> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             return@withContext try {
@@ -61,48 +59,48 @@ class SmobUserRepository(
 
     /**
      * Insert a smob user in the db. Replace a potentially existing smob user record.
-     * @param smobUser the smob user to be inserted
+     * @param smobUserATO the smob user to be inserted
      */
-    override suspend fun saveSmobUser(smobUser: SmobUser) =
+    override suspend fun saveSmobUser(smobUserATO: SmobUserATO) =
         withContext(ioDispatcher) {
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
-                smobUserDao.saveSmobUser(smobUser.asDatabaseModel())
+                smobUserDao.saveSmobUser(smobUserATO.asDatabaseModel())
             }
         }
 
 
     /**
      * Insert several smob users in the db. Replace any potentially existing smob user record.
-     * @param smobUsers a list of smob users to be inserted
+     * @param smobUserATOES a list of smob users to be inserted
      */
-    override suspend fun saveSmobUsers(smobUsers: List<SmobUser>) {
+    override suspend fun saveSmobUsers(smobUserATOES: List<SmobUserATO>) {
         // store all provided smob users by repeatedly calling upon saveSmobUser
         withContext(ioDispatcher) {
-            smobUsers.map { saveSmobUser(it) }
+            smobUserATOES.map { saveSmobUser(it) }
         }
     }
 
     /**
      * Update an existing smob user in the db. Do nothing, if the smob user does not exist.
-     * @param smobUser the smob user to be updated
+     * @param smobUserATO the smob user to be updated
      */
-    override suspend fun updateSmobUser(smobUser: SmobUser) =
+    override suspend fun updateSmobUser(smobUserATO: SmobUserATO) =
         withContext(ioDispatcher) {
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
-                smobUserDao.updateSmobUser(smobUser.asDatabaseModel())
+                smobUserDao.updateSmobUser(smobUserATO.asDatabaseModel())
             }
         }
 
     /**
      * Update an set of existing smob users in the db. Ignore smob users which do not exist.
-     * @param smobUsers the list of smob users to be updated
+     * @param smobUserATOES the list of smob users to be updated
      */
-    override suspend fun updateSmobUsers(smobUsers: List<SmobUser>) {
+    override suspend fun updateSmobUsers(smobUserATOES: List<SmobUserATO>) {
         // update all provided smob users by repeatedly calling upon updateSmobUser
         withContext(ioDispatcher) {
-            smobUsers.map { updateSmobUser(it) }
+            smobUserATOES.map { updateSmobUser(it) }
         }
     }
 
@@ -111,7 +109,7 @@ class SmobUserRepository(
      * @param id to be used to get the smob user
      * @return Result the holds a Success object with the SmobUser or an Error object with the error message
      */
-    override suspend fun getSmobUser(id: String): Resource<SmobUser> = withContext(ioDispatcher) {
+    override suspend fun getSmobUser(id: String): Resource<SmobUserATO> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             try {

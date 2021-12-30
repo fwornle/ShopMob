@@ -8,9 +8,8 @@ import androidx.test.filters.MediumTest
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.data.local.dao.SmobItemDao
 import com.tanfra.shopmob.smob.data.repo.SmobItemRepository
-import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
-import com.tanfra.shopmob.smob.types.SmobItem
+import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -32,8 +31,8 @@ import java.util.*
 class SmobRepositoryTest {
 
     // test data for (fake) DB
-    private lateinit var shopMobItemList: MutableList<SmobItem>
-    private lateinit var newSmobItem: SmobItem
+    private lateinit var shopMobItemATOList: MutableList<SmobItemATO>
+    private lateinit var newSmobItemATO: SmobItemATO
 
     // fake data source (repo)
     private lateinit var shopMobRepo: SmobItemDataSource
@@ -44,7 +43,7 @@ class SmobRepositoryTest {
 
     // populate the fake DB / repo
     private suspend fun populateFakeDB() {
-        shopMobItemList.map {
+        shopMobItemATOList.map {
             shopMobRepo.saveSmobItem(it)
         }
     }
@@ -60,12 +59,12 @@ class SmobRepositoryTest {
     fun setUp() {
 
         // generate some test database items (smob items)
-        shopMobItemList = mutableListOf<SmobItem>()
+        shopMobItemATOList = mutableListOf<SmobItemATO>()
 
         // generate some test data
         for (idx in 0..19) {
-            shopMobItemList.add(
-                SmobItem(
+            shopMobItemATOList.add(
+                SmobItemATO(
                     "test title $idx",
                     "test description $idx",
                     "test location $idx",
@@ -77,7 +76,7 @@ class SmobRepositoryTest {
         }
 
         // initialize a new smob item for 'saveSmobItem' test
-        newSmobItem = SmobItem(
+        newSmobItemATO = SmobItemATO(
             "a new title",
             "a new test description",
             "a new test location",
@@ -149,12 +148,12 @@ class SmobRepositoryTest {
         result.data?.mapIndexed { idx, smobItem ->
             // check for equality
             assertThat(smobItem, CoreMatchers.notNullValue())
-            assertThat(smobItem.id, `is`(shopMobItemList[idx].id))
-            assertThat(smobItem.title, `is`(shopMobItemList[idx].title))
-            assertThat(smobItem.description, `is`(shopMobItemList[idx].description))
-            assertThat(smobItem.location, `is`(shopMobItemList[idx].location))
-            assertThat(smobItem.latitude, `is`(shopMobItemList[idx].latitude))
-            assertThat(smobItem.longitude, `is`(shopMobItemList[idx].longitude))
+            assertThat(smobItem.id, `is`(shopMobItemATOList[idx].id))
+            assertThat(smobItem.title, `is`(shopMobItemATOList[idx].title))
+            assertThat(smobItem.description, `is`(shopMobItemATOList[idx].description))
+            assertThat(smobItem.location, `is`(shopMobItemATOList[idx].location))
+            assertThat(smobItem.latitude, `is`(shopMobItemATOList[idx].latitude))
+            assertThat(smobItem.longitude, `is`(shopMobItemATOList[idx].longitude))
 
         }
 
@@ -172,7 +171,7 @@ class SmobRepositoryTest {
         val idx = 4
 
         // successfully fetch smob item from (fake) repo
-        val result = shopMobRepo.getSmobItem(shopMobItemList[idx].id)
+        val result = shopMobRepo.getSmobItem(shopMobItemATOList[idx].id)
 
         // should return a success and with some data
         assertThat(result.status, `is`(Status.SUCCESS))
@@ -181,12 +180,12 @@ class SmobRepositoryTest {
         // check for equality
         val smobItem = result.data
         assertThat(smobItem, CoreMatchers.notNullValue())
-        assertThat(smobItem?.id, `is`(shopMobItemList[idx].id))
-        assertThat(smobItem?.title, `is`(shopMobItemList[idx].title))
-        assertThat(smobItem?.description, `is`(shopMobItemList[idx].description))
-        assertThat(smobItem?.location, `is`(shopMobItemList[idx].location))
-        assertThat(smobItem?.latitude, `is`(shopMobItemList[idx].latitude))
-        assertThat(smobItem?.longitude, `is`(shopMobItemList[idx].longitude))
+        assertThat(smobItem?.id, `is`(shopMobItemATOList[idx].id))
+        assertThat(smobItem?.title, `is`(shopMobItemATOList[idx].title))
+        assertThat(smobItem?.description, `is`(shopMobItemATOList[idx].description))
+        assertThat(smobItem?.location, `is`(shopMobItemATOList[idx].location))
+        assertThat(smobItem?.latitude, `is`(shopMobItemATOList[idx].latitude))
+        assertThat(smobItem?.longitude, `is`(shopMobItemATOList[idx].longitude))
 
     }
 
@@ -235,9 +234,9 @@ class SmobRepositoryTest {
         populateFakeDB()
 
         // save new smob item to (fake) repo, then read it back
-        shopMobRepo.saveSmobItem(newSmobItem)
+        shopMobRepo.saveSmobItem(newSmobItemATO)
 
-        val result = shopMobRepo.getSmobItem(newSmobItem.id)
+        val result = shopMobRepo.getSmobItem(newSmobItemATO.id)
 
         // check that result is valid
         assertThat(result.status, `is`(Status.SUCCESS))
@@ -246,12 +245,12 @@ class SmobRepositoryTest {
         result.data.let {
             // check for equality
             assertThat(it, CoreMatchers.notNullValue())
-            assertThat(it?.id, `is`(newSmobItem.id))
-            assertThat(it?.title, `is`(newSmobItem.title))
-            assertThat(it?.description, `is`(newSmobItem.description))
-            assertThat(it?.location, `is`(newSmobItem.location))
-            assertThat(it?.latitude, `is`(newSmobItem.latitude))
-            assertThat(it?.longitude, `is`(newSmobItem.longitude))
+            assertThat(it?.id, `is`(newSmobItemATO.id))
+            assertThat(it?.title, `is`(newSmobItemATO.title))
+            assertThat(it?.description, `is`(newSmobItemATO.description))
+            assertThat(it?.location, `is`(newSmobItemATO.location))
+            assertThat(it?.latitude, `is`(newSmobItemATO.latitude))
+            assertThat(it?.longitude, `is`(newSmobItemATO.longitude))
         }
 
     }

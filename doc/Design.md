@@ -214,10 +214,10 @@ The _smobUser_ entries of the _smobUsers_ table adheres to the following schema:
 ```json
 {
   "id": "UUID-user",
-  "name": "username",
+  "username": "username",
+  "name": "name",
   "email": "max@mustermann.com",
   "imageUrl": "URL-to-profile-picture-or-avatar",
-  "activity": "date-of-last-seen"
 }
 ```
 
@@ -231,7 +231,7 @@ The _smobGroup_ entries of the _smobGroups_ table adheres to the following schem
   "name": "group name",
   "description": "daily groceries",
   "type": "(default)other|family|friends|work",
-  "mobbers": [
+  "members": [
     "userId1",
     "userId2",
     "userId3",
@@ -250,8 +250,10 @@ The _smobStore_ entries of the _smobStores_ table adheres to the following schem
   "id": "UUID-store",
   "name": "store name",
   "description": "it's a good-e store",
-  "latitude": "where the shop is",
-  "longitude": "where the shop is",
+  "location": {
+    "latitude": "where the shop is",
+    "longitude": "where the shop is",
+  },
   "type": "chain|individual",
   "category": "(default)other|supermarket|drugstore|hardware|clothing|accessories|supplies",
   "business": [
@@ -275,7 +277,7 @@ The _smobProduct_ entries of the _smobProducts_ table adheres to the following s
   "id": "UUID-product",
   "name": "product name",
   "description": "lactose free",
-  "image": "URL",
+  "imageUrl": "URL",
   "category": {
     "main": "(default)other|foods|hardware|supplies|clothing",
     "sub": "{(default)none|fruit-n-vegetables|bread|dairy|frozen|cans|beverages}|{...}"
@@ -302,7 +304,7 @@ The _smobList_ entries of the _smobLists_ table adheres to the following schema:
     { "id": "productId3", "status": "open|in progress|done" },
     { }
   ],
-  "mobbers": [
+  "members": [
     "userId1",
     "userId2",
     "userId3",

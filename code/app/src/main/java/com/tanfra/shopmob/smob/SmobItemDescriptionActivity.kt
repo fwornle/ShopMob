@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.databinding.ActivitySmobItemDescriptionBinding
-import com.tanfra.shopmob.smob.types.SmobItem
+import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 
 
 // create inline function and reified type to simplify usage of creating an intent
@@ -35,8 +35,8 @@ class SmobItemDescriptionActivity : AppCompatActivity() {
         private const val EXTRA_SmobItem = "EXTRA_SmobItem"
 
         // receive the smob item object after the user clicks on the notification
-        fun newIntent(context: Context, shopMobDataItem: SmobItem): Intent {
-            return context.createIntent<SmobItemDescriptionActivity>(EXTRA_SmobItem to shopMobDataItem)
+        fun newIntent(context: Context, shopMobDataItemATO: SmobItemATO): Intent {
+            return context.createIntent<SmobItemDescriptionActivity>(EXTRA_SmobItem to shopMobDataItemATO)
         }
 
 //                // old way of doing this
@@ -60,7 +60,7 @@ class SmobItemDescriptionActivity : AppCompatActivity() {
         )
 
         // fetch data from intent provided by triggering notification
-        var smobDataItem = SmobItem(
+        var smobDataItem = SmobItemATO(
             "<not set>",
             "<not set>",
             "<not set>",
@@ -74,7 +74,7 @@ class SmobItemDescriptionActivity : AppCompatActivity() {
         extras?.let {
             if (it.containsKey(EXTRA_SmobItem)) {
                 // extract the extra-data in the notification
-                smobDataItem = it.getSerializable("EXTRA_SmobItem") as SmobItem
+                smobDataItem = it.getSerializable("EXTRA_SmobItem") as SmobItemATO
             }
         }
 

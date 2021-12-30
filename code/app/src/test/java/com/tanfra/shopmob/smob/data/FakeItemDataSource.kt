@@ -2,11 +2,11 @@ package com.tanfra.shopmob.smob.data
 
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
-import com.tanfra.shopmob.smob.types.SmobItem
+import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 
 // use FakeDataSource that acts as a test double to the LocalDataSource
 // inject the smob items stored in this source via the constructor of the class
-class FakeItemDataSource(private var smobItems: MutableList<SmobItem>? = mutableListOf()) :
+class FakeItemDataSource(private var smobItemATOES: MutableList<SmobItemATO>? = mutableListOf()) :
     SmobItemDataSource {
 
     // test for errors
@@ -17,7 +17,7 @@ class FakeItemDataSource(private var smobItems: MutableList<SmobItem>? = mutable
         shouldReturnError = value
     }
 
-    override suspend fun getSmobItems(): Resource<List<SmobItem>> {
+    override suspend fun getSmobItems(): Resource<List<SmobItemATO>> {
 
         // testing for errors...
         if (shouldReturnError) {
@@ -25,7 +25,7 @@ class FakeItemDataSource(private var smobItems: MutableList<SmobItem>? = mutable
         }
 
         // return the entire list of smob items from fake local data source... if any
-        smobItems?.let {
+        smobItemATOES?.let {
             return Resource.success(ArrayList(it))
         }
         return Resource.error(
@@ -33,12 +33,12 @@ class FakeItemDataSource(private var smobItems: MutableList<SmobItem>? = mutable
         )
     }
 
-    override suspend fun saveSmobItem(smobItem: SmobItem) {
+    override suspend fun saveSmobItem(smobItemATO: SmobItemATO) {
         // store provided smob item in fake local data source (list)
-        smobItems?.add(smobItem)
+        smobItemATOES?.add(smobItemATO)
     }
 
-    override suspend fun getSmobItem(id: String): Resource<SmobItem> {
+    override suspend fun getSmobItem(id: String): Resource<SmobItemATO> {
 
         // testing for errors...
         if (shouldReturnError) {
@@ -46,7 +46,7 @@ class FakeItemDataSource(private var smobItems: MutableList<SmobItem>? = mutable
         }
 
         // fetch smob item associated with provided id
-        smobItems?.firstOrNull {it.id == id} ?.let {
+        smobItemATOES?.firstOrNull {it.id == id} ?.let {
             // found it
             return Resource.success(it)
         }
@@ -59,7 +59,7 @@ class FakeItemDataSource(private var smobItems: MutableList<SmobItem>? = mutable
 
     override suspend fun deleteAllSmobItems() {
         // empty list to fake deleting all records from local data source (DB)
-        smobItems?.clear()
+        smobItemATOES?.clear()
     }
 
 }

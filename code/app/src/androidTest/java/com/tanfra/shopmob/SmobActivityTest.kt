@@ -23,7 +23,6 @@ import androidx.test.uiautomator.*
 import com.tanfra.shopmob.authentication.AuthenticationActivity
 import com.tanfra.shopmob.smob.SmobActivity
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
-import com.tanfra.shopmob.smob.data.local.dto.SmobItemDTO
 import com.tanfra.shopmob.smob.data.local.LocalDB
 import com.tanfra.shopmob.smob.smoblist.SmobItemListViewModel
 import com.tanfra.shopmob.smob.saveitem.SaveSmobItemViewModel
@@ -31,7 +30,7 @@ import com.tanfra.shopmob.util.DataBindingIdlingResource
 import com.tanfra.shopmob.util.monitorActivity
 import com.tanfra.shopmob.utils.EspressoIdlingResource
 import com.tanfra.shopmob.smob.data.repo.SmobItemRepository
-import com.tanfra.shopmob.smob.types.SmobItem
+import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matcher
@@ -63,7 +62,7 @@ class SmobActivityTest: AutoCloseKoinTest() {
     private val dataBindingIdlingResource = DataBindingIdlingResource()
 
     // test data
-    private lateinit var testSmobItem: SmobItem
+    private lateinit var testSmobItemATO: SmobItemATO
 
     // UI Automator - used to click on system elements during test
     // ... see: https://alexzh.com/ui-testing-of-android-runtime-permissions/ for some background
@@ -175,7 +174,7 @@ class SmobActivityTest: AutoCloseKoinTest() {
         }
 
         // initialize test smob item (used to populate smob item list)
-        testSmobItem = SmobItem(
+        testSmobItemATO = SmobItemATO(
             "e2e.title",
             "e2e.description",
             "e2e.location",
@@ -211,7 +210,7 @@ class SmobActivityTest: AutoCloseKoinTest() {
     fun smobActivityTest_fragmentSmobItemList() = runBlocking {
 
         // add a smob item to the repository
-        repository.saveSmobItem(testSmobItem)
+        repository.saveSmobItem(testSmobItemATO)
 
         // startup with the smob item list screen
         //
@@ -229,9 +228,9 @@ class SmobActivityTest: AutoCloseKoinTest() {
         onView(withId(R.id.smobItemsRecyclerView)).check((matches(isDisplayed())))
 
         // verify that the smob item from the DB is displayed correctly
-        onView(withId(R.id.title)).check(matches(withText(testSmobItem.title)))
-        onView(withId(R.id.description)).check(matches(withText(testSmobItem.description)))
-        onView(withId(R.id.location)).check(matches(withText(testSmobItem.location)))
+        onView(withId(R.id.title)).check(matches(withText(testSmobItemATO.title)))
+        onView(withId(R.id.description)).check(matches(withText(testSmobItemATO.description)))
+        onView(withId(R.id.location)).check(matches(withText(testSmobItemATO.location)))
 
         // click on the "add smob item" and travel to SaveSmobItem fragment
         onView(withId(R.id.add_smob_item_fab)).perform(click())
@@ -256,7 +255,7 @@ class SmobActivityTest: AutoCloseKoinTest() {
     fun SmobActivityTest_displaySmobItemDetails() = runBlocking {
 
         // add a smob item to the repository
-        repository.saveSmobItem(testSmobItem)
+        repository.saveSmobItem(testSmobItemATO)
 
         // startup with the SmobItem screen
         //
@@ -274,7 +273,7 @@ class SmobActivityTest: AutoCloseKoinTest() {
         onView(withId(R.id.smobItemsRecyclerView)).check((matches(isDisplayed())))
 
         // verify that the location smob item from the DB is displayed correctly
-        onView(withId(R.id.title)).check(matches(withText(testSmobItem.title)))
+        onView(withId(R.id.title)).check(matches(withText(testSmobItemATO.title)))
 
         // click on the smob item to display details
         onView(withId(R.id.title)).perform(click())
@@ -283,9 +282,9 @@ class SmobActivityTest: AutoCloseKoinTest() {
         onView(withId(R.id.clSmobItemDetails)).check((matches(isDisplayed())))
 
         // verify that the smob item details are displayed correctly
-        onView(withId(R.id.tvTitleText)).check(matches(withText(testSmobItem.title)))
-        onView(withId(R.id.tvDescText)).check(matches(withText(testSmobItem.description)))
-        onView(withId(R.id.tvLocText)).check(matches(withText(testSmobItem.location)))
+        onView(withId(R.id.tvTitleText)).check(matches(withText(testSmobItemATO.title)))
+        onView(withId(R.id.tvDescText)).check(matches(withText(testSmobItemATO.description)))
+        onView(withId(R.id.tvLocText)).check(matches(withText(testSmobItemATO.location)))
 
         // click 'DISMISS' to back to the SmobItemList fragment
         onView(withId(R.id.btDismiss)).perform(click())
@@ -304,7 +303,7 @@ class SmobActivityTest: AutoCloseKoinTest() {
     fun SmobActivityTest_fragmentSaveSmobItem() = runBlocking {
 
         // add a smob item to the repository
-        repository.saveSmobItem(testSmobItem)
+        repository.saveSmobItem(testSmobItemATO)
 
         // fetch SaveSmobItemViewModel to set some test data
         _viewModelSmob = inject<SaveSmobItemViewModel>().value
@@ -458,7 +457,7 @@ class SmobActivityTest: AutoCloseKoinTest() {
     fun SmobActivityTest_loginActivity() = runBlocking {
 
         // add a smob item to the repository
-        repository.saveSmobItem(testSmobItem)
+        repository.saveSmobItem(testSmobItemATO)
 
         // open new activity container w/h class "AuthenticationActivity"
         val authenticationActivityScenario = ActivityScenario.launch(AuthenticationActivity::class.java)

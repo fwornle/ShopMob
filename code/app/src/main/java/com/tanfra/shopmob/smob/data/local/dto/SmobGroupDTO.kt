@@ -1,8 +1,8 @@
 package com.tanfra.shopmob.smob.data.local.dto
 
 import androidx.room.*
-import com.tanfra.shopmob.utils.GroupType
-import com.tanfra.shopmob.utils.ActivityState
+import com.tanfra.shopmob.smob.data.local.utils.GroupType
+import java.time.LocalDate
 import java.util.*
 
 /**
@@ -12,8 +12,9 @@ import java.util.*
  * @param name           name of the smobGroup
  * @param description    optional description
  * @param type           (default)other|family|friends|work
- * @param members        comma separated list of userIds
- * @param activityState  data class ItemActivity: date of last / frequency of event/s in this group
+ * @param members        list of IDs of the smob users sharing this list
+ * @param activityDate   data class (ActivityState) member "date": last event within this group
+ * @param activityReps   data class (ActivityState) member "reps": number of events
  */
 @Entity(tableName = "smobGroups")
 @RewriteQueriesToDropUnusedColumns
@@ -22,6 +23,7 @@ data class SmobGroupDTO(
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "description") var description: String?,
     @ColumnInfo(name = "type") var type: GroupType,
-    @ColumnInfo(name = "members") var members: List<String?>,
-    @ColumnInfo(name = "activity") var activityState: ActivityState
+    @ColumnInfo(name = "members") var members: List<String>,
+    @ColumnInfo(name = "activity_date") var activityDate: LocalDate,
+    @ColumnInfo(name = "activity_reps") var activityReps: Long,
 )

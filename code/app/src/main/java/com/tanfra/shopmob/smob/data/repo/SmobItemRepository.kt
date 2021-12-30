@@ -2,9 +2,7 @@ package com.tanfra.shopmob.smob.data.repo
 
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.data.local.dao.SmobItemDao
-import com.tanfra.shopmob.smob.types.SmobItem
-import com.tanfra.shopmob.utils.asDatabaseModel
-import com.tanfra.shopmob.utils.asDomainModel
+import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 
@@ -25,7 +23,7 @@ class SmobItemRepository(
      * Get the smob item list from the local db
      * @return Result the holds a Success with all the smob items or an Error object with the error message
      */
-    override suspend fun getSmobItems(): Resource<List<SmobItem>> = withContext(ioDispatcher) {
+    override suspend fun getSmobItems(): Resource<List<SmobItemATO>> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             return@withContext try {
@@ -38,13 +36,13 @@ class SmobItemRepository(
 
     /**
      * Insert a smob item in the db.
-     * @param smobItem the smob item to be inserted
+     * @param smobItemATO the smob item to be inserted
      */
-    override suspend fun saveSmobItem(smobItem: SmobItem) =
+    override suspend fun saveSmobItem(smobItemATO: SmobItemATO) =
         withContext(ioDispatcher) {
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
-                smobItemDao.saveSmobItem(smobItem.asDatabaseModel())
+                smobItemDao.saveSmobItem(smobItemATO.asDatabaseModel())
             }
         }
 
@@ -53,7 +51,7 @@ class SmobItemRepository(
      * @param id to be used to get the smob item
      * @return Result the holds a Success object with the SmobItem or an Error object with the error message
      */
-    override suspend fun getSmobItem(id: String): Resource<SmobItem> = withContext(ioDispatcher) {
+    override suspend fun getSmobItem(id: String): Resource<SmobItemATO> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
             try {

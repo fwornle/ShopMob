@@ -1,9 +1,9 @@
-package com.tanfra.shopmob.smob.types
+package com.tanfra.shopmob.smob.data.repo.ato
 import kotlinx.serialization.Serializable
 
-// domain independent data type
+// domain independent data type (Application Transfer Object)
 @Serializable
-data class SmobUser(
+data class SmobUserATO(
     val id: String,
     var username: String,
     var name: String,

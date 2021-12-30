@@ -5,9 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.base.BaseViewModel
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
-import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
-import com.tanfra.shopmob.smob.types.SmobItem
+import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -17,7 +16,7 @@ class SmobItemListViewModel(
 ) : BaseViewModel(app) {
 
     // list that holds the smob data items to be displayed on the UI
-    val smobItemList = MutableLiveData<List<SmobItem>>()
+    val smobItemList = MutableLiveData<List<SmobItemATO>>()
 
 //    //
 //    private val _myUiState = MutableLiveData<Resource<>>(Result.Loading)
@@ -53,11 +52,11 @@ class SmobItemListViewModel(
             // convert data from DTO format to app format
             when (result.status) {
                 Status.SUCCESS -> {
-                    val dataList = ArrayList<SmobItem>()
-                    dataList.addAll((result.data as List<SmobItem>).map { smobItem ->
+                    val dataList = ArrayList<SmobItemATO>()
+                    dataList.addAll((result.data as List<SmobItemATO>).map { smobItem ->
                         // map the smob item data from DB format (SmobItemDTO) to the format used
                         // when displaying on the UI
-                        SmobItem(
+                        SmobItemATO(
                             smobItem.title,
                             smobItem.description,
                             smobItem.location,
