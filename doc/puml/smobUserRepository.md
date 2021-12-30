@@ -3,8 +3,8 @@
 interface SmobUserDataSource #aliceblue;line:blue;line.dotted;text:blue {
     **app facing IF**
     [async]
-    +getSmobUser(...) : Result<SmobUser>
-    +getAllSmobUsers() : Result<List<SmobUser>>
+    +getSmobUser(...) : Resource<SmobUser>
+    +getAllSmobUsers() : Resource<List<SmobUser>>
     +saveSmobUser(...)
     +saveSmobUsers(...)
     +updateSmobUser(...)
@@ -13,6 +13,16 @@ interface SmobUserDataSource #aliceblue;line:blue;line.dotted;text:blue {
     +deleteAllSmobUsers()
     +refreshSmobUserDataInDB()
 }
+
+class Resource {
+    Retrofit **Resource** type
+    for HTTP requests
+    +success()
+    +error()
+    +loading()
+}
+
+SmobUserDataSource -up-> Resource
 
 frame "repoServices" #Lightblue {
     class SmobUserRepository implements SmobUserDataSource {
@@ -41,7 +51,6 @@ frame "repoServices" #Lightblue {
         -(DI) **smobUserDao.**getSmobUsers()
         -(DI) **smobUserDao.**saveSmobUser(...)
         -(DI) **smobUserDao.**updateSmobUser(...)
-        -(DI) **smobUserDao.**updateSmobUsers(...)
         -(DI) **smobUserDao.**deleteSmobUsersById(...)
         -(DI) **smobUserDao.**deleteAllSmobUsers()
         ---
@@ -172,7 +181,7 @@ for **SmobUser** items
 +imageUrl
 }
 
-SmobUserDataSource .up.> SmobUser : uses >
+SmobUserDataSource -left-> SmobUser
 
 
 SmobUserRepository o-down-- dbObject : "\n     get()\n (DI: **smobUserDao**)" " "
