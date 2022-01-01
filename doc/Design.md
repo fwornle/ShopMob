@@ -241,6 +241,27 @@ The _smobGroup_ entries of the _smobGroups_ table adheres to the following schem
 }
 ```
 
+###### Product
+
+The _smobProduct_ entries of the _smobProducts_ table adheres to the following schema:
+
+```json
+{
+  "id": "UUID-product",
+  "name": "product name",
+  "description": "lactose free",
+  "imageUrl": "URL",
+  "category": {
+    "main": "(default)other|foods|hardware|supplies|clothing",
+    "sub": "{(default)none|fruit-n-vegetables|bread|dairy|frozen|cans|beverages}|{...}"
+  },
+  "activity": {
+    "date": "date-of-last-purchase",
+    "repetitions": 17
+  }
+}
+```
+
 ###### Store
 
 The _smobStore_ entries of the _smobStores_ table adheres to the following schema:
@@ -268,27 +289,6 @@ The _smobStore_ entries of the _smobStores_ table adheres to the following schem
 }
 ```
 
-###### Product
-
-The _smobProduct_ entries of the _smobProducts_ table adheres to the following schema:
-
-```json
-{
-  "id": "UUID-product",
-  "name": "product name",
-  "description": "lactose free",
-  "imageUrl": "URL",
-  "category": {
-    "main": "(default)other|foods|hardware|supplies|clothing",
-    "sub": "{(default)none|fruit-n-vegetables|bread|dairy|frozen|cans|beverages}|{...}"
-  },
-  "activity": {
-    "date": "date-of-last-purchase",
-    "repetitions": 17
-  }
-}
-```
-
 ###### Smob List
 
 The _smobList_ entries of the _smobLists_ table adheres to the following schema:
@@ -311,7 +311,7 @@ The _smobList_ entries of the _smobLists_ table adheres to the following schema:
     "..."
   ],
   "lifecycle": {
-    "state": "open|in progress|done",
+    "status": "open|in progress|done",
     "completion": 35
   }
 }
