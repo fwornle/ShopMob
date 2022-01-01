@@ -16,7 +16,7 @@ fun ArrayList<SmobListNTO>.asRepoModel(): List<SmobListDTO> {
                 description = it.description,
                 items = it.items,
                 members = it.members,
-                lcState = it.lifecycle.state,
+                lcStatus = it.lifecycle.status,
                 lcCompletion = it.lifecycle.completion,
             )
         }
@@ -33,7 +33,7 @@ fun List<SmobListDTO>.asNetworkModel(): ArrayList<SmobListNTO> {
                 description = it.description,
                 items = it.items,
                 members = it.members,
-                lifecycle = SmobListLifecycle(it.lcState, it.lcCompletion),
+                lifecycle = SmobListLifecycle(it.lcStatus, it.lcCompletion),
             )
         }
     )
@@ -47,7 +47,7 @@ fun SmobListNTO.asRepoModel(): SmobListDTO {
         description = this.description,
         items = this.items,
         members = this.members,
-        lcState = this.lifecycle.state,
+        lcStatus = this.lifecycle.status,
         lcCompletion = this.lifecycle.completion,
     )
 }
@@ -60,6 +60,6 @@ fun SmobListDTO.asNetworkModel(): SmobListNTO {
         description = this.description,
         items = this.items,
         members = this.members,
-        lifecycle = SmobListLifecycle(this.lcState, this.lcCompletion),
+        lifecycle = SmobListLifecycle(this.lcStatus, this.lcCompletion),
     )
 }

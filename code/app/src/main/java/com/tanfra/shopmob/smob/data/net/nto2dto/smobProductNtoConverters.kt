@@ -2,7 +2,7 @@ package com.tanfra.shopmob.smob.data.net.nto2dto
 
 import com.tanfra.shopmob.smob.data.local.dto.SmobProductDTO
 import com.tanfra.shopmob.smob.data.net.nto.SmobProductNTO
-import com.tanfra.shopmob.smob.data.local.utils.ActivityState
+import com.tanfra.shopmob.smob.data.local.utils.ActivityStatus
 import com.tanfra.shopmob.smob.data.local.utils.ProductCategory
 
 // extension functions to convert between database types and domain data types (both directions)
@@ -35,7 +35,7 @@ fun List<SmobProductDTO>.asNetworkModel(): ArrayList<SmobProductNTO> {
                 description = it.description,
                 imageUrl = it.imageUrl,
                 category = ProductCategory(it.categoryMain, it.categorySub),
-                activity = ActivityState(it.activityDate, it.activityReps),
+                activity = ActivityStatus(it.activityDate, it.activityReps),
             )
         }
     )
@@ -63,6 +63,6 @@ fun SmobProductDTO.asNetworkModel(): SmobProductNTO {
         description = this.description,
         imageUrl = this.imageUrl,
         category = ProductCategory(this.categoryMain, this.categorySub),
-        activity = ActivityState(this.activityDate, this.activityReps),
+        activity = ActivityStatus(this.activityDate, this.activityReps),
     )
 }

@@ -1,7 +1,6 @@
 package com.tanfra.shopmob.smob.data.local.utils
 
 import androidx.room.TypeConverter
-import java.time.LocalDate
 import kotlinx.serialization.json.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -47,13 +46,13 @@ enum class GroupType {
     WORK,
 }
 
-enum class SmobEntryState {
+enum class SmobEntryStatus {
     OPEN,
     IN_PROGRESS,
     DONE,
 }
 
-data class ActivityState(
+data class ActivityStatus(
     val date: String,
     val reps: Long,
 )
@@ -70,11 +69,11 @@ data class ShopLocation(
 
 data class SmobListItem(
     val id: String,
-    val state: SmobEntryState,
+    val status: SmobEntryStatus,
 )
 
 data class SmobListLifecycle(
-    val state: SmobEntryState,
+    val status: SmobEntryStatus,
     val completion: Double
 )
 
@@ -85,10 +84,10 @@ class LocalDbConverters {
 
     // ItemActivity converter
     @TypeConverter
-    fun activityToJson(value: ActivityState?) = Json.encodeToString(value)
+    fun activityToJson(value: ActivityStatus?) = Json.encodeToString(value)
 
     @TypeConverter
-    fun jsonToActivity(value: String) = Json.decodeFromString<ActivityState>(value)
+    fun jsonToActivity(value: String) = Json.decodeFromString<ActivityStatus>(value)
 
     // SmobListEntry converter
     @TypeConverter

@@ -1,7 +1,7 @@
 package com.tanfra.shopmob.smob.data.local.dto
 
 import androidx.room.*
-import com.tanfra.shopmob.smob.data.local.utils.SmobEntryState
+import com.tanfra.shopmob.smob.data.local.utils.SmobEntryStatus
 import com.tanfra.shopmob.smob.data.local.utils.SmobListItem
 import java.util.*
 
@@ -13,7 +13,7 @@ import java.util.*
  * @param description    optional description
  * @param items          list of descriptors (id, state) of items on the smobList
  * @param members        list of IDs of the smob users sharing this list
- * @param lcState        lifecycle state information of the list (OPEN|IN PROGRESS|DONE)
+ * @param lcStatus        lifecycle state information of the list (OPEN|IN PROGRESS|DONE)
  * @param lcCompletion   lifecycle completion information of the list (degree of completion, %)
  */
 @Entity(tableName = "smobLists")
@@ -24,6 +24,6 @@ data class SmobListDTO(
     @ColumnInfo(name = "description") var description: String?,
     @ColumnInfo(name = "items") var items: List<SmobListItem>,
     @ColumnInfo(name = "members") var members: List<String>,
-    @ColumnInfo(name = "lifecycle_state") var lcState: SmobEntryState,
+    @ColumnInfo(name = "lifecycle_state") var lcStatus: SmobEntryStatus,
     @ColumnInfo(name = "lifecycle_completion") var lcCompletion: Double,
 )

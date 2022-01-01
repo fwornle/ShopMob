@@ -2,7 +2,7 @@ package com.tanfra.shopmob.smob.data.local.dto2ato
 
 import com.tanfra.shopmob.smob.data.local.dto.SmobGroupDTO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
-import com.tanfra.shopmob.smob.data.local.utils.ActivityState
+import com.tanfra.shopmob.smob.data.local.utils.ActivityStatus
 
 // extension functions to convert between database types and domain data types (both directions)
 
@@ -15,7 +15,7 @@ fun List<SmobGroupDTO>.asDomainModel(): List<SmobGroupATO> {
             description = it.description,
             type = it.type,
             members = it.members,
-            activity = ActivityState(it.activityDate, it.activityReps),
+            activity = ActivityStatus(it.activityDate, it.activityReps),
         )
     }
 }
@@ -42,7 +42,7 @@ fun SmobGroupDTO.asDomainModel(): SmobGroupATO {
         description = this.description,
         type = this.type,
         members = this.members,
-        activity = ActivityState(this.activityDate, this.activityReps),
+        activity = ActivityStatus(this.activityDate, this.activityReps),
     )
 }
 
