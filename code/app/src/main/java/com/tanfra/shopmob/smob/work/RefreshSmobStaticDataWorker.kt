@@ -42,6 +42,8 @@ class RefreshSmobStaticDataWorker(appContext: Context, params: WorkerParameters)
             // ... run every minute
             //     note: WorkManager (re)-schedules this work job every 15 minutes
             //           --> need to "sub-divide" this into 15 further
+            // ... for an alternative (periodic re-scheduling of oneShot work) see:
+            //     https://stackoverflow.com/questions/51202905/execute-task-every-second-using-work-manager-api
             for(idx in 1 .. 15) {
 
                 // update users in local DB from backend DB
