@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
+import kotlinx.coroutines.delay
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import retrofit2.HttpException
@@ -33,8 +34,20 @@ class RefreshSmobStaticDataWorker(appContext: Context, params: WorkerParameters)
             // ... received data is used to update the DB
             Timber.i("Running scheduled work (refreshSmobStaticDataInDB)")
 
-            // update users in local DB from backend DB
-            smobUserDataSource.refreshSmobUserDataInDB()
+            // WORKAROUND (for missing backend - no update notifications yet --> polling)
+            // ... run every minute
+            //     note: WorkManager (re)-schedules this work job every 15 minutes
+            //           --> need to "sub-divide" this into 15 further
+            for(idx in 1 .. 15) {
+
+                // update users in local DB from backend DB
+                Timber.i("Refreshing SmobUser data in local DB ($idx/15)")
+                smobUserDataSource.refreshSmobUsersInDB()
+
+                // suspend for 60 seconds
+                delay(60000)
+
+            }
 
             // return 'success' - done
             Timber.i("Scheduled work (refreshAsteroidsInDB) run successfully")

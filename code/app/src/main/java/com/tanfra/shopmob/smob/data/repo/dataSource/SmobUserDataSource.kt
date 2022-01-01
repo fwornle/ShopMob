@@ -17,5 +17,5 @@ interface SmobUserDataSource {
     suspend fun updateSmobUsers(smobUsersATO: List<SmobUserATO>)
     suspend fun deleteSmobUser(id: String)
     suspend fun deleteAllSmobUsers()
-    suspend fun refreshSmobUserDataInDB()
+    suspend fun refreshSmobUsersInDB()
 }

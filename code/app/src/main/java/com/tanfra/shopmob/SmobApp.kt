@@ -73,17 +73,26 @@ class SmobApp : Application(), KoinComponent, Configuration.Provider {
 
         // define some constraints und which the repeating request should be scheduled:
         // WIFI, charging
+        //
+        // NOTE:
+        // ... backend not ready, currently no notifications of changes
+        //     --> use background work to poll DB every minute
+        //     --> METERED & no charging
         val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.UNMETERED)
-            .setRequiresCharging(true)
+            //.setRequiredNetworkType(NetworkType.UNMETERED)
+            //.setRequiresCharging(true)
             .build()
 
         // define configuration of WorkManager job: scheduling frequency, constraints (see above)
         // ... this is for the background updates of 'quasi static' user data, shop data, etc.
         //     --> slow (every hour - if conditions are met [UNMETERED])
+        // NOTE:
+        // ... backend not ready, currently no notifications of changes
+        //     --> use background work to poll DB every 15 minutes
+        //     --> within this 15 minute block (run on a coroutine), take 'sub-steps' with delay()
         val repeatingRequest = PeriodicWorkRequestBuilder<RefreshSmobStaticDataWorker>(
-            1,
-            TimeUnit.HOURS
+            15,
+            TimeUnit.MINUTES
         )
             .setConstraints(constraints)
             .build()

@@ -17,5 +17,5 @@ interface SmobProductDataSource {
     suspend fun updateSmobProducts(smobProductsATO: List<SmobProductATO>)
     suspend fun deleteSmobProduct(id: String)
     suspend fun deleteAllSmobProducts()
-    suspend fun refreshSmobProductDataInDB()
+    suspend fun refreshSmobProductsInDB()
 }

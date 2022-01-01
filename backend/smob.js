@@ -115,7 +115,7 @@ function smob () {
         var name = faker.lorem.word()
         var description = faker.lorem.words(rand(5))
         var type = faker.helpers.randomize(groupTypes)
-        var mobbers = [...Array(rand(10)).keys()].map(_ => faker.helpers.randomize(userIds)).sort()
+        var members = [...Array(rand(10)).keys()].map(_ => faker.helpers.randomize(userIds)).sort()
         var activity = faker.date.past()
 
         smobGroups.push({
@@ -123,7 +123,7 @@ function smob () {
             "name": name,
             "description": description,
             "type": type,
-            "mobbers": mobbers,
+            "members": members,
             "activity": activity,
         })
 
@@ -177,7 +177,7 @@ function smob () {
         var items = itemsOnList.map(
             prodId => { return { "id": prodId, "status": faker.helpers.randomize(itemStatus) } }
         )
-        var mobbers = [...Array(1 + rand(5)).keys()].map(_ => faker.helpers.randomize(userIds)).sort()
+        var members = [...Array(1 + rand(5)).keys()].map(_ => faker.helpers.randomize(userIds)).sort()
         var lifecycle = { state: faker.date.recent().toDateString(), completion: rand(100) }
 
         // {
@@ -190,7 +190,7 @@ function smob () {
         //         { "id": "productId3", "status": "open|in progress|done" },
         //         { }
         //     ],
-        //     "mobbers": [
+        //     "members": [
         //         "userId1",
         //         "userId2",
         //         "userId3",
@@ -207,7 +207,7 @@ function smob () {
             "name": name,
             "description": description,
             "items": items,
-            "mobbers": mobbers,
+            "members": members,
             "lifecycle": lifecycle
         })
 

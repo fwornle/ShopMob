@@ -8,6 +8,8 @@ import com.tanfra.shopmob.smob.data.local.dto.SmobShopDTO
 import com.tanfra.shopmob.smob.data.local.dao.SmobShopDao
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
+import com.tanfra.shopmob.smob.data.local.utils.ShopCategory
+import com.tanfra.shopmob.smob.data.local.utils.ShopType
 import com.tanfra.shopmob.smob.data.net.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.api.SmobShopApi
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
@@ -43,69 +45,6 @@ class SmobShopRepository(
     // --- impl. of public, app facing data interface 'SmobShopDataSource': CRUD, local DB data ---
 
     /**
-     * Get the smob shop list from the local db
-     * @return Result holds a Success with all the smob shops or an Error object with the error message
-     */
-    override suspend fun getAllSmobShops(): Resource<List<SmobShopATO>> = withContext(ioDispatcher) {
-        // support espresso testing (w/h coroutines)
-        wrapEspressoIdlingResource {
-            return@withContext try {
-                // success --> turn DB data type (DTO) to domain data type
-                Resource.success(smobShopDao.getSmobShops().asDomainModel())
-            } catch (ex: Exception) {
-                Resource.error(ex.localizedMessage, null)
-            }
-        }
-    }
-
-    /**
-     * Insert a smob shop in the db. Replace a potentially existing smob shop record.
-     * @param smobShopATO the smob shop to be inserted
-     */
-    override suspend fun saveSmobShop(smobShopATO: SmobShopATO) =
-        withContext(ioDispatcher) {
-            // support espresso testing (w/h coroutines)
-            wrapEspressoIdlingResource {
-                smobShopDao.saveSmobShop(smobShopATO.asDatabaseModel())
-            }
-        }
-
-
-    /**
-     * Insert several smob shops in the db. Replace any potentially existing smob shop record.
-     * @param smobShopsATO a list of smob shops to be inserted
-     */
-    override suspend fun saveSmobShops(smobShopsATO: List<SmobShopATO>) {
-        // store all provided smob shops by repeatedly calling upon saveSmobShop
-        withContext(ioDispatcher) {
-            smobShopsATO.map { saveSmobShop(it) }
-        }
-    }
-
-    /**
-     * Update an existing smob shop in the db. Do nothing, if the smob shop does not exist.
-     * @param smobShopATO the smob shop to be updated
-     */
-    override suspend fun updateSmobShop(smobShopATO: SmobShopATO) =
-        withContext(ioDispatcher) {
-            // support espresso testing (w/h coroutines)
-            wrapEspressoIdlingResource {
-                smobShopDao.updateSmobShop(smobShopATO.asDatabaseModel())
-            }
-        }
-
-    /**
-     * Update an set of existing smob shops in the db. Ignore smob shops which do not exist.
-     * @param smobShopsATO the list of smob shops to be updated
-     */
-    override suspend fun updateSmobShops(smobShopsATO: List<SmobShopATO>) {
-        // update all provided smob shops by repeatedly calling upon updateSmobShop
-        withContext(ioDispatcher) {
-            smobShopsATO.map { updateSmobShop(it) }
-        }
-    }
-
-    /**
      * Get a smob shop by its id
      * @param id to be used to get the smob shop
      * @return Result the holds a Success object with the SmobShop or an Error object with the error message
@@ -113,6 +52,13 @@ class SmobShopRepository(
     override suspend fun getSmobShop(id: String): Resource<SmobShopATO> = withContext(ioDispatcher) {
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
+
+            // first try to update local DB for the requested SmobShop
+            // ... if the API call fails, the local DB remains untouched
+            //     --> app still works, as we only work of the data in the local DB
+            refreshSmobShopInDB(id)
+
+            // now try to fetch data from the local DB
             try {
                 val smobShopDTO = smobShopDao.getSmobShopById(id)
                 if (smobShopDTO != null) {
@@ -128,6 +74,100 @@ class SmobShopRepository(
     }
 
     /**
+     * Get the smob shop list from the local db
+     * @return Result holds a Success with all the smob shops or an Error object with the error message
+     */
+    override suspend fun getAllSmobShops(): Resource<List<SmobShopATO>> = withContext(ioDispatcher) {
+        // support espresso testing (w/h coroutines)
+        wrapEspressoIdlingResource {
+
+            // first try to refresh SmobShop data in local DB
+            // ... note: currently, this is also scheduled by WorkManager every 60 seconds
+            //     --> not essential to re-run this here...
+            // ... if the API call fails, the local DB remains untouched
+            //     --> app still works, as we only work of the data in the local DB
+            refreshSmobShopsInDB()
+
+            // now try to fetch data from the local DB
+            return@withContext try {
+                // success --> turn DB data type (DTO) to domain data type
+                Resource.success(smobShopDao.getSmobShops().asDomainModel())
+            } catch (ex: Exception) {
+                Resource.error(ex.localizedMessage, null)
+            }
+        }
+    }
+
+    /**
+     * Insert a smob shop in the db. Replace a potentially existing smob shop record.
+     * @param smobShopATO the smob shop to be inserted
+     */
+    override suspend fun saveSmobShop(smobShopATO: SmobShopATO): Unit =
+        withContext(ioDispatcher) {
+            // support espresso testing (w/h coroutines)
+            wrapEspressoIdlingResource {
+
+                // first store in local DB first
+                val dbShop = smobShopATO.asDatabaseModel()
+                smobShopDao.saveSmobShop(dbShop)
+
+                // then push to backend DB
+                // ... use 'update', as shop may already exist (equivalent of REPLACE w/h local DB)
+                //
+                // ... could do a read back first, if we're anxious...
+                //smobShopDao.getSmobShopById(dbShop.id)?.let { smobShopApi.updateSmobShop(it.id, it.asNetworkModel()) }
+                smobShopApi.updateSmobShopById(dbShop.id, dbShop.asNetworkModel())
+
+            }
+        }
+
+
+    /**
+     * Insert several smob shops in the db. Replace any potentially existing smob u?ser record.
+     * @param smobShopsATO a list of smob shops to be inserted
+     */
+    override suspend fun saveSmobShops(smobShopsATO: List<SmobShopATO>) {
+        // store all provided smob shops by repeatedly calling upon saveSmobShop
+        withContext(ioDispatcher) {
+            smobShopsATO.map { saveSmobShop(it) }
+        }
+    }
+
+    /**
+     * Update an existing smob shop in the db. Do nothing, if the smob shop does not exist.
+     * @param smobShopATO the smob shop to be updated
+     */
+    override suspend fun updateSmobShop(smobShopATO: SmobShopATO): Unit =
+        withContext(ioDispatcher) {
+            // support espresso testing (w/h coroutines)
+            wrapEspressoIdlingResource {
+
+                // first store in local DB first
+                val dbShop = smobShopATO.asDatabaseModel()
+                smobShopDao.updateSmobShop(dbShop)
+
+                // then push to backend DB
+                // ... use 'update', as shop may already exist (equivalent of REPLACE w/h local DB)
+                //
+                // ... could do a read back first, if we're anxious...
+                //smobShopDao.getSmobShopById(dbShop.id)?.let { smobShopApi.updateSmobShop(it.id, it.asNetworkModel()) }
+                smobShopApi.updateSmobShopById(dbShop.id, dbShop.asNetworkModel())
+
+            }
+        }
+
+    /**
+     * Update an set of existing smob shops in the db. Ignore smob shops which do not exist.
+     * @param smobShopsATO the list of smob shops to be updated
+     */
+    override suspend fun updateSmobShops(smobShopsATO: List<SmobShopATO>) {
+        // update all provided smob shops by repeatedly calling upon updateSmobShop
+        withContext(ioDispatcher) {
+            smobShopsATO.map { updateSmobShop(it) }
+        }
+    }
+
+    /**
      * Delete a smob shop in the db
      * @param id ID of the smob shop to be deleted
      */
@@ -136,6 +176,7 @@ class SmobShopRepository(
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
                 smobShopDao.deleteSmobShopById(id)
+                smobShopApi.deleteSmobShopById(id)
             }
         }
     }
@@ -147,9 +188,21 @@ class SmobShopRepository(
         withContext(ioDispatcher) {
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
+
+                // first delete all shops from local DB
                 smobShopDao.deleteAllSmobShops()
+
+                // then delete all shops from backend DB
+                getSmobShopsViaApi().let {
+                    if (it.status.equals(Status.SUCCESS)) {
+                        it.data?.map { smobShopApi.deleteSmobShopById(it.id) }
+                    } else {
+                        Timber.w("Unable to get SmobShop IDs from backend DB (via API) - not deleting anything.")
+                    }
+                }
             }
-        }
+
+        }  // context: ioDispatcher
     }
 
 
@@ -159,7 +212,7 @@ class SmobShopRepository(
     /**
      * Synchronize all smob shops in the db by retrieval from the backend using the (net) API
      */
-    override suspend fun refreshSmobShopDataInDB() {
+    override suspend fun refreshSmobShopsInDB() {
 
         // set initial status
         _statusSmobShopDataSync.postValue(Status.LOADING)
@@ -170,27 +223,6 @@ class SmobShopRepository(
             // initiate the (HTTP) GET request using the provided query parameters
             Timber.i("Sending GET request for SmobShop data...")
             val response: Resource<List<SmobShopDTO>> = getSmobShopsViaApi()
-
-            // smoke test for net-CRUD (quick workaround... to avoid having to set up proper tests)
-//            val response2: SmobShopDTO? = getSmobShopFromApi("07c295ad-b286-41f7-b2ea-e81a75875d02")
-//            Timber.i(response2?.toString())
-//
-//            val testTxShop: SmobShopDTO = SmobShopDTO(
-//                shopname = "maMu",
-//                name = "Max Mustermann",
-//                email = "max@mustermann.org",
-//                imageUrl = null
-//            )
-//            saveSmobShopViaApi(testTxShop)
-//
-//            // read back 'first' max mustermann
-//            testTxShop.imageUrl = Date().time.toString()
-//            updateSmobShopViaApi(
-//                "0794b744-7fa4-4440-b284-8c72012ed6cf",
-//                testTxShop
-//            )
-//
-//            deleteSmobShopViaApi("1bbd2da1-e028-4e42-b6b8-7d944013abca")
 
             // got any valid data back?
             if (response.status.equals(Status.SUCCESS)) {
@@ -209,8 +241,36 @@ class SmobShopRepository(
 
         }  // coroutine scope (IO)
 
-    }  // refreshSmobShopDataInDB()
+    }  // refreshSmobShopsInDB()
 
+    /**
+     * Synchronize an individual smob shops in the db by retrieval from the backend DB (API call)
+     */
+    suspend fun refreshSmobShopInDB(id: String) {
+
+        // send GET request to server - coroutine to avoid blocking the main (UI) thread
+        withContext(Dispatchers.IO) {
+
+            // initiate the (HTTP) GET request using the provided query parameters
+            Timber.i("Sending GET request for SmobShop data...")
+            val response: Resource<SmobShopDTO> = getSmobShopViaApi(id)
+
+            // got any valid data back?
+            if (response.status.equals(Status.SUCCESS)) {
+
+                Timber.i("SmobShop data GET request complete (success)")
+
+                // store shop data in DB - if any
+                response.data?.let {
+                    smobShopDao.saveSmobShop(it)
+                    Timber.i("SmobShop data items stored in local DB")
+                }
+
+            }  // if (valid response)
+
+        }  // coroutine scope (IO)
+
+    }  // refreshSmobShopInDB()
 
 
     // --- use : CRUD, NET data ---
@@ -222,7 +282,7 @@ class SmobShopRepository(
     private val responseHandler: ResponseHandler by inject()
 
     // net-facing getter: all shops
-    // ... wrap in Resource (as opposed to Result - see above) to also provide "loading" status
+    // ... wrap in Resource (as opposed to Result - see above) to also provide "loading" state
     // ... note: no 'override', as this is not exposed in the repository interface (network access
     //           is fully abstracted by the repo - all data access done via local DB)
     private suspend fun getSmobShopsViaApi(): Resource<List<SmobShopDTO>> = withContext(ioDispatcher) {
@@ -266,29 +326,52 @@ class SmobShopRepository(
 
 
     // net-facing getter: a specific shop
-    private suspend fun getSmobShopViaApi(id: String): SmobShopDTO? = withContext(ioDispatcher) {
+    private suspend fun getSmobShopViaApi(id: String): Resource<SmobShopDTO> = withContext(ioDispatcher) {
+
+        // overall result - haven't got anything yet
+        // ... this is useless here --> but needs to be done like this in the viewModel
+        val dummySmobShopDTO = SmobShopDTO(
+            "DUMMY",
+            "",
+            "",
+            -1.0,
+            -1.0,
+            ShopType.INDIVIDUAL,
+            ShopCategory.OTHER,
+            listOf(),
+        )
+        var result = Resource.loading(dummySmobShopDTO)
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
             // network access - could fail --> handle consistently via ResponseHandler class
-            return@withContext try {
+            result = try {
                 // return successfully received data object (from Moshi --> PoJo)
-                responseHandler.handleSuccess(smobShopApi.getSmobShopById(id))
-                    .data
-                    ?.body()
-                    ?.asRepoModel()    // returns 'null' if requested shop cannot be found
+                val netResult: SmobShopDTO = smobShopApi.getSmobShopById(id)
+                    .body()
+                    ?.asRepoModel()
+                    ?: dummySmobShopDTO
+
+                // return as successfully completed GET call to the backend
+                responseHandler.handleSuccess(netResult)
 
             } catch (ex: Exception) {
+
                 // return with exception --> handle it...
                 val daException = responseHandler.handleException<SmobShopDTO>(ex)
+
+                // local logging
                 Timber.e(daException.message)
 
-                // ... then return empty handed
-                null
+                // return handled exception
+                daException
+
             }
 
         }  // espresso: idlingResource
+
+        return@withContext result
 
     }  // getSmobShopFromApi
 
@@ -330,6 +413,8 @@ class SmobShopRepository(
 
 
 
+
+    // TODO: move this to viewModel?? replace LiveData by Flow??
     // LiveData for storing the status of the most recent RESTful API request
     private val _statusSmobShopDataSync = MutableLiveData<Status>()
     val statusNetApiSmobShopDataSync: LiveData<Status>
