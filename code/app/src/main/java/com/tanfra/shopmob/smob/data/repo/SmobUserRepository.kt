@@ -418,12 +418,12 @@ class SmobUserRepository(
 
     // LiveData for storing the status of the most recent RESTful API request - fetch profile pict.
     private val _statusSmobUserProfilePicture = MutableLiveData<Status>()
-    val statusNetApiSmobUserProfilePicture: LiveData<Status>
+    val statusSmobUserProfilePicture: LiveData<Status>
         get() = _statusSmobUserProfilePicture
 
     // LiveData for storing the status of the most recent RESTful API request
     private val _statusSmobUserDataSync = MutableLiveData<Status>()
-    val statusNetApiSmobUserDataSync: LiveData<Status>
+    val statusSmobUserDataSync: LiveData<Status>
         get() = _statusSmobUserDataSync
 
 

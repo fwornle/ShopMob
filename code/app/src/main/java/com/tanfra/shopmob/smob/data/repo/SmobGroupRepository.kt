@@ -415,7 +415,7 @@ class SmobGroupRepository(
     // TODO: move this to viewModel?? replace LiveData by Flow??
     // LiveData for storing the status of the most recent RESTful API request
     private val _statusSmobGroupDataSync = MutableLiveData<Status>()
-    val statusNetApiSmobGroupDataSync: LiveData<Status>
+    val statusSmobGroupDataSync: LiveData<Status>
         get() = _statusSmobGroupDataSync
 
 

@@ -3,7 +3,7 @@ package com.tanfra.shopmob.smob.data.net
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tanfra.shopmob.BuildConfig
-import com.tanfra.shopmob.smob.data.net.api.SmobUserApi
+import com.tanfra.shopmob.smob.data.net.api.*
 import com.tanfra.shopmob.smob.data.net.nto.SmobUserNTO
 import com.tanfra.shopmob.smob.data.net.utils.ArrayListAdapter
 import com.tanfra.shopmob.smob.data.net.utils.AuthInterceptor
@@ -63,12 +63,12 @@ val netServices = module {
 
     }
 
-    // helper function to provide an API: SmobUser
+    // helper function to provide APIs
     fun provideSmobUserApi(retrofit: Retrofit): SmobUserApi = retrofit.create(SmobUserApi::class.java)
-
-    // helper function to provide an API: SmobGroup
-    //private fun provideApiForSmobGroup(retrofit: Retrofit): SmobGroupApi = retrofit.create(SmobGroupApi::class.java)
-
+    fun provideSmobGroupApi(retrofit: Retrofit): SmobGroupApi = retrofit.create(SmobGroupApi::class.java)
+    fun provideSmobProductApi(retrofit: Retrofit): SmobProductApi = retrofit.create(SmobProductApi::class.java)
+    fun provideSmobShopApi(retrofit: Retrofit): SmobShopApi = retrofit.create(SmobShopApi::class.java)
+    fun provideSmobListApi(retrofit: Retrofit): SmobListApi = retrofit.create(SmobListApi::class.java)
 
 
     // define instances to be offered as services via the Koin service locator
@@ -93,8 +93,12 @@ val netServices = module {
     // individual APIs for access to network data (per category) ----------------------
     // individual APIs for access to network data (per category) ----------------------
 
-    // API to access SmobUser data from the backend
+    // APIs to access data from the backend
     single { provideSmobUserApi(retrofit = get()) }
+    single { provideSmobGroupApi(retrofit = get()) }
+    single { provideSmobProductApi(retrofit = get()) }
+    single { provideSmobShopApi(retrofit = get()) }
+    single { provideSmobListApi(retrofit = get()) }
 
 }
 
