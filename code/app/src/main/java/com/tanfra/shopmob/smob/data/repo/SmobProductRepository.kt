@@ -86,7 +86,7 @@ class SmobProductRepository(
             //     --> not essential to re-run this here...
             // ... if the API call fails, the local DB remains untouched
             //     --> app still works, as we only work of the data in the local DB
-            refreshSmobProductsInDB()
+            refreshDataInLocalDB()
 
             // now try to fetch data from the local DB
             return@withContext try {
@@ -212,7 +212,7 @@ class SmobProductRepository(
     /**
      * Synchronize all smob products in the db by retrieval from the backend using the (net) API
      */
-    override suspend fun refreshSmobProductsInDB() {
+    override suspend fun refreshDataInLocalDB() {
 
         // set initial status
         _statusSmobProductDataSync.postValue(Status.LOADING)
