@@ -17,5 +17,5 @@ interface SmobListDataSource {
     suspend fun updateSmobLists(smobListsATO: List<SmobListATO>)
     suspend fun deleteSmobList(id: String)
     suspend fun deleteAllSmobLists()
-    suspend fun refreshSmobListsInDB()
+    suspend fun refreshDataInLocalDB()
 }

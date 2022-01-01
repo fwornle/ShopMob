@@ -85,7 +85,7 @@ class SmobUserRepository(
             //     --> not essential to re-run this here...
             // ... if the API call fails, the local DB remains untouched
             //     --> app still works, as we only work of the data in the local DB
-            refreshSmobUsersInDB()
+            refreshDataInLocalDB()
 
             // now try to fetch data from the local DB
             return@withContext try {
@@ -211,7 +211,7 @@ class SmobUserRepository(
     /**
      * Synchronize all smob users in the db by retrieval from the backend using the (net) API
      */
-    override suspend fun refreshSmobUsersInDB() {
+    override suspend fun refreshDataInLocalDB() {
 
         // set initial status
         _statusSmobUserDataSync.postValue(Status.LOADING)

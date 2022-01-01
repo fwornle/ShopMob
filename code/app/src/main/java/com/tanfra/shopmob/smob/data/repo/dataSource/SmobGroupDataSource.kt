@@ -17,5 +17,5 @@ interface SmobGroupDataSource {
     suspend fun updateSmobGroups(smobGroupsATO: List<SmobGroupATO>)
     suspend fun deleteSmobGroup(id: String)
     suspend fun deleteAllSmobGroups()
-    suspend fun refreshSmobGroupsInDB()
+    suspend fun refreshDataInLocalDB()
 }

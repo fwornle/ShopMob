@@ -3,7 +3,7 @@ package com.tanfra.shopmob.smob.work
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
+import com.tanfra.shopmob.smob.data.repo.dataSource.*
 import kotlinx.coroutines.delay
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -21,8 +21,12 @@ class RefreshSmobStaticDataWorker(appContext: Context, params: WorkerParameters)
         const val WORK_NAME = "SmobStaticDataWorker"
     }
 
-    // fetch user data repro from Koin service locator
+    // fetch repositories from Koin service locator
     private val smobUserDataSource: SmobUserDataSource by inject()
+    private val smobGroupDataSource: SmobGroupDataSource by inject()
+    private val smobProductDataSource: SmobProductDataSource by inject()
+    private val smobShopDataSource: SmobShopDataSource by inject()
+    private val smobListDataSource: SmobListDataSource by inject()
 
     // define work to be done
     override suspend fun doWork(): Result {
@@ -41,8 +45,12 @@ class RefreshSmobStaticDataWorker(appContext: Context, params: WorkerParameters)
             for(idx in 1 .. 15) {
 
                 // update users in local DB from backend DB
-                Timber.i("Refreshing SmobUser data in local DB ($idx/15)")
-                smobUserDataSource.refreshSmobUsersInDB()
+                Timber.i("Refreshing data in local DB ($idx/15)")
+                smobUserDataSource.refreshDataInLocalDB()
+                smobGroupDataSource.refreshDataInLocalDB()
+                smobProductDataSource.refreshDataInLocalDB()
+                smobShopDataSource.refreshDataInLocalDB()
+                smobListDataSource.refreshDataInLocalDB()
 
                 // suspend for 60 seconds
                 delay(60000)
