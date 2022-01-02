@@ -45,7 +45,11 @@ frame "activity_planning" #Lightcyan/Darkcyan {
     component fragment_planning_shop_edit
     component fragment_planning_shop_map
     
-    component activity_planning_viewModel #lightblue
+    component fragment_planning_lists_viewModel #lightblue
+    component fragment_planning_product_list_viewModel #lightblue
+    component fragment_planning_product_edit_viewModel #lightblue
+    component fragment_planning_shop_list_viewModel #lightblue
+    component fragment_planning_shop_edit_viewModel #lightblue
 
     fragment_planning_lists -left-> fragment_shopping_shop : menu >
     
@@ -67,12 +71,12 @@ frame "activity_planning" #Lightcyan/Darkcyan {
     fragment_planning_shop_map -down-> fragment_planning_shop_edit #green;text:green : Ok >
     fragment_planning_shop_map -down-> fragment_planning_shop_edit #red;text:red : Cancel > 
 
-    activity_planning_viewModel <-left-> fragment_planning_lists #black : shared
-    activity_planning_viewModel <-left-> fragment_planning_product_list #black : shared
-    activity_planning_viewModel <-left-> fragment_planning_product_edit #black : shared
-    activity_planning_viewModel <-left-> fragment_planning_shop_list #black : shared
-    activity_planning_viewModel <-left-> fragment_planning_shop_edit #black : shared
-    activity_planning_viewModel <-left-> fragment_planning_shop_map #black : shared
+    fragment_planning_lists_viewModel <-left-> fragment_planning_lists #black
+    fragment_planning_product_list_viewModel <-left-> fragment_planning_product_list #black
+    fragment_planning_product_edit_viewModel <-left-> fragment_planning_product_edit #black
+    fragment_planning_shop_list_viewModel <-left-> fragment_planning_shop_list #black
+    fragment_planning_shop_edit_viewModel <-left-> fragment_planning_shop_edit #black : shared
+    fragment_planning_shop_edit_viewModel <-left-> fragment_planning_shop_map #black : shared
 
 }
 
