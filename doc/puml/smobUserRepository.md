@@ -101,9 +101,10 @@ class Response {
 SmobUserApi -up-> Response
 
 frame "netServices" #Lightblue {
-    class netObject << (S,#FF7700) SmobUserApi>> implements SmobUserApi {
+    class netObject << (S,#FF7700) SmobUserApi_Impl>> implements SmobUserApi {
         **Singleton**
         from **Koin** Service Locator
+        provide**SmobUserApi**(retrofit = get())
         ---
         (netServices)
     }
@@ -120,7 +121,7 @@ class SmobUserDTO {
     +imageUrl
 }
     
-SmobUserDao -down-> SmobUserDTO : uses >
+SmobUserDao -down-> SmobUserDTO
 
 annotation Entity #pink;line:red;line.dotted;text:red {
    **Room** annotations
@@ -141,9 +142,10 @@ annotation Dao #pink;line:red;line.dotted;text:red {
 SmobUserDao -left-> Dao
 
 frame "dbServices" #Lightblue {
-    class dbObject << (S,#FF7700) SmobUserDao>> implements SmobUserDao {
+    class dbObject << (S,#FF7700) SmobUserDao_Impl>> implements SmobUserDao {
         **Singleton**
         from **Koin** Service Locator
+        LocalDB.**createSmobUserDao**(get())
         ---
         (dbServices)
     }

@@ -1,44 +1,60 @@
 ```plantuml
 @startuml
 
-class RoomDatabase #lightgray ##gray {
-    {field} (imported class)
-} 
+frame "Room database" #Lightcyan {
 
-abstract SmobDatabase #palegreen ##[dashed]green {
-  {abstract} smobItemDao(): SmobItemDao
-  {abstract} **smobUserDao(): SmobUserDao**
-  {abstract} smobGroupDao(): SmobGroupDao
-  {abstract} smobShopDao(): SmobShopDao
-  {abstract} smobProductDao(): SmobProductDao
-  {abstract} smobListDao(): SmobListDao
-}
-
-SmobDatabase -up-|> RoomDatabase : implements >
-
-annotation Database #pink;line:red;line.dotted;text:red {
-    **Room Database** annotation:
-    entities = { see classes below }
-    version = 1
-    exportSchema = false
-    ---
-  +SmobItemDTO::class
-  +**SmobUserDTO**::class
-  +SmobGroupDTO::class
-  +SmobShopDTO::class
-  +SmobProductDTO::class
-  +SmobListDTO::class
-}
-
-annotation TypeConverters #pink;line:red;line.dotted;text:red {
-    **Room TypeConverters ** annotation:
-    ---
-  +**LocalDbConverters**::class
-}
-
-together {
-    SmobDatabase -left-> Database
-    SmobDatabase -right-> TypeConverters
+    class RoomDatabase #lightgray ##gray {
+        {field} (imported class)
+    } 
+    
+    abstract SmobDatabase #palegreen ##[dashed]green {
+      {abstract} smobItemDao(): SmobItemDao
+      {abstract} **smobUserDao(): SmobUserDao**
+      {abstract} smobGroupDao(): SmobGroupDao
+      {abstract} smobShopDao(): SmobShopDao
+      {abstract} smobProductDao(): SmobProductDao
+      {abstract} smobListDao(): SmobListDao
+    }
+    
+    SmobDatabase -up-|> RoomDatabase : implements >
+    
+    annotation Database #pink;line:red;line.dotted;text:red {
+        **Room Database** annotation:
+        entities = { see classes below }
+        version = 1
+        exportSchema = false
+        ---
+      +SmobItemDTO::class
+      +**SmobUserDTO**::class
+      +SmobGroupDTO::class
+      +SmobShopDTO::class
+      +SmobProductDTO::class
+      +SmobListDTO::class
+    }
+    
+    annotation TypeConverters #pink;line:red;line.dotted;text:red {
+        **Room TypeConverters ** annotation:
+        ---
+      +**LocalDbConverters**::class
+    }
+    
+    together {
+        SmobDatabase -left-> Database
+        SmobDatabase -right-> TypeConverters
+    }
+    
+    class LocalDbConverters {
+        {field} (Serialization // JSON)
+        + listEntryToJson()
+        + jsonToListEntry()
+        + ...()
+        + SmobListItem()
+        + ShopLocation()
+        + ...()
+    }
+     
+    LocalDbConverters -down-> TypeConverters
+ 
 }
 
 interface SmobItemDao #aliceblue;line:blue;line.dotted;text:blue {
@@ -100,8 +116,8 @@ class Room #lightgray ##gray {
  + **databaseBuilder**()
  }
 
-LocalDB -left-> SmobDatabase : uses >
-LocalDB -down-> Room : uses >
+LocalDB -left-> SmobDatabase
+LocalDB -down-> Room
 
 
 class SmobUserDTO {
@@ -114,7 +130,7 @@ class SmobUserDTO {
     +imageUrl
 }
     
-SmobUserDao -up-> SmobUserDTO : uses >
+SmobUserDao -up-> SmobUserDTO
 
 annotation Entity #pink;line:red;line.dotted;text:red {
    **Room** annotations
@@ -194,10 +210,10 @@ frame "dbServices" #Lightblue {
 }
 
 together {
-    LocalDB <-up-- SmobDatabaseImpl : uses <
-    LocalDB <-up-- SmobUserDaoImpl : uses <
-    LocalDB <-up-- SmobItemDaoImpl : uses <
-    LocalDB <-up-- SmobXxxxDaoImpl : uses <
+    LocalDB <-up-- SmobDatabaseImpl
+    LocalDB <-up-- SmobUserDaoImpl
+    LocalDB <-up-- SmobItemDaoImpl
+    LocalDB <-up-- SmobXxxxDaoImpl
 }
 
 @enduml
