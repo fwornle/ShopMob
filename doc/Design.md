@@ -302,9 +302,9 @@ The _smobList_ entries of the _smobLists_ table adheres to the following schema:
   "name": "smob list name",
   "description": "our daily groceries",
   "items": [
-    { "id": "productId1", "status": "open|in progress|done" },
-    { "id": "productId2", "status": "open|in progress|done" },
-    { "id": "productId3", "status": "open|in progress|done" },
+    { "id": "productId1", "status": "OPEN|IN_PROGRESS|DONE" },
+    { "id": "productId2", "status": "OPEN|IN_PROGRESS|DONE" },
+    { "id": "productId3", "status": "OPEN|IN_PROGRESS|DONE" },
     { }
   ],
   "members": [
