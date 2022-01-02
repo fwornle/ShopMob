@@ -7,14 +7,14 @@
     <data>
         <variable
             name="viewModel"
-            type="com.tanfra.shopmob.smob.smoblist.SmobItemListViewModel" />
+            type="com.tanfra.shopmob.smob.activities.planning.smoblist.SmobItemListViewModel" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".smob.smoblist.SmobItemListFragment">
+        tools:context="com.tanfra.shopmob.smob.activities.planning.smoblist.SmobItemListFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

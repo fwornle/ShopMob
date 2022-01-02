@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.saveitem.selectlocation
+package com.tanfra.shopmob.smob.activities.planning.saveitem.selectlocation
 
 
 import android.Manifest
@@ -31,7 +31,7 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.base.BaseFragment
 import com.tanfra.shopmob.base.NavigationCommand
 import com.tanfra.shopmob.databinding.FragmentSelectLocationBinding
-import com.tanfra.shopmob.smob.saveitem.SaveSmobItemViewModel
+import com.tanfra.shopmob.smob.activities.planning.saveitem.SaveSmobItemViewModel
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
 import timber.log.Timber

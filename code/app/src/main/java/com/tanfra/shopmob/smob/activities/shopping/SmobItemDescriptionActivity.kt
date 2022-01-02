@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob
+package com.tanfra.shopmob.smob.activities.shopping
 
 import android.app.Activity
 import android.content.Context
@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.databinding.ActivitySmobItemDescriptionBinding
+import com.tanfra.shopmob.smob.activities.planning.SmobActivity
 import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 
 

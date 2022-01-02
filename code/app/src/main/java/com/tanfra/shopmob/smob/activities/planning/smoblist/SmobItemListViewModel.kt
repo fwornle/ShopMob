@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.smoblist
+package com.tanfra.shopmob.smob.activities.planning.smoblist
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData

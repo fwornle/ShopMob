@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob
+package com.tanfra.shopmob.smob.activities.planning
 
 import android.os.Bundle
 import android.view.MenuItem

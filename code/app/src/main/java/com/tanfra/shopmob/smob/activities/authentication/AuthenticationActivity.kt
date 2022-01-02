@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.authentication
+package com.tanfra.shopmob.smob.activities.authentication
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +9,7 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.ActivityAuthenticationBinding
-import com.tanfra.shopmob.smob.SmobActivity
+import com.tanfra.shopmob.smob.activities.planning.SmobActivity
 import timber.log.Timber
 import com.google.firebase.auth.FirebaseAuth
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource

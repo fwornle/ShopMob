@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.smoblist
+package com.tanfra.shopmob.smob.activities.planning.smoblist
 
 import android.os.Looper
 import androidx.test.core.app.ApplicationProvider
@@ -9,9 +9,12 @@ import com.tanfra.shopmob.smob.testutils.MainCoroutineRule
 import com.tanfra.shopmob.smob.testutils.getOrAwaitValue
 
 import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
+import com.tanfra.shopmob.smob.data.repo.utils.Resource
+import com.tanfra.shopmob.smob.data.repo.utils.Status
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
 import org.junit.Before
@@ -230,7 +233,10 @@ class SmobItemATOListViewModelTest: AutoCloseKoinTest() {
             (smobItemRepo as FakeItemDataSource).setReturnError(true)
 
             // WHEN trying to read
-            val result = smobItemRepo.getSmobItem(smobItemATOList[0].id) as Resource.error
+            val result = smobItemRepo.getSmobItem(smobItemATOList[0].id)
+
+            // check that result is failed
+            assertThat(result.status, CoreMatchers.`is`(Status.ERROR))
 
             // THEN...
             // ... a Resource.error should be returned with message "Test exception"

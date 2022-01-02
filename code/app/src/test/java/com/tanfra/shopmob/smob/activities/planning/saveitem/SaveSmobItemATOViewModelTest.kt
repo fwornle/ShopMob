@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.saveitem
+package com.tanfra.shopmob.smob.activities.planning.saveitem
 
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -31,7 +31,7 @@ import java.util.*
 class SaveSmobItemATOViewModelTest: AutoCloseKoinTest() {
 
     // declare globally used variables
-    private lateinit var smobDataATO: com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
+    private lateinit var smobDataATO: SmobItemATO
     private lateinit var privateTestFun: Method
 
     // viewModel
@@ -39,8 +39,8 @@ class SaveSmobItemATOViewModelTest: AutoCloseKoinTest() {
 
     // smob item repository and fake data
     private lateinit var smobItemRepo: SmobItemDataSource
-    private lateinit var smobItemATOList: MutableList<com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO>
-    private lateinit var smobItemATONew: com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
+    private lateinit var smobItemATOList: MutableList<SmobItemATO>
+    private lateinit var smobItemATONew: SmobItemATO
 
     
     // test liveData

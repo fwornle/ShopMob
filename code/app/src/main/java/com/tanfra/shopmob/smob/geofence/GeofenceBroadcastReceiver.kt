@@ -6,7 +6,7 @@ import android.content.Intent
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofenceStatusCodes
 import com.google.android.gms.location.GeofencingEvent
-import com.tanfra.shopmob.smob.saveitem.SaveSmobItemFragment.Companion.ACTION_GEOFENCE_EVENT
+import com.tanfra.shopmob.smob.activities.planning.saveitem.SaveSmobItemFragment.Companion.ACTION_GEOFENCE_EVENT
 import timber.log.Timber
 
 /**

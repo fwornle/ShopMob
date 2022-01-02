@@ -10,7 +10,7 @@ import androidx.core.app.TaskStackBuilder
 import androidx.core.content.getSystemService
 import com.tanfra.shopmob.BuildConfig
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.SmobItemDescriptionActivity
+import com.tanfra.shopmob.smob.activities.shopping.SmobItemDescriptionActivity
 import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 
 private const val NOTIFICATION_CHANNEL_ID = BuildConfig.APPLICATION_ID + ".channel"

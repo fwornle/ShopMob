@@ -7,15 +7,15 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".smob.activities.planning.SmobActivity">
+            tools:context=".smob.ActivityPlanning">
 
                 <androidx.fragment.app.FragmentContainerView
-                    android:id="@+id/nav_host_fragment"
+                    android:id="@+id/nav_host_fragment_planning"
                     android:name="androidx.navigation.fragment.NavHostFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:defaultNavHost="true"
-                    app:navGraph="@navigation/nav_graph" />
+                    app:navGraph="@navigation/nav_graph_planning" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

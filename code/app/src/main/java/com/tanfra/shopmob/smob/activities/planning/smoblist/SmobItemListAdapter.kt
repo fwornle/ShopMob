@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.smoblist
+package com.tanfra.shopmob.smob.activities.planning.smoblist
 
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.base.BaseRecyclerViewAdapter

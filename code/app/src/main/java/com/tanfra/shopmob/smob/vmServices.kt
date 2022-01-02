@@ -1,8 +1,8 @@
 package com.tanfra.shopmob.smob
 
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
-import com.tanfra.shopmob.smob.saveitem.SaveSmobItemViewModel
-import com.tanfra.shopmob.smob.smoblist.SmobItemListViewModel
+import com.tanfra.shopmob.smob.activities.planning.saveitem.SaveSmobItemViewModel
+import com.tanfra.shopmob.smob.activities.planning.smoblist.SmobItemListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

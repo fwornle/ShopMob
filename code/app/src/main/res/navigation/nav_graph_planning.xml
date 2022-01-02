@@ -2,8 +2,8 @@
 <navigation
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/shopMobItemListFragment">
+    android:id="@+id/nav_graph_planning"
+    app:startDestination="@id/smobPlanningLists">
 
     <activity
         android:id="@+id/mainActivity"
@@ -11,9 +11,9 @@
         android:label="MainActivity" />
 
     <fragment
-        android:id="@+id/shopMobItemListFragment"
-        android:name="com.tanfra.shopmob.smob.activities.planning.smoblist.SmobItemListFragment"
-        android:label="SmobItemListFragment">
+        android:id="@+id/smobPlanningLists"
+        android:name="com.tanfra.shopmob.smob.activities.planning.smoblist.SmobPlanningListsFragment"
+        android:label="SmobPlanningListsFragment">
         <action
             android:id="@+id/action_shopMobItemListFragment_to_saveSmobItemFragment"
             app:destination="@id/saveSmobItemFragment" />

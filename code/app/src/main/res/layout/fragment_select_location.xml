@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.tanfra.shopmob.smob.saveitem.SaveSmobItemViewModel" />
+            type="com.tanfra.shopmob.smob.activities.planning.saveitem.SaveSmobItemViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

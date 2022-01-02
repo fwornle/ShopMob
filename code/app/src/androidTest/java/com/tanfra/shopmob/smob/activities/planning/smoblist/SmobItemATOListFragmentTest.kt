@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.smoblist
+package com.tanfra.shopmob.smob.activities.planning.smoblist
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -20,14 +20,14 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import androidx.test.rule.GrantPermissionRule
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.saveitem.SaveSmobItemFragment
+import com.tanfra.shopmob.smob.activities.planning.saveitem.SaveSmobItemFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Test
 import org.junit.runner.RunWith
 
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.data.local.FakeItemDataSource
-import com.tanfra.shopmob.smob.saveitem.SaveSmobItemViewModel
+import com.tanfra.shopmob.smob.activities.planning.saveitem.SaveSmobItemViewModel
 import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 import com.tanfra.shopmob.util.DataBindingIdlingResource
 import com.tanfra.shopmob.util.monitorFragment

@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.saveitem
+package com.tanfra.shopmob.smob.activities.planning.saveitem
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData

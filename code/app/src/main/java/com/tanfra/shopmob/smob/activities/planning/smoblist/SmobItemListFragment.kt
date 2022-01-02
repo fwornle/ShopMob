@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.smoblist
+package com.tanfra.shopmob.smob.activities.planning.smoblist
 
 import android.os.Bundle
 import android.view.*
@@ -11,20 +11,14 @@ import com.tanfra.shopmob.utils.setTitle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
 import android.widget.Toast
-import androidx.lifecycle.viewModelScope
 
 import com.firebase.ui.auth.AuthUI
-import com.tanfra.shopmob.authentication.AuthenticationActivity
+import com.tanfra.shopmob.smob.activities.authentication.AuthenticationActivity
 import com.tanfra.shopmob.databinding.FragmentSmobItemsBinding
-import com.tanfra.shopmob.smob.SmobItemDescriptionActivity
-import com.tanfra.shopmob.smob.data.local.dao.SmobUserDao
-import com.tanfra.shopmob.smob.data.net.api.SmobUserApi
-import com.tanfra.shopmob.smob.data.repo.SmobUserRepository
+import com.tanfra.shopmob.smob.activities.shopping.SmobItemDescriptionActivity
 import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 
 class SmobItemListFragment : BaseFragment(), KoinComponent {
