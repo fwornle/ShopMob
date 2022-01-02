@@ -8,7 +8,7 @@ import com.tanfra.shopmob.smob.data.local.dto.SmobListDTO
 import com.tanfra.shopmob.smob.data.local.dao.SmobListDao
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
-import com.tanfra.shopmob.smob.data.local.utils.SmobEntryStatus
+import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.net.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.api.SmobListApi
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
@@ -335,7 +335,7 @@ class SmobListRepository(
             "",
             listOf(),
             listOf(),
-            SmobEntryStatus.OPEN,
+            SmobItemStatus.OPEN,
             -1.0,
         )
         var result = Resource.loading(dummySmobListDTO)

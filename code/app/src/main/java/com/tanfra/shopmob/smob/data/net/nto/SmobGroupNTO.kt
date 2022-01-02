@@ -12,4 +12,3 @@ data class SmobGroupNTO(
     var members: List<String>,
     val activity: ActivityStatus,
 )
-

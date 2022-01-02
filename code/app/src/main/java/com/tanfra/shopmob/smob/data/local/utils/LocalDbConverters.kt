@@ -1,6 +1,7 @@
 package com.tanfra.shopmob.smob.data.local.utils
 
 import androidx.room.TypeConverter
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -15,6 +16,8 @@ enum class ShopCategory {
     CLOTHING,
     ACCESSORIES,
     SUPPLIES,
+    FURNITURE,
+    BAKERY,
 }
 
 enum class ShopType {
@@ -34,9 +37,17 @@ enum class ProductSubCategory {
     OTHER,
     DAIRY,
     BREAD,
+    BREKKY,
     FRUIT_VEGETABLE,
     CANNED_FOOD,
     BEVERAGES,
+    DIY,
+    TOOLS,
+    OFFICE,
+    POSTAL,
+    BUSINESS,
+    LEISURE,
+    SHOES,
 }
 
 enum class GroupType {
@@ -46,7 +57,7 @@ enum class GroupType {
     WORK,
 }
 
-enum class SmobEntryStatus {
+enum class SmobItemStatus {
     OPEN,
     IN_PROGRESS,
     DONE,
@@ -57,6 +68,7 @@ data class ActivityStatus(
     val reps: Long,
 )
 
+@Serializable
 data class ProductCategory(
     val main: ProductMainCategory,
     val sub: ProductSubCategory,
@@ -67,13 +79,15 @@ data class ShopLocation(
     val longitude: Double,
 )
 
+@Serializable
 data class SmobListItem(
     val id: String,
-    val status: SmobEntryStatus,
+    val status: SmobItemStatus,
 )
 
+@Serializable
 data class SmobListLifecycle(
-    val status: SmobEntryStatus,
+    val status: SmobItemStatus,
     val completion: Double
 )
 
@@ -89,7 +103,7 @@ class LocalDbConverters {
     @TypeConverter
     fun jsonToActivity(value: String) = Json.decodeFromString<ActivityStatus>(value)
 
-    // SmobListEntry converter
+    // SmobListEntry converter - List
     @TypeConverter
     fun listEntryToJson(value: List<SmobListItem?>) = Json.encodeToString(value)
 

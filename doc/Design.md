@@ -230,14 +230,17 @@ The _smobGroup_ entries of the _smobGroups_ table adheres to the following schem
   "id": "UUID-group",
   "name": "group name",
   "description": "daily groceries",
-  "type": "(default)other|family|friends|work",
+  "type": "(default)OTHER|FAMILY|FRIENDS|WORK",
   "members": [
     "userId1",
     "userId2",
     "userId3",
     "..."
   ],
-  "activity": "date-of-last-change"
+  "activity": {
+    "date": "date-of-last-change",
+    "reps": 0
+  }
 }
 ```
 
@@ -252,8 +255,8 @@ The _smobProduct_ entries of the _smobProducts_ table adheres to the following s
   "description": "lactose free",
   "imageUrl": "URL",
   "category": {
-    "main": "(default)other|foods|hardware|supplies|clothing",
-    "sub": "{(default)none|fruit-n-vegetables|bread|dairy|frozen|cans|beverages}|{...}"
+    "main": "(default)OTHER|FOODS|HARDWARE|SUPPLIES|CLOTHING",
+    "sub": "{(default)NONE|DAIRY|BREAD|BREKKY|FRUIT_VEGETABLE|CANNED_FOOD|BEVERAGES|IY|TOOLS|...}"
   },
   "activity": {
     "date": "date-of-last-purchase",
@@ -275,8 +278,8 @@ The _smobStore_ entries of the _smobStores_ table adheres to the following schem
     "latitude": "where the shop is",
     "longitude": "where the shop is"
   },
-  "type": "chain|individual",
-  "category": "(default)other|supermarket|drugstore|hardware|clothing|accessories|supplies",
+  "type": "CHAIN|INDIVIDUAL",
+  "category": "(default)OTHER|SUPERMARKET|DRUGSTORE|HARDWARE|CLOTHING|ACCESSORIES|SUPPLIES",
   "business": [
     "09:00 - 12:00, 14:00 - 22:00",
     "09:00 - 12:00, 14:00 - 22:00",
@@ -311,7 +314,7 @@ The _smobList_ entries of the _smobLists_ table adheres to the following schema:
     "..."
   ],
   "lifecycle": {
-    "status": "open|in progress|done",
+    "status": "OPEN|IN_PROGRESS|DONE",
     "completion": 35
   }
 }

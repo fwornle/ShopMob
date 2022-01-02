@@ -4,7 +4,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tanfra.shopmob.BuildConfig
 import com.tanfra.shopmob.smob.data.net.api.*
-import com.tanfra.shopmob.smob.data.net.nto.SmobUserNTO
+import com.tanfra.shopmob.smob.data.net.nto.*
 import com.tanfra.shopmob.smob.data.net.utils.ArrayListAdapter
 import com.tanfra.shopmob.smob.data.net.utils.AuthInterceptor
 import okhttp3.OkHttpClient
@@ -51,7 +51,10 @@ val netServices = module {
         // Moshi builder
         val moshi = Moshi.Builder()
             .add(ArrayListAdapter.Factory<SmobUserNTO>())
-            // NEXT: .add(ArrayListAdapter.Factory<SmobGroupNTO>())
+            .add(ArrayListAdapter.Factory<SmobGroupNTO>())
+            .add(ArrayListAdapter.Factory<SmobProductNTO>())
+            .add(ArrayListAdapter.Factory<SmobShopNTO>())
+            .add(ArrayListAdapter.Factory<SmobListNTO>())
             .add(KotlinJsonAdapterFactory())
             .build()
 

@@ -30,7 +30,8 @@ fun List<SmobGroupATO>.asDatabaseModel(): List<SmobGroupDTO> {
             type = it.type,
             members = it.members,
             activityDate = it.activity.date,
-            activityReps = it.activity.reps,        )
+            activityReps = it.activity.reps,
+        )
     }
 }
 
@@ -55,5 +56,6 @@ fun SmobGroupATO.asDatabaseModel(): SmobGroupDTO {
         type = this.type,
         members = this.members,
         activityDate = this.activity.date,
-        activityReps = this.activity.reps,    )
+        activityReps = this.activity.reps,
+    )
 }
