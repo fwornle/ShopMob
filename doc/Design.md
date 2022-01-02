@@ -458,7 +458,7 @@ At the writing of this document (21.12.21), this submission is expected for
     - [x] JSON schema modelling
   - [x] DSNG-3.4: Architecture: Customer visible
     - [x] Activities and activity navigation
-    - [ ] Fragments and fragment navigation
+    - [x] Fragments and fragment navigation
   - [x] DSNG-3.5: Architecture: Internal app
     - [x] Data source abstraction via a repository class(es)
       - [x] Multi-table DB: One DTO/DAO per table
@@ -535,13 +535,16 @@ At the writing of this document (21.12.21), this submission is expected for
         - [x] Integrate major building blocks for UI layer (from C4)
         - [x] Refactoring (app): Adapt UI to use ShopMob (smob) nomenclature, instead of "reminders" - content still as in C4
         - [x] Refactoring (test): Adjust all integrated UI unit test as well as the instrumented UI tests (from C4)
-        - [ ] Integrate major building blocks for advanced UI elements (Canvas based elements, MotionLayout) (from C3, Advanced Android App)
-        - [ ] Refactoring (app): Adapt advanced UI elements to use ShopMob (smob) nomenclature - content still as in C3
-        - [ ] Refactoring (test): Add instrumented tests for the advanced UI elements
+        - [ ] Introduce all activities and fragments as needed by the app - content: dummy placeholders
+        - [ ] Adjust Activity navigation - all intent based transitions work w/h bundled data
+        - [ ] Adjust Fragment navigation - all fragment based transitions work w/h bundled data
     - [ ] IMPL-2.5.8: Develop floor plan UI elements (canvas)
       - [ ] Design layout view for shop floor plans 
       - [ ] Design data model for storing parameterized shop floor plans (JSON)
       - [ ] Integrate shop floor plans in the local DB and the backend DB
+      - [ ] Integrate major building blocks for advanced UI elements (Canvas based elements, MotionLayout) (from C3, Advanced Android App)
+      - [ ] Refactoring (app): Adapt advanced UI elements to use ShopMob (smob) nomenclature - content still as in C3
+      - [ ] Refactoring (test): Add instrumented tests for the advanced UI elements
       - [ ] Implement displaying of floor plans including _zones_ with product stats (zone level "overview" display)
       - [ ] Implement displaying of "best route through shop", e.g.: zone level --> zone-1 (+ product stats) --> zone-4 (+ stats) --> checkout 
       - [ ] Implement displaying of zone plans including more detailed _sections_ (aisles/shelves) and products per zone
