@@ -414,7 +414,8 @@ At _activity_ level, ShopMob has the following fundamental architecture:
 
 ### Navigation
 
-TODO:
+At _activity_ and _fragment_ level, the following navigation transitions are possible:
+
 ![main architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/puml/navigation.md)
 
 
