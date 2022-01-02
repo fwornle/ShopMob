@@ -44,6 +44,8 @@ frame "activity_planning" #Lightcyan/Darkcyan {
     component fragment_planning_shop_list
     component fragment_planning_shop_edit
     component fragment_planning_shop_map
+    
+    component activity_planning_viewModel #lightblue
 
     fragment_planning_lists -left-> fragment_shopping_shop : menu >
     
@@ -64,6 +66,13 @@ frame "activity_planning" #Lightcyan/Darkcyan {
     fragment_planning_shop_edit -down-> fragment_planning_shop_map #blue;text:blue : click map >
     fragment_planning_shop_map -down-> fragment_planning_shop_edit #green;text:green : Ok >
     fragment_planning_shop_map -down-> fragment_planning_shop_edit #red;text:red : Cancel > 
+
+    activity_planning_viewModel <-left-> fragment_planning_lists #black : shared
+    activity_planning_viewModel <-left-> fragment_planning_product_list #black : shared
+    activity_planning_viewModel <-left-> fragment_planning_product_edit #black : shared
+    activity_planning_viewModel <-left-> fragment_planning_shop_list #black : shared
+    activity_planning_viewModel <-left-> fragment_planning_shop_edit #black : shared
+    activity_planning_viewModel <-left-> fragment_planning_shop_map #black : shared
 
 }
 
