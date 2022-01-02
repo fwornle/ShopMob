@@ -555,7 +555,7 @@ At the writing of this document (21.12.21), this submission is expected for
         - [ ] Implement displaying of _shelf_ view (image from DB)
   - [ ] IMPL-2.6: App development against local DB
     - [ ] Complete activities and fragments (incl. navigation) as required by the app architecture
-    - [ ] Seed local DB with test data for UI design
+    - [x] Seed local DB with test data for UI design
     - [ ] Complete UI layout of each activity / fragment
     - [ ] Extend UI elements to animate them using MotionLayout
     - [ ] Complete all view models with required business logic
@@ -564,10 +564,10 @@ At the writing of this document (21.12.21), this submission is expected for
   - [x] Seed backend DB with test data (same as in IMPL-2.6)
   - [ ] Implement CRUD functionality for the backend DB
       - [x] In-principle implementation (one table)
-      - [ ] Full implementation as needed by the app
+      - [x] Full implementation as needed by the app
   - [ ] Implement synchronization between backend and app (WorkManager)
     - [x] In-principle implementation (one table)
-    - [ ] Full implementation as needed by the app
+    - [x] Full implementation as needed by the app
   - [ ] Push notifications when data has changed at backend level
   - [ ] Set-up actual backend DB (firebase document DB / AWS Document DB)
 - [ ] IMPL-4: Add camera access to take pictures of products and their shelf location

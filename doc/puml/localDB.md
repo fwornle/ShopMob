@@ -1,5 +1,6 @@
 ```plantuml
 @startuml
+skinparam groupInheritance 3
 
 frame "Room database" #Lightcyan {
 
