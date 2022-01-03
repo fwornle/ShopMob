@@ -10,7 +10,7 @@ import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
 import android.widget.Toast
-
+import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentPlanningProductListBinding
 import com.tanfra.shopmob.smob.activities.authentication.SmobAuthenticationActivity
@@ -21,7 +21,6 @@ import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import org.koin.core.component.KoinComponent
-import timber.log.Timber
 
 
 class PlanningProductListFragment : BaseFragment(), KoinComponent {
@@ -75,22 +74,7 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
         binding.lifecycleOwner = viewLifecycleOwner
         setupRecyclerView()
         binding.addSmobItemFab.setOnClickListener {
-
-//            // TODO: remove again
-//            // test HTTP
-//            val smobUserDao: SmobUserDao by inject()
-//            val smobUserApi: SmobUserApi by inject()
-//            val userRepo = SmobUserRepository(smobUserDao, smobUserApi)
-//            _viewModel.viewModelScope.launch {
-//
-//                val daUser = userRepo.getSmobUser("07c295ad-b286-41f7-b2ea-e81a75875d02").data
-//                daUser?.let {
-//                }
-//                userRepo.deleteAllSmobUsers()
-//
-//            }
-
-            navigateToAddshopmobItem()
+            navigateToPlanningList()
         }
     }
 
@@ -101,7 +85,7 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
     }
 
     // FAB handler --> navigate to SaveSmobItem fragment
-    private fun navigateToAddshopmobItem() {
+    private fun navigateToPlanningList() {
         // use the navigationCommand live data to navigate between the fragments
         _viewModel.navigationCommand.postValue(
             NavigationCommand.To(
@@ -116,10 +100,23 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
             // RecyclerView - it gets the data behind the clicked item as parameter
 
             // create intent which starts activity SmobDetailsActivity, with clicked data item
-            val intent = SmobDetailsActivity.newIntent(requireContext(), SmobDetailsSources.PLANNING_PRODUCT_LIST, it)
+            val intent = SmobDetailsActivity.newIntent(
+                requireContext(),
+                SmobDetailsSources.PLANNING_PRODUCT_LIST,
+                it
+            )
+
             wrapEspressoIdlingResource {
                 startActivity(intent)
             }
+
+//            // alternatively: include target activity in nav_graph_planning (= current graph)
+//            // ... and simply use this as new destination...
+//            val bundle = Bundle().apply {
+//                putSerializable("EXTRA_Source", SmobDetailsSources.PLANNING_PRODUCT_LIST)
+//                putSerializable("EXTRA_SmobItem", it)
+//            }
+//            findNavController().navigate(R.id.smobDetailsActivity, bundle)
 
         }  // "on-item-click" lambda
 

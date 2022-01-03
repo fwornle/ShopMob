@@ -8,6 +8,10 @@ import com.tanfra.shopmob.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentDetailsProductBinding
 import com.tanfra.shopmob.smob.activities.authentication.SmobAuthenticationActivity
@@ -22,6 +26,7 @@ class DetailsProductFragment : BaseFragment(), KoinComponent {
 
     // data binding for fragment_planning_lists.xml
     private lateinit var binding: FragmentDetailsProductBinding
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

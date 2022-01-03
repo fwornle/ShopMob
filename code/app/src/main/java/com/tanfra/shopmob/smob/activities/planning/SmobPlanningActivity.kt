@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.ActivityPlanningBinding
 import com.tanfra.shopmob.smob.activities.planning.productList.PlanningProductListFragment
@@ -18,6 +21,10 @@ class SmobPlanningActivity : AppCompatActivity() {
     // bind views
     private lateinit var binding: ActivityPlanningBinding
 
+    // use navController activity wide
+    private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -25,12 +32,22 @@ class SmobPlanningActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_planning)
         setContentView(binding.root)
 
+        // set-up navController
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_planning) as NavHostFragment
+
+        navController = navHostFragment.navController
+
+        // use actionBar (instead of the system's ActivityBar)
+        appBarConfiguration = AppBarConfiguration(navController.graph)
+        setupActionBarWithNavController(this, navController)
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                binding.navHostFragmentPlanning.findNavController().popBackStack()
+                navController.popBackStack()
                 return true
             }
         }
@@ -52,4 +69,9 @@ class SmobPlanningActivity : AppCompatActivity() {
                     .commit()
         }
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
 }

@@ -10,6 +10,14 @@
         android:name="com.tanfra.shopmob.smob.activities.planning.SmobPlanningActivity"
         android:label="Planning" />
 
+    <!-- cross activity navigation made easy...
+         https://stackoverflow.com/questions/62214514/navigate-from-one-activity-to-another-with-navigation-component
+    <activity
+        android:id="@+id/smobDetailsActivity"
+        android:name="com.tanfra.shopmob.smob.activities.details.SmobDetailsActivity"
+        android:label="Smob Details Activity" />
+    -->
+
     <fragment
         android:id="@+id/smobPlanningListsFragment"
         android:name="com.tanfra.shopmob.smob.activities.planning.lists.PlanningListsFragment"

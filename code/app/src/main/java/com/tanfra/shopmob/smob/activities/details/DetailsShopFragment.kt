@@ -8,10 +8,15 @@ import com.tanfra.shopmob.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
+import com.tanfra.shopmob.base.NavigationCommand
 import com.tanfra.shopmob.databinding.FragmentDetailsShopBinding
 import com.tanfra.shopmob.smob.activities.authentication.SmobAuthenticationActivity
 import com.tanfra.shopmob.smob.activities.planning.SmobPlanningActivity
+import com.tanfra.shopmob.smob.activities.planning.productList.PlanningProductListFragmentDirections
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
 
@@ -39,7 +44,7 @@ class DetailsShopFragment : BaseFragment(), KoinComponent {
         binding.viewModel = _viewModel
 
         setHasOptionsMenu(true)
-        setDisplayHomeAsUpEnabled(false)
+        setDisplayHomeAsUpEnabled(true)
         setTitle(getString(R.string.app_name_details_shop))
 
         return binding.root
@@ -84,6 +89,9 @@ class DetailsShopFragment : BaseFragment(), KoinComponent {
             }
         }  // when(item...)
 
+//        // travel back to where we came from...
+//        navigateBackToPlanningList()
+
         return super.onOptionsItemSelected(item)
     }
 
@@ -92,5 +100,9 @@ class DetailsShopFragment : BaseFragment(), KoinComponent {
         // display logout as menu item
         inflater.inflate(R.menu.main_menu, menu)
     }
+
+//    private fun navigateBackToPlanningList() {
+//        findNavController().navigate(R.id.smobPlanningListsFragment)
+//    }
 
 }

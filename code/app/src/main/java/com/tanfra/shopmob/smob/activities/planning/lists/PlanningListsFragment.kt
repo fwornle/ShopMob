@@ -11,15 +11,11 @@ import com.tanfra.shopmob.utils.setTitle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
 import android.widget.Toast
-
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentPlanningListsBinding
 import com.tanfra.shopmob.smob.activities.administration.SmobAdminTask
 import com.tanfra.shopmob.smob.activities.administration.SmobAdministrationActivity
 import com.tanfra.shopmob.smob.activities.authentication.SmobAuthenticationActivity
-import com.tanfra.shopmob.smob.activities.details.SmobDetailsActivity
-import com.tanfra.shopmob.smob.activities.details.SmobDetailsSources
-import com.tanfra.shopmob.smob.activities.planning.shopList.PlanningShopListFragmentDirections
 import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import org.koin.core.component.KoinComponent

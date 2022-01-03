@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.tanfra.shopmob.R
 import com.tanfra.shopmob.base.NavigationCommand
 import com.tanfra.shopmob.databinding.ActivityDetailsBinding
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
@@ -48,7 +49,7 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
         // inflate layout
         binding = DataBindingUtil.setContentView(
             this,
-            com.tanfra.shopmob.R.layout.activity_details
+            R.layout.activity_details
         )
 
         // try to fetch data provided by intent source
