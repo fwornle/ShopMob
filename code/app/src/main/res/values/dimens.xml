@@ -26,5 +26,5 @@
     <dimen name="label_text_size">18sp</dimen>
     <dimen name="image_header_height">120dp</dimen>
     <dimen name="invisible_gap_details">30sp</dimen>
-    <dimen name="button_width">130dp</dimen>
+    <dimen name="button_width">200dp</dimen>
 </resources>

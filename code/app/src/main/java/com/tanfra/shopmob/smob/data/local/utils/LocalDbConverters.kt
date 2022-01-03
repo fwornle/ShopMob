@@ -63,33 +63,35 @@ enum class SmobItemStatus {
     DONE,
 }
 
+@Serializable
 data class ActivityStatus(
     val date: String,
     val reps: Long,
-)
+) : java.io.Serializable
 
 @Serializable
 data class ProductCategory(
     val main: ProductMainCategory,
     val sub: ProductSubCategory,
-)
+) : java.io.Serializable
 
+@Serializable
 data class ShopLocation(
     val latitude: Double,
     val longitude: Double,
-)
+) : java.io.Serializable
 
 @Serializable
 data class SmobListItem(
     val id: String,
     val status: SmobItemStatus,
-)
+) : java.io.Serializable
 
 @Serializable
 data class SmobListLifecycle(
     val status: SmobItemStatus,
     val completion: Double
-)
+) : java.io.Serializable
 
 
 // serialization/de-serialization of data types for storage in Room DB (mySQL)

@@ -8,10 +8,10 @@ import kotlinx.serialization.Serializable
 // domain independent data type (Application Transfer Object)
 @Serializable
 data class SmobProductATO(
-    val id: String,
+    override val id: String,
     var name: String,
     var description: String?,
     var imageUrl: String?,
     var category: @Contextual ProductCategory,
     var activity: @Contextual ActivityStatus,
-) : java.io.Serializable
+) : Ato(), java.io.Serializable

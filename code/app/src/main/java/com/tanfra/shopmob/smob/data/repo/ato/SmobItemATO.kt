@@ -11,5 +11,5 @@ data class SmobItemATO(
     var location: String?,
     var latitude: Double?,
     var longitude: Double?,
-    val id: String = UUID.randomUUID().toString(),
-) : java.io.Serializable
+    override val id: String = UUID.randomUUID().toString(),
+) : Ato(), java.io.Serializable

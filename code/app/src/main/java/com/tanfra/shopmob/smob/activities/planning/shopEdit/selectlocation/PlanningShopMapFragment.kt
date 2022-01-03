@@ -80,7 +80,7 @@ class PlanningShopMapFragment : BaseFragment(), OnMapReadyCallback {
         // associate injected viewModel with layout (data binding)
         binding.viewModel = _viewModel
 
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
 
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(true)

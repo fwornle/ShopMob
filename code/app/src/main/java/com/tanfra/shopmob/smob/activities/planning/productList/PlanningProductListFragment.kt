@@ -14,7 +14,8 @@ import android.widget.Toast
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentPlanningProductListBinding
 import com.tanfra.shopmob.smob.activities.authentication.SmobAuthenticationActivity
-import com.tanfra.shopmob.smob.activities.shopping.SmobListItemDescriptionActivity
+import com.tanfra.shopmob.smob.activities.details.SmobDetailsActivity
+import com.tanfra.shopmob.smob.activities.details.SmobDetailsSources
 import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -40,7 +41,7 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_planning_lists, container, false
+                R.layout.fragment_planning_product_list, container, false
             )
 
         // set injected viewModel (from KOIN service locator)
@@ -71,7 +72,7 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         setupRecyclerView()
         binding.addSmobItemFab.setOnClickListener {
 
@@ -110,17 +111,17 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
 
     private fun setupRecyclerView() {
         val adapter = PlanningProductListAdapter {
+
             // this lambda is the 'callback' function which gets called when clicking an item in the
-            // RecyclerView - it gets the shopmobDataItem of the clicked item as parameter
+            // RecyclerView - it gets the data behind the clicked item as parameter
 
-            Timber.i("User clicked on PlanningProductList item --> navigate to product details?")
-//            // create intent which starts activity SmobListItemDescriptionActivity
-//            val intent = SmobListItemDescriptionActivity.newIntent(requireContext(), it)
-//            wrapEspressoIdlingResource {
-//                startActivity(intent)
-//            }
+            // create intent which starts activity SmobDetailsActivity, with clicked data item
+            val intent = SmobDetailsActivity.newIntent(requireContext(), SmobDetailsSources.PLANNING_PRODUCT_LIST, it)
+            wrapEspressoIdlingResource {
+                startActivity(intent)
+            }
 
-        }
+        }  // "on-item-click" lambda
 
         // setup the recycler view using the extension function
         binding.smobItemsRecyclerView.setup(adapter)

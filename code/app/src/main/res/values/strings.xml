@@ -5,6 +5,8 @@
     <string name="app_name">ShopMob</string>
     <string name="app_name_planning">ShopMob Lists</string>
     <string name="app_name_admin">ShopMob Administration</string>
+    <string name="app_name_details_product">ShopMob Product Details</string>
+    <string name="app_name_details_shop">ShopMob Shop Details</string>
     <string name="no_data">No Data</string>
     <string name="smob_item_title">ShopMob Item Title</string>
     <string name="smob_item_desc">ShopMob Item Description</string>
@@ -36,12 +38,14 @@
     <!-- buttons -->
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="smob_item_details">ShopMob Item Details</string>
+    <string name="smob_product_details">ShopMob Product Details</string>
+    <string name="smob_shop_details">ShopMob Shop Details</string>
     <string name="map">map</string>
 
     <string name="anchor_char">x</string>
     <string name="title">Title:</string>
     <string name="dismiss">Dismiss</string>
+    <string name="floor_plan">Floor Plan</string>
     <string name="description">Description</string>
     <string name="location">Location</string>
     <string name="map_user_prompt">Select a point of interest to create a ShopMob location.</string>

@@ -1,23 +1,14 @@
 package com.tanfra.shopmob.smob.activities.administration
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.databinding.ActivityAdministrationBinding
+import com.tanfra.shopmob.smob.activities.details.createIntent
 import timber.log.Timber
 
-
-// create inline function and reified type to simplify usage of creating an intent
-// ... usage: see below - function 'newIntent'
-inline fun <reified T : Activity> Context.createIntent(vararg args: Pair<String, Any>) : Intent {
-    val intent = Intent(this, T::class.java)
-    intent.putExtras(bundleOf(*args))
-    return intent
-}
 
 /**
  * Activity that collects administrative tasks (new/edit user, group, list)

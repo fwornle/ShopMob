@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.activities.administration
+package com.tanfra.shopmob.smob.activities.details
 
 import android.os.Bundle
 import android.view.*
@@ -7,22 +7,21 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
-
 import com.firebase.ui.auth.AuthUI
-import com.tanfra.shopmob.databinding.FragmentAdministrationSelectBinding
+import com.tanfra.shopmob.databinding.FragmentDetailsProductBinding
 import com.tanfra.shopmob.smob.activities.authentication.SmobAuthenticationActivity
 import com.tanfra.shopmob.smob.activities.planning.SmobPlanningActivity
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
 
-class AdminSelectFragment : BaseFragment(), KoinComponent {
+class DetailsProductFragment : BaseFragment(), KoinComponent {
 
-    // use Koin service locator to retrieve the ViewModel instance
-    override val _viewModel: AdminViewModel by viewModel()
+    // use Koin service locator to retrieve the shared ViewModel instance
+    override val _viewModel: DetailsViewModel by sharedViewModel()
 
     // data binding for fragment_planning_lists.xml
-    private lateinit var binding: FragmentAdministrationSelectBinding
+    private lateinit var binding: FragmentDetailsProductBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +32,7 @@ class AdminSelectFragment : BaseFragment(), KoinComponent {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_administration_select, container, false
+                R.layout.fragment_details_product, container, false
             )
 
         // set injected viewModel (from KOIN service locator)
@@ -41,7 +40,7 @@ class AdminSelectFragment : BaseFragment(), KoinComponent {
 
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(false)
-        setTitle(getString(R.string.app_name_admin))
+        setTitle(getString(R.string.app_name_details_product))
 
         return binding.root
     }

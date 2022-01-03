@@ -17,7 +17,9 @@ import com.tanfra.shopmob.databinding.FragmentPlanningListsBinding
 import com.tanfra.shopmob.smob.activities.administration.SmobAdminTask
 import com.tanfra.shopmob.smob.activities.administration.SmobAdministrationActivity
 import com.tanfra.shopmob.smob.activities.authentication.SmobAuthenticationActivity
-import com.tanfra.shopmob.smob.activities.shopping.SmobListItemDescriptionActivity
+import com.tanfra.shopmob.smob.activities.details.SmobDetailsActivity
+import com.tanfra.shopmob.smob.activities.details.SmobDetailsSources
+import com.tanfra.shopmob.smob.activities.planning.shopList.PlanningShopListFragmentDirections
 import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import org.koin.core.component.KoinComponent
@@ -71,7 +73,7 @@ class PlanningListsFragment : BaseFragment(), KoinComponent {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         setupRecyclerView()
         binding.addSmobItemFab.setOnClickListener {
             navigateToAddSmobList()
@@ -95,17 +97,18 @@ class PlanningListsFragment : BaseFragment(), KoinComponent {
 
     private fun setupRecyclerView() {
         val adapter = PlanningListsAdapter {
+
             // this lambda is the 'callback' function which gets called when clicking an item in the
-            // RecyclerView - it gets the shopmobDataItem of the clicked item as parameter
+            // RecyclerView - it gets the data behind the clicked item as parameter
 
-            // create intent which starts activity shopmobItemDescriptionActivity, with extra data
-            // 'shopmobItemDataItem'
-            val intent = SmobListItemDescriptionActivity.newIntent(requireContext(), it)
-            wrapEspressoIdlingResource {
-                startActivity(intent)
-            }
+            // use the navigationCommand live data to navigate between the fragments
+            _viewModel.navigationCommand.postValue(
+                NavigationCommand.To(
+                    PlanningListsFragmentDirections.actionPlanningListsFragmentToPlanningProductListFragment()
+                )
+            )
 
-        }
+        }  // "on-item-click" lambda
 
         // setup the recycler view using the extension function
         binding.smobItemsRecyclerView.setup(adapter)

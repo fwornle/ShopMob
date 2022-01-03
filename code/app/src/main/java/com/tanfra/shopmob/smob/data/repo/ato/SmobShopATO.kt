@@ -9,11 +9,11 @@ import kotlinx.serialization.Serializable
 // domain independent data type (Application Transfer Object)
 @Serializable
 data class SmobShopATO(
-    val id: String,
+    override val id: String,
     var name: String,
     var description: String?,
     var location: @Contextual ShopLocation,
     var type: ShopType,
     var category: ShopCategory,
     var business: List<String>,
-) : java.io.Serializable
+) : Ato(), java.io.Serializable

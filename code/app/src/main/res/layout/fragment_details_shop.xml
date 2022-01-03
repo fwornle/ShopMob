@@ -5,15 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <!-- data item that holds the smob item details -->
         <variable
-            name="smobDataItem"
-            type="com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO" />
+            name="viewModel"
+            type="com.tanfra.shopmob.smob.activities.details.DetailsViewModel" />
     </data>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clSmobItemDetails"
+        android:id="@+id/clSmobProductDetails"
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/vertical_margin_huge"
         android:layout_height="wrap_content"
@@ -24,16 +22,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/smob_item_details"
+            android:text="@string/smob_shop_details"
             android:textSize="@dimen/text_size_large"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/ivMap"
+            app:layout_constraintBottom_toTopOf="@+id/ivSmobDetails"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             />
 
         <ImageView
-            android:id="@+id/ivMap"
+            android:id="@+id/ivSmobDetails"
             android:layout_width="0dp"
             android:layout_height="@dimen/image_header_height"
             android:layout_marginTop="@dimen/vertical_margin_image"
@@ -55,7 +53,7 @@
             android:id="@+id/clTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/ivMap"
+            app:layout_constraintTop_toBottomOf="@id/ivSmobDetails"
             app:layout_constraintBottom_toTopOf="@+id/clDescription"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -96,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/horizontal_margin_small"
                 android:layout_marginEnd="@dimen/horizontal_margin_huge"
-                android:text="@{smobDataItem.title}"
+                android:text="@{viewModel.smobShopDetailsItem.name}"
                 android:textSize="@dimen/label_text_size"
                 app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorTitle"
                 app:layout_constraintStart_toEndOf="@+id/tvAnchorTitle"
@@ -153,7 +151,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/horizontal_margin_small"
                 android:layout_marginEnd="@dimen/horizontal_margin_huge"
-                android:text="@{smobDataItem.description}"
+                android:text="@{viewModel.smobShopDetailsItem.description}"
                 android:textSize="@dimen/label_text_size"
                 app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorDesc"
                 app:layout_constraintStart_toEndOf="@+id/tvAnchorDesc"
@@ -210,7 +208,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/horizontal_margin_small"
                 android:layout_marginEnd="@dimen/horizontal_margin_huge"
-                android:text="@{smobDataItem.location}"
+                android:layout_marginBottom="@dimen/vertical_margin_large"
+                android:text="@{viewModel.smobShopDetailsItem.description}"
                 android:textSize="@dimen/label_text_size"
                 app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorLoc"
                 app:layout_constraintStart_toEndOf="@+id/tvAnchorLoc"
@@ -220,11 +219,42 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+        <!-- centered (red) progress bar, indicating the loading state when accessing the DB -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fadeVisible="@{viewModel.showLoading.booleanValue()}"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <Button
+            android:id="@+id/btFloorPlan"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/vertical_margin_large"
+            android:layout_marginStart="@dimen/horizontal_margin_small"
+            android:paddingStart="@dimen/button_padding"
+            android:paddingEnd="@dimen/button_padding"
+            android:text="@string/floor_plan"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/button_text_size"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/clLocation"
+            app:layout_constraintBottom_toTopOf="@id/btDismiss"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
         <Button
             android:id="@+id/btDismiss"
             android:layout_width="@dimen/button_width"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/vertical_margin_huge"
             android:layout_marginBottom="@dimen/vertical_margin_large"
             android:layout_marginStart="@dimen/horizontal_margin_small"
             android:paddingStart="@dimen/button_padding"
@@ -233,7 +263,7 @@
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/button_text_size"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/clLocation"
+            app:layout_constraintTop_toBottomOf="@id/btFloorPlan"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

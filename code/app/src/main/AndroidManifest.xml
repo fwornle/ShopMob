@@ -82,7 +82,7 @@
 
         <activity
             android:exported="true"
-            android:name=".smob.activities.shopping.SmobListItemDescriptionActivity">
+            android:name=".smob.activities.details.SmobDetailsActivity">
         </activity>
 
         <!-- WorkManager >= 2.6 needs to remove the androidx-startup code / the WorkManager

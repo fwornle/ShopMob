@@ -69,7 +69,7 @@ class PlanningProductEditFragment : BaseFragment(), KoinComponent {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
 
         // clicking on the 'selectLocation' textView takes you to the fragment "PlanningProductList"
         // ... by means of the observer function of MutableLiveData element 'navigationCommand'

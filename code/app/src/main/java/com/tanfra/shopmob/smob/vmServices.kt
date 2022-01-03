@@ -1,6 +1,7 @@
 package com.tanfra.shopmob.smob
 
 import com.tanfra.shopmob.smob.activities.administration.AdminViewModel
+import com.tanfra.shopmob.smob.activities.details.DetailsViewModel
 import com.tanfra.shopmob.smob.activities.planning.lists.PlanningListsViewModel
 import com.tanfra.shopmob.smob.activities.planning.productEdit.PlanningProductEditViewModel
 import com.tanfra.shopmob.smob.activities.planning.productList.PlanningProductListViewModel
@@ -57,6 +58,8 @@ val vmServices = module {
         )
     }
 
+
+
     // admin view models ---------------------------------------------------
 
     // Lists fragment
@@ -64,6 +67,19 @@ val vmServices = module {
         AdminViewModel(
             get(),  // app (context)
             get() as SmobListDataSource  // repo as data source
+        )
+    }
+
+
+
+    // details view model ----------------------------------------------------
+
+    // shared with all details fragments (and the activity)
+    viewModel {
+        DetailsViewModel(
+            get(),  // app (context)
+            get() as SmobProductDataSource,  // repo as data source
+            get() as SmobShopDataSource  // repo as data source
         )
     }
 
