@@ -87,6 +87,9 @@ frame "activity_admin" #Lightgrey/Darkgray {
     component fragment_admin_user_edit
     component fragment_admin_group_edit
     component fragment_admin_list_edit
+    
+    component fragment_admin_viewModel #lightblue
+
 
     fragment_planning_lists -right-> fragment_admin_select : menu >
     
@@ -98,6 +101,12 @@ frame "activity_admin" #Lightgrey/Darkgray {
     
     fragment_admin_select -down-> fragment_admin_list_edit #blue;text:blue : click user >
     fragment_admin_list_edit -> fragment_admin_select #red;text:red : back >
+    
+    fragment_admin_select <-right-> fragment_admin_viewModel #black : shared
+    fragment_admin_user_edit <-down-> fragment_admin_viewModel #black : shared
+    fragment_admin_group_edit <-down-> fragment_admin_viewModel #black : shared
+    fragment_admin_list_edit <-down-> fragment_admin_viewModel #black : shared
+
 }
 
 
@@ -111,7 +120,7 @@ frame "activity_authentification" #beige/brown {
     activity_auth -down-> activity_firebaseUI #blue;text:blue : Login >
     activity_firebaseUI -down-> activity_auth #brown;text:brown : Cancel >
     activity_firebaseUI -down-> fragment_planning_lists #green;text:green : Success >
-    
+
 }
 
 
