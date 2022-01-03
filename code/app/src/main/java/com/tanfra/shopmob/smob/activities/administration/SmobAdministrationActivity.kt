@@ -57,8 +57,7 @@ class SmobAdministrationActivity : AppCompatActivity() {
         extras?.let {
             if (it.containsKey(EXTRA_SmobAdminTask)) {
                 // extract the extra-data in the intent
-                //intentTask = it.getSerializable("EXTRA_SmobItem") as SmobAdminTask
-                intentTask = it.get("EXTRA_SmobItem") as SmobAdminTask
+                intentTask = it.get("EXTRA_SmobAdminTask") as SmobAdminTask
             }
         }
 

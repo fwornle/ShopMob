@@ -5,22 +5,15 @@ import android.view.*
 import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.base.BaseFragment
-import com.tanfra.shopmob.base.NavigationCommand
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
-import android.widget.Toast
 
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentAdministrationSelectBinding
-import com.tanfra.shopmob.databinding.FragmentPlanningListsBinding
 import com.tanfra.shopmob.smob.activities.authentication.SmobAuthenticationActivity
 import com.tanfra.shopmob.smob.activities.planning.SmobPlanningActivity
-import com.tanfra.shopmob.smob.activities.planning.lists.PlanningListsViewModel
-import com.tanfra.shopmob.smob.activities.shopping.SmobListItemDescriptionActivity
-import com.tanfra.shopmob.utils.setup
-import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import org.koin.core.component.KoinComponent
 
 class AdminSelectFragment : BaseFragment(), KoinComponent {
@@ -47,8 +40,8 @@ class AdminSelectFragment : BaseFragment(), KoinComponent {
         binding.viewModel = _viewModel
 
         setHasOptionsMenu(true)
-        setDisplayHomeAsUpEnabled(true)
-        setTitle(getString(R.string.app_admin_name))
+        setDisplayHomeAsUpEnabled(false)
+        setTitle(getString(R.string.app_name_admin))
 
         return binding.root
     }
