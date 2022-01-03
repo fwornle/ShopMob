@@ -53,7 +53,9 @@ class DetailsProductFragment : BaseFragment(), KoinComponent {
         // set onClick handler for DISMISS button
         // ... navigate back to the main app
         binding.btDismiss.setOnClickListener {
-            val intent = Intent(this.context, SmobPlanningActivity::class.java)
+            val intent = Intent(this.context, SmobPlanningActivity::class.java).apply {
+                this.putExtra("smobActivityReturn", "currProductList")
+            }
             startActivity(intent)
             // and we're done here
             this.activity?.finish()

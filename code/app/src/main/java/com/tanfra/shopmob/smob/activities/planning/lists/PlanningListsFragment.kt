@@ -49,7 +49,7 @@ class PlanningListsFragment : BaseFragment(), KoinComponent {
 
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(false)
-        setTitle(getString(R.string.app_name_planning))
+        setTitle(getString(R.string.app_name))
 
         // install listener for SwipeRefreshLayout view
         binding.refreshLayout.setOnRefreshListener {

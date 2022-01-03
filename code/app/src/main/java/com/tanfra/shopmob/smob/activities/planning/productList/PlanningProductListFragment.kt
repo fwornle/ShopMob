@@ -48,8 +48,8 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
         binding.viewModel = _viewModel
 
         setHasOptionsMenu(true)
-        setDisplayHomeAsUpEnabled(false)
-        setTitle(getString(R.string.app_name))
+        setDisplayHomeAsUpEnabled(true)
+        setTitle(String.format(getString(R.string.app_name_planning), ": Products"))
 
         // install listener for SwipeRefreshLayout view
         binding.refreshLayout.setOnRefreshListener {

@@ -7,6 +7,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.ActivityPlanningBinding
+import com.tanfra.shopmob.smob.activities.planning.productList.PlanningProductListFragment
+
 
 /**
  * The SmobActivity that holds the SmobPlanning fragments
@@ -35,4 +37,19 @@ class SmobPlanningActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    // get back to the fragment we came from
+    // ... when returning from SmobDetailsActivity (uses extra 'smobActivityReturn'
+    override fun onResume() {
+        super.onResume()
+
+        val intent = intent
+        val frag = intent.extras!!.getString("smobActivityReturn")
+        val fragManager = getSupportFragmentManager()
+
+        when (frag) {
+            "currProductList" ->
+                fragManager.beginTransaction().replace(R.id.nav_host_fragment_planning, PlanningProductListFragment())
+                    .commit()
+        }
+    }
 }

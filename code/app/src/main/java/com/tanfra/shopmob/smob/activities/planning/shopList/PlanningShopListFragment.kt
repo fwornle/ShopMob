@@ -47,7 +47,7 @@ class PlanningShopListFragment : BaseFragment(), KoinComponent {
 
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(false)
-        setTitle(getString(R.string.app_name))
+        setTitle(String.format(getString(R.string.app_name_planning), ": Shops"))
 
         // install listener for SwipeRefreshLayout view
         binding.rlPlanningShopList.setOnRefreshListener {
@@ -73,21 +73,6 @@ class PlanningShopListFragment : BaseFragment(), KoinComponent {
         binding.lifecycleOwner = viewLifecycleOwner
         setupRecyclerView()
         binding.addSmobItemFab.setOnClickListener {
-
-//            // TODO: remove again
-//            // test HTTP
-//            val smobUserDao: SmobUserDao by inject()
-//            val smobUserApi: SmobUserApi by inject()
-//            val userRepo = SmobUserRepository(smobUserDao, smobUserApi)
-//            _viewModel.viewModelScope.launch {
-//
-//                val daUser = userRepo.getSmobUser("07c295ad-b286-41f7-b2ea-e81a75875d02").data
-//                daUser?.let {
-//                }
-//                userRepo.deleteAllSmobUsers()
-//
-//            }
-
             navigateToAddshopmobItem()
         }
     }
