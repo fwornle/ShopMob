@@ -58,7 +58,7 @@
 
         <activity
             android:exported="true"
-            android:name=".smob.activities.authentication.AuthenticationActivity">
+            android:name=".smob.activities.authentication.SmobAuthenticationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -67,12 +67,22 @@
 
         <activity
             android:exported="true"
-            android:name=".smob.activities.planning.SmobActivity" >
+            android:name=".smob.activities.planning.SmobPlanningActivity" >
         </activity>
 
         <activity
             android:exported="true"
-            android:name=".smob.activities.shopping.SmobItemDescriptionActivity">
+            android:name=".smob.activities.shopping.SmobShoppingActivity" >
+        </activity>
+
+        <activity
+            android:exported="true"
+            android:name=".smob.activities.administration.SmobAdministrationActivity" >
+        </activity>
+
+        <activity
+            android:exported="true"
+            android:name=".smob.activities.shopping.SmobListItemDescriptionActivity">
         </activity>
 
         <!-- WorkManager >= 2.6 needs to remove the androidx-startup code / the WorkManager

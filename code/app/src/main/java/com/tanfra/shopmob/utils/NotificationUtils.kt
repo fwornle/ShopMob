@@ -10,8 +10,8 @@ import androidx.core.app.TaskStackBuilder
 import androidx.core.content.getSystemService
 import com.tanfra.shopmob.BuildConfig
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.activities.shopping.SmobItemDescriptionActivity
-import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
+import com.tanfra.shopmob.smob.activities.shopping.SmobListItemDescriptionActivity
+import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 
 private const val NOTIFICATION_CHANNEL_ID = BuildConfig.APPLICATION_ID + ".channel"
 
@@ -26,7 +26,7 @@ fun ifSupportsOreo(f: () -> Unit) {
 val Context.notificationManager: NotificationManager?
     get() = getSystemService<NotificationManager>()
 
-fun sendNotification(context: Context, shopMobDataItemATO: SmobItemATO) {
+fun sendNotification(context: Context, smobListsItem: SmobListATO) {
 
     // old way...
     //
@@ -57,11 +57,11 @@ fun sendNotification(context: Context, shopMobDataItemATO: SmobItemATO) {
 
     // create intent which starts activity SmobItemDescriptionActivity, with extra data
     // 'SmobItem'
-    val intent = SmobItemDescriptionActivity.newIntent(context.applicationContext, shopMobDataItemATO)
+    val intent = SmobListItemDescriptionActivity.newIntent(context.applicationContext, smobListsItem)
 
     // create a pending intent that opens SmobItemDescriptionActivity when the user clicks on the notification
     val stackBuilder = TaskStackBuilder.create(context)
-        .addParentStack(SmobItemDescriptionActivity::class.java)
+        .addParentStack(SmobListItemDescriptionActivity::class.java)
         .addNextIntent(intent)
     val notificationPendingIntent = stackBuilder
         .getPendingIntent(getUniqueId(), PendingIntent.FLAG_UPDATE_CURRENT)
@@ -69,8 +69,8 @@ fun sendNotification(context: Context, shopMobDataItemATO: SmobItemATO) {
     // build the notification object with the data to be shown
     val notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
         .setSmallIcon(R.mipmap.ic_launcher)
-        .setContentTitle(shopMobDataItemATO.title)
-        .setContentText(shopMobDataItemATO.location)
+        .setContentTitle(smobListsItem.name)
+        .setContentText(smobListsItem.description)
         .setContentIntent(notificationPendingIntent)
         .setAutoCancel(true)
         //.setPriority(NotificationCompat.PRIORITY_HIGH)

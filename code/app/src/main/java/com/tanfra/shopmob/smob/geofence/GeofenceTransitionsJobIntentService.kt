@@ -6,8 +6,8 @@ import androidx.core.app.JobIntentService
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
-import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
-import com.tanfra.shopmob.smob.data.repo.utils.Resource
+import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.utils.sendNotification
 import kotlinx.coroutines.*
@@ -68,34 +68,35 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
                 // loop over all triggered geoFences at this location
                 for (geoFenceItem in triggeringGeofences) {
 
-                    // get the local repository instance
-                    val smobItemLocalRepository: SmobItemDataSource by inject()
+                    // get repository instance for shop
+                    val smobListsRepository: SmobListDataSource by inject()
 
                     // ... interaction to the repository has to be through a coroutine scope
                     CoroutineScope(coroutineContext).launch(SupervisorJob()) {
 
                         // get the smob item with the request id
-                        val result = smobItemLocalRepository.getSmobItem(geoFenceItem.requestId)
+                        val result = smobListsRepository.getSmobList(geoFenceItem.requestId)
 
                         // smob location found in DB?
                         if (result.status.equals(Status.SUCCESS)) {
 
                             // yes --> fetch associated smob item data
                             //         ... and send it down the notification channel
-                            val smobItem = result.data
+                            val smobListsItem = result.data
 
                             // send a notification to the user with the smob item details
                             // note: polymorphism
                             //       --> call-up parameter is a SmobItem
                             //       --> implementation of sendNotification from NotificationUtils.kt is used
-                            if (smobItem != null) {
+                            if (smobListsItem != null) {
                                 sendNotification(
-                                    this@GeofenceTransitionsJobIntentService, SmobItemATO(
-                                        smobItem.title,
-                                        smobItem.description,
-                                        smobItem.location,
-                                        smobItem.latitude,
-                                        smobItem.longitude
+                                    this@GeofenceTransitionsJobIntentService, SmobListATO(
+                                        smobListsItem.id,
+                                        smobListsItem.name,
+                                        smobListsItem.description,
+                                        smobListsItem.items,
+                                        smobListsItem.members,
+                                        smobListsItem.lifecycle
                                     )
                                 )
                             }

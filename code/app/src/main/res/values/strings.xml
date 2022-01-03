@@ -3,6 +3,7 @@
     <string name="signed_out">Signed Out</string>
 
     <string name="app_name">ShopMob</string>
+    <string name="app_admin_name">ShopMob Administration</string>
     <string name="no_data">No Data</string>
     <string name="smob_item_title">ShopMob Item Title</string>
     <string name="smob_item_desc">ShopMob Item Description</string>
