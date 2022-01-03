@@ -12,7 +12,7 @@ frame "activity_shopping" #LightGoldenRodYellow/GreenYellow {
     component fragment_shopping_shelf
     component fragment_shopping_product
 
-    geoFenceTrigger -left-> fragment_shopping_shop : Android System call >
+    geoFenceTrigger -right-> fragment_shopping_shop : Android System call >
 
     fragment_shopping_shop -down-> fragment_shopping_zone #blue;text:blue : click zone > 
     fragment_shopping_zone -down-> fragment_shopping_aisle #blue;text:blue : click aisle > 
@@ -53,8 +53,6 @@ frame "activity_planning" #Lightcyan/Darkcyan {
 
     component shared_base_viewModel #lightblue
 
-
-    fragment_planning_shop_list -down-> fragment_shopping_shop : menu >
     
     fragment_planning_lists -down-> fragment_planning_product_list #blue;text:blue : click item > 
     fragment_planning_product_list -down-> fragment_planning_lists #red;text:red : back > 
@@ -81,29 +79,36 @@ frame "activity_planning" #Lightcyan/Darkcyan {
     fragment_planning_shop_edit_viewModel <-left-> fragment_planning_shop_edit #black : shared
     fragment_planning_shop_edit_viewModel <-left-> fragment_planning_shop_map #black : shared
 
-    fragment_planning_lists_viewModel *-down- shared_base_viewModel #black : implements >
-    fragment_planning_product_list_viewModel *-down- shared_base_viewModel #black : implements >
-    fragment_planning_product_edit_viewModel *-down- shared_base_viewModel #black : implements >
-    fragment_planning_shop_list_viewModel *-down- shared_base_viewModel #black : implements >
-    fragment_planning_shop_edit_viewModel *-down- shared_base_viewModel #black : implements >
+    fragment_planning_lists_viewModel *-down- shared_base_viewModel #DarkSlateGray;text:DarkSlateGray : implements >
+    fragment_planning_product_list_viewModel *-down- shared_base_viewModel #DarkSlateGray;text:DarkSlateGray : implements >
+    fragment_planning_product_edit_viewModel *-down- shared_base_viewModel #DarkSlateGray;text:DarkSlateGray : implements >
+    fragment_planning_shop_list_viewModel *-down- shared_base_viewModel #DarkSlateGray;text:DarkSlateGray : implements >
+    fragment_planning_shop_edit_viewModel *-down- shared_base_viewModel #DarkSlateGray;text:DarkSlateGray : implements >
 
 }
 
 frame "activity_details" #aquamarine/cornflowerblue {
     
-    component fragment_details_lists
-    component fragment_details_product_list
-    component fragment_details_shop_list
+    component fragment_details_product
+    component fragment_details_shop
+    
+    component shared_details_viewModel #lightblue
 
 
-    fragment_planning_lists -left-> fragment_details_lists #indigo;text:indigo : click item >
-    fragment_details_lists -down-> fragment_planning_lists #indigo;text:indigo : Dismiss >
+    fragment_planning_product_list -down-> fragment_details_product #indigo;text:indigo : click item 
+    fragment_details_product -up-> fragment_planning_product_list #indigo;text:indigo : click Dismiss
 
-    fragment_planning_shop_list -left-> fragment_details_shop_list #indigo;text:indigo : click item >
-    fragment_details_shop_list -down-> fragment_planning_shop_list #indigo;text:indigo : Dismiss >
+    fragment_planning_shop_list -> fragment_details_shop #indigo;text:indigo : click item
+    fragment_details_shop -> fragment_planning_shop_list #indigo;text:indigo : click Dismiss
 
-    fragment_planning_product_list -left-> fragment_details_product_list #indigo;text:indigo : Click item > 
-    fragment_details_product_list -down-> fragment_planning_product_list #indigo;text:indigo : Click item > 
+    fragment_details_product --[hidden]- fragment_details_shop
+
+    fragment_details_shop -down-> fragment_shopping_shop : floor plan >
+    fragment_shopping_shop -down-> fragment_details_shop : back >
+    
+    fragment_details_product -down-> shared_details_viewModel
+    fragment_details_shop -up-> shared_details_viewModel
+    
 
 }
 
