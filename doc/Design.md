@@ -474,9 +474,9 @@ At the writing of this document (21.12.21), this submission is expected for
       - [x] One repository class per table (/DTO/DAO) - to maintain modularity / improve SW quality & testability
     - [x] Service Locator pattern (using _Koin_)
       - [x] Modularize Koins: DB, NET, REPO, VM
-    - [ ] Model View / View Model (MVVM)
-      - [ ] move all LiveData to VM (from Repo - replace loading status by Resource wrappers)
-    - [ ] Migrate from _LiveData_ to _Flow_
+    - [x] Model View / View Model (MVVM)
+      - [x] move all LiveData to VM (from Repo - replace loading status by Resource wrappers)
+      - [x] Migrate from _LiveData_ to _Flow_
   - [ ] DSNG-3.5: Architecture: Data flow modelling (optional)
     - [x] UML diagram of Repository Architecture
     - [x] UML diagram of Koin Service Locator mmodules
@@ -575,10 +575,10 @@ At the writing of this document (21.12.21), this submission is expected for
 - [ ] IMPL-3: App development against backend DB
   - [x] Set-up development backend DB (json-server)
   - [x] Seed backend DB with test data (same as in IMPL-2.6)
-  - [ ] Implement CRUD functionality for the backend DB
+  - [x] Implement CRUD functionality for the backend DB
       - [x] In-principle implementation (one table)
       - [x] Full implementation as needed by the app
-  - [ ] Implement synchronization between backend and app (WorkManager)
+  - [x] Implement synchronization between backend and app (WorkManager)
     - [x] In-principle implementation (one table)
     - [x] Full implementation as needed by the app
   - [ ] Push notifications when data has changed at backend level

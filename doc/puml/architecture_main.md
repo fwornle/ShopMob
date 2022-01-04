@@ -12,8 +12,9 @@ frame "device" #lightgray/darkgray {
     node repo
     database DB
 
-    component activity_authentification #beige/brown
+    component activity_authentification #khaki/indianred
     component activity_planning #Lightcyan/Darkcyan
+    component activity_details #aquamarine/cornflowerblue
     component activity_shopping #LightGoldenRodYellow/GreenYellow
     component activity_admin #Lightgrey/Darkgray
 
@@ -21,6 +22,9 @@ frame "device" #lightgray/darkgray {
     repo <-right-> service_provider
     service_provider <-right-> app_main
     app_main -down-> activity_authentification
+
+    activity_details <-right- activity_planning : click item <
+    activity_details -left-> activity_planning : click Dismiss >
     
     activity_authentification -down-> activity_planning : upon login >
     activity_authentification <-right- activity_planning : logout <
