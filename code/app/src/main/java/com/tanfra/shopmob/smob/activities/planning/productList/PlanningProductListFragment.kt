@@ -10,7 +10,6 @@ import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentPlanningProductListBinding
 import com.tanfra.shopmob.smob.activities.authentication.SmobAuthenticationActivity
@@ -56,11 +55,12 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
             // deactivate SwipeRefreshLayout spinner
             binding.refreshLayout.setRefreshing(false)
 
-            // update smob item list
-            _viewModel.loadSmobItems()
+            // update smob product list
+            // ... this also updates LifeData 'showNoData' (see below)
+            _viewModel.loadProductItems()
 
             // empty list? --> inform user that there is no point swiping for updates...
-            if (_viewModel.smobList.value?.isEmpty() == true) {
+            if (_viewModel.showNoData.value == true) {
                 Toast.makeText(activity, getString(R.string.error_add_smob_items), Toast.LENGTH_SHORT).show()
             }
 
@@ -81,7 +81,7 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
     override fun onResume() {
         super.onResume()
         //load the smob item list on the UI
-        _viewModel.loadSmobItems()
+        _viewModel.loadProductItems()
     }
 
     // FAB handler --> navigate to SaveSmobItem fragment

@@ -3,12 +3,12 @@ package com.tanfra.shopmob.smob.activities.planning.shopList
 import android.os.Looper
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.tanfra.shopmob.smob.data.FakeItemDataSource
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
+import com.tanfra.shopmob.smob.data.FakeUserDataSource
+import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.testutils.MainCoroutineRule
 import com.tanfra.shopmob.smob.testutils.getOrAwaitValue
 
-import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,14 +26,14 @@ import java.util.*
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class SmobItemATOListViewModelTest: AutoCloseKoinTest() {
+class SmobUserATOListViewModelTest: AutoCloseKoinTest() {
 
     // viewModel
     private lateinit var _viewModel: PlanningShopListViewModel
 
     // smob item repository and fake data
-    private lateinit var smobItemRepo: SmobItemDataSource
-    private lateinit var smobItemATOList: MutableList<SmobItemATO>
+    private lateinit var smobUserRepo: SmobUserDataSource
+    private lateinit var smobUserATOList: MutableList<SmobUserATO>
 
     // use our own dispatcher for coroutine testing (swaps out Dispatcher.Main to a version which
     // can be used for testing, where asynchronous tasks should run synchronously)
@@ -49,35 +49,33 @@ class SmobItemATOListViewModelTest: AutoCloseKoinTest() {
         // run BEFORE EACH individual test ----------------------------------------
 
         // generate some test database items (location smob items)
-        smobItemATOList = mutableListOf<SmobItemATO>()
-        smobItemATOList.add(
-            SmobItemATO(
-                "test title 1",
-                "test description 1",
-                "test location 1",
-                1.0,
-                1.0,
+        smobUserATOList = mutableListOf<SmobUserATO>()
+        smobUserATOList.add(
+            SmobUserATO(
                 UUID.randomUUID().toString(),
+                "test username 1",
+                "test name 1",
+                "test email 1",
+                "test imageUrl 1",
             )
         )
-        smobItemATOList.add(
-            SmobItemATO(
-                "test title 2",
-                "test description 2",
-                "test location 2",
-                2.0,
-                2.0,
+        smobUserATOList.add(
+            SmobUserATO(
                 UUID.randomUUID().toString(),
+                "test username 2",
+                "test name 2",
+                "test email 2",
+                "test imageUrl 2",
             )
         )
-        smobItemATOList.add(
-            SmobItemATO(
-                "test title 3",
-                "test description 3",
-                "test location 3",
-                3.0,
-                3.0,
+        smobUserATOList.add(
+            SmobUserATO(
                 UUID.randomUUID().toString(),
+                "test username 3",
+                "test name 3",
+                "test email 3",
+                "test imageUrl 3",
+
             )
         )
 
@@ -85,47 +83,47 @@ class SmobItemATOListViewModelTest: AutoCloseKoinTest() {
 
 
     /* ******************************************************************
-     * test suite for: loadSmobItems
+     * test suite for: loadSmobUsers
      * ******************************************************************/
 
     @Test
-    fun `loadSmobItems fetches all smob items from repository and triggers observer of smobItemList`() =
+    fun `loadSmobUsers fetches all smob items from repository and triggers observer of smobUserList`() =
         mainCoroutineRule.runBlockingTest {
 
         // GIVEN...
         // ... some data in the (fake) data source
-        smobItemRepo = FakeItemDataSource(smobItemATOList)
+        smobUserRepo = FakeUserDataSource(smobUserATOList)
 
         // ... and a fresh viewModel with this data source injected (via constructor)
         _viewModel = PlanningShopListViewModel(
             ApplicationProvider.getApplicationContext(),
-            smobItemRepo,
+            smobUserRepo,
         )
 
-        // WHEN calling function loadSmobItems
-        _viewModel.loadSmobItems()
+        // WHEN calling function loadSmobUsers
+        _viewModel.loadSmobUsers()
 
         // THEN the smob item is verified and stored in the repository
-        assertThat(_viewModel.smobList.getOrAwaitValue(), equalTo(smobItemATOList))
+        assertThat(_viewModel.smobList.getOrAwaitValue(), equalTo(smobUserATOList))
 
     }
 
     @Test
-    fun `loadSmobItems displays an error message (snackBar) when fetching from the local data source fails`()  =
+    fun `loadSmobUsers displays an error message (snackBar) when fetching from the local data source fails`()  =
         mainCoroutineRule.runBlockingTest {
 
         // GIVEN...
         // ... a broken (fake) data source (to simulate a read error)
-        smobItemRepo = FakeItemDataSource(null)
+        smobUserRepo = FakeUserDataSource(null)
 
         // ... and a fresh viewModel with this data source injected (via constructor)
         _viewModel = PlanningShopListViewModel(
             ApplicationProvider.getApplicationContext(),
-            smobItemRepo,
+            smobUserRepo,
         )
 
-        // WHEN calling function loadSmobItems
-        _viewModel.loadSmobItems()
+        // WHEN calling function loadSmobUsers
+        _viewModel.loadSmobUsers()
 
         // THEN...
         // ... the observer of liveData showSnackBar is triggered (and value set to error message)
@@ -145,19 +143,19 @@ class SmobItemATOListViewModelTest: AutoCloseKoinTest() {
 
             // GIVEN...
             // ... a broken (fake) data source (to simulate a read error)
-            smobItemRepo = FakeItemDataSource(null)
+            smobUserRepo = FakeUserDataSource(null)
 
             // ... and 'simulating an error when reading the smob items from the DB'
-            (smobItemRepo as FakeItemDataSource).setReturnError(true)
+            (smobUserRepo as FakeUserDataSource).setReturnError(true)
 
             // ... and a fresh viewModel with this data source injected (via constructor)
             _viewModel = PlanningShopListViewModel(
                 ApplicationProvider.getApplicationContext(),
-                smobItemRepo,
+                smobUserRepo,
             )
 
-            // WHEN calling function loadSmobItems
-            _viewModel.loadSmobItems()
+            // WHEN calling function loadSmobUsers
+            _viewModel.loadSmobUsers()
 
             // THEN...
             // ... the observer of liveData showSnackBar is triggered (and value set to error message)
@@ -181,17 +179,17 @@ class SmobItemATOListViewModelTest: AutoCloseKoinTest() {
 
             // GIVEN...
             // ... some data in the (fake) data source
-            smobItemRepo = FakeItemDataSource(smobItemATOList)
+            smobUserRepo = FakeUserDataSource(smobUserATOList)
 
             // ... and a fresh viewModel with this data source injected (via constructor)
             _viewModel = PlanningShopListViewModel(
                 ApplicationProvider.getApplicationContext(),
-                smobItemRepo,
+                smobUserRepo,
             )
 
-            // WHEN calling function loadSmobItems
+            // WHEN calling function loadSmobUsers
             mainCoroutineRule.pauseDispatcher()
-            _viewModel.loadSmobItems()
+            _viewModel.loadSmobUsers()
 
             // check that loading spinner has been started
             assertThat(
@@ -220,19 +218,19 @@ class SmobItemATOListViewModelTest: AutoCloseKoinTest() {
 
     // LiveData: force error by setting shouldReturnError to true (fake data source)
     @Test
-    fun `shouldReturnError - setting shouldReturnError to true should fail a call to getSmobItem`() {
+    fun `shouldReturnError - setting shouldReturnError to true should fail a call to getSmobUser`() {
 
         mainCoroutineRule.runBlockingTest {
 
             // GIVEN...
             // ... some data in the (fake) data source
-            smobItemRepo = FakeItemDataSource(smobItemATOList)
+            smobUserRepo = FakeUserDataSource(smobUserATOList)
 
             // ... and 'simulating an error when reading the smob item from the DB'
-            (smobItemRepo as FakeItemDataSource).setReturnError(true)
+            (smobUserRepo as FakeUserDataSource).setReturnError(true)
 
             // WHEN trying to read
-            val result = smobItemRepo.getSmobItem(smobItemATOList[0].id)
+            val result = smobUserRepo.getSmobUser(smobUserATOList[0].id)
 
             // check that result is failed
             assertThat(result.status, CoreMatchers.`is`(Status.ERROR))

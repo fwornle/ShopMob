@@ -1,7 +1,5 @@
 package com.tanfra.shopmob.smob.data.repo
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.local.dto.SmobListDTO
@@ -26,6 +24,7 @@ import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 
+
 /**
  * Concrete implementation of a data source as a db.
  *
@@ -47,8 +46,8 @@ class SmobListRepository(
     // --- impl. of public, app facing data interface 'SmobListDataSource': CRUD, local DB data ---
 
     /**
-     * Get a smob user by its id
-     * @param id to be used to get the smob user
+     * Get a smob list by its id
+     * @param id to be used to get the smob list
      * @return Result the holds a Success object with the SmobList or an Error object with the error message
      */
     override fun getSmobList(id: String): Flow<Resource<SmobListATO>> {
@@ -73,8 +72,8 @@ class SmobListRepository(
     }
 
     /**
-     * Get the smob user list from the local db
-     * @return Result holds a Success with all the smob users or an Error object with the error message
+     * Get the smob list from the local db
+     * @return Result holds a Success with all the smob lists or an Error object with the error message
      */
     override fun getAllSmobLists(): Flow<Resource<List<SmobListATO>>> {
 
@@ -207,16 +206,10 @@ class SmobListRepository(
     }
 
 
-    // TODO: should loop over all list pictures and move them to local storage
-    // TODO: make refresSmogListDataInDB sensitive to List data relevant to this list only
-
     /**
      * Synchronize all smob lists in the db by retrieval from the backend using the (net) API
      */
     override suspend fun refreshDataInLocalDB() {
-
-        // set initial status
-        _statusSmobListDataSync.postValue(Status.LOADING)
 
         // send GET request to server - coroutine to avoid blocking the main (UI) thread
         withContext(Dispatchers.IO) {
@@ -229,7 +222,6 @@ class SmobListRepository(
             if (response.status.equals(Status.SUCCESS)) {
 
                 // set status to keep UI updated
-                _statusSmobListDataSync.postValue(Status.SUCCESS)
                 Timber.i("SmobList data GET request complete (success)")
 
                 // store list data in DB - if any
@@ -247,13 +239,13 @@ class SmobListRepository(
     /**
      * Synchronize an individual smob lists in the db by retrieval from the backend DB (API call)
      */
-    suspend fun refreshSmobListInDB(id: String) {
+    suspend fun refreshSmobListInLocalDB(id: String) {
 
         // initiate the (HTTP) GET request using the provided query parameters
         Timber.i("Sending GET request for SmobList data...")
         val response: Resource<SmobListDTO> = getSmobListViaApi(id)
 
-        // got any valid data back?
+        // got back any valid data?
         if (response.status.equals(Status.SUCCESS)) {
 
             Timber.i("SmobList data GET request complete (success)")
@@ -272,7 +264,7 @@ class SmobListRepository(
 
         }  // if (valid response)
 
-    }  // refreshSmobListInDB()
+    }  // refreshSmobListInLocalDB()
 
 
     // --- use : CRUD, NET data ---
@@ -301,11 +293,13 @@ class SmobListRepository(
                     ?: listOf()  // GET request returned empty handed --> return empty list
 
                 // return as successfully completed GET call to the backend
+                // --> wraps data in Response type (success/error/loading)
                 responseHandler.handleSuccess(netResult)
 
             } catch (ex: Exception) {
 
-                // return with exception --> handle it...
+                // return with exception
+                // --> handle it... wraps data in Response type (success/error/loading)
                 val daException = responseHandler.handleException<ArrayList<SmobListDTO>>(ex)
 
                 // local logging
@@ -405,29 +399,5 @@ class SmobListRepository(
         }
 
     }  // deleteSmobListToApi
-
-
-
-
-    // TODO: move this to viewModel?? replace LiveData by Flow??
-    // LiveData for storing the status of the most recent RESTful API request
-    private val _statusSmobListDataSync = MutableLiveData<Status>()
-    val statusSmobListDataSync: LiveData<Status>
-        get() = _statusSmobListDataSync
-
-
-    // upon instantiating the repository class...
-    init {
-
-        // make sure all LiveData elements have defined values which are set using 'postValue', in
-        // case the repository class is initialized from within a background task, e.g. when using
-        // WorkManager to schedule a background update (and this happens to be the first access of
-        // a repository service)
-        // ... omitting proper initialization of LD can cause ('obscure') crashes
-        //     - ... e.g. when Android calls the LD observer (to update the UI) and the
-        //       BindingAdapter tries to de-reference a null pointer (invalid LD)
-        _statusSmobListDataSync.postValue(Status.SUCCESS)
-
-    }
 
 }

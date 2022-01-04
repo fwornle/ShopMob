@@ -55,11 +55,12 @@ class PlanningShopListFragment : BaseFragment(), KoinComponent {
             // deactivate SwipeRefreshLayout spinner
             binding.rlPlanningShopList.setRefreshing(false)
 
-            // update smob item list
-            _viewModel.loadSmobItems()
+            // update smob list
+            // ... this also updates LifeData 'showNoData' (see below)
+            _viewModel.loadShopItems()
 
             // empty list? --> inform user that there is no point swiping for updates...
-            if (_viewModel.smobList.value?.isEmpty() == true) {
+            if (_viewModel.showNoData.value == true) {
                 Toast.makeText(activity, getString(R.string.error_add_smob_items), Toast.LENGTH_SHORT).show()
             }
 
@@ -80,7 +81,7 @@ class PlanningShopListFragment : BaseFragment(), KoinComponent {
     override fun onResume() {
         super.onResume()
         //load the smob item list on the UI
-        _viewModel.loadSmobItems()
+        _viewModel.loadShopItems()
     }
 
     // FAB handler --> navigate to SaveSmobItem fragment

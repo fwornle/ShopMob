@@ -8,10 +8,6 @@ val repoServices = module {
 
     // DataSources ------------------------------------------------------------
 
-    // declare a (singleton) repository service with interface "SmobItemDataSource"
-    // ... the repo requires one constructor provided dependency: dao
-    single<SmobItemDataSource> { SmobItemRepository(get()) }
-
     // declare a (singleton) repository service with interface "SmobUserDataSource"
     // ... the repo requires two constructor provided dependencies: dao & api
     single<SmobUserDataSource> { SmobUserRepository(get(), get()) }

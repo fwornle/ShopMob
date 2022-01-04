@@ -14,7 +14,6 @@ import com.tanfra.shopmob.smob.data.local.utils.LocalDbConverters
 @TypeConverters(LocalDbConverters::class)
 @Database(
     entities = [
-        SmobItemDTO::class,  // Todo: delete, when no longer needed
         SmobUserDTO::class,
         SmobGroupDTO::class,
         SmobShopDTO::class,
@@ -25,7 +24,6 @@ import com.tanfra.shopmob.smob.data.local.utils.LocalDbConverters
     exportSchema = false
 )
     abstract class SmobDatabase : RoomDatabase() {
-        abstract fun smobItemDao(): SmobItemDao
         abstract fun smobUserDao(): SmobUserDao
         abstract fun smobGroupDao(): SmobGroupDao
         abstract fun smobShopDao(): SmobShopDao

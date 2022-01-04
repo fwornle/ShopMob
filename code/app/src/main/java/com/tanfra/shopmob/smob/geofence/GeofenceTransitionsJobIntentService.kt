@@ -3,6 +3,7 @@ package com.tanfra.shopmob.smob.geofence
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
+import androidx.lifecycle.asLiveData
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
@@ -10,6 +11,7 @@ import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.utils.sendNotification
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
@@ -70,18 +72,18 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
                     // get repository instance for shop
                     val smobShopDataSource: SmobShopDataSource by inject()
 
-                    // ... interaction to the repository has to be through a coroutine scope
-                    CoroutineScope(coroutineContext).launch(SupervisorJob()) {
+//                    // ... interaction to the repository has to be through a coroutine scope
+//                    CoroutineScope(coroutineContext).launch(SupervisorJob()) {
 
                         // get the smob item with the request id
-                        val result = smobShopDataSource.getSmobShop(geoFenceItem.requestId)
+                        val result = smobShopDataSource.getSmobShop(geoFenceItem.requestId).asLiveData()
 
                         // smob location found in DB?
-                        if (result.status.equals(Status.SUCCESS)) {
+                        if (result.value?.status == Status.SUCCESS) {
 
                             // yes --> fetch associated smob item data
                             //         ... and send it down the notification channel
-                            val smobShopItem = result.data
+                            val smobShopItem = result.value?.data
 
                             // send a notification to the user with the smob item details
                             // note: polymorphism
@@ -102,8 +104,8 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
                             }
 
                         }  // if (smob location found in DB)
-
-                    }  // Coroutine scope
+//
+//                    }  // Coroutine scope
 
                 }  // loop over all geoFences at this location
 

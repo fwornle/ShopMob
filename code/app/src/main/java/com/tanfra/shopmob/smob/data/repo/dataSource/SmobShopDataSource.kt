@@ -2,6 +2,7 @@ package com.tanfra.shopmob.smob.data.repo.dataSource
 
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Main entry point for accessing smob shop data.
@@ -9,8 +10,13 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
  * ... wrapping results in Resource type (w/h state SUCCESS, ERROR, LOADING)
  */
 interface SmobShopDataSource {
-    suspend fun getSmobShop(id: String): Resource<SmobShopATO>
-    suspend fun getAllSmobShops(): Resource<List<SmobShopATO>>
+
+    // Room executes all queries on a separate thread.
+    // Observed Flow will notify the observer when the data has changed.
+    fun getSmobShop(id: String): Flow<Resource<SmobShopATO?>>
+    fun getAllSmobShops(): Flow<Resource<List<SmobShopATO>>>
+
+    // By default Room runs suspend queries off the main thread
     suspend fun saveSmobShop(smobShopATO: SmobShopATO)
     suspend fun saveSmobShops(smobShopsATO: List<SmobShopATO>)
     suspend fun updateSmobShop(smobShopATO: SmobShopATO)
@@ -18,4 +24,5 @@ interface SmobShopDataSource {
     suspend fun deleteSmobShop(id: String)
     suspend fun deleteAllSmobShops()
     suspend fun refreshDataInLocalDB()
+
 }

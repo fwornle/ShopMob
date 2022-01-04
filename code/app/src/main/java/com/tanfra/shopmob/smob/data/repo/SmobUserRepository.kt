@@ -1,7 +1,5 @@
 package com.tanfra.shopmob.smob.data.repo
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
@@ -9,7 +7,6 @@ import com.tanfra.shopmob.smob.data.local.dao.SmobUserDao
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
 import com.tanfra.shopmob.smob.data.net.ResponseHandler
-import com.tanfra.shopmob.smob.data.net.SmodUserProfilePicture
 import com.tanfra.shopmob.smob.data.net.api.SmobUserApi
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
@@ -18,12 +15,14 @@ import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.asResource
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 /**
  * Concrete implementation of a data source as a db.
@@ -45,30 +44,26 @@ class SmobUserRepository(
     // --- impl. of public, app facing data interface 'SmobUserDataSource': CRUD, local DB data ---
     // --- impl. of public, app facing data interface 'SmobUserDataSource': CRUD, local DB data ---
 
-
-
     /**
      * Get a smob user by its id
      * @param id to be used to get the smob user
      * @return Result the holds a Success object with the SmobUser or an Error object with the error message
      */
-    override suspend fun getSmobUser(id: String): Flow<Resource<SmobUserATO>> = withContext(ioDispatcher) {
+    override fun getSmobUser(id: String): Flow<Resource<SmobUserATO>> {
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
-            // first try to update local DB for the requested SmobUser
-            // ... if the API call fails, the local DB remains untouched
-            //     --> app still works, as we only work of the data in the local DB
-            refreshSmobUserInDB(id)
-
-            // now try to fetch data from the local DB
+            // try to fetch data from the local DB
             var atoFlow: Flow<SmobUserATO?> = flowOf(null)
-            try {
+            return try {
+                // fetch data from DB (and convert to ATO)
                 atoFlow = smobUserDao.getSmobUserById(id).asDomainModel()
-                return@withContext atoFlow.asResource("SmobUser not found!")
+                // wrap data in Resource (--> error/success/[loading])
+                atoFlow.asResource("SmobUser not found!")
             } catch (e: Exception) {
-                return@withContext atoFlow.asResource(e.localizedMessage)
+                // handle exceptions --> error message returned in Resource.error
+                atoFlow.asResource(e.localizedMessage)
             }
 
         }  // idlingResource (testing)
@@ -76,72 +71,70 @@ class SmobUserRepository(
     }
 
     /**
-     * Get the smob user list from the local db
+     * Get the smob user shop from the local db
      * @return Result holds a Success with all the smob users or an Error object with the error message
      */
-    override suspend fun getAllSmobUsers(): Flow<Resource<List<SmobUserATO>>> = withContext(ioDispatcher) {
+    override fun getAllSmobUsers(): Flow<Resource<List<SmobUserATO>>> {
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
-            // first try to refresh SmobUser data in local DB
-            // ... note: currently, this is also scheduled by WorkManager every 60 seconds
-            //     --> not essential to re-run this here...
-            // ... if the API call fails, the local DB remains untouched
-            //     --> app still works, as we only work of the data in the local DB
-            refreshDataInLocalDB()
-
-            // now try to fetch data from the local DB
+            // try to fetch data from the local DB
             var atoFlow: Flow<List<SmobUserATO>> = flowOf(listOf())
-            try {
+            return try {
+                // fetch data from DB (and convert to ATO)
                 atoFlow = smobUserDao.getSmobUsers().asDomainModel()
-                return@withContext atoFlow.asResource("SmobUser not found!")
+                // wrap data in Resource (--> error/success/[loading])
+                atoFlow.asResource("SmobUser not found!")
             } catch (e: Exception) {
-                return@withContext atoFlow.asResource(e.localizedMessage)
+                // handle exceptions --> error message returned in Resource.error
+                atoFlow.asResource(e.localizedMessage)
             }
 
         }  // idlingResource (testing)
 
     }
 
+
     /**
-     * Insert a smob user in the db. Replace a potentially existing smob user record.
-     * @param smobUserATO the smob user to be inserted
+     * Insert a smob shop in the db. Replace a potentially existing smob shop record.
+     * @param smobUserATO the smob shop to be inserted
      */
-    override suspend fun saveSmobUser(smobUserATO: SmobUserATO): Unit =
-        withContext(ioDispatcher) {
-            // support espresso testing (w/h coroutines)
-            wrapEspressoIdlingResource {
+    override suspend fun saveSmobUser(smobUserATO: SmobUserATO): Unit = withContext(ioDispatcher) {
 
-                // first store in local DB first
-                val dbUser = smobUserATO.asDatabaseModel()
-                smobUserDao.saveSmobUser(dbUser)
+        // support espresso testing (w/h coroutines)
+        wrapEspressoIdlingResource {
 
-                // then push to backend DB
-                // ... use 'update', as user may already exist (equivalent of REPLACE w/h local DB)
-                //
-                // ... could do a read back first, if we're anxious...
-                //smobUserDao.getSmobUserById(dbUser.id)?.let { smobUserApi.updateSmobUser(it.id, it.asNetworkModel()) }
-                smobUserApi.updateSmobUserById(dbUser.id, dbUser.asNetworkModel())
+            // first store in local DB first
+            val dbUser = smobUserATO.asDatabaseModel()
+            smobUserDao.saveSmobUser(dbUser)
 
-            }
-        }
+            // then push to backend DB
+            // ... use 'update', as shop may already exist (equivalent of REPLACE w/h local DB)
+            //
+            // ... could do a read back first, if we're anxious...
+            //smobUserDao.getSmobUserById(dbUser.id)?.let { smobUserApi.updateSmobUser(it.id, it.asNetworkModel()) }
+            smobUserApi.updateSmobUserById(dbUser.id, dbUser.asNetworkModel())
+
+        }  // idlingResource (testing)
+
+    }
 
 
     /**
-     * Insert several smob users in the db. Replace any potentially existing smob u?ser record.
-     * @param smobUsersATO a list of smob users to be inserted
+     * Insert several smob shops in the db. Replace any potentially existing smob u?ser record.
+     * @param smobUsersATO a shop of smob shops to be inserted
      */
     override suspend fun saveSmobUsers(smobUsersATO: List<SmobUserATO>) {
-        // store all provided smob users by repeatedly calling upon saveSmobUser
+        // store all provided smob shops by repeatedly calling upon saveSmobUser
         withContext(ioDispatcher) {
             smobUsersATO.map { saveSmobUser(it) }
         }
     }
 
     /**
-     * Update an existing smob user in the db. Do nothing, if the smob user does not exist.
-     * @param smobUserATO the smob user to be updated
+     * Update an existing smob shop in the db. Do nothing, if the smob shop does not exist.
+     * @param smobUserATO the smob shop to be updated
      */
     override suspend fun updateSmobUser(smobUserATO: SmobUserATO): Unit =
         withContext(ioDispatcher) {
@@ -153,7 +146,7 @@ class SmobUserRepository(
                 smobUserDao.updateSmobUser(dbUser)
 
                 // then push to backend DB
-                // ... use 'update', as user may already exist (equivalent of REPLACE w/h local DB)
+                // ... use 'update', as shop may already exist (equivalent of REPLACE w/h local DB)
                 //
                 // ... could do a read back first, if we're anxious...
                 //smobUserDao.getSmobUserById(dbUser.id)?.let { smobUserApi.updateSmobUser(it.id, it.asNetworkModel()) }
@@ -163,19 +156,19 @@ class SmobUserRepository(
         }
 
     /**
-     * Update an set of existing smob users in the db. Ignore smob users which do not exist.
-     * @param smobUsersATO the list of smob users to be updated
+     * Update an set of existing smob shops in the db. Ignore smob shops which do not exist.
+     * @param smobUsersATO the shop of smob shops to be updated
      */
     override suspend fun updateSmobUsers(smobUsersATO: List<SmobUserATO>) {
-        // update all provided smob users by repeatedly calling upon updateSmobUser
+        // update all provided smob shops by repeatedly calling upon updateSmobUser
         withContext(ioDispatcher) {
             smobUsersATO.map { updateSmobUser(it) }
         }
     }
 
     /**
-     * Delete a smob user in the db
-     * @param id ID of the smob user to be deleted
+     * Delete a smob shop in the db
+     * @param id ID of the smob shop to be deleted
      */
     override suspend fun deleteSmobUser(id: String) {
         withContext(ioDispatcher) {
@@ -188,19 +181,19 @@ class SmobUserRepository(
     }
 
     /**
-     * Deletes all the smob users in the db
+     * Deletes all the smob shops in the db
      */
     override suspend fun deleteAllSmobUsers() {
         withContext(ioDispatcher) {
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
 
-                // first delete all users from local DB
+                // first delete all shops from local DB
                 smobUserDao.deleteAllSmobUsers()
 
-                // then delete all users from backend DB
+                // then delete all shops from backend DB
                 getSmobUsersViaApi().let {
-                    if (it.status.equals(Status.SUCCESS)) {
+                    if (it.status == Status.SUCCESS) {
                         it.data?.map { smobUserApi.deleteSmobUserById(it.id) }
                     } else {
                         Timber.w("Unable to get SmobUser IDs from backend DB (via API) - not deleting anything.")
@@ -212,16 +205,10 @@ class SmobUserRepository(
     }
 
 
-    // TODO: should loop over all user pictures and move them to local storage
-    // TODO: make refresSmogUserDataInDB sensitive to User data relevant to this user only
-
     /**
-     * Synchronize all smob users in the db by retrieval from the backend using the (net) API
+     * Synchronize all smob shops in the db by retrieval from the backend using the (net) API
      */
     override suspend fun refreshDataInLocalDB() {
-
-        // set initial status
-        _statusSmobUserDataSync.postValue(Status.LOADING)
 
         // send GET request to server - coroutine to avoid blocking the main (UI) thread
         withContext(Dispatchers.IO) {
@@ -231,13 +218,12 @@ class SmobUserRepository(
             val response: Resource<List<SmobUserDTO>> = getSmobUsersViaApi()
 
             // got any valid data back?
-            if (response.status.equals(Status.SUCCESS)) {
+            if (response.status == Status.SUCCESS) {
 
                 // set status to keep UI updated
-                _statusSmobUserDataSync.postValue(Status.SUCCESS)
                 Timber.i("SmobUser data GET request complete (success)")
 
-                // store user data in DB - if any
+                // store shop data in DB - if any
                 response.data?.let {
                     it.map { smobUserDao.saveSmobUser(it) }
                     Timber.i("SmobUser data items stored in local DB")
@@ -250,33 +236,34 @@ class SmobUserRepository(
     }  // refreshSmobUsersInDB()
 
     /**
-     * Synchronize an individual smob users in the db by retrieval from the backend DB (API call)
+     * Synchronize an individual smob shops in the db by retrieval from the backend DB (API call)
      */
-    suspend fun refreshSmobUserInDB(id: String) {
+    suspend fun refreshSmobUserInLocalDB(id: String) {
 
-        // send GET request to server - coroutine to avoid blocking the main (UI) thread
-        withContext(Dispatchers.IO) {
+        // initiate the (HTTP) GET request using the provided query parameters
+        Timber.i("Sending GET request for SmobUser data...")
+        val response: Resource<SmobUserDTO> = getSmobUserViaApi(id)
 
-            // initiate the (HTTP) GET request using the provided query parameters
-            Timber.i("Sending GET request for SmobUser data...")
-            val response: Resource<SmobUserDTO> = getSmobUserViaApi(id)
+        // got back any valid data?
+        if (response.status == Status.SUCCESS) {
 
-            // got any valid data back?
-            if (response.status.equals(Status.SUCCESS)) {
+            Timber.i("SmobUser data GET request complete (success)")
 
-                Timber.i("SmobUser data GET request complete (success)")
 
-                // store user data in DB - if any
+            // send POST request to server - coroutine to avoid blocking the main (UI) thread
+            withContext(Dispatchers.IO) {
+
+                // store shop data in DB - if any
                 response.data?.let {
                     smobUserDao.saveSmobUser(it)
                     Timber.i("SmobUser data items stored in local DB")
                 }
 
-            }  // if (valid response)
+            }  // coroutine scope (IO)
 
-        }  // coroutine scope (IO)
+        }  // if (valid response)
 
-    }  // refreshSmobUserInDB()
+    }  // refreshSmobUserInLocalDB()
 
 
     // --- use : CRUD, NET data ---
@@ -287,7 +274,7 @@ class SmobUserRepository(
     // ... so that we don't have to get a separate instance in every repository
     private val responseHandler: ResponseHandler by inject()
 
-    // net-facing getter: all users
+    // net-facing getter: all shops
     // ... wrap in Resource (as opposed to Result - see above) to also provide "loading" state
     // ... note: no 'override', as this is not exposed in the repository interface (network access
     //           is fully abstracted by the repo - all data access done via local DB)
@@ -305,11 +292,13 @@ class SmobUserRepository(
                     ?: listOf()  // GET request returned empty handed --> return empty list
 
                 // return as successfully completed GET call to the backend
+                // --> wraps data in Response type (success/error/loading)
                 responseHandler.handleSuccess(netResult)
 
             } catch (ex: Exception) {
 
-                // return with exception --> handle it...
+                // return with exception
+                // --> handle it... wraps data in Response type (success/error/loading)
                 val daException = responseHandler.handleException<ArrayList<SmobUserDTO>>(ex)
 
                 // local logging
@@ -325,7 +314,7 @@ class SmobUserRepository(
     }  // getSmobUsersFromApi
 
 
-    // net-facing getter: a specific user
+    // net-facing getter: a specific shop
     private suspend fun getSmobUserViaApi(id: String): Resource<SmobUserDTO> = withContext(ioDispatcher) {
 
         // overall result - haven't got anything yet
@@ -335,7 +324,7 @@ class SmobUserRepository(
             "",
             "",
             "",
-            null
+            "",
         )
         var result = Resource.loading(dummySmobUserDTO)
 
@@ -373,7 +362,7 @@ class SmobUserRepository(
     }  // getSmobUserFromApi
 
 
-    // net-facing setter: save a specific (new) user
+    // net-facing setter: save a specific (new) shop
     private suspend fun saveSmobUserViaApi(smobUserDTO: SmobUserDTO) = withContext(ioDispatcher) {
 
         // support espresso testing (w/h coroutines)
@@ -384,7 +373,7 @@ class SmobUserRepository(
     }  // saveSmobUserToApi
 
 
-    // net-facing setter: update a specific (existing) user
+    // net-facing setter: update a specific (existing) shop
     private suspend fun updateSmobUserViaApi(
         id: String,
         smobUserDTO: SmobUserDTO,
@@ -398,7 +387,7 @@ class SmobUserRepository(
     }  // updateSmobUserToApi
 
 
-    // net-facing setter: delete a specific (existing) user
+    // net-facing setter: delete a specific (existing) shop
     private suspend fun deleteSmobUserViaApi(id: String) = withContext(ioDispatcher) {
 
         // support espresso testing (w/h coroutines)
@@ -407,41 +396,5 @@ class SmobUserRepository(
         }
 
     }  // deleteSmobUserToApi
-
-
-
-
-    // TODO: move this to viewModel?? replace LiveData by Flow??
-    // LiveData user profile picture / avatar
-    private val _profilePicture= MutableLiveData<SmodUserProfilePicture?>()
-    val profilePicture: LiveData<SmodUserProfilePicture?>
-        get() = _profilePicture
-
-    // LiveData for storing the status of the most recent RESTful API request - fetch profile pict.
-    private val _statusSmobUserProfilePicture = MutableLiveData<Status>()
-    val statusSmobUserProfilePicture: LiveData<Status>
-        get() = _statusSmobUserProfilePicture
-
-    // LiveData for storing the status of the most recent RESTful API request
-    private val _statusSmobUserDataSync = MutableLiveData<Status>()
-    val statusSmobUserDataSync: LiveData<Status>
-        get() = _statusSmobUserDataSync
-
-
-    // upon instantiating the repository class...
-    init {
-
-        // make sure all LiveData elements have defined values which are set using 'postValue', in
-        // case the repository class is initialized from within a background task, e.g. when using
-        // WorkManager to schedule a background update (and this happens to be the first access of
-        // a repository service)
-        // ... omitting proper initialization of LD can cause ('obscure') crashes
-        //     - ... e.g. when Android calls the LD observer (to update the UI) and the
-        //       BindingAdapter tries to de-reference a null pointer (invalid LD)
-        _statusSmobUserProfilePicture.postValue(Status.SUCCESS)
-        _statusSmobUserDataSync.postValue(Status.SUCCESS)
-        _profilePicture.postValue(null)
-
-    }
 
 }

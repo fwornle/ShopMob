@@ -5,13 +5,14 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.tanfra.shopmob.smob.data.local.dao.SmobItemDao
-import com.tanfra.shopmob.smob.data.local.dto.SmobItemDTO
+import com.tanfra.shopmob.smob.data.local.dao.SmobUserDao
+import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
 
 import org.junit.Before
 import org.junit.runner.RunWith
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.CoreMatchers.`is`
@@ -26,14 +27,14 @@ import java.util.*
 @RunWith(AndroidJUnit4::class)
 // unit test the DAO
 @SmallTest
-class SmobItemATODaoTest {
+class SmobUserATODaoTest {
 
     // fake DB (room, in-memory)
     private lateinit var fakeDB: SmobDatabase
-    private lateinit var itemDao: SmobItemDao
+    private lateinit var itemDao: SmobUserDao
 
     // test data for (fake) DB
-    private lateinit var shopMobItemDto: SmobItemDTO
+    private lateinit var shopMobUserDto: SmobUserDTO
 
 
     // testing "architecture components" --> execute everything synchronously
@@ -52,16 +53,15 @@ class SmobItemATODaoTest {
             .build()
 
         // fetch DAO
-        itemDao = fakeDB.smobItemDao()
+        itemDao = fakeDB.smobUserDao()
 
         // test database item
-        shopMobItemDto = SmobItemDTO(
-                "test title 1",
-                "test description 1",
-                "test location 1",
-                1.0,
-                1.0,
-                UUID.randomUUID().toString(),
+        shopMobUserDto = SmobUserDTO(
+            UUID.randomUUID().toString(),
+            "test username 1",
+            "test name 1",
+            "test email 1",
+            "test imageURL 1",
             )
 
     }
@@ -75,25 +75,25 @@ class SmobItemATODaoTest {
      * check insertion of smob item into the DB
      */
     @Test
-    fun saveSmobItem_storesDataInDB() = runBlockingTest {
+    fun saveSmobUser_storesDataInDB() = runBlockingTest {
 
         // store one smob item in (fake) DB
-        itemDao.saveSmobItem(shopMobItemDto)
+        itemDao.saveSmobUser(shopMobUserDto)
 
         // read it back
-        val readBackSmobItem = itemDao.getSmobItemById(shopMobItemDto.id)
+        val readBackSmobUser = itemDao.getSmobUserById(shopMobUserDto.id)
 
         // check for equality
-        assertThat(readBackSmobItem, notNullValue())
-        assertThat(readBackSmobItem?.id, `is`(shopMobItemDto.id))
-        assertThat(readBackSmobItem?.title, `is`(shopMobItemDto.title))
-        assertThat(readBackSmobItem?.description, `is`(shopMobItemDto.description))
-        assertThat(readBackSmobItem?.location, `is`(shopMobItemDto.location))
-        assertThat(readBackSmobItem?.latitude, `is`(shopMobItemDto.latitude))
-        assertThat(readBackSmobItem?.longitude, `is`(shopMobItemDto.longitude))
+        readBackSmobUser.collect {
+            assertThat(it, notNullValue())
+            assertThat(it?.id, `is`(shopMobUserDto.id))
+            assertThat(it?.username, `is`(shopMobUserDto.username))
+            assertThat(it?.name, `is`(shopMobUserDto.name))
+            assertThat(it?.email, `is`(shopMobUserDto.email))
+            assertThat(it?.imageUrl, `is`(shopMobUserDto.imageUrl))
+        }
 
     }
-
 
 }
 

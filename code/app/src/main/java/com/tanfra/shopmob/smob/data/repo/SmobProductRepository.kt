@@ -1,7 +1,5 @@
 package com.tanfra.shopmob.smob.data.repo
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
 import com.tanfra.shopmob.smob.data.local.dto.SmobProductDTO
@@ -16,13 +14,17 @@ import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
+import com.tanfra.shopmob.smob.data.repo.utils.asResource
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 /**
  * Concrete implementation of a data source as a db.
@@ -49,82 +51,81 @@ class SmobProductRepository(
      * @param id to be used to get the smob product
      * @return Result the holds a Success object with the SmobProduct or an Error object with the error message
      */
-    override suspend fun getSmobProduct(id: String): Resource<SmobProductATO> = withContext(ioDispatcher) {
+    override fun getSmobProduct(id: String): Flow<Resource<SmobProductATO>> {
+
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
-            // first try to update local DB for the requested SmobProduct
-            // ... if the API call fails, the local DB remains untouched
-            //     --> app still works, as we only work of the data in the local DB
-            refreshSmobProductInDB(id)
-
-            // now try to fetch data from the local DB
-            try {
-                val smobProductDTO = smobProductDao.getSmobProductById(id)
-                if (smobProductDTO != null) {
-                    // success --> turn DB data type (DTO) to domain data type
-                    return@withContext Resource.success(smobProductDTO.asDomainModel())
-                } else {
-                    return@withContext Resource.error("SmobProduct not found!", null)
-                }
+            // try to fetch data from the local DB
+            var atoFlow: Flow<SmobProductATO?> = flowOf(null)
+            return try {
+                // fetch data from DB (and convert to ATO)
+                atoFlow = smobProductDao.getSmobProductById(id).asDomainModel()
+                // wrap data in Resource (--> error/success/[loading])
+                atoFlow.asResource("SmobProduct not found!")
             } catch (e: Exception) {
-                return@withContext Resource.error(e.localizedMessage, null)
+                // handle exceptions --> error message returned in Resource.error
+                atoFlow.asResource(e.localizedMessage)
             }
-        }
+
+        }  // idlingResource (testing)
+
     }
 
     /**
-     * Get the smob product list from the local db
+     * Get the smob product from the local db
      * @return Result holds a Success with all the smob products or an Error object with the error message
      */
-    override suspend fun getAllSmobProducts(): Resource<List<SmobProductATO>> = withContext(ioDispatcher) {
+    override fun getAllSmobProducts(): Flow<Resource<List<SmobProductATO>>> {
+
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
-            // first try to refresh SmobProduct data in local DB
-            // ... note: currently, this is also scheduled by WorkManager every 60 seconds
-            //     --> not essential to re-run this here...
-            // ... if the API call fails, the local DB remains untouched
-            //     --> app still works, as we only work of the data in the local DB
-            refreshDataInLocalDB()
-
-            // now try to fetch data from the local DB
-            return@withContext try {
-                // success --> turn DB data type (DTO) to domain data type
-                Resource.success(smobProductDao.getSmobProducts().asDomainModel())
-            } catch (ex: Exception) {
-                Resource.error(ex.localizedMessage, null)
+            // try to fetch data from the local DB
+            var atoFlow: Flow<List<SmobProductATO>> = flowOf(listOf())
+            return try {
+                // fetch data from DB (and convert to ATO)
+                atoFlow = smobProductDao.getSmobProducts().asDomainModel()
+                // wrap data in Resource (--> error/success/[loading])
+                atoFlow.asResource("SmobProduct not found!")
+            } catch (e: Exception) {
+                // handle exceptions --> error message returned in Resource.error
+                atoFlow.asResource(e.localizedMessage)
             }
-        }
+
+        }  // idlingResource (testing)
+
     }
 
+
     /**
-     * Insert a smob product in the db. Replace a potentially existing smob product record.
+     * Insert a smob shop in the db. Replace a potentially existing smob product record.
      * @param smobProductATO the smob product to be inserted
      */
-    override suspend fun saveSmobProduct(smobProductATO: SmobProductATO): Unit =
-        withContext(ioDispatcher) {
-            // support espresso testing (w/h coroutines)
-            wrapEspressoIdlingResource {
+    override suspend fun saveSmobProduct(smobProductATO: SmobProductATO): Unit = withContext(ioDispatcher) {
 
-                // first store in local DB first
-                val dbProduct = smobProductATO.asDatabaseModel()
-                smobProductDao.saveSmobProduct(dbProduct)
+        // support espresso testing (w/h coroutines)
+        wrapEspressoIdlingResource {
 
-                // then push to backend DB
-                // ... use 'update', as product may already exist (equivalent of REPLACE w/h local DB)
-                //
-                // ... could do a read back first, if we're anxious...
-                //smobProductDao.getSmobProductById(dbProduct.id)?.let { smobProductApi.updateSmobProduct(it.id, it.asNetworkModel()) }
-                smobProductApi.updateSmobProductById(dbProduct.id, dbProduct.asNetworkModel())
+            // first store in local DB first
+            val dbProduct = smobProductATO.asDatabaseModel()
+            smobProductDao.saveSmobProduct(dbProduct)
 
-            }
-        }
+            // then push to backend DB
+            // ... use 'update', as product may already exist (equivalent of REPLACE w/h local DB)
+            //
+            // ... could do a read back first, if we're anxious...
+            //smobProductDao.getSmobProductById(dbProduct.id)?.let { smobProductApi.updateSmobProduct(it.id, it.asNetworkModel()) }
+            smobProductApi.updateSmobProductById(dbProduct.id, dbProduct.asNetworkModel())
+
+        }  // idlingResource (testing)
+
+    }
 
 
     /**
      * Insert several smob products in the db. Replace any potentially existing smob u?ser record.
-     * @param smobProductsATO a list of smob products to be inserted
+     * @param smobProductsATO a product of smob products to be inserted
      */
     override suspend fun saveSmobProducts(smobProductsATO: List<SmobProductATO>) {
         // store all provided smob products by repeatedly calling upon saveSmobProduct
@@ -158,7 +159,7 @@ class SmobProductRepository(
 
     /**
      * Update an set of existing smob products in the db. Ignore smob products which do not exist.
-     * @param smobProductsATO the list of smob products to be updated
+     * @param smobProductsATO the product of smob products to be updated
      */
     override suspend fun updateSmobProducts(smobProductsATO: List<SmobProductATO>) {
         // update all provided smob products by repeatedly calling upon updateSmobProduct
@@ -194,7 +195,7 @@ class SmobProductRepository(
 
                 // then delete all products from backend DB
                 getSmobProductsViaApi().let {
-                    if (it.status.equals(Status.SUCCESS)) {
+                    if (it.status == Status.SUCCESS) {
                         it.data?.map { smobProductApi.deleteSmobProductById(it.id) }
                     } else {
                         Timber.w("Unable to get SmobProduct IDs from backend DB (via API) - not deleting anything.")
@@ -206,16 +207,10 @@ class SmobProductRepository(
     }
 
 
-    // TODO: should loop over all product pictures and move them to local storage
-    // TODO: make refresSmogProductDataInDB sensitive to Product data relevant to this product only
-
     /**
      * Synchronize all smob products in the db by retrieval from the backend using the (net) API
      */
     override suspend fun refreshDataInLocalDB() {
-
-        // set initial status
-        _statusSmobProductDataSync.postValue(Status.LOADING)
 
         // send GET request to server - coroutine to avoid blocking the main (UI) thread
         withContext(Dispatchers.IO) {
@@ -225,10 +220,9 @@ class SmobProductRepository(
             val response: Resource<List<SmobProductDTO>> = getSmobProductsViaApi()
 
             // got any valid data back?
-            if (response.status.equals(Status.SUCCESS)) {
+            if (response.status == Status.SUCCESS) {
 
                 // set status to keep UI updated
-                _statusSmobProductDataSync.postValue(Status.SUCCESS)
                 Timber.i("SmobProduct data GET request complete (success)")
 
                 // store product data in DB - if any
@@ -246,19 +240,20 @@ class SmobProductRepository(
     /**
      * Synchronize an individual smob products in the db by retrieval from the backend DB (API call)
      */
-    suspend fun refreshSmobProductInDB(id: String) {
+    suspend fun refreshSmobProductInLocalDB(id: String) {
 
-        // send GET request to server - coroutine to avoid blocking the main (UI) thread
-        withContext(Dispatchers.IO) {
+        // initiate the (HTTP) GET request using the provided query parameters
+        Timber.i("Sending GET request for SmobProduct data...")
+        val response: Resource<SmobProductDTO> = getSmobProductViaApi(id)
 
-            // initiate the (HTTP) GET request using the provided query parameters
-            Timber.i("Sending GET request for SmobProduct data...")
-            val response: Resource<SmobProductDTO> = getSmobProductViaApi(id)
+        // got back any valid data?
+        if (response.status == Status.SUCCESS) {
 
-            // got any valid data back?
-            if (response.status.equals(Status.SUCCESS)) {
+            Timber.i("SmobProduct data GET request complete (success)")
 
-                Timber.i("SmobProduct data GET request complete (success)")
+
+            // send POST request to server - coroutine to avoid blocking the main (UI) thread
+            withContext(Dispatchers.IO) {
 
                 // store product data in DB - if any
                 response.data?.let {
@@ -266,11 +261,11 @@ class SmobProductRepository(
                     Timber.i("SmobProduct data items stored in local DB")
                 }
 
-            }  // if (valid response)
+            }  // coroutine scope (IO)
 
-        }  // coroutine scope (IO)
+        }  // if (valid response)
 
-    }  // refreshSmobProductInDB()
+    }  // refreshSmobProductInLocalDB()
 
 
     // --- use : CRUD, NET data ---
@@ -287,15 +282,11 @@ class SmobProductRepository(
     //           is fully abstracted by the repo - all data access done via local DB)
     private suspend fun getSmobProductsViaApi(): Resource<List<SmobProductDTO>> = withContext(ioDispatcher) {
 
-        // overall result - haven't got anything yet
-        // ... this is useless here --> but needs to be done like this in the viewModel
-        var result = Resource.loading(listOf<SmobProductDTO>())
-
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
             // network access - could fail --> handle consistently via ResponseHandler class
-            result = try {
+            return@withContext try {
                 // return successfully received data object (from Moshi --> PoJo)
                 val netResult = smobProductApi.getSmobProducts()
                     .body()
@@ -303,11 +294,13 @@ class SmobProductRepository(
                     ?: listOf()  // GET request returned empty handed --> return empty list
 
                 // return as successfully completed GET call to the backend
+                // --> wraps data in Response type (success/error/loading)
                 responseHandler.handleSuccess(netResult)
 
             } catch (ex: Exception) {
 
-                // return with exception --> handle it...
+                // return with exception
+                // --> handle it... wraps data in Response type (success/error/loading)
                 val daException = responseHandler.handleException<ArrayList<SmobProductDTO>>(ex)
 
                 // local logging
@@ -319,8 +312,6 @@ class SmobProductRepository(
             }
 
         }  // espresso: idlingResource
-
-        return@withContext result
 
     }  // getSmobProductsFromApi
 
@@ -338,7 +329,7 @@ class SmobProductRepository(
             ProductMainCategory.OTHER,
             ProductSubCategory.OTHER,
             "",
-            -1,
+            0,
         )
         var result = Resource.loading(dummySmobProductDTO)
 
@@ -410,29 +401,5 @@ class SmobProductRepository(
         }
 
     }  // deleteSmobProductToApi
-
-
-
-
-    // TODO: move this to viewModel?? replace LiveData by Flow??
-    // LiveData for storing the status of the most recent RESTful API request
-    private val _statusSmobProductDataSync = MutableLiveData<Status>()
-    val statusSmobProductDataSync: LiveData<Status>
-        get() = _statusSmobProductDataSync
-
-
-    // upon instantiating the repository class...
-    init {
-
-        // make sure all LiveData elements have defined values which are set using 'postValue', in
-        // case the repository class is initialized from within a background task, e.g. when using
-        // WorkManager to schedule a background update (and this happens to be the first access of
-        // a repository service)
-        // ... omitting proper initialization of LD can cause ('obscure') crashes
-        //     - ... e.g. when Android calls the LD observer (to update the UI) and the
-        //       BindingAdapter tries to de-reference a null pointer (invalid LD)
-        _statusSmobProductDataSync.postValue(Status.SUCCESS)
-
-    }
 
 }

@@ -25,10 +25,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Test
 import org.junit.runner.RunWith
 
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.data.local.FakeItemDataSource
 import com.tanfra.shopmob.smob.activities.planning.shopEdit.PlanningShopEditViewModel
-import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 import com.tanfra.shopmob.util.DataBindingIdlingResource
 import com.tanfra.shopmob.util.monitorFragment
 import org.junit.Before

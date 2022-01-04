@@ -4,11 +4,9 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.FakeItemDataSource
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.testutils.MainCoroutineRule
 import com.tanfra.shopmob.smob.testutils.getOrAwaitValue
-import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest

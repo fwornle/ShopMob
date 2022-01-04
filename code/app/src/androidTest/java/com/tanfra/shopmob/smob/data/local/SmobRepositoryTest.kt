@@ -5,13 +5,15 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
-import com.tanfra.shopmob.smob.data.local.dao.SmobItemDao
-import com.tanfra.shopmob.smob.data.repo.SmobItemRepository
+import com.tanfra.shopmob.smob.data.local.dao.SmobUserDao
+import com.tanfra.shopmob.smob.data.net.api.SmobUserApi
+import com.tanfra.shopmob.smob.data.repo.SmobUserRepository
+import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
-import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.asExecutor
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
@@ -31,20 +33,20 @@ import java.util.*
 class SmobRepositoryTest {
 
     // test data for (fake) DB
-    private lateinit var shopMobItemATOList: MutableList<SmobItemATO>
-    private lateinit var newSmobItemATO: SmobItemATO
+    private lateinit var shopMobUserATOList: MutableList<SmobUserATO>
+    private lateinit var newSmobUserATO: SmobUserATO
 
     // fake data source (repo)
-    private lateinit var shopMobRepo: SmobItemDataSource
+    private lateinit var shopMobRepo: SmobUserDataSource
 
     // fake DB (room, in-memory)
     private lateinit var fakeDB: SmobDatabase
-    private lateinit var itemDao: SmobItemDao
+    private lateinit var itemDao: SmobUserDao
 
     // populate the fake DB / repo
     private suspend fun populateFakeDB() {
-        shopMobItemATOList.map {
-            shopMobRepo.saveSmobItem(it)
+        shopMobUserATOList.map {
+            shopMobRepo.saveSmobUser(it)
         }
     }
 
@@ -59,30 +61,28 @@ class SmobRepositoryTest {
     fun setUp() {
 
         // generate some test database items (smob items)
-        shopMobItemATOList = mutableListOf<SmobItemATO>()
+        shopMobUserATOList = mutableListOf<SmobUserATO>()
 
         // generate some test data
         for (idx in 0..19) {
-            shopMobItemATOList.add(
-                SmobItemATO(
-                    "test title $idx",
-                    "test description $idx",
-                    "test location $idx",
-                    idx.toDouble(),
-                    idx.toDouble(),
+            shopMobUserATOList.add(
+                SmobUserATO(
                     UUID.randomUUID().toString(),
+                    "test username $idx",
+                    "test name $idx",
+                    "test email $idx",
+                    "test imageURL $idx",
                 )
             )
         }
 
-        // initialize a new smob item for 'saveSmobItem' test
-        newSmobItemATO = SmobItemATO(
-            "a new title",
-            "a new test description",
-            "a new test location",
-            42.0,
-            242.0,
+        // initialize a new smob item for 'saveSmobUser' test
+        newSmobUserATO = SmobUserATO(
             UUID.randomUUID().toString(),
+            "a new test username",
+            "a new test name",
+            "a new test email",
+            "a new test imageURL",
         )
 
         // create fake datasource ... also using the DAO
@@ -99,11 +99,12 @@ class SmobRepositoryTest {
             .build()
 
         // fetch DAO
-        itemDao = fakeDB.smobItemDao()
+        itemDao = fakeDB.smobUserDao()
 
         // create repository with DAO of fake DB
-        shopMobRepo = SmobItemRepository(
+        shopMobRepo = SmobUserRepository(
             itemDao,
+            Unit as SmobUserApi,  // strictly dummy - do not use
             // ensure Room (& the DAO & the repo) and the test use the same coroutine dispatcher
             testDispatcher,
         )
@@ -114,11 +115,11 @@ class SmobRepositoryTest {
     /*
      * to be tested: repo class
      *
-     *  interface SmobItemDataSource {
-     *      suspend fun getSmobItems(): Resource<List<SmobItemDTO>>
-     *      suspend fun saveSmobItem(smobItem: SmobItemDTO)
-     *      suspend fun getSmobItem(id: String): Resource<SmobItemDTO>
-     *      suspend fun deleteAllSmobItems()
+     *  interface SmobUserDataSource {
+     *      suspend fun getSmobUsers(): Resource<List<SmobUserDTO>>
+     *      suspend fun saveSmobUser(smobUser: SmobUserDTO)
+     *      suspend fun getSmobUser(id: String): Resource<SmobUserDTO>
+     *      suspend fun deleteAllSmobUsers()
      *  }
      *
      */
@@ -128,41 +129,41 @@ class SmobRepositoryTest {
     var instantExecutorRule = InstantTaskExecutorRule()
 
 
-    // test repo interface method 'getSmobItems'
+    // test repo interface method 'getSmobUsers'
     // ... use our own TestCoroutineScope (testScope, see above) to ensure that both the test and
     //     Room's DAO functions run in the same scope
     @Test
-    fun repository_getSmobItems_success() = testScope.runBlockingTest {
+    fun repository_getSmobUsers_success() = testScope.runBlockingTest {
 
         // store test data in fake DB
         populateFakeDB()
 
         // successfully fetch smob items from (fake) repo
-        val result = shopMobRepo.getSmobItems()
+        shopMobRepo.getAllSmobUsers().collect {
 
-        // should return a success and with some data
-        assertThat(result.status, `is`(Status.SUCCESS))
-        assertThat(result.data, CoreMatchers.notNullValue())
+            // should return a success and with some data
+            assertThat(it.status, `is`(Status.SUCCESS))
+            assertThat(it.data, CoreMatchers.notNullValue())
 
-        // check all data records
-        result.data?.mapIndexed { idx, smobItem ->
-            // check for equality
-            assertThat(smobItem, CoreMatchers.notNullValue())
-            assertThat(smobItem.id, `is`(shopMobItemATOList[idx].id))
-            assertThat(smobItem.title, `is`(shopMobItemATOList[idx].title))
-            assertThat(smobItem.description, `is`(shopMobItemATOList[idx].description))
-            assertThat(smobItem.location, `is`(shopMobItemATOList[idx].location))
-            assertThat(smobItem.latitude, `is`(shopMobItemATOList[idx].latitude))
-            assertThat(smobItem.longitude, `is`(shopMobItemATOList[idx].longitude))
-
+            // check all data records
+            it.data?.mapIndexed { idx, smobUser ->
+                // check for equality
+                assertThat(smobUser, CoreMatchers.notNullValue())
+                assertThat(smobUser.id, `is`(shopMobUserATOList[idx].id))
+                assertThat(smobUser.username, `is`(shopMobUserATOList[idx].username))
+                assertThat(smobUser.name, `is`(shopMobUserATOList[idx].name))
+                assertThat(smobUser.email, `is`(shopMobUserATOList[idx].email))
+                assertThat(smobUser.imageUrl, `is`(shopMobUserATOList[idx].imageUrl))
+            }
         }
+
 
     }
 
 
-    // test repo interface method 'getSmobItem' - existing smob item
+    // test repo interface method 'getSmobUser' - existing smob item
     @Test
-    fun repository_getSmobItem_success() = testScope.runBlockingTest {
+    fun repository_getSmobUser_success() = testScope.runBlockingTest {
 
         // store test data in fake DB
         populateFakeDB()
@@ -171,86 +172,92 @@ class SmobRepositoryTest {
         val idx = 4
 
         // successfully fetch smob item from (fake) repo
-        val result = shopMobRepo.getSmobItem(shopMobItemATOList[idx].id)
+        shopMobRepo.getSmobUser(shopMobUserATOList[idx].id).collect {
 
-        // should return a success and with some data
-        assertThat(result.status, `is`(Status.SUCCESS))
-        assertThat(result.data, CoreMatchers.notNullValue())
+            // should return a success and with some data
+            assertThat(it.status, `is`(Status.SUCCESS))
+            assertThat(it.data, CoreMatchers.notNullValue())
 
-        // check for equality
-        val smobItem = result.data
-        assertThat(smobItem, CoreMatchers.notNullValue())
-        assertThat(smobItem?.id, `is`(shopMobItemATOList[idx].id))
-        assertThat(smobItem?.title, `is`(shopMobItemATOList[idx].title))
-        assertThat(smobItem?.description, `is`(shopMobItemATOList[idx].description))
-        assertThat(smobItem?.location, `is`(shopMobItemATOList[idx].location))
-        assertThat(smobItem?.latitude, `is`(shopMobItemATOList[idx].latitude))
-        assertThat(smobItem?.longitude, `is`(shopMobItemATOList[idx].longitude))
+            // check for equality
+            val smobUser = it.data
+            assertThat(smobUser, CoreMatchers.notNullValue())
+            assertThat(smobUser?.id, `is`(shopMobUserATOList[idx].id))
+            assertThat(smobUser?.username, `is`(shopMobUserATOList[idx].username))
+            assertThat(smobUser?.name, `is`(shopMobUserATOList[idx].name))
+            assertThat(smobUser?.email, `is`(shopMobUserATOList[idx].email))
+            assertThat(smobUser?.imageUrl, `is`(shopMobUserATOList[idx].imageUrl))
+
+        }
 
     }
 
-    // test repo interface method 'getSmobItem' - non-existing smob item
+    // test repo interface method 'getSmobUser' - non-existing smob item
     @Test
-    fun repository_getSmobItem_failure() = testScope.runBlockingTest {
+    fun repository_getSmobUser_failure() = testScope.runBlockingTest {
 
         // store test data in fake DB
         populateFakeDB()
 
         // attempt to fetch non-existing smob item from (fake) repo
         val nonId = "this-index-does-not-exist-in-DB"
-        val result = shopMobRepo.getSmobItem(nonId)
+        shopMobRepo.getSmobUser(nonId).collect {
 
-        assertThat(result.status, `is`(Status.ERROR))
-        assertThat(result.message, `is`("SmobItem not found!"))
+            assertThat(it.status, `is`(Status.ERROR))
+            assertThat(it.message, `is`("SmobUser not found!"))
+
+        }
 
     }
 
 
-    // test repo interface method 'deleteAllSmobItems'
+    // test repo interface method 'deleteAllSmobUsers'
     @Test
-    fun repository_deleteAllSmobItems_success() = testScope.runBlockingTest {
+    fun repository_deleteAllSmobUsers_success() = testScope.runBlockingTest {
 
         // store test data in fake DB
         populateFakeDB()
 
         // purge all items from (fake) repo, the read all smob items
-        shopMobRepo.deleteAllSmobItems()
+        shopMobRepo.deleteAllSmobUsers()
 
         // read back smob items
-        val result = shopMobRepo.getSmobItems()
+        shopMobRepo.getAllSmobUsers().collect {
 
-        // should be valid and empty
-        assertThat(result.status, `is`(Status.SUCCESS))
-        assertThat(result.data?.size, `is`(0))
+            // should be valid and empty
+            assertThat(it.status, `is`(Status.SUCCESS))
+            assertThat(it.data?.size, `is`(0))
+
+        }
 
     }
 
 
-    // test repo interface method 'saveSmobItem' - successful
+    // test repo interface method 'saveSmobUser' - successful
     @Test
-    fun repository_saveSmobItem_success() = testScope.runBlockingTest {
+    fun repository_saveSmobUser_success() = testScope.runBlockingTest {
 
         // store test data in fake DB
         populateFakeDB()
 
         // save new smob item to (fake) repo, then read it back
-        shopMobRepo.saveSmobItem(newSmobItemATO)
+        shopMobRepo.saveSmobUser(newSmobUserATO)
 
-        val result = shopMobRepo.getSmobItem(newSmobItemATO.id)
+        shopMobRepo.getSmobUser(newSmobUserATO.id).collect {
 
-        // check that result is valid
-        assertThat(result.status, `is`(Status.SUCCESS))
+            // check that result is valid
+            assertThat(it.status, `is`(Status.SUCCESS))
 
-        // check the read back data record
-        result.data.let {
-            // check for equality
-            assertThat(it, CoreMatchers.notNullValue())
-            assertThat(it?.id, `is`(newSmobItemATO.id))
-            assertThat(it?.title, `is`(newSmobItemATO.title))
-            assertThat(it?.description, `is`(newSmobItemATO.description))
-            assertThat(it?.location, `is`(newSmobItemATO.location))
-            assertThat(it?.latitude, `is`(newSmobItemATO.latitude))
-            assertThat(it?.longitude, `is`(newSmobItemATO.longitude))
+            // check the read back data record
+            it.data.let {
+                // check for equality
+                assertThat(it, CoreMatchers.notNullValue())
+                assertThat(it?.id, `is`(newSmobUserATO.id))
+                assertThat(it?.username, `is`(newSmobUserATO.username))
+                assertThat(it?.name, `is`(newSmobUserATO.name))
+                assertThat(it?.email, `is`(newSmobUserATO.email))
+                assertThat(it?.imageUrl, `is`(newSmobUserATO.imageUrl))
+            }
+
         }
 
     }

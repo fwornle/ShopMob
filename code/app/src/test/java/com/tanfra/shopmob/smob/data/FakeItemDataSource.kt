@@ -1,13 +1,15 @@
 package com.tanfra.shopmob.smob.data
 
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
+import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
-import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 // use FakeDataSource that acts as a test double to the LocalDataSource
 // inject the smob items stored in this source via the constructor of the class
-class FakeItemDataSource(private var smobItemATOES: MutableList<SmobItemATO>? = mutableListOf()) :
-    SmobItemDataSource {
+class FakeUserDataSource(private var smobUserList: MutableList<SmobUserATO>? = mutableListOf()) :
+    SmobUserDataSource {
 
     // test for errors
     private var shouldReturnError = false
@@ -17,49 +19,69 @@ class FakeItemDataSource(private var smobItemATOES: MutableList<SmobItemATO>? = 
         shouldReturnError = value
     }
 
-    override suspend fun getSmobItems(): Resource<List<SmobItemATO>> {
+    override fun getAllSmobUsers(): Flow<Resource<List<SmobUserATO>>> {
 
         // testing for errors...
         if (shouldReturnError) {
-            return Resource.error("Test exception", null)
+            return flowOf(Resource.error("Test exception", null))
         }
 
         // return the entire list of smob items from fake local data source... if any
-        smobItemATOES?.let {
-            return Resource.success(ArrayList(it))
+        smobUserList?.let {
+            return flowOf(Resource.success(ArrayList(it)))
         }
-        return Resource.error(
+        return flowOf(Resource.error(
             "Could not fetch smob items from (fake) local storage.", null
-        )
+        ))
     }
 
-    override suspend fun saveSmobItem(smobItemATO: SmobItemATO) {
+    override suspend fun saveSmobUser(smobUserATO: SmobUserATO) {
         // store provided smob item in fake local data source (list)
-        smobItemATOES?.add(smobItemATO)
+        smobUserList?.add(smobUserATO)
     }
 
-    override suspend fun getSmobItem(id: String): Resource<SmobItemATO> {
+    override suspend fun saveSmobUsers(smobUsersATO: List<SmobUserATO>) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateSmobUser(smobUserATO: SmobUserATO) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateSmobUsers(smobUsersATO: List<SmobUserATO>) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteSmobUser(id: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getSmobUser(id: String): Flow<Resource<SmobUserATO>> {
 
         // testing for errors...
         if (shouldReturnError) {
-            return Resource.error("Test exception", null)
+            return flowOf(Resource.error("Test exception", null))
         }
 
         // fetch smob item associated with provided id
-        smobItemATOES?.firstOrNull {it.id == id} ?.let {
+        smobUserList?.firstOrNull {it.id == id} ?.let {
             // found it
-            return Resource.success(it)
+            return flowOf(Resource.success(it))
         }
 
         // smob item with ID not found
-        return Resource.error(
-            "SmobItem with ID $id not found in (fake) local storage.", null
-        )
+        return flowOf(Resource.error(
+            "SmobUser with ID $id not found in (fake) local storage.", null
+        ))
     }
 
-    override suspend fun deleteAllSmobItems() {
+    override suspend fun deleteAllSmobUsers() {
         // empty list to fake deleting all records from local data source (DB)
-        smobItemATOES?.clear()
+        smobUserList?.clear()
+    }
+
+    override suspend fun refreshDataInLocalDB() {
+        TODO("Not yet implemented")
     }
 
 }

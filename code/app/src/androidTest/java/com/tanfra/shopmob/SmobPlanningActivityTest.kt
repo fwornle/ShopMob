@@ -22,15 +22,12 @@ import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.*
 import com.tanfra.shopmob.smob.activities.authentication.SmobAuthenticationActivity
 import com.tanfra.shopmob.smob.activities.planning.SmobPlanningActivity
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.data.local.LocalDB
 import com.tanfra.shopmob.smob.activities.planning.shopList.PlanningShopListViewModel
 import com.tanfra.shopmob.smob.activities.planning.shopEdit.PlanningShopEditViewModel
 import com.tanfra.shopmob.util.DataBindingIdlingResource
 import com.tanfra.shopmob.util.monitorActivity
 import com.tanfra.shopmob.utils.EspressoIdlingResource
-import com.tanfra.shopmob.smob.data.repo.SmobItemRepository
-import com.tanfra.shopmob.smob.data.repo.ato.SmobItemATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers

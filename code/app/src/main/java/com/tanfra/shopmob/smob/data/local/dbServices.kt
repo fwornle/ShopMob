@@ -14,9 +14,6 @@ val dbServices = module {
 
     // DAOs -------------------------------------------------------------------
 
-    // DAO to access table smobItems in the above DB (smob.db)
-    single { LocalDB.createSmobItemDao(get()) }
-
     // DAO to access table smobUsers in the above DB (smob.db)
     single { LocalDB.createSmobUserDao(get()) }
 

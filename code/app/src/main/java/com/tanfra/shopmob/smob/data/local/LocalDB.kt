@@ -20,12 +20,6 @@ object LocalDB {
         ).build()
     }
 
-    // TODO: change to smobLists
-    // DAO to table smobItems
-    fun createSmobItemDao(db: SmobDatabase): SmobItemDao {
-        return db.smobItemDao()
-    }
-
     // DAO to table smobUsers
     fun createSmobUserDao(db: SmobDatabase): SmobUserDao {
         return db.smobUserDao()

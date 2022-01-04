@@ -14,14 +14,20 @@ interface SmobGroupDao {
      * @param smobGroupId the ID of the smob group
      * @return the smob group object with the smobGroupId
      */
+    //
+    // note: Flow types must not be declared as "suspend"able functions, see the third answer in:
+    //       https://stackoverflow.com/questions/46445964/room-not-sure-how-to-convert-a-cursor-to-this-methods-return-type-which-meth
     @Query("SELECT * FROM smobGroups WHERE id = :smobGroupId")
-    suspend fun getSmobGroupById(smobGroupId: String): SmobGroupDTO?
+    fun getSmobGroupById(smobGroupId: String): Flow<SmobGroupDTO?>
 
     /**
      * @return all smobGroups.
      */
+    //
+    // note: Flow types must not be declared as "suspend"able functions, see the third answer in:
+    //       https://stackoverflow.com/questions/46445964/room-not-sure-how-to-convert-a-cursor-to-this-methods-return-type-which-meth
     @Query("SELECT * FROM smobGroups")
-    suspend fun getSmobGroups(): List<SmobGroupDTO>
+    fun getSmobGroups(): Flow<List<SmobGroupDTO>>
 
     /**
      * Insert a smob group in the database. If the smob group already exists, replace it.

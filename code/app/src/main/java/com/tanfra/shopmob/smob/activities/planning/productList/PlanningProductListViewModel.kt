@@ -1,81 +1,56 @@
 package com.tanfra.shopmob.smob.activities.planning.productList
 
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.liveData
 import com.tanfra.shopmob.base.BaseViewModel
-import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
+import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
-import kotlinx.coroutines.launch
-import timber.log.Timber
+import com.tanfra.shopmob.smob.data.repo.utils.Resource
+
 
 class PlanningProductListViewModel(
     app: Application,
-    private val listDataSource: SmobProductDataSource
+    private val repoFlow: SmobProductDataSource
 ) : BaseViewModel(app) {
 
     // list that holds the smob data items to be displayed on the UI
-    val smobList = MutableLiveData<List<SmobProductATO>>()
+    // ... flow, converted to LiveData --> data changes in the backend are observed
+    var smobProduct = repoFlow.getAllSmobProducts().asLiveData()
 
-//    //
-//    private val _myUiState = MutableLiveData<Resource<>>(Result.Loading)
-//    val myUiState: LiveData<Resource<UiState>> = _myUiState
-//
-//    // Load data from a suspend fun and mutate state
-//    init {
-//        viewModelScope.launch {
-//            val result = ...
-//            _myUiState.value = result
-//        }
-//    }
 
     /**
-     * Get all the smob items from the DataSource and add them to the smobItemList to be shown on
-     * the UI - or show error, if any
+     * Get all the smob items from the DataSource and add them to smobList to be shown on the UI
+     * ... or show the error, if any
+     *
+     * Note: since the conversion to the 'flow' based model, this type of 'manual refreshing' is
+     *       no longer necessary --> possibly omit? (fw-220104)
      */
-    @Suppress("UNCHECKED_CAST")
-    fun loadSmobItems() {
+    fun loadProductItems() {
 
-        // activate loading spinner
-        showLoading.value = true
+        // activate loading spinner via Resource.status = LOADING
+        smobProduct = liveData { Resource.loading(listOf<SmobProductATO>()) }
 
-        // interacting with the dataSource has to be through a coroutine
-        viewModelScope.launch {
+        // (re-)fetch all shopping lists
+        // ... also sets the Resource.status to SUCCESS/ERROR --> deactivates loading spinner
+        smobProduct = repoFlow.getAllSmobProducts().asLiveData()
 
-            // fetch all items of the active shopping list
-            val result = listDataSource.getAllSmobProducts()
-
-            // deactivate loading spinner
-            showLoading.postValue(false)
-
-            // convert data from DTO format to app format
-            when (result.status) {
-                Status.SUCCESS -> {
-                    // only set new LiveData, if data has been received - otherwise: empty list
-                    smobList.value = result.data ?: listOf()
-                }
-                Status.ERROR ->
-                    showSnackBar.value = result.message!!
-                else -> {
-                    // (still) LOADING -- this should never be reached
-                    Timber.w("Stuck in state ${result.status} (should never happen)")
-                }
-            }
-
-            // check if no data has to be shown
-            invalidateShowNoData()
+        // handle potential errors
+        smobProduct.value?.let {
+            if(it.status == Status.ERROR) showSnackBar.value = it.message!!
         }
 
-    }
+        // check if no data has to be shown
+        updateShowNoData()
 
+    }  // loadProductItems
 
     /**
-     * Inform the user that there's not any data if the smobItemList is empty
+     * Inform the user that the list is empty
      */
-    private fun invalidateShowNoData() {
-        showNoData.value = smobList.value == null || smobList.value!!.isEmpty()
+    private fun updateShowNoData() {
+        showNoData.value = (smobProduct.value?.status == Status.SUCCESS && smobProduct.value?.data!!.isEmpty())
     }
 
 }
