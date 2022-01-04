@@ -2,54 +2,67 @@ package com.tanfra.shopmob.smob.data.local.dto2ato
 
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.transform
 
 // extension functions to convert between database types and domain data types (both directions)
 
-// List<SmobUserDTO> --> List<SmobUserATO>
-fun List<SmobUserDTO>.asDomainModel(): List<SmobUserATO> {
-    return map {
-        SmobUserATO (
-            id = it.id,
-            username = it.username,
-            name = it.name,
-            email = it.email,
-            imageUrl = it.imageUrl,
-        )
-    }
+// Flow<List<SmobUserDTO>> --> Flow<List<SmobUserATO>>
+fun Flow<List<SmobUserDTO>>.asDomainModel(): Flow<List<SmobUserATO>> = transform {
+    value ->
+    emit(
+        value.map {
+            SmobUserATO (
+                id = it.id,
+                username = it.username,
+                name = it.name,
+                email = it.email,
+                imageUrl = it.imageUrl,
+            )
+        }
+    )
 }
 
 // List<SmobUserATO> --> List<SmobUserDTO>
 fun List<SmobUserATO>.asDatabaseModel(): List<SmobUserDTO> {
     return map {
-        SmobUserDTO (
-            id = it.id,
-            username = it.username,
-            name = it.name,
-            email = it.email,
-            imageUrl = it.imageUrl,
-        )
-    }
+            SmobUserDTO (
+                id = it.id,
+                username = it.username,
+                name = it.name,
+                email = it.email,
+                imageUrl = it.imageUrl,
+            )
+        }
 }
 
-// SmobUserDTO --> SmobUserATO
-fun SmobUserDTO.asDomainModel(): SmobUserATO {
-    return SmobUserATO (
-        id = this.id,
-        username = this.username,
-        name = this.name,
-        email = this.email,
-        imageUrl = this.imageUrl,
+// Flow<SmobUserDTO?> --> Flow<SmobUserATO?>
+// ... need to add an annotation to avoid a clash at byte-code level (same signature as List<> case)
+@JvmName("asDomainModelSmobUserDTO")
+fun Flow<SmobUserDTO?>.asDomainModel(): Flow<SmobUserATO?> = transform {
+    value ->
+    emit(
+        value?.let {
+            SmobUserATO(
+                id = it.id,
+                username = it.username,
+                name = it.name,
+                email = it.email,
+                imageUrl = it.imageUrl,
+            )
+        }
     )
 }
 
-// SmobUserATO --> SmobUserDTO
+// SmobUserATO? --> SmobUserDTO?
 fun SmobUserATO.asDatabaseModel(): SmobUserDTO {
-    return SmobUserDTO (
-        id = this.id,
-        username = this.username,
-        name = this.name,
-        email = this.email,
-        imageUrl = this.imageUrl,
-    )
+    return this.let {
+            SmobUserDTO(
+                id = it.id,
+                username = it.username,
+                name = it.name,
+                email = it.email,
+                imageUrl = it.imageUrl,
+            )
+        }
 }
-

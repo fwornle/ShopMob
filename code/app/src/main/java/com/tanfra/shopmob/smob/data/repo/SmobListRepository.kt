@@ -15,8 +15,11 @@ import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
+import com.tanfra.shopmob.smob.data.repo.utils.asResource
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -44,81 +47,80 @@ class SmobListRepository(
     // --- impl. of public, app facing data interface 'SmobListDataSource': CRUD, local DB data ---
 
     /**
-     * Get a smob list by its id
-     * @param id to be used to get the smob list
+     * Get a smob user by its id
+     * @param id to be used to get the smob user
      * @return Result the holds a Success object with the SmobList or an Error object with the error message
      */
-    override suspend fun getSmobList(id: String): Resource<SmobListATO> = withContext(ioDispatcher) {
+    override fun getSmobList(id: String): Flow<Resource<SmobListATO>> {
+
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
-            // first try to update local DB for the requested SmobList
-            // ... if the API call fails, the local DB remains untouched
-            //     --> app still works, as we only work of the data in the local DB
-            refreshSmobListInDB(id)
-
-            // now try to fetch data from the local DB
-            try {
-                val smobListDTO = smobListDao.getSmobListById(id)
-                if (smobListDTO != null) {
-                    // success --> turn DB data type (DTO) to domain data type
-                    return@withContext Resource.success(smobListDTO.asDomainModel())
-                } else {
-                    return@withContext Resource.error("SmobList not found!", null)
-                }
+            // try to fetch data from the local DB
+            var atoFlow: Flow<SmobListATO?> = flowOf(null)
+            return try {
+                // fetch data from DB (and convert to ATO)
+                atoFlow = smobListDao.getSmobListById(id).asDomainModel()
+                // wrap data in Resource (--> error/success/[loading])
+                atoFlow.asResource("SmobList not found!")
             } catch (e: Exception) {
-                return@withContext Resource.error(e.localizedMessage, null)
+                // handle exceptions --> error message returned in Resource.error
+                atoFlow.asResource(e.localizedMessage)
             }
-        }
+
+        }  // idlingResource (testing)
+
     }
 
     /**
-     * Get the smob list list from the local db
-     * @return Result holds a Success with all the smob lists or an Error object with the error message
+     * Get the smob user list from the local db
+     * @return Result holds a Success with all the smob users or an Error object with the error message
      */
-    override suspend fun getAllSmobLists(): Resource<List<SmobListATO>> = withContext(ioDispatcher) {
+    override fun getAllSmobLists(): Flow<Resource<List<SmobListATO>>> {
+
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
-            // first try to refresh SmobList data in local DB
-            // ... note: currently, this is also scheduled by WorkManager every 60 seconds
-            //     --> not essential to re-run this here...
-            // ... if the API call fails, the local DB remains untouched
-            //     --> app still works, as we only work of the data in the local DB
-            refreshDataInLocalDB()
-
-            // now try to fetch data from the local DB
-            return@withContext try {
-                // success --> turn DB data type (DTO) to domain data type
-                Resource.success(smobListDao.getSmobLists().asDomainModel())
-            } catch (ex: Exception) {
-                Resource.error(ex.localizedMessage, null)
+            // try to fetch data from the local DB
+            var atoFlow: Flow<List<SmobListATO>> = flowOf(listOf())
+            return try {
+                // fetch data from DB (and convert to ATO)
+                atoFlow = smobListDao.getSmobLists().asDomainModel()
+                // wrap data in Resource (--> error/success/[loading])
+                atoFlow.asResource("SmobList not found!")
+            } catch (e: Exception) {
+                // handle exceptions --> error message returned in Resource.error
+                atoFlow.asResource(e.localizedMessage)
             }
-        }
+
+        }  // idlingResource (testing)
+
     }
+
 
     /**
      * Insert a smob list in the db. Replace a potentially existing smob list record.
      * @param smobListATO the smob list to be inserted
      */
-    override suspend fun saveSmobList(smobListATO: SmobListATO): Unit =
-        withContext(ioDispatcher) {
-            // support espresso testing (w/h coroutines)
-            wrapEspressoIdlingResource {
+    override suspend fun saveSmobList(smobListATO: SmobListATO): Unit = withContext(ioDispatcher) {
 
-                // first store in local DB first
-                val dbList = smobListATO.asDatabaseModel()
-                smobListDao.saveSmobList(dbList)
+        // support espresso testing (w/h coroutines)
+        wrapEspressoIdlingResource {
 
-                // then push to backend DB
-                // ... use 'update', as list may already exist (equivalent of REPLACE w/h local DB)
-                //
-                // ... could do a read back first, if we're anxious...
-                //smobListDao.getSmobListById(dbList.id)?.let { smobListApi.updateSmobList(it.id, it.asNetworkModel()) }
-                smobListApi.updateSmobListById(dbList.id, dbList.asNetworkModel())
+            // first store in local DB first
+            val dbList = smobListATO.asDatabaseModel()
+            smobListDao.saveSmobList(dbList)
 
-            }
-        }
+            // then push to backend DB
+            // ... use 'update', as list may already exist (equivalent of REPLACE w/h local DB)
+            //
+            // ... could do a read back first, if we're anxious...
+            //smobListDao.getSmobListById(dbList.id)?.let { smobListApi.updateSmobList(it.id, it.asNetworkModel()) }
+            smobListApi.updateSmobListById(dbList.id, dbList.asNetworkModel())
+
+        }  // idlingResource (testing)
+
+    }
 
 
     /**
@@ -247,17 +249,18 @@ class SmobListRepository(
      */
     suspend fun refreshSmobListInDB(id: String) {
 
-        // send GET request to server - coroutine to avoid blocking the main (UI) thread
-        withContext(Dispatchers.IO) {
+        // initiate the (HTTP) GET request using the provided query parameters
+        Timber.i("Sending GET request for SmobList data...")
+        val response: Resource<SmobListDTO> = getSmobListViaApi(id)
 
-            // initiate the (HTTP) GET request using the provided query parameters
-            Timber.i("Sending GET request for SmobList data...")
-            val response: Resource<SmobListDTO> = getSmobListViaApi(id)
+        // got any valid data back?
+        if (response.status.equals(Status.SUCCESS)) {
 
-            // got any valid data back?
-            if (response.status.equals(Status.SUCCESS)) {
+            Timber.i("SmobList data GET request complete (success)")
 
-                Timber.i("SmobList data GET request complete (success)")
+
+            // send POST request to server - coroutine to avoid blocking the main (UI) thread
+            withContext(Dispatchers.IO) {
 
                 // store list data in DB - if any
                 response.data?.let {
@@ -265,9 +268,9 @@ class SmobListRepository(
                     Timber.i("SmobList data items stored in local DB")
                 }
 
-            }  // if (valid response)
+            }  // coroutine scope (IO)
 
-        }  // coroutine scope (IO)
+        }  // if (valid response)
 
     }  // refreshSmobListInDB()
 
@@ -286,15 +289,11 @@ class SmobListRepository(
     //           is fully abstracted by the repo - all data access done via local DB)
     private suspend fun getSmobListsViaApi(): Resource<List<SmobListDTO>> = withContext(ioDispatcher) {
 
-        // overall result - haven't got anything yet
-        // ... this is useless here --> but needs to be done like this in the viewModel
-        var result = Resource.loading(listOf<SmobListDTO>())
-
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
             // network access - could fail --> handle consistently via ResponseHandler class
-            result = try {
+            return@withContext try {
                 // return successfully received data object (from Moshi --> PoJo)
                 val netResult = smobListApi.getSmobLists()
                     .body()
@@ -318,8 +317,6 @@ class SmobListRepository(
             }
 
         }  // espresso: idlingResource
-
-        return@withContext result
 
     }  // getSmobListsFromApi
 

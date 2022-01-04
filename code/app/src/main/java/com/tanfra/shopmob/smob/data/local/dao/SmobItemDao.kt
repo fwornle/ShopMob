@@ -2,6 +2,7 @@ package com.tanfra.shopmob.smob.data.local.dao
 
 import androidx.room.*
 import com.tanfra.shopmob.smob.data.local.dto.SmobItemDTO
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Data Access Object for the smobItems table.

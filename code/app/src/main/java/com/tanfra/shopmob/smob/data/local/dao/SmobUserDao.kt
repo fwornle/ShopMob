@@ -2,6 +2,7 @@ package com.tanfra.shopmob.smob.data.local.dao
 
 import androidx.room.*
 import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Data Access Object for the smobUsers table.
@@ -13,14 +14,20 @@ interface SmobUserDao {
      * @param smobUserId the ID of the smob user
      * @return the smob user object with the smobUserId
      */
+    //
+    // note: Flow types must not be declared as "suspend"able functions, see the third answer in:
+    //       https://stackoverflow.com/questions/46445964/room-not-sure-how-to-convert-a-cursor-to-this-methods-return-type-which-meth
     @Query("SELECT * FROM smobUsers WHERE id = :smobUserId")
-    suspend fun getSmobUserById(smobUserId: String): SmobUserDTO?
+    fun getSmobUserById(smobUserId: String): Flow<SmobUserDTO?>
 
     /**
      * @return all smobUsers.
      */
+    //
+    // note: Flow types must not be declared as "suspend"able functions, see the third answer in:
+    //       https://stackoverflow.com/questions/46445964/room-not-sure-how-to-convert-a-cursor-to-this-methods-return-type-which-meth
     @Query("SELECT * FROM smobUsers")
-    suspend fun getSmobUsers(): List<SmobUserDTO>
+    fun getSmobUsers(): Flow<List<SmobUserDTO>>
 
     /**
      * Insert a smob user in the database. If the smob user already exists, replace it.

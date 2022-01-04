@@ -15,8 +15,10 @@ import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
+import com.tanfra.shopmob.smob.data.repo.utils.asResource
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -43,12 +45,15 @@ class SmobUserRepository(
     // --- impl. of public, app facing data interface 'SmobUserDataSource': CRUD, local DB data ---
     // --- impl. of public, app facing data interface 'SmobUserDataSource': CRUD, local DB data ---
 
+
+
     /**
      * Get a smob user by its id
      * @param id to be used to get the smob user
      * @return Result the holds a Success object with the SmobUser or an Error object with the error message
      */
-    override suspend fun getSmobUser(id: String): Resource<SmobUserATO> = withContext(ioDispatcher) {
+    override suspend fun getSmobUser(id: String): Flow<Resource<SmobUserATO>> = withContext(ioDispatcher) {
+
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
@@ -58,25 +63,24 @@ class SmobUserRepository(
             refreshSmobUserInDB(id)
 
             // now try to fetch data from the local DB
+            var atoFlow: Flow<SmobUserATO?> = flowOf(null)
             try {
-                val smobUserDTO = smobUserDao.getSmobUserById(id)
-                if (smobUserDTO != null) {
-                    // success --> turn DB data type (DTO) to domain data type
-                    return@withContext Resource.success(smobUserDTO.asDomainModel())
-                } else {
-                    return@withContext Resource.error("SmobUser not found!", null)
-                }
+                atoFlow = smobUserDao.getSmobUserById(id).asDomainModel()
+                return@withContext atoFlow.asResource("SmobUser not found!")
             } catch (e: Exception) {
-                return@withContext Resource.error(e.localizedMessage, null)
+                return@withContext atoFlow.asResource(e.localizedMessage)
             }
-        }
+
+        }  // idlingResource (testing)
+
     }
 
     /**
      * Get the smob user list from the local db
      * @return Result holds a Success with all the smob users or an Error object with the error message
      */
-    override suspend fun getAllSmobUsers(): Resource<List<SmobUserATO>> = withContext(ioDispatcher) {
+    override suspend fun getAllSmobUsers(): Flow<Resource<List<SmobUserATO>>> = withContext(ioDispatcher) {
+
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
@@ -88,13 +92,16 @@ class SmobUserRepository(
             refreshDataInLocalDB()
 
             // now try to fetch data from the local DB
-            return@withContext try {
-                // success --> turn DB data type (DTO) to domain data type
-                Resource.success(smobUserDao.getSmobUsers().asDomainModel())
-            } catch (ex: Exception) {
-                Resource.error(ex.localizedMessage, null)
+            var atoFlow: Flow<List<SmobUserATO>> = flowOf(listOf())
+            try {
+                atoFlow = smobUserDao.getSmobUsers().asDomainModel()
+                return@withContext atoFlow.asResource("SmobUser not found!")
+            } catch (e: Exception) {
+                return@withContext atoFlow.asResource(e.localizedMessage)
             }
-        }
+
+        }  // idlingResource (testing)
+
     }
 
     /**
@@ -286,15 +293,11 @@ class SmobUserRepository(
     //           is fully abstracted by the repo - all data access done via local DB)
     private suspend fun getSmobUsersViaApi(): Resource<List<SmobUserDTO>> = withContext(ioDispatcher) {
 
-        // overall result - haven't got anything yet
-        // ... this is useless here --> but needs to be done like this in the viewModel
-        var result = Resource.loading(listOf<SmobUserDTO>())
-
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
             // network access - could fail --> handle consistently via ResponseHandler class
-            result = try {
+            return@withContext try {
                 // return successfully received data object (from Moshi --> PoJo)
                 val netResult = smobUserApi.getSmobUsers()
                     .body()
@@ -318,8 +321,6 @@ class SmobUserRepository(
             }
 
         }  // espresso: idlingResource
-
-        return@withContext result
 
     }  // getSmobUsersFromApi
 
