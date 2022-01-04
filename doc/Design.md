@@ -371,19 +371,28 @@ using a NavController instance.
 
 ### Overview
 
+The following five activities make up the principal screens of the app. Within each activity, fragments are used to 
+provide sub-views.
+
 1. Authentication
    1. Login & Sign-up with email/password
    2. Federated login provider (google)
-2. Data Management
+2. Administration
    1. User management
    2. Shop management
    3. Product management
    4. Shopping list management
-3. Shopping
-   1. Smob List item view (RecyclerView)
-   2. Store details (floor plan with route and zones + stats of shopping items in each zone)
-   3. Zone details (location of items in zone)
-   4. Section details (image of shelf with location of selected shopping item on shelf)
+3. Planning Lists
+   1. Smob lists view (RecyclerView, RV) - all smob lists which are available to the user
+   2. Smob product list view (RV) - an individual smob list with product details (= "shopping items")
+   3. Smob shop list view (RV) - all shops which offer at least one product on any of the lists available to the user
+4. Details
+   1. Product details
+   2. Shop details
+5. Shopping
+   1. Store details (floor plan with route and zones + stats of shopping items in each zone)
+   2. Zone details (location of items in zone)
+   3. Section details (image of shelf with location of selected shopping item on shelf)
 
 
 ### Architecture of the SmobUserRepository
