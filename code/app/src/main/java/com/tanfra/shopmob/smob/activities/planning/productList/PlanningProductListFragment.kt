@@ -1,6 +1,5 @@
 package com.tanfra.shopmob.smob.activities.planning.productList
 
-import android.app.ActivityOptions
 import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
@@ -18,9 +17,11 @@ import com.tanfra.shopmob.smob.activities.details.SmobDetailsActivity
 import com.tanfra.shopmob.smob.activities.details.SmobDetailsSources
 import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import org.koin.core.component.KoinComponent
+import timber.log.Timber
 
 
 class PlanningProductListFragment : BaseFragment(), KoinComponent {
@@ -46,9 +47,23 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
         // set injected viewModel (from KOIN service locator)
         binding.viewModel = _viewModel
 
+        // fetch ID of list to be displayed (from incoming bundle)
+        val listId = arguments?.getString("listId")
+        Timber.i("Showing products on list with ID: $listId")
+
+        val listName = arguments?.getString("listName")
+        Timber.i("... list name: $listName")
+
+        // register flows fetch items of the selected upstream list
+        listId?.let {
+            _viewModel.upstreamListItem = _viewModel.fetchUpstreamListItem(listId)
+            _viewModel.smobList = _viewModel.fetchListItems(_viewModel.upstreamListItem)
+        }
+
+        // configure navbar
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(true)
-        setTitle(String.format(getString(R.string.app_name_planning), ": Products"))
+        setTitle(String.format(getString(R.string.app_name_planning), listName))
 
         // install listener for SwipeRefreshLayout view
         binding.refreshLayout.setOnRefreshListener {
@@ -56,11 +71,10 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
             // deactivate SwipeRefreshLayout spinner
             binding.refreshLayout.setRefreshing(false)
 
-            // update smob product list
-            // ... this also updates LifeData 'showNoData' (see below)
-            _viewModel.loadProductItems()
+            // refresh local DB data from backend
+            _viewModel.swipeRefreshDataInLocalDB()
 
-            // empty list? --> inform user that there is no point swiping for updates...
+            // empty? --> inform user that there is no point swiping for further updates...
             if (_viewModel.showNoData.value == true) {
                 Toast.makeText(activity, getString(R.string.error_add_smob_items), Toast.LENGTH_SHORT).show()
             }
@@ -72,25 +86,25 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.lifecycleOwner = viewLifecycleOwner
+
+        // RV - incl. onClick listener for items
         setupRecyclerView()
+
+        // "+" FAB
         binding.addSmobItemFab.setOnClickListener {
             navigateToPlanningList()
         }
     }
-
-//    override fun onResume() {
-//        super.onResume()
-//        // update the smob list data in the backend
-//        _viewModel.loadListItems()
-//    }
 
     // FAB handler --> navigate to SaveSmobItem fragment
     private fun navigateToPlanningList() {
         // use the navigationCommand live data to navigate between the fragments
         _viewModel.navigationCommand.postValue(
             NavigationCommand.To(
-                PlanningProductListFragmentDirections.actionPlanningProductListFragmentToPlanningListsFragment()            )
+                PlanningProductListFragmentDirections.actionPlanningProductListFragmentToPlanningListsFragment()
+            )
         )
     }
 

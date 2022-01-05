@@ -32,6 +32,7 @@ abstract class BaseFragment : Fragment() {
         _viewModel.navigationCommand.observe(this, { command ->
             when (command) {
                 is NavigationCommand.To -> findNavController().navigate(command.directions)
+                is NavigationCommand.ToWithBundle -> findNavController().navigate(command.destinationId, command.bundle)
                 is NavigationCommand.Back -> findNavController().popBackStack()
                 is NavigationCommand.BackTo -> findNavController().popBackStack(
                     command.destinationId,

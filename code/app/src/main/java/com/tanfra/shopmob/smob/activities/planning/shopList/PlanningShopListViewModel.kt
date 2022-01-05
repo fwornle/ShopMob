@@ -1,17 +1,15 @@
 package com.tanfra.shopmob.smob.activities.planning.shopList
 
 import android.app.Application
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.base.BaseViewModel
-import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
-import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -27,41 +25,40 @@ class PlanningShopListViewModel(
     //var smobList = repoFlow.getAllSmobLists().asLiveData()
     val smobList = repoFlow.getAllSmobShops().stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000), // Or Lazily because it's a one-shot
+        started = WhileSubscribed(5000),
         initialValue = Resource.loading(null)
     )
 
 
     /**
-     * Get all the smob items from the DataSource and add them to smobList to be shown on the UI
-     * ... or show the error, if any
-     *
-     * Note: since the conversion to the 'flow' based model, this type of 'manual refreshing' is
-     *       no longer necessary --> possibly omit? (fw-220104)
+     * update all items in the local DB by querying the backend - triggered on "swipe down"
      */
-    fun loadShopItems() {
+    @ExperimentalCoroutinesApi
+    fun swipeRefreshDataInLocalDB() {
 
         // user is impatient - trigger update of local DB from net
         viewModelScope.launch {
             // update backend DB (from net API)
             repoFlow.refreshDataInLocalDB()
+
+            // handle potential errors
+            smobList.collect {
+                if(it.status == Status.ERROR) showSnackBar.value = it.message!!
+            }
+            // check if no data has to be shown
+            updateShowNoData()
+
         }
 
-        // handle potential errors
-        smobList.value.let {
-            if(it.status == Status.ERROR) showSnackBar.value = it.message!!
-        }
-
-        // check if no data has to be shown
-        updateShowNoData()
-
-    }  // loadShopItems
+    }  // swipeRefreshDataInLocalDB
 
     /**
      * Inform the user that the list is empty
      */
-    private fun updateShowNoData() {
-        showNoData.value = (smobList.value.status == Status.SUCCESS && smobList.value.data!!.isEmpty())
+    @ExperimentalCoroutinesApi
+    private suspend fun updateShowNoData() {
+        val smobListNewest = smobList.last()
+        showNoData.value = (smobListNewest.status == Status.SUCCESS && smobListNewest.data!!.isEmpty())
     }
 
 }

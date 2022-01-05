@@ -22,7 +22,7 @@ val vmServices = module {
     viewModel {
         PlanningListsViewModel(
             get(),  // app (context)
-            get() as SmobListDataSource  // repo as data source
+            get() as SmobListDataSource,  // repo as data source
         )
     }
 
@@ -30,7 +30,8 @@ val vmServices = module {
     viewModel {
         PlanningProductListViewModel(
             get(),  // app (context)
-            get() as SmobProductDataSource  // repo as data source
+            get() as SmobListDataSource,  // repo as data source
+            get() as SmobProductDataSource,  // repo as data source
         )
     }
 
@@ -38,7 +39,7 @@ val vmServices = module {
     viewModel {
         PlanningProductEditViewModel(
             get(),  // app (context)
-            get() as SmobProductDataSource  // repo as data source
+            get() as SmobProductDataSource,  // repo as data source
         )
     }
 
@@ -46,7 +47,7 @@ val vmServices = module {
     viewModel {
         PlanningShopListViewModel(
             get(),  // app (context)
-            get() as SmobShopDataSource  // repo as data source
+            get() as SmobShopDataSource,  // repo as data source
         )
     }
 
@@ -54,7 +55,7 @@ val vmServices = module {
     viewModel {
         PlanningShopEditViewModel(
             get(),  // app (context)
-            get() as SmobShopDataSource  // repo as data source
+            get() as SmobShopDataSource,  // repo as data source
         )
     }
 
@@ -66,7 +67,7 @@ val vmServices = module {
     viewModel {
         AdminViewModel(
             get(),  // app (context)
-            get() as SmobListDataSource  // repo as data source
+            get() as SmobListDataSource,  // repo as data source
         )
     }
 
@@ -79,7 +80,7 @@ val vmServices = module {
         DetailsViewModel(
             get(),  // app (context)
             get() as SmobProductDataSource,  // repo as data source
-            get() as SmobShopDataSource  // repo as data source
+            get() as SmobShopDataSource,  // repo as data source
         )
     }
 

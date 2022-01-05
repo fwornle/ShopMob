@@ -47,7 +47,7 @@ class PlanningShopListFragment : BaseFragment(), KoinComponent {
 
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(false)
-        setTitle(String.format(getString(R.string.app_name_planning), ": Shops"))
+        setTitle(String.format(getString(R.string.app_name_planning_shop), ": Shops"))
 
         // install listener for SwipeRefreshLayout view
         binding.rlPlanningShopList.setOnRefreshListener {
@@ -55,11 +55,10 @@ class PlanningShopListFragment : BaseFragment(), KoinComponent {
             // deactivate SwipeRefreshLayout spinner
             binding.rlPlanningShopList.setRefreshing(false)
 
-            // update smob list
-            // ... this also updates LifeData 'showNoData' (see below)
-            _viewModel.loadShopItems()
+            // refresh local DB data from backend
+            _viewModel.swipeRefreshDataInLocalDB()
 
-            // empty list? --> inform user that there is no point swiping for updates...
+            // empty? --> inform user that there is no point swiping for further updates...
             if (_viewModel.showNoData.value == true) {
                 Toast.makeText(activity, getString(R.string.error_add_smob_items), Toast.LENGTH_SHORT).show()
             }
@@ -71,18 +70,17 @@ class PlanningShopListFragment : BaseFragment(), KoinComponent {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.lifecycleOwner = viewLifecycleOwner
+
+        // RV - incl. onClick listener for items
         setupRecyclerView()
+
+        // "+" FAB
         binding.addSmobItemFab.setOnClickListener {
             navigateToAddshopmobItem()
         }
     }
-
-//    override fun onResume() {
-//        super.onResume()
-//        // update the smob list data in the backend
-//        _viewModel.loadListItems()
-//    }
 
     // FAB handler --> navigate to SaveSmobItem fragment
     private fun navigateToAddshopmobItem() {

@@ -1,5 +1,6 @@
 package com.tanfra.shopmob.base
 
+import android.os.Bundle
 import androidx.navigation.NavDirections
 
 /**
@@ -10,6 +11,11 @@ sealed class NavigationCommand {
      * navigate to a direction
      */
     data class To(val directions: NavDirections) : NavigationCommand()
+
+    /**
+     * navigate to a direction carrying a bundle
+     */
+    data class ToWithBundle(val destinationId: Int, val bundle: Bundle) : NavigationCommand()
 
     /**
      * navigate back to the previous fragment
