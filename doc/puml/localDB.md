@@ -61,8 +61,8 @@ frame "Room database" #Lightcyan {
 interface SmobItemDao #aliceblue;line:blue;line.dotted;text:blue {
     DAO for the **smobItems** table
     [async]
-    +getSmobItemById(...): SmobItemDTO
-    +getSmobItems(): List<SmobItemDTO>
+    +getSmobItemById(...): **Flow**<SmobUserDTO?>
+    +getSmobItems(): **Flow**<List<SmobUserDTO>>
     +saveSmobItem(...)
     +updateSmobItem(...)
     +updateSmobItems(...)
@@ -85,8 +85,8 @@ interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
 interface SmobXxxxDao #aliceblue;line:blue;line.dotted;text:blue {
     DAO for the **smobXxxx** table
     [async]
-    +getSmobXxxxById(...): SmobXxxxDTO
-    +getSmobXxxxs(): List<SmobXxxxDTO>
+    +getSmobXxxxById(...): **Flow**<SmobXxxxDTO?>
+    +getSmobXxxxs(): **Flow**<List<SmobXxxxDTO>>
     +saveSmobXxxx(...)
     +updateSmobXxxx(...)
     +updateSmobXxxxs(...)
@@ -169,8 +169,8 @@ frame "dbServices" #Lightblue {
         from **Koin** Service Locator
         LocalDB.**createSmobUserDao**(get())
         ---
-        +getSmobUserById(...): SmobUserDTO
-        +getSmobUsers(): List<SmobUserDTO>
+        +getSmobUserById(...): **Flow**<SmobUserDTO?>
+        +getSmobUsers(): **Flow**<List<SmobUserDTO>>
         +saveSmobUser(...)
         +updateSmobUser(...)
         +updateSmobUsers(...)
@@ -182,8 +182,8 @@ frame "dbServices" #Lightblue {
         from **Koin** Service Locator
         LocalDB.**createSmobUserDao**(get())
         ---
-        +getSmobItemById(...): SmobItemDTO
-        +getSmobItems(): List<SmobItemDTO>
+        +getSmobItemById(...): **Flow**<SmobItemDTO?>
+        +getSmobItems(): **Flow**<List<SmobItemDTO>>
         +saveSmobItem(...)
         +updateSmobItem(...)
         +updateSmobItems(...)
@@ -195,8 +195,8 @@ frame "dbServices" #Lightblue {
         from **Koin** Service Locator
         LocalDB.**createSmobXxxxDao**(get())
         ---
-        +getSmobXxxxById(...): SmobXxxxDTO
-        +getSmobXxxxs(): List<SmobXxxxDTO>
+        +getSmobXxxxById(...): **Flow**<SmobXxxxDTO?>
+        +getSmobXxxxs(): **Flow**<List<SmobXxxxDTO>>
         +saveSmobXxxx(...)
         +updateSmobXxxx(...)
         +updateSmobXxxxs(...)

@@ -3,8 +3,8 @@
 interface SmobUserDataSource #aliceblue;line:blue;line.dotted;text:blue {
     **app facing IF**
     [async]
-    +getSmobUser(...) : Resource<SmobUserATO>
-    +getAllSmobUsers() : Resource<List<SmobUserATO>>
+    +getSmobUser(...) : **Flow**<Resource<SmobUserATO>?>
+    +getAllSmobUsers() : **Flow**<Resource<List<SmobUserATO>>>
     +saveSmobUser(...)
     +saveSmobUsers(...)
     +updateSmobUser(...)
@@ -173,6 +173,7 @@ interface SmobUserDao #aliceblue;line:blue;line.dotted;text:blue {
     +deleteAllSmobUsers()
 }
 
+
 class SmobUserATO {
 Domain Datatype
 for **SmobUser** items
@@ -183,7 +184,16 @@ for **SmobUser** items
 +imageUrl
 }
 
-SmobUserDataSource -left-> SmobUserATO
+SmobUserDataSource -right-> SmobUserATO
+
+class Ato {
+Base Class
+for all SmobXxxxATO items
+---
++id
+}
+
+Ato -left-> SmobUserATO
 
 
 SmobUserRepository o-down-- dbObject : "\n     get()\n (DI: **smobUserDao**)" " "
