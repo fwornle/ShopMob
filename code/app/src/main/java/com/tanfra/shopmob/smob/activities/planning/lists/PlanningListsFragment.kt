@@ -77,11 +77,11 @@ class PlanningListsFragment : BaseFragment(), KoinComponent {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        //load the smob item list on the UI
-        _viewModel.loadListItems()
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        // update the smob list data in the backend
+//        _viewModel.loadListItems()
+//    }
 
     // FAB handler --> navigate to selected fragment of the admin activity
     private fun navigateToAddSmobList() {

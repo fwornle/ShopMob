@@ -3,11 +3,18 @@ package com.tanfra.shopmob.smob.activities.planning.lists
 import android.app.Application
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.base.BaseViewModel
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
+import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 
 class PlanningListsViewModel(
@@ -16,8 +23,13 @@ class PlanningListsViewModel(
 ) : BaseViewModel(app) {
 
     // list that holds the smob data items to be displayed on the UI
-    // ... flow, converted to LiveData --> data changes in the backend are observed
-    var smobList = repoFlow.getAllSmobLists().asLiveData()
+    // ... flow, converted to StateFlow --> data changes in the backend are observed
+    // ... ref: https://medium.com/androiddevelopers/migrating-from-livedata-to-kotlins-flow-379292f419fb
+    val smobList = repoFlow.getAllSmobLists().stateIn(
+        scope = viewModelScope,
+        started = WhileSubscribed(0), // Or Lazily because it's a one-shot
+        initialValue = Resource.loading(null)
+    )
 
 
     /**
@@ -29,17 +41,17 @@ class PlanningListsViewModel(
      */
     fun loadListItems() {
 
-        // activate loading spinner via Resource.status = LOADING
-        smobList = liveData { Resource.loading(listOf<SmobListATO>()) }
+        // user is impatient - trigger update of local DB from net
+        viewModelScope.launch {
+            // update backend DB (from net API)
+            repoFlow.refreshDataInLocalDB()
 
-        // (re-)fetch all shopping lists
-        // ... also sets the Resource.status to SUCCESS/ERROR --> deactivates loading spinner
-        smobList = repoFlow.getAllSmobLists().asLiveData()
-
-        // handle potential errors
-        smobList.value?.let {
-            if(it.status == Status.ERROR) showSnackBar.value = it.message!!
+            // handle potential errors
+            smobList.collect {
+                if(it.status == Status.ERROR) showSnackBar.value = it.message!!
+            }
         }
+
 
         // check if no data has to be shown
         updateShowNoData()
@@ -50,7 +62,7 @@ class PlanningListsViewModel(
      * Inform the user that the list is empty
      */
     private fun updateShowNoData() {
-        showNoData.value = (smobList.value?.status == Status.SUCCESS && smobList.value?.data!!.isEmpty())
+        showNoData.value = (smobList.value.status == Status.SUCCESS && smobList.value.data!!.isEmpty())
     }
 
 }

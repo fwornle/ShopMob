@@ -7,18 +7,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tanfra.shopmob.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
+import kotlinx.coroutines.flow.StateFlow
 
 
 object BindingAdapters {
 
     /**
-     * Use binding adapter to set the recycler view data using livedata object
-     * The livedata object is wrapped in Resource (w/h status = { SUCCESS, ERROR, LOADING }
+     * Use binding adapter to set the recycler view data using StateFlow object
+     * The StateFlow object is a Resource wrapped list
+     * ... Resource.status = { SUCCESS | ERROR | LOADING }
      */
     @Suppress("UNCHECKED_CAST")
-    @BindingAdapter("android:liveDataResource")
+    @BindingAdapter("android:stateFlowResource")
     @JvmStatic
-    fun <T> setRecyclerViewDataFromResource(recyclerView: RecyclerView, items: LiveData<Resource<List<T>>>?) {
+    fun <T> setRecyclerViewDataFromStateFlowResource(recyclerView: RecyclerView, items: StateFlow<Resource<List<T>>>?) {
         items?.value?.let { itemList ->
             (recyclerView.adapter as? BaseRecyclerViewAdapter<T>)?.apply {
                 clear()

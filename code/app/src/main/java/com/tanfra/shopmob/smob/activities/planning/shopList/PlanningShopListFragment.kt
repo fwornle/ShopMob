@@ -78,11 +78,11 @@ class PlanningShopListFragment : BaseFragment(), KoinComponent {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        //load the smob item list on the UI
-        _viewModel.loadShopItems()
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        // update the smob list data in the backend
+//        _viewModel.loadListItems()
+//    }
 
     // FAB handler --> navigate to SaveSmobItem fragment
     private fun navigateToAddshopmobItem() {

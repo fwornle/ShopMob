@@ -63,7 +63,7 @@ class SmobShopRepository(
                 // fetch data from DB (and convert to ATO)
                 atoFlow = smobShopDao.getSmobShopById(id).asDomainModel()
                 // wrap data in Resource (--> error/success/[loading])
-                atoFlow.asResource("SmobShop not found!")
+                atoFlow.asResource(null)
             } catch (e: Exception) {
                 // handle exceptions --> error message returned in Resource.error
                 atoFlow.asResource(e.localizedMessage)
@@ -88,7 +88,7 @@ class SmobShopRepository(
                 // fetch data from DB (and convert to ATO)
                 atoFlow = smobShopDao.getSmobShops().asDomainModel()
                 // wrap data in Resource (--> error/success/[loading])
-                atoFlow.asResource("SmobShop not found!")
+                atoFlow.asResource(null)
             } catch (e: Exception) {
                 // handle exceptions --> error message returned in Resource.error
                 atoFlow.asResource(e.localizedMessage)

@@ -1,5 +1,6 @@
 package com.tanfra.shopmob.smob.activities.details
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
@@ -8,6 +9,10 @@ import com.tanfra.shopmob.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
+import android.content.IntentSender
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -19,6 +24,7 @@ import com.tanfra.shopmob.smob.activities.planning.SmobPlanningActivity
 import com.tanfra.shopmob.smob.activities.planning.productList.PlanningProductListFragmentDirections
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
+import timber.log.Timber
 
 class DetailsShopFragment : BaseFragment(), KoinComponent {
 
@@ -27,6 +33,24 @@ class DetailsShopFragment : BaseFragment(), KoinComponent {
 
     // data binding for fragment_planning_lists.xml
     private lateinit var binding: FragmentDetailsShopBinding
+
+    // lambda for contract 'StartActivityForResult', which is used to start the shopping
+    // activity and return from it with a result (of what has changed)
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+
+            result: ActivityResult ->
+
+            if (result.resultCode == Activity.RESULT_OK) {
+
+                // ... handle the Intent
+                val intent = result.data
+                Timber.i("Back from shopping... got $intent")
+
+            }
+
+        }  // lambda: (shopping) activity result
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,24 +82,18 @@ class DetailsShopFragment : BaseFragment(), KoinComponent {
         // set onClick handler for FLOOR PLAN button
         // ... navigate back to the main app
         binding.btFloorPlan.setOnClickListener {
+
+            // ... go shopping
             val intent = Intent(this.context, SmobPlanningActivity::class.java)
-            startActivity(intent)
-            // and we're done here
-            this.activity?.finish()
+            startForResult.launch(intent)
+
         }
 
-        // set onClick handler for DISMISS button
-        // ... navigate back to the main app
-        binding.btDismiss.setOnClickListener {
-            val intent = Intent(this.context, SmobPlanningActivity::class.java)
-            startActivity(intent)
-            // and we're done here
-            this.activity?.finish()
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+
             R.id.logout -> {
                 // logout authenticated user
                 AuthUI.getInstance()
@@ -87,6 +105,16 @@ class DetailsShopFragment : BaseFragment(), KoinComponent {
                         this.activity?.finish()
                     }
             }
+
+            // note: must use 'android' to catch the back button...
+            android.R.id.home -> {
+                Timber.i("Back pressed from details fragment.")
+
+                // closing this activity brings us back to where we came from (with intact
+                // backstack history
+                this.activity?.finish()
+            }
+
         }  // when(item...)
 
 //        // travel back to where we came from...

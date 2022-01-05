@@ -1,5 +1,6 @@
 package com.tanfra.shopmob.smob.activities.planning.productList
 
+import android.app.ActivityOptions
 import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
@@ -78,11 +79,11 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        //load the smob item list on the UI
-        _viewModel.loadProductItems()
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        // update the smob list data in the backend
+//        _viewModel.loadListItems()
+//    }
 
     // FAB handler --> navigate to SaveSmobItem fragment
     private fun navigateToPlanningList() {

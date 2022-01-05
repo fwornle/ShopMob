@@ -25,7 +25,7 @@
                 android:id="@+id/smobItemsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:liveDataResource="@{viewModel.smobProduct}"
+                android:stateFlowResource="@{viewModel.smobList}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -50,7 +50,7 @@
                 android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fadeVisibleOnLoading="@{viewModel.smobProduct}"
+                android:fadeVisibleOnLoading="@{viewModel.smobList}"
                 android:gravity="center"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

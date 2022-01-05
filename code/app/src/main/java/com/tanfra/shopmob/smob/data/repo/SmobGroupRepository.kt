@@ -61,7 +61,7 @@ class SmobGroupRepository(
                 // fetch data from DB (and convert to ATO)
                 atoFlow = smobGroupDao.getSmobGroupById(id).asDomainModel()
                 // wrap data in Resource (--> error/success/[loading])
-                atoFlow.asResource("SmobGroup not found!")
+                atoFlow.asResource(null)
             } catch (e: Exception) {
                 // handle exceptions --> error message returned in Resource.error
                 atoFlow.asResource(e.localizedMessage)
@@ -86,7 +86,7 @@ class SmobGroupRepository(
                 // fetch data from DB (and convert to ATO)
                 atoFlow = smobGroupDao.getSmobGroups().asDomainModel()
                 // wrap data in Resource (--> error/success/[loading])
-                atoFlow.asResource("SmobGroup not found!")
+                atoFlow.asResource(null)
             } catch (e: Exception) {
                 // handle exceptions --> error message returned in Resource.error
                 atoFlow.asResource(e.localizedMessage)

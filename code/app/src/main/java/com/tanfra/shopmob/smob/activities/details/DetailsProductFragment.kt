@@ -18,6 +18,7 @@ import com.tanfra.shopmob.smob.activities.authentication.SmobAuthenticationActiv
 import com.tanfra.shopmob.smob.activities.planning.SmobPlanningActivity
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
+import timber.log.Timber
 
 class DetailsProductFragment : BaseFragment(), KoinComponent {
 
@@ -44,7 +45,7 @@ class DetailsProductFragment : BaseFragment(), KoinComponent {
         binding.viewModel = _viewModel
 
         setHasOptionsMenu(true)
-        setDisplayHomeAsUpEnabled(false)
+        setDisplayHomeAsUpEnabled(true)
         setTitle(getString(R.string.app_name_details_product))
 
         return binding.root
@@ -55,20 +56,12 @@ class DetailsProductFragment : BaseFragment(), KoinComponent {
 
         binding.lifecycleOwner = viewLifecycleOwner
 
-        // set onClick handler for DISMISS button
-        // ... navigate back to the main app
-        binding.btDismiss.setOnClickListener {
-            val intent = Intent(this.context, SmobPlanningActivity::class.java).apply {
-                this.putExtra("smobActivityReturn", "currProductList")
-            }
-            startActivity(intent)
-            // and we're done here
-            this.activity?.finish()
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
         when (item.itemId) {
+
             R.id.logout -> {
                 // logout authenticated user
                 AuthUI.getInstance()
@@ -80,6 +73,16 @@ class DetailsProductFragment : BaseFragment(), KoinComponent {
                         this.activity?.finish()
                     }
             }
+
+            // note: must use 'android' to catch the back button...
+            android.R.id.home -> {
+                Timber.i("Back pressed from details fragment.")
+
+                // closing this activity brings us back to where we came from (with intact
+                // backstack history
+                this.activity?.finish()
+            }
+
         }  // when(item...)
 
         return super.onOptionsItemSelected(item)
