@@ -49,6 +49,10 @@
     <string name="floor_plan">Floor Plan</string>
     <string name="description">Description</string>
     <string name="location">Location</string>
+    <string name="catMain">Category</string>
+    <string name="catSub">Kind</string>
+    <string name="actDate">Purchased</string>
+    <string name="actReps">Repetitions</string>
     <string name="map_user_prompt">Select a point of interest to create a ShopMob location.</string>
     <string name="error_add_smob_items">Add some ShopMob items first…</string>
     <string name="location_accuracy_explanation"><![CDATA[ShopMob needs \'Improve Location Accuracy\' enabled. Go to settings \'Security & Location > Location > Mode\' to enable this.]]></string>

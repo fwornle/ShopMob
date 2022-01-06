@@ -24,7 +24,7 @@ function smob () {
         var username = faker.internet.userName()
         var name = faker.fake("{{name.lastName}}, {{name.firstName}}")
         var email = faker.internet.email()
-        var imageUrl = faker.image.people()
+        var imageUrl = `https://placeimg.com/200/150/people?${id}`
 
         smobUsers.push({
             "id": uuid,
@@ -109,7 +109,7 @@ function smob () {
         var uuid = daProducts[id].id
         var name = daProducts[id].name
         var description = daProducts[id].description
-        var imageUrl = faker.image.image()
+        var imageUrl = `https://placeimg.com/200/150/tech?${id}`
         var catMain = daProducts[id].catMain
         var catSub = daProducts[id].catSub
         var dateLastPurchase = faker.date.recent().toDateString()
