@@ -19,11 +19,11 @@ import java.util.*
 @Entity(tableName = "smobLists")
 @RewriteQueriesToDropUnusedColumns
 data class SmobListDTO(
-    @PrimaryKey @ColumnInfo(name = "id") val id: String = UUID.randomUUID().toString(),
-    @ColumnInfo(name = "name") var name: String,
-    @ColumnInfo(name = "description") var description: String?,
-    @ColumnInfo(name = "items") var items: List<SmobListItem>,
-    @ColumnInfo(name = "members") var members: List<String>,
-    @ColumnInfo(name = "lifecycle_status") var lcStatus: SmobItemStatus,
-    @ColumnInfo(name = "lifecycle_completion") var lcCompletion: Double,
+    @PrimaryKey @ColumnInfo(name = "listId") val id: String = UUID.randomUUID().toString(),
+    @ColumnInfo(name = "listName") var name: String,
+    @ColumnInfo(name = "listDescription") var description: String?,
+    @ColumnInfo(name = "listItems") var items: List<SmobListItem>,
+    @ColumnInfo(name = "listMembers") var members: List<String>,
+    @ColumnInfo(name = "listLifecycleStatus") var lcStatus: SmobItemStatus,
+    @ColumnInfo(name = "listLifecycleCompletion") var lcCompletion: Double,
 )

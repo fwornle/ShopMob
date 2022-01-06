@@ -1,5 +1,6 @@
 package com.tanfra.shopmob.smob.data.local.utils
 
+import androidx.room.ColumnInfo
 import kotlinx.serialization.Serializable
 
 // define data types to be used with the Room DB (possibly w/h conversion)
@@ -84,8 +85,15 @@ data class SmobListItem(
 
 @Serializable
 data class SmobListItemInflated(
-    val id: String,
-    val status: SmobItemStatus,
+    val itemId: String,
+    val itemName: String,
+    val itemDescription: String?,
+    val itemImageUrl: String?,
+    var itemCategoryMain: ProductMainCategory,
+    var itemCategorySub: ProductSubCategory,
+    var itemActivityDate: String,
+    var itemActivityReps: Long,
+    val itemStatus: SmobItemStatus,
 ) : java.io.Serializable
 
 @Serializable

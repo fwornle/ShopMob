@@ -20,12 +20,12 @@ import java.util.*
 @Entity(tableName = "smobShops")
 @RewriteQueriesToDropUnusedColumns
 data class SmobShopDTO(
-    @PrimaryKey @ColumnInfo(name = "id") val id: String = UUID.randomUUID().toString(),
-    @ColumnInfo(name = "name") var name: String,
-    @ColumnInfo(name = "description") var description: String?,
-    @ColumnInfo(name = "location_latitude") var locLat: Double,
-    @ColumnInfo(name = "location_longitude") var locLong: Double,
-    @ColumnInfo(name = "type") var type: ShopType,
-    @ColumnInfo(name = "category") var category: ShopCategory,
-    @ColumnInfo(name = "business") var business: List<String>
+    @PrimaryKey @ColumnInfo(name = "shopId") val id: String = UUID.randomUUID().toString(),
+    @ColumnInfo(name = "shopName") var name: String,
+    @ColumnInfo(name = "shopDescription") var description: String?,
+    @ColumnInfo(name = "shopLocationLatitude") var locLat: Double,
+    @ColumnInfo(name = "shopLocationLongitude") var locLong: Double,
+    @ColumnInfo(name = "shopType") var type: ShopType,
+    @ColumnInfo(name = "shopCategory") var category: ShopCategory,
+    @ColumnInfo(name = "shopBusiness") var business: List<String>
 )

@@ -21,12 +21,12 @@ import java.util.*
 @Entity(tableName = "smobProducts")
 @RewriteQueriesToDropUnusedColumns
 data class SmobProductDTO(
-    @PrimaryKey @ColumnInfo(name = "id") val id: String = UUID.randomUUID().toString(),
-    @ColumnInfo(name = "name") var name: String,
-    @ColumnInfo(name = "description") var description: String?,
-    @ColumnInfo(name = "imageUrl") var imageUrl: String?,
-    @ColumnInfo(name = "category_main") var categoryMain: ProductMainCategory,
-    @ColumnInfo(name = "category_sub") var categorySub: ProductSubCategory,
-    @ColumnInfo(name = "activity_date") var activityDate: String,
-    @ColumnInfo(name = "activity_reps") var activityReps: Long,
+    @PrimaryKey @ColumnInfo(name = "productId") val id: String = UUID.randomUUID().toString(),
+    @ColumnInfo(name = "productName") var name: String,
+    @ColumnInfo(name = "productDescription") var description: String?,
+    @ColumnInfo(name = "productImageUrl") var imageUrl: String?,
+    @ColumnInfo(name = "productCategoryMain") var categoryMain: ProductMainCategory,
+    @ColumnInfo(name = "productCategorySub") var categorySub: ProductSubCategory,
+    @ColumnInfo(name = "productActivityDate") var activityDate: String,
+    @ColumnInfo(name = "productActivityReps") var activityReps: Long,
 )

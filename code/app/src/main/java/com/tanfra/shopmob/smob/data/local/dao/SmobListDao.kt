@@ -17,7 +17,7 @@ interface SmobListDao {
     //
     // note: Flow types must not be declared as "suspend"able functions, see the third answer in:
     //       https://stackoverflow.com/questions/46445964/room-not-sure-how-to-convert-a-cursor-to-this-methods-return-type-which-meth
-    @Query("SELECT * FROM smobLists WHERE id = :smobListId")
+    @Query("SELECT * FROM smobLists WHERE listId = :smobListId")
     fun getSmobListById(smobListId: String): Flow<SmobListDTO?>
 
     /**
@@ -51,7 +51,7 @@ interface SmobListDao {
      *
      * @param smobListId the ID of the smob list
      */
-    @Query("DELETE FROM smobLists WHERE id = :smobListId")
+    @Query("DELETE FROM smobLists WHERE listId = :smobListId")
     suspend fun deleteSmobListById(smobListId: String)
 
     // Delete all smobLists.
