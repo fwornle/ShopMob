@@ -626,15 +626,29 @@ The following specification items need to be included in the app:
 
 | Category | Specification Item | Milestone Mapping |
 | ---------------|----------------|----------------------|
-| RESTful API to connect/consume network data | ... | IMPL-3|
-| RESTful API to connect/consume network data | ... | IMPL-3 |
+| RESTful API to connect/consume network data | Read access to at least one external resource using retrofit | IMPL-3|
+| RESTful API to connect/consume network data | Local models & data types, with conversions via Moshi & similar libraries | IMPL-3 |
+| RESTful API to connect/consume network data | Network requests are handled off the UI thread to avoid stalling the UI/app | IMPL-3 |
+| Load network resources, such as Bitmap Images, dynamically and on-demand | Loads remote resources asynchronously using Glide or similar (Coil) | IMPL-3 |
+| Load network resources, such as Bitmap Images, dynamically and on-demand | Placeholder images while for loading and failed state | IMPL-3 |
+| Load network resources, such as Bitmap Images, dynamically and on-demand | All requests are performed asynchronously and handled on the appropriate threads (Coil) | IMPL-3 |
+| Store data locally on the device for use between application sessions and/or offline use | Utilizes storage mechanisms that best fit the data stored to store data locally on the device (Room) | IMPL-3: Room, SQL DB |
+| Store data locally on the device for use between application sessions and/or offline use | Data stored is accessible across user sessions | IMPL-3: Room, persistent storage |
+| Store data locally on the device for use between application sessions and/or offline use | Data is structured with appropriate data types and scope as required by application functionality | IMPL-3: DTO, NTO, ATO - plus conversions |
+
+
 
 #### Android System and Hardware Integration
 
 | Category | Specification Item | Milestone Mapping |
 | ---------------|----------------|----------------------|
-| MVVM architecture | ... | IMPL-2|
-| MVVM architecture | ... | IMPL-2 |
+| MVVM architecture | Separation of responsibilities amongst classes and structures using the MVVM Pattern | Views via Fragments/Activities, ViewModel: business logic | IMPL-2 |
+| MVVM architecture | Observer pattern, Activity Contexts, and efficiently utilization of system resources | LifeData, StateFlow, LifeCycle awareness, IMPL-2 |
+| Handle and respond to hardware and system events | Use of at least one HW component | IMPL-2: Location (map, geofence), Notifications |
+| Lifecycle events | Storage/retrieval of data upon LC events | IMPL-2: (Bundles) **TBD**|
+| Lifecycle events | Handling interactions from/to the app with Intents | IMPL-2: Activities & return values |
+| Access to system hardware to provide advanced functionality and features | Location (GPS, fused location) | IMPL-2: Map & GeoFencing |
+| Access to system hardware to provide advanced functionality and features | Permission handling | IMPL-2: Staged permissions, least required principle |
 
 ---
 
