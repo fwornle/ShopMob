@@ -546,8 +546,8 @@ At the writing of this document (21.12.21), this submission is expected for
         - [x] Refactoring (app): Adapt UI to use ShopMob (smob) nomenclature, instead of "reminders" - content still as in C4
         - [x] Refactoring (test): Adjust all integrated UI unit test as well as the instrumented UI tests (from C4)
         - [ ] Introduce all activities and fragments as needed by the app - content: dummy placeholders
-        - [ ] Adjust Activity navigation - all intent based transitions work w/h bundled data
-        - [ ] Adjust Fragment navigation - all fragment based transitions work w/h bundled data
+        - [x] Adjust Activity navigation - all intent based transitions work w/h bundled data
+        - [x] Adjust Fragment navigation - all fragment based transitions work w/h bundled data
     - [ ] IMPL-2.5.8: Develop floor plan UI elements (canvas)
       - [ ] Design layout view for shop floor plans 
       - [ ] Design data model for storing parameterized shop floor plans (JSON)
@@ -597,8 +597,8 @@ by one month).
 
 | CW-21/51 | CW-21/52 | CW-22/01 | CW-22/02 | CW-22/03 | CW-22/04 |
 |:---------|:---------|:---------|:---------|:---------|:---------|
-| DSGN-1 .. DSGN-3, IMPL-1 .. IMPL-2.5.9 | IMPL-2.6 | IMPL-2.6 | IMPL-3 | IMPL-3 | IMPL-4 |
-
+| DSGN-1 .. DSGN-3, IMPL-1 .. IMPL-2.5.7 | IMPL-2.8 | IMPL-2.5.8 | IMPL-2.5.9 | IMPL-2.6 | IMPL-3 |
+| done | done | in progress | open | open | open |
 
 ### Project Rubrics
 
