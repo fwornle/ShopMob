@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_marginStart="@dimen/horizontal_margin_small"
         android:layout_marginEnd="@dimen/horizontal_margin_small"
-        android:layout_marginTop="@dimen/vertical_margin_huge"
+        android:layout_marginTop="@dimen/vertical_margin_large"
         android:layout_height="wrap_content"
         >
 
@@ -407,9 +407,9 @@
                 android:layout_marginStart="@dimen/horizontal_margin_small"
                 android:layout_marginEnd="@dimen/horizontal_margin_huge"
                 android:layout_marginBottom="@dimen/vertical_margin_large"
-                android:text="@{viewModel.smobShopDetailsItem.business[0]}"
+                android:text="@{@string/storeBusinessTable(viewModel.smobShopDetailsItem.business[0], viewModel.smobShopDetailsItem.business[1], viewModel.smobShopDetailsItem.business[2], viewModel.smobShopDetailsItem.business[3], viewModel.smobShopDetailsItem.business[4], viewModel.smobShopDetailsItem.business[5], viewModel.smobShopDetailsItem.business[6])}"
                 tools:text="Business hours"
-                android:textSize="@dimen/label_text_size"
+                android:textSize="@dimen/table_text_size"
                 app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorBussHours"
                 app:layout_constraintStart_toEndOf="@+id/tvAnchorBussHours"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -433,6 +433,7 @@
             android:textSize="@dimen/button_text_size"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/clBusinessHours"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             />
