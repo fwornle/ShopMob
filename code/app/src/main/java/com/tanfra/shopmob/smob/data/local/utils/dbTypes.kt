@@ -83,18 +83,18 @@ data class SmobListItem(
     val status: SmobItemStatus,
 ) : java.io.Serializable
 
-@Serializable
-data class SmobListItemInflated(
-    val itemId: String,
-    val itemName: String,
-    val itemDescription: String?,
-    val itemImageUrl: String?,
-    var itemCategoryMain: ProductMainCategory,
-    var itemCategorySub: ProductSubCategory,
-    var itemActivityDate: String,
-    var itemActivityReps: Long,
-    val itemStatus: SmobItemStatus,
-) : java.io.Serializable
+//@Serializable
+//data class SmobListItemInflated(
+//    val itemId: String,
+//    val itemName: String,
+//    val itemDescription: String?,
+//    val itemImageUrl: String?,
+//    var itemCategoryMain: ProductMainCategory,
+//    var itemCategorySub: ProductSubCategory,
+//    var itemActivityDate: String,
+//    var itemActivityReps: Long,
+//    val itemStatus: SmobItemStatus,
+//) : java.io.Serializable
 
 @Serializable
 data class SmobListLifecycle(

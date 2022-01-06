@@ -3,7 +3,6 @@ package com.tanfra.shopmob.smob.data.local.dto
 import androidx.room.*
 import com.tanfra.shopmob.smob.data.local.utils.ProductMainCategory
 import com.tanfra.shopmob.smob.data.local.utils.ProductSubCategory
-import java.time.LocalDate
 import java.util.*
 
 /**
