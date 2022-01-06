@@ -99,6 +99,33 @@ class SmobProductRepository(
 
 
     /**
+     * Get the smob product of a particular smob list from the local db
+     * @param id of the smob list
+     * @return Result holds a Success with all the smob products or an Error object with the error message
+     */
+    override fun getSmobProductsByListId(id: String): Flow<Resource<List<SmobProductATO>>> {
+
+        // support espresso testing (w/h coroutines)
+        wrapEspressoIdlingResource {
+
+            // try to fetch data from the local DB
+            var atoFlow: Flow<List<SmobProductATO>> = flowOf(listOf())
+            return try {
+                // fetch data from DB (and convert to ATO)
+                atoFlow = smobProductDao.getSmobProductsByListId(id).asDomainModel()
+                // wrap data in Resource (--> error/success/[loading])
+                atoFlow.asResource(null)
+            } catch (e: Exception) {
+                // handle exceptions --> error message returned in Resource.error
+                atoFlow.asResource(e.localizedMessage)
+            }
+
+        }  // idlingResource (testing)
+
+    }
+
+
+    /**
      * Insert a smob shop in the db. Replace a potentially existing smob product record.
      * @param smobProductATO the smob product to be inserted
      */

@@ -34,62 +34,69 @@ class PlanningProductListViewModel(
         return fetchFlow.transformLatest { value -> emit(value.data) }.filterNotNull()
     }
 
+    /**
+     * fetch the item of the upstream list the user just selected
+     */
+    @ExperimentalCoroutinesApi
+    fun fetchListItems(id: String): StateFlow<Resource<List<SmobProductATO>>> {
+        val fetchFlow = productRepoFlow.getSmobProductsByListId(id)
+        return fetchFlow.stateIn(
+            scope = viewModelScope,
+            started = WhileSubscribed(5000),
+            initialValue = Resource.loading(null)
+        )  // StateFlow<...>
+    }
 
     // collect list of SmobProductATO items in StateFlow variable
     // ... lateinit, as this can only be done once the fragment is created (and the id's are here)
     lateinit var smobList: StateFlow<Resource<List<SmobProductATO>>>
 
-    // create flow of list that holds the smob data items to be displayed on the UI
-    // ... flow, converted to StateFlow --> data changes in the backend are observed
-    // ... ref: https://medium.com/androiddevelopers/migrating-from-livedata-to-kotlins-flow-379292f419fb
-    //
-    @ExperimentalCoroutinesApi
-    fun fetchListItems(upstreamList: Flow<SmobListATO>): StateFlow<Resource<List<SmobProductATO>>> {
-
-        // transform flow
-        val listOfIds = upstreamList
-            .map { list -> list.items }  // Flow<List<SmobListItem>>
-            .map { itemsList -> itemsList.map { item -> item.id } }  // Flow<List<String>>
-
-        // loop over all IDs within the flow (of ID strings)
-        return listOfIds.transformLatest { idL ->
-
-            // assemble product list
-            val chosenProducts = mutableListOf<SmobProductATO>()
-
-            // indicate that we're loading data
-            emit(Resource.loading(null))
-
-            // collecting the flow... --> coroutine scope
-            viewModelScope.launch {
-
-                // fetch all items on the product ID list (idL)
-                idL.map { id ->
-
-                    // fetch next product item - this is where we collect the flow
-                    productRepoFlow.getSmobProduct(id).collect {
-
-                        // only add successfully received products
-                        if (it.status == Status.SUCCESS) {
-                            it.data?.let { product -> chosenProducts.add(product) }
-                        }
-
-                    }  // flow: collect
-
-                    // send the list of products on the selected smob list
-                    emit(Resource.success(chosenProducts))
-
-                }  // CoroutineScope
-
-            }  // all IDs on the product id list
-
-        }.stateIn(
-            scope = viewModelScope,
-            started = WhileSubscribed(5000),
-            initialValue = Resource.loading(null)
-        )  // StateFlow<...>
-
-    }  // fetchListItems
+//    // create flow of list that holds the smob data items to be displayed on the UI
+//    // ... flow, converted to StateFlow --> data changes in the backend are observed
+//    // ... ref: https://medium.com/androiddevelopers/migrating-from-livedata-to-kotlins-flow-379292f419fb
+//    //
+//    @ExperimentalCoroutinesApi
+//    fun fetchListItems(upstreamList: Flow<SmobListATO>): StateFlow<Resource<List<SmobProductATO>>> {
+//
+//        // transform flow
+//        val listOfIds = upstreamList
+//            .map { list -> list.items }  // Flow<List<SmobListItem>>
+//            .map { itemsList -> itemsList.map { item -> item.id } }  // Flow<List<String>>
+//
+//        // loop over all IDs within the flow (of ID strings)
+//        return listOfIds.transformLatest { idL ->
+//
+//            // assemble product list
+//            val chosenProducts = mutableListOf<SmobProductATO>()
+//
+//            // indicate that we're loading data
+//            emit(Resource.loading(null))
+//
+//            // fetch all items on the product ID list (idL)
+//            idL.map { id ->
+//
+//                // fetch next product item - this is where we collect the flow
+//                productRepoFlow.getSmobProduct(id).map {
+//
+//                    // only add successfully received products
+//                    if (it.status == Status.SUCCESS) {
+//                        it.data?.let { product -> chosenProducts.add(product) }
+//                    }
+//
+//                }  // flow: collect
+//
+//                // send the list of products on the selected smob list
+//                emit(Resource.success(chosenProducts))
+//
+//            }  // all IDs on the product id list
+//
+//        }.stateIn(
+//            scope = viewModelScope,
+//            started = WhileSubscribed(5000),
+//            initialValue = Resource.loading(null)
+//        )  // StateFlow<...>
+//
+//    }  // fetchListItems
 
 
     /**

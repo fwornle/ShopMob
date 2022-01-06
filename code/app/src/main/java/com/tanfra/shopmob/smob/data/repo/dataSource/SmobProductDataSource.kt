@@ -15,6 +15,7 @@ interface SmobProductDataSource {
     // Observed Flow will notify the observer when the data has changed.
     fun getSmobProduct(id: String): Flow<Resource<SmobProductATO?>>
     fun getAllSmobProducts(): Flow<Resource<List<SmobProductATO>>>
+    fun getSmobProductsByListId(id: String): Flow<Resource<List<SmobProductATO>>>
 
     // By default Room runs suspend queries off the main thread
     suspend fun saveSmobProduct(smobProductATO: SmobProductATO)

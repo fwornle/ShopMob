@@ -1,0 +1,38 @@
+{
+    "id": "UUID",
+    "name": "Rewe",
+    "category": "supermarket",
+    "location": {
+        "latidude": 45.7,
+        "longitude": 34.8
+    },
+    "floorplan": [
+        {
+            "name": "fruit-n-veg",
+            "floor": 1,
+            "address": {
+                "zone": {
+                    "ord": 1,
+                    "frame": [0, 0, 100, 150]
+                },
+                "area": {
+                    "ord": 3,
+                    "frame": [0, 0, 100, 150]
+                },
+                "section": {
+                    "ord": 1,
+                    "frame": [0, 0, 100, 150]
+                },
+                "shelf": {
+                    "ord": 3,
+                    "frame": [0, 0, 100, 150]
+                }
+            }
+    
+        },
+        {
+            "name": "dairy",
+            "...": "..."
+        }
+    ]
+}
