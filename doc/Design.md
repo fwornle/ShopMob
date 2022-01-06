@@ -274,6 +274,7 @@ The _smobStore_ entries of the _smobStores_ table adheres to the following schem
   "id": "UUID-store",
   "name": "store name",
   "description": "it's a good-e store",
+  "imageUrl": "a pretty store",
   "location": {
     "latitude": "where the shop is",
     "longitude": "where the shop is"
