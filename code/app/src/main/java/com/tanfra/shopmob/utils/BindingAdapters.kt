@@ -25,7 +25,7 @@ object BindingAdapters {
     @Suppress("UNCHECKED_CAST")
     @BindingAdapter("app:stateFlowResource")
     @JvmStatic
-    inline fun <reified T> setRecyclerViewDataFromStateFlowResource(
+    fun <T> setRecyclerViewDataFromStateFlowResource(
         recyclerView: RecyclerView,
         items: StateFlow<Resource<List<T>>>?
     ) {
