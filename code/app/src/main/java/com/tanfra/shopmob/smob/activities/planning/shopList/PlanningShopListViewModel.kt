@@ -38,15 +38,19 @@ class PlanningShopListViewModel(
 
         // user is impatient - trigger update of local DB from net
         viewModelScope.launch {
+
             // update backend DB (from net API)
             repoFlow.refreshDataInLocalDB()
 
-            // handle potential errors
             smobList.collect {
-                if(it.status == Status.ERROR) showSnackBar.value = it.message!!
+
+                if(it.status == Status.ERROR) {
+                    showSnackBar.value = it.message!!
+                }
+
+                // check if the "no data" symbol has to be shown (empty list)
+                updateShowNoData(it)
             }
-            // check if no data has to be shown
-            updateShowNoData()
 
         }
 
@@ -56,9 +60,9 @@ class PlanningShopListViewModel(
      * Inform the user that the list is empty
      */
     @ExperimentalCoroutinesApi
-    private suspend fun updateShowNoData() {
-        val smobListNewest = smobList.last()
+    private fun updateShowNoData(smobListNewest: Resource<List<*>>) {
         showNoData.value = (smobListNewest.status == Status.SUCCESS && smobListNewest.data!!.isEmpty())
     }
+
 
 }

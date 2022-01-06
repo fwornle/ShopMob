@@ -56,7 +56,6 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
 
         // register flows fetch items of the selected upstream list
         listId?.let {
-            _viewModel.upstreamListItem = _viewModel.fetchUpstreamListItem(listId)
             _viewModel.smobList = _viewModel.fetchListItems(listId)
         }
 

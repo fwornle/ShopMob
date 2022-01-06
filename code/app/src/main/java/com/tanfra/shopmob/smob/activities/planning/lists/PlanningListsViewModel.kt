@@ -4,6 +4,7 @@ import android.app.Application
 
 import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.base.BaseViewModel
+import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
@@ -35,15 +36,19 @@ class PlanningListsViewModel(
 
         // user is impatient - trigger update of local DB from net
         viewModelScope.launch {
+
             // update backend DB (from net API)
             repoFlow.refreshDataInLocalDB()
 
-            // handle potential errors
             smobList.collect {
-                if(it.status == Status.ERROR) showSnackBar.value = it.message!!
+
+                if(it.status == Status.ERROR) {
+                    showSnackBar.value = it.message!!
+                }
+
+                // check if the "no data" symbol has to be shown (empty list)
+                updateShowNoData(it)
             }
-            // check if no data has to be shown
-            updateShowNoData()
 
         }
 
@@ -53,9 +58,7 @@ class PlanningListsViewModel(
      * Inform the user that the list is empty
      */
     @ExperimentalCoroutinesApi
-    private suspend fun updateShowNoData() {
-        val smobListNewest = smobList.last()
+    private fun updateShowNoData(smobListNewest: Resource<List<*>>) {
         showNoData.value = (smobListNewest.status == Status.SUCCESS && smobListNewest.data!!.isEmpty())
     }
-
 }
