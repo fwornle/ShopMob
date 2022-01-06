@@ -58,6 +58,7 @@ ext {
     archTestingVersion = '2.1.0'
     cardVersion = '1.0.0'
     constraintVersion = '2.1.2'
+    coilVersion = '2.0.0-alpha06'
     coroutinesVersion = '1.5.2-native-mt'
     dexMakerVersion = '2.28.1'
     espressoVersion = '3.4.0'

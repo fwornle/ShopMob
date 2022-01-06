@@ -1,12 +1,15 @@
 package com.tanfra.shopmob.utils
 
 import android.view.View
+import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import com.tanfra.shopmob.R
 import com.tanfra.shopmob.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
@@ -96,6 +99,32 @@ object BindingAdapters {
                     view.fadeOut()
             }
         }
+    }
+
+    // layout properties with attribute <... app:productImage ...> call upon this code
+    @BindingAdapter("productImage")
+    @JvmStatic
+    fun bindImage(imgView: ImageView, imgUrl: String?) {
+        imgUrl?.let {
+            // load image using "coil" (https://github.com/coil-kt/coil#readme)
+            // REF: https://betterprogramming.pub/how-to-use-coil-kotlins-native-image-loader-d6715dda7d26
+            // ... suspends the current coroutine; non-blocking and thread safe
+            // ... built-in image cache --> each product image only loaded once
+            imgView
+                // TEST images:
+                //.load("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTc9mTlmQ_nD24rgudSHzKPsAZdSKn861Z0bw&usqp=CAU")
+                //.load("https://media.istockphoto.com/photos/sunrise-at-quiraing-isle-of-skye-scotland-picture-id143177040")
+                //.load("https://placeimg.com/300/200/arch?1")
+                // actual product image
+                .load(it)
+                {
+                    crossfade(true)
+                    placeholder(R.drawable.smob_1)      // during loading of actual image
+                    error(R.drawable.smob_2)            // retrieval of image unsuccessful
+                }
+
+        }
+
     }
 
 }

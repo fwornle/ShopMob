@@ -38,13 +38,14 @@
             android:layout_marginBottom="@dimen/vertical_margin_image"
             android:layout_marginStart="@dimen/horizontal_margin_small"
             android:layout_marginEnd="@dimen/horizontal_margin_small"
-            android:contentDescription="@string/map"
+            android:contentDescription="@{viewModel.smobProductDetailsItem.description}"
             android:scaleType="fitCenter"
             app:layout_constraintTop_toTopOf="@id/tvHeading"
             app:layout_constraintBottom_toTopOf="@+id/clTitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
+            app:productImage="@{viewModel.smobProductDetailsItem.imageUrl}"
             app:srcCompat="@drawable/smob_1" />
 
 
