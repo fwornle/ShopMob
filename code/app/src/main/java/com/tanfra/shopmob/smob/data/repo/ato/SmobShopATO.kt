@@ -12,6 +12,7 @@ data class SmobShopATO(
     override val id: String,
     var name: String,
     var description: String?,
+    var imageUrl: String?,
     var location: @Contextual ShopLocation,
     var type: ShopType,
     var category: ShopCategory,

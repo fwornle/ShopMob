@@ -153,6 +153,7 @@ class PlanningShopEditFragment : BaseFragment() {
                 UUID.randomUUID().toString(),
                 _viewModel.smobShopName.value ?: "mystery shop",
                 _viewModel.smobShopDescription.value ?: "something strange",
+                _viewModel.smobShopDescription.value ?: "some mystery picture",
                 _viewModel.smobShopLocation.value ?: ShopLocation(NaN, NaN),
                 _viewModel.smobShopType.value ?: ShopType.INDIVIDUAL,
                 _viewModel.smobShopCategory.value ?: ShopCategory.OTHER,

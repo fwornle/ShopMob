@@ -11,6 +11,7 @@ import java.util.*
  * @param id             id of the smobShop
  * @param name           name of the smobShop
  * @param description    (optional) description of the smobShop
+ * @param imageUrl       (optional) URL to image of the smobShop
  * @param locLat         latitude of the smobShop
  * @param locLong        longitude of the smobShop
  * @param type           (default)individual|chain
@@ -23,6 +24,7 @@ data class SmobShopDTO(
     @PrimaryKey @ColumnInfo(name = "shopId") val id: String = UUID.randomUUID().toString(),
     @ColumnInfo(name = "shopName") var name: String,
     @ColumnInfo(name = "shopDescription") var description: String?,
+    @ColumnInfo(name = "shopImageUrl") var imageUrl: String?,
     @ColumnInfo(name = "shopLocationLatitude") var locLat: Double,
     @ColumnInfo(name = "shopLocationLongitude") var locLong: Double,
     @ColumnInfo(name = "shopType") var type: ShopType,

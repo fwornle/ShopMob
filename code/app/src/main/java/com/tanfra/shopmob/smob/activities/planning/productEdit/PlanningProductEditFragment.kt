@@ -56,7 +56,7 @@ class PlanningProductEditFragment : BaseFragment(), KoinComponent {
 
         // inflate fragment layout and return binding object
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_planning_shop_edit, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_planning_product_edit, container, false)
 
         setDisplayHomeAsUpEnabled(true)
 
@@ -71,14 +71,12 @@ class PlanningProductEditFragment : BaseFragment(), KoinComponent {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
 
-        // clicking on the 'selectLocation' textView takes you to the fragment "PlanningProductList"
-        // ... by means of the observer function of MutableLiveData element 'navigationCommand'
-        //     --> see BaseFragment.kt... where the observer (lambda) is installed
+        // clicking on the 'selectLocation' textView takes you to the fragment "PlanningShopList"
+        // for shop selection
         binding.selectLocation.setOnClickListener {
-            //            Navigate to another fragment to get the user location
             _viewModel.navigationCommand.value =
                 NavigationCommand.To(
-                    PlanningProductEditFragmentDirections.actionPlanningProductEditFragmentToPlanningProductListFragment()
+                    PlanningProductEditFragmentDirections.actionPlanningProductEditFragmentToPlanningShopListFragment()
                 )
         }
 

@@ -32,14 +32,11 @@
         android:name="com.tanfra.shopmob.smob.activities.planning.productList.PlanningProductListFragment"
         android:label="Planning Product List">
         <action
-            android:id="@+id/action_planningListsFragment_to_planningProductListFragment"
+            android:id="@+id/action_planningProductListFragment_to_planningProductEditFragment"
             app:destination="@id/smobPlanningProductEditFragment" />
         <action
             android:id="@+id/action_planningProductListFragment_to_planningListsFragment"
             app:destination="@id/smobPlanningListsFragment" />
-        <deepLink
-            android:id="@+id/deepLink"
-            app:uri="smob://shopmob.tanfra.com/productlist" />
     </fragment>
 
     <fragment
@@ -47,7 +44,7 @@
         android:name="com.tanfra.shopmob.smob.activities.planning.productEdit.PlanningProductEditFragment"
         android:label="Planning Product Edit">
         <action
-            android:id="@+id/action_planningListsFragment_to_planningProductListFragment"
+            android:id="@+id/action_planningProductEditFragment_to_planningShopListFragment"
             app:destination="@id/smobPlanningShopListFragment" />
         <action
             android:id="@+id/action_planningProductEditFragment_to_planningProductListFragment"
@@ -71,7 +68,7 @@
         android:name="com.tanfra.shopmob.smob.activities.planning.shopEdit.PlanningShopEditFragment"
         android:label="Planning Shop Edit">
         <action
-            android:id="@+id/action_planningEditFragment_to_planningProductListFragment"
+            android:id="@+id/action_planningShopEditFragment_to_planningShopMapFragmen"
             app:destination="@id/smobPlanningShopMapFragment" />
         <action
             android:id="@+id/action_planningShopEditFragment_to_planningShopListFragment"

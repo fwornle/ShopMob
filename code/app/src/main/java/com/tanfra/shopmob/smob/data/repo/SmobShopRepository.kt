@@ -326,6 +326,7 @@ class SmobShopRepository(
             "DUMMY",
             "",
             "",
+            "",
             NaN,
             NaN,
             ShopType.INDIVIDUAL,

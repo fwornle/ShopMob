@@ -9,6 +9,7 @@ data class SmobShopNTO(
     val id: String,
     var name: String,
     var description: String?,
+    var imageUrl: String?,
     var location: ShopLocation,
     var type: ShopType,
     var category: ShopCategory,

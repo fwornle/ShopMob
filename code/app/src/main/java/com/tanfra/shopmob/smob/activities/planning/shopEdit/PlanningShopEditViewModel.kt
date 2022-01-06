@@ -68,6 +68,7 @@ class PlanningShopEditViewModel(
                         shopData.id,
                         shopData.name,
                         shopData.description,
+                        shopData.imageUrl,
                         shopData.location,
                         shopData.type,
                         shopData.category,

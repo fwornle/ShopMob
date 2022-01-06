@@ -102,7 +102,7 @@ object BindingAdapters {
     }
 
     // layout properties with attribute <... app:productImage ...> call upon this code
-    @BindingAdapter("productImage")
+    @BindingAdapter("itemImage")
     @JvmStatic
     fun bindImage(imgView: ImageView, imgUrl: String?) {
         imgUrl?.let {

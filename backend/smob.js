@@ -160,6 +160,7 @@ function smob () {
         var uuid = daShops[id].id
         var name = daShops[id].name
         var description = faker.lorem.words()
+        var imageUrl = `https://placeimg.com/200/150/arch?${id}`
         var latitude = daShops[id].latitude
         var longitude = daShops[id].longitude
         var type = daShops[id].type
@@ -170,6 +171,7 @@ function smob () {
         //     "id": "UUID-store",
         //     "name": "store name",
         //     "description": "it's a good-e store",
+        //     "imageUrl": "some URL",
         //     "latitude": "where the shop is",
         //     "longitude": "where the shop is",
         //     "type": "CHAIN|individual",
@@ -189,6 +191,7 @@ function smob () {
             "id": uuid,
             "name": name,
             "description": description,
+            "imageUrl": imageUrl,
             "location": {
                 "latitude": latitude,
                 "longitude": longitude

@@ -95,6 +95,7 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
                                         smobShopItem.id,
                                         smobShopItem.name,
                                         smobShopItem.description,
+                                        smobShopItem.imageUrl,
                                         smobShopItem.location,
                                         smobShopItem.type,
                                         smobShopItem.category,

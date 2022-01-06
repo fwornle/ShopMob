@@ -17,7 +17,6 @@ import com.tanfra.shopmob.smob.activities.details.SmobDetailsActivity
 import com.tanfra.shopmob.smob.activities.details.SmobDetailsSources
 import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import org.koin.core.component.KoinComponent
@@ -93,16 +92,16 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
 
         // "+" FAB
         binding.addSmobItemFab.setOnClickListener {
-            navigateToPlanningList()
+            navigateToPlanningProductEdit()
         }
     }
 
-    // FAB handler --> navigate to SaveSmobItem fragment
-    private fun navigateToPlanningList() {
+    // FAB handler --> navigate to PlanningProductEdit fragment
+    private fun navigateToPlanningProductEdit() {
         // use the navigationCommand live data to navigate between the fragments
         _viewModel.navigationCommand.postValue(
             NavigationCommand.To(
-                PlanningProductListFragmentDirections.actionPlanningProductListFragmentToPlanningListsFragment()
+                PlanningProductListFragmentDirections.actionPlanningProductListFragmentToPlanningProductEditFragment()
             )
         )
     }
