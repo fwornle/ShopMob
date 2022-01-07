@@ -21,26 +21,52 @@ import kotlinx.coroutines.launch
 object BindingAdapters {
 
     /**
-     * Use binding adapter to set the recycler view data using StateFlow object
-     * The StateFlow object is a Resource wrapped list
-     * ... Resource.status = { SUCCESS | ERROR | LOADING }
+     * Use binding adapter to set the recycler view data using a (straight) StateFlow object
      */
     @Suppress("UNCHECKED_CAST")
-    @BindingAdapter("app:stateFlowResource")
+    @BindingAdapter("stateFlow")
     @JvmStatic
-    fun <T> setRecyclerViewDataFromStateFlowResource(
+    fun <T> setStateFlow(
         recyclerView: RecyclerView,
-        items: StateFlow<Resource<List<T>>>?
+        items: StateFlow<List<T>>
     ) {
         // collecting flow --> this must be on a coroutine
         recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+
             // collect flow items
-            items?.collect { itemList ->
+            items.collect { itemList ->
+                (recyclerView.adapter as? BaseRecyclerViewAdapter<T>)?.apply {
+                    clear()
+                    addData(itemList)
+                }
+            }
+
+        }  // coroutine scope
+    }
+
+
+    /**
+     * Use binding adapter to set the recycler view data using a Resource wrapped StateFlow object
+     * ... Resource.status = { SUCCESS | ERROR | LOADING }
+     */
+    @Suppress("UNCHECKED_CAST")
+    @BindingAdapter("stateFlowResource")
+    @JvmStatic
+    fun <T> setStateFlowResource(
+        recyclerView: RecyclerView,
+        items: StateFlow<Resource<List<T>?>>
+    ) {
+        // collecting flow --> this must be on a coroutine
+        recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+
+            // collect flow items
+            items.collect { itemList ->
                 (recyclerView.adapter as? BaseRecyclerViewAdapter<T>)?.apply {
                     clear()
                     itemList.data?.let { addData(it) }
                 }
             }
+
         }  // coroutine scope
     }
 
@@ -48,7 +74,7 @@ object BindingAdapters {
      * Use binding adapter to set the recycler view data using livedata object
      */
     @Suppress("UNCHECKED_CAST")
-    @BindingAdapter("app:liveData")
+    @BindingAdapter("liveData")
     @JvmStatic
     fun <T> setRecyclerViewData(recyclerView: RecyclerView, items: LiveData<List<T>>?) {
         items?.value?.let { itemList ->
@@ -59,10 +85,11 @@ object BindingAdapters {
         }
     }
 
+
     /**
      * Use this binding adapter to show and hide the views using the LOADING status of a Resource
      */
-    @BindingAdapter("app:fadeVisibleOnLoading")
+    @BindingAdapter("fadeVisibleOnLoading")
     @JvmStatic
     fun <T> setFadeVisibleOnLoading(view: View, resource: Resource<T>?) {
         if (view.tag == null) {
@@ -80,10 +107,11 @@ object BindingAdapters {
         }
     }
 
+
     /**
      * Use this binding adapter to show and hide the views using boolean variables
      */
-    @BindingAdapter("app:fadeVisible")
+    @BindingAdapter("fadeVisible")
     @JvmStatic
     fun setFadeVisible(view: View, visible: Boolean? = true) {
         if (view.tag == null) {

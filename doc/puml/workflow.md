@@ -1,37 +1,36 @@
 ```plantuml
 @startuml
-!$reqs = "99EE88"
+!$be = "99EE88"
 !$spec = "99DD88"
 !$cmsy = "66BB44"
 
-!$gihu = "7799EE"
+!$server = "7799EE"
 !$git = "6688DD"
 !$ci = "CCCCCC"
 !$ciws = "AAAAAA"
 !$arti = "5577EE"
 
-box "Roles" #LightBlue
-actor SWD order 10
-actor RM order 12
-actor SWI order 14
-actor SWV order 16
-actor DM order 18
+
+database Server order 10 #$server
+database Backend order 12 #$be
+
+actor GeoFence order 14
+
+box "Mobbers" #LightBlue
+actor "User 1" order 15
+actor "User 2" order 16
 end box
 
-database Requirements order 12 #$reqs
-
-actor FT order 14
-note over FT #aqua
-one or more
-(//per product//)
+note over "User 1", "User 2" #aqua
+shop together
+//(Smob Group)//
 end note
 
-database Specifications order 16 #$spec
-database "CM system" order 18 #$cmsy
+database "Local DB 1" order 18 #$cmsy
+database "Local DB 2" order 19 #$cmsy
 
-database GitHub order 20 #$gihu
 box "Local Workspace" #LightBlue
-collections local.WS order 22 #$gihu
+collections local.WS order 22 #$server
 end box
 
 database git order 30 #$git
@@ -47,54 +46,40 @@ autonumber "<b>(<u>##</u>)"
 
 == Design & Planning ==
 
-PO->Requirements ++ #99EE99 : request\nfunctional\nchange
-FT-->Requirements : fetch new\nrequirements
-Requirements->Specifications ++ #99DD88 : refine requirements, formulate DoD\n(for this change)\n(<font color=red>incl. SMArDT lvl. C</font>)
-deactivate Requirements
-FT-->"CM system" : adjust refined specification\nitems in backlog
-Specifications->"CM system" -- : include refinded\nchange in backlog\n(in CM system)
-
 == Implementation & Integration ==
 
-FT->git ++ #$git: create feature branch
-FT->GitHub ++ #$gihu : open pull request (PR)
-
-git->local.WS ++ #$gihu : check out branch
+git->local.WS ++ #$server : check out branch
 
 loop potentially serveral times
 
-	FT-->local.WS : adjust architecture modelling (SyML)
-	hnote over local.WS #$gihu : repeated
+	hnote over local.WS #$server : repeated
 	local.WS->git : commit (SyML)
-	CC.CI-->GitHub : log commit
-	FT-->GitHub : <font color=red>issue <b>recheck</b></font>
+	CC.CI-->Server : log commit
 
-	GitHub-->CC.CI ++ #$ciws : trigger (check pipeline)
+	Server-->CC.CI ++ #$ciws : trigger (check pipeline)
 	git->CI.WS ++ #$ciws : check out
 	hnote over CC.CI, CI.WS : generate ML workspace\n(from SyML)
-	CC.CI-->GitHub : log build result
-	note over CI.WS #$gihu : generated\nML/SL, code
-	CC.CI-->GitHub : log build result
+	CC.CI-->Server : log build result
+	note over CI.WS #$server : generated\nML/SL, code
+	CC.CI-->Server : log build result
 	hnote over CC.CI, CI.WS : optional:\nBuild Acceptance\nTest (BAT)
-	CC.CI-->GitHub : log build result
+	CC.CI-->Server : log build result
 	CI.WS->CI.cache -- : hash & store
 	activate CI.cache #$ciws
 	deactivate CC.CI
 	CI.cache-->local.WS : (reference cached ML WS)
 
 	git->local.WS : pull / rebase
-	FT->local.WS : make code changes\n(ML/SL as well as manually written code)
-	hnote over local.WS #$gihu : repeated
+	hnote over local.WS #$server : repeated
 	local.WS->git -- : commit (code, ML/SL)
-	CC.CI-->GitHub : log commit
-	FT-->GitHub : <font color=red>issue <b>recheck</b></font>
-	GitHub-->CC.CI ++ #$ciws : trigger (check pipeline)
+	CC.CI-->Server : log commit
+	Server-->CC.CI ++ #$ciws : trigger (check pipeline)
 	git->CI.WS ++ #$ciws : check out
 	hnote over CC.CI, CI.WS : SW Build (Bazel)
-	CC.CI-->GitHub : log build result
-	note over CI.WS #$gihu : binaries (o/a),\nPDX container,\ndebug package
+	CC.CI-->Server : log build result
+	note over CI.WS #$server : binaries (o/a),\nPDX container,\ndebug package
 	hnote over CC.CI, CI.WS : Build Acceptance\nTest (BAT)
-	CC.CI-->GitHub : log build result
+	CC.CI-->Server : log build result
 	CI.WS->CI.cache -- : hash & store
 	deactivate CC.CI
 	CI.cache-->local.WS : (reference cached binaries, PDX container)
@@ -102,20 +87,18 @@ loop potentially serveral times
 end
 
 hnote over local.WS : verify fitness\nof change\n(acceptance tests,\nDoD)
-FT-->GitHub : set merge label (PR)
-GitHub-->CC.CI ++ #$ciws : trigger merge (gate pipeline)
+Server-->CC.CI ++ #$ciws : trigger merge (gate pipeline)
 git->CI.WS ++ #$ciws : check out
 hnote over CC.CI, CI.WS : SW Build (Bazel)
-note over CI.WS #$gihu : binaries (o/a),\nPDX container,\ndebug package
+note over CI.WS #$server : binaries (o/a),\nPDX container,\ndebug package
 hnote over CC.CI, CI.WS : Build Acceptance\nTest (BAT)
 CI.WS->CI.cache : hash & store
 CI.WS->Artifactory -- : store deliverables\n(PDX, reports, ...)
 activate Artifactory #$arti
 CC.CI->git -- : merge changes\nto selected branch
-git-->GitHub : log merge
-deactivate GitHub
+git-->Server : log merge
+deactivate Server
 
-FT-->git : delete feature branch (optional)
 deactivate git
 @enduml
 ```

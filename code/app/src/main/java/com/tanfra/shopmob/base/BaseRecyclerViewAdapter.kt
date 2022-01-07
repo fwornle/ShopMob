@@ -8,10 +8,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
+import android.view.View
+import com.google.android.material.snackbar.BaseTransientBottomBar
 
-abstract class BaseRecyclerViewAdapter<T>(private val callback: ((item: T) -> Unit)? = null) :
+import com.google.android.material.snackbar.Snackbar
+
+
+abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callback: ((item: T) -> Unit)? = null) :
     RecyclerView.Adapter<DataBindingViewHolder<T>>() {
 
+    // the data...
     private var _items: MutableList<T> = mutableListOf()
 
     /**
@@ -43,6 +49,7 @@ abstract class BaseRecyclerViewAdapter<T>(private val callback: ((item: T) -> Un
 
     fun getItem(position: Int) = _items[position]
 
+
     /**
      * Adds data to the actual Dataset
      *
@@ -66,8 +73,103 @@ abstract class BaseRecyclerViewAdapter<T>(private val callback: ((item: T) -> Un
     @LayoutRes
     abstract fun getLayoutRes(viewType: Int): Int
 
+
+    // define 'leftSwipeConfirmed' as abstract class - to be overridden in (specific) parent class
+    abstract fun leftSwipeConfirmed(item: T)
+
+
     open fun getLifecycleOwner(): LifecycleOwner? {
         return null
     }
+
+
+    // retain recently deleted position (to be able to undo the action)
+    var mRecentlyDeletedItem: T? = null
+    var mRecentlyDeletedItemPosition: Int = -1
+
+    // swipe left/right --> delete item (w/h possibility of undo)
+    fun deleteItem(position: Int, textResId: Int) {
+
+        // set-up undo
+        mRecentlyDeletedItem = items.get(position)
+        mRecentlyDeletedItemPosition = position
+
+        // delete item from list
+        _items.removeAt(position)
+        notifyItemRemoved(position)
+
+        // snackbar w/h undo button
+        showUndoSnackbar(textResId)
+
+    }
+
+    // swipe left/right --> mark/unmark item as purchased
+    fun markItem(position: Int, textResId: Int) {
+
+        // mark item as purchased
+        // TODO - after Repo action
+        // TODO - after Repo action
+        // TODO - after Repo action
+//        _items[position].
+        notifyItemRemoved(position)
+
+        // snackbar w/h undo button
+        showUndoSnackbar(textResId)
+
+    }
+
+    private fun showUndoSnackbar(textResId: Int) {
+        val view: View = rootView.findViewById(com.tanfra.shopmob.R.id.smobItemsRecyclerView)
+
+        Snackbar
+            .make(
+                view, textResId,
+                Snackbar.LENGTH_LONG
+            )
+            .apply {
+                setAction(com.tanfra.shopmob.R.string.undo) { _ -> undoDelete() }
+                addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                    override fun onShown(transientBottomBar: Snackbar?) {
+                        super.onShown(transientBottomBar)
+                    }
+
+                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                        super.onDismissed(transientBottomBar, event)
+
+                        // anything but clicking "UNDO" (= DISMISS_EVENT_ACTION) means that the
+                        // item shall be deleted from the list in the database / server
+                        if(event != DISMISS_EVENT_ACTION) {
+
+                            // snackbar "expired" wht. the user clicking on UNDO
+                            // call associated left-swipe action (to be overridden in parent class)
+                            leftSwipeConfirmed(mRecentlyDeletedItem!!)
+
+                            // reset temporary undo memory
+                            mRecentlyDeletedItem = null
+                            mRecentlyDeletedItemPosition = -1
+
+                        }
+                    } // onDismissed
+
+                })
+                show()
+            }
+
+    }  // showUndoSnackbar
+
+    // revert the removal of the last item
+    private fun undoDelete() {
+        _items.add(
+            mRecentlyDeletedItemPosition,
+            mRecentlyDeletedItem!!
+        )
+        notifyItemInserted(mRecentlyDeletedItemPosition)
+
+        // reset temporary undo memory
+        mRecentlyDeletedItem = null
+        mRecentlyDeletedItemPosition = -1
+
+    }
+
 }
 

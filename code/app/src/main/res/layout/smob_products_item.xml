@@ -8,7 +8,7 @@
 
         <variable
             name="item"
-            type="com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO" />
+            type="com.tanfra.shopmob.smob.data.repo.ato.SmobProductOnListATO" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -46,11 +46,11 @@
                 tools:text="Description" />
 
             <TextView
-                android:id="@+id/tvProductStatus"
+                android:id="@+id/tvProductCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@{item.category.main.toString()}"
+                android:text="@{item.status.toString()}"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/text_size_small"
                 app:layout_constraintBottom_toBottomOf="@+id/tvProductDescription"

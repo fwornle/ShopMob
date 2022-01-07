@@ -42,6 +42,9 @@
     <string name="smob_product_details">ShopMob Product Details</string>
     <string name="smob_shop_details">ShopMob Store Details</string>
     <string name="map">map</string>
+    <string name="undo_delete">Undo "Delete"?</string>
+    <string name="undo_purchase">Undo "Purchased"?</string>
+    <string name="undo">UNDO</string>
 
     <string name="anchor_char">x</string>
     <string name="title_product">Product</string>

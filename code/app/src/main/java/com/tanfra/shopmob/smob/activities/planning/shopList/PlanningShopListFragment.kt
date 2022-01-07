@@ -93,7 +93,7 @@ class PlanningShopListFragment : BaseFragment(), KoinComponent {
     }
 
     private fun setupRecyclerView() {
-        val adapter = PlanningShopListAdapter {
+        val adapter = PlanningShopListAdapter(binding.root) {
 
             // this lambda is the 'callback' function which gets called when clicking an item in the
             // RecyclerView - it gets the data behind the clicked item as parameter

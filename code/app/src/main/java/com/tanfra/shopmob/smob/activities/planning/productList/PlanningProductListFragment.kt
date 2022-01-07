@@ -11,16 +11,17 @@ import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
 import android.widget.Toast
 import com.firebase.ui.auth.AuthUI
-import com.tanfra.shopmob.databinding.FragmentPlanningProductListBinding
 import com.tanfra.shopmob.smob.activities.authentication.SmobAuthenticationActivity
 import com.tanfra.shopmob.smob.activities.details.SmobDetailsActivity
 import com.tanfra.shopmob.smob.activities.details.SmobDetailsSources
-import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
+import com.tanfra.shopmob.smob.activities.planning.utils.SwipeToDeleteCallback
+import androidx.recyclerview.widget.ItemTouchHelper
+import com.tanfra.shopmob.databinding.FragmentPlanningProductListBinding
+import com.tanfra.shopmob.utils.setup
 
 
 class PlanningProductListFragment : BaseFragment(), KoinComponent {
@@ -53,9 +54,23 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
         val listName = arguments?.getString("listName")
         Timber.i("... list name: $listName")
 
-        // register flows fetch items of the selected upstream list
+        // register flows fetch items of the selected upstream list (as well as the list itself)
         listId?.let {
-            _viewModel.smobList = _viewModel.fetchListItems(listId)
+
+            // register flows in viewModel
+            _viewModel._smobList = _viewModel.fetchSmobListFlow(it)  // holds the item 'status'
+            _viewModel._smobListItems = _viewModel.fetchSmobListItemsFlow(it)
+
+            // turn to StateFlows
+            _viewModel.smobList = _viewModel.smobListFlowToStateFlow(_viewModel._smobList)
+            _viewModel.smobListItems = _viewModel.smobListItemsFlowToStateFlow(_viewModel._smobListItems)
+
+            // combine the flows and turn into StateFlow
+            _viewModel.smobListItemsWithStatus = _viewModel.combineFlowsAndConvertToStateFlow(
+                _viewModel._smobList,
+                _viewModel._smobListItems,
+            )
+
         }
 
         // configure navbar
@@ -107,7 +122,7 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
     }
 
     private fun setupRecyclerView() {
-        val adapter = PlanningProductListAdapter {
+        val adapter = PlanningProductListAdapter(binding.root) {
 
             // this lambda is the 'callback' function which gets called when clicking an item in the
             // RecyclerView - it gets the data behind the clicked item as parameter
@@ -135,6 +150,11 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
 
         // setup the recycler view using the extension function
         binding.smobItemsRecyclerView.setup(adapter)
+
+        // enable swiping left/right
+        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapter))
+        itemTouchHelper.attachToRecyclerView(binding.smobItemsRecyclerView)
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
