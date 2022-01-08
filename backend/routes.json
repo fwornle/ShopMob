@@ -1,5 +1,8 @@
 {
     "/api/1/*": "/$1",
     "/api/1/users/:id": "/api/1/users?id=:id",
-    "/api/1/lists/:id": "/api/1/lists?id=:id"
+    "/api/1/lists/:id": "/api/1/lists?id=:id",
+    "/api/1/products/:id": "/api/1/products?id=:id",
+    "/api/1/shops/:id": "/api/1/shops?id=:id",
+    "/api/1/groups/:id": "/api/1/groups?id=:id"
 }

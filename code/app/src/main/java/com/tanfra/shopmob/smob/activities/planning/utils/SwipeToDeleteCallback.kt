@@ -97,6 +97,15 @@ class SwipeToDeleteCallback(adapter: PlanningProductListAdapter) :
                         mAdapter.uiActionConfirmed(item, viewHolder.itemView)
                     }
                     else -> {
+
+                        // set-up potential UNDO
+                        mAdapter.mRecentlyDeletedItem = item
+                        mAdapter.mRecentlyDeletedItemPosition = position
+
+                        // mark item as 'deleted'
+                        item.listItemStatus = SmobItemStatus.DELETED
+                        mAdapter.setItem(position, item)
+
                         // throw item off the list
                         mAdapter.deleteItem(position, R.string.undo_delete)
                     }

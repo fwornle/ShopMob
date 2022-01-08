@@ -92,12 +92,8 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
     var mRecentlyDeletedItem: T? = null
     var mRecentlyDeletedItemPosition: Int = -1
 
-    // swipe left/right --> delete item (w/h possibility of undo)
+    // swipe left on an OPEN item --> delete item (w/h possibility of undo)
     fun deleteItem(position: Int, textResId: Int) {
-
-        // set-up undo
-        mRecentlyDeletedItem = items.get(position)
-        mRecentlyDeletedItemPosition = position
 
         // delete item from list
         _items.removeAt(position)
@@ -128,6 +124,7 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
         // reset temporary undo memory
         mRecentlyDeletedItem = null
         mRecentlyDeletedItemPosition = -1
+
     }
 
     private fun showUndoSnackbar(textResId: Int) {

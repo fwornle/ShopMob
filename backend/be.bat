@@ -1,2 +1,3 @@
 @REM start fake backend
-json-server smob.js --routes routes.json
+@REM json-server smob.js --routes routes.json
+node backend

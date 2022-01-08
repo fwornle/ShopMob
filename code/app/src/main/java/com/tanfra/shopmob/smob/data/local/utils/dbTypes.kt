@@ -57,6 +57,7 @@ enum class SmobItemStatus {
     OPEN,
     IN_PROGRESS,
     DONE,
+    DELETED,
 }
 
 @Serializable

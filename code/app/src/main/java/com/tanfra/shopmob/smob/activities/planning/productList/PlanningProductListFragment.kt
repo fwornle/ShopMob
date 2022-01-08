@@ -138,14 +138,6 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
                 startActivity(intent)
             }
 
-//            // alternatively: include target activity in nav_graph_planning (= current graph)
-//            // ... and simply use this as new destination...
-//            val bundle = Bundle().apply {
-//                putSerializable("EXTRA_Source", SmobDetailsSources.PLANNING_PRODUCT_LIST)
-//                putSerializable("EXTRA_SmobItem", it)
-//            }
-//            findNavController().navigate(R.id.smobDetailsActivity, bundle)
-
         }  // "on-item-click" lambda
 
         // setup the recycler view using the extension function
