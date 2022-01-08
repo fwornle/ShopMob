@@ -3,7 +3,6 @@ package com.tanfra.shopmob.smob.activities.planning.shopList
 import android.view.View
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.base.BaseRecyclerViewAdapter
-import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import timber.log.Timber
 
@@ -16,7 +15,7 @@ class PlanningShopListAdapter(rootView: View, callBack: (selectedSmobATO: SmobSh
     override fun getLayoutRes(viewType: Int) = R.layout.smob_shops_item
 
     // called, when the "UNDO" snackbar has expired
-    override fun leftSwipeConfirmed(item: SmobShopATO) {
+    override fun leftSwipeConfirmed(position: Int, items: List<SmobShopATO>, rootView: View) {
 
         // left-swipe confirmed --> purge item from local DB & server
         Timber.i("Left-swipe confirmed: purging item from server")

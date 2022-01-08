@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.base.BaseRecyclerViewAdapter
+import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import kotlinx.coroutines.flow.StateFlow
@@ -128,6 +129,23 @@ object BindingAdapters {
             }
         }
     }
+
+
+    /**
+     * Use this binding adapter to control the background color of the RV item (card) depending
+     * on the item status
+     */
+    @BindingAdapter("statusColor")
+    @JvmStatic
+    fun setStatusColor(view: View, status: SmobItemStatus = SmobItemStatus.OPEN) {
+        when(status) {
+            SmobItemStatus.OPEN -> view.setBackgroundResource(R.color.swipeSecondaryLightColor)
+            SmobItemStatus.IN_PROGRESS -> view.setBackgroundResource(R.color.swipePrimaryColor)
+            SmobItemStatus.DONE -> view.setBackgroundResource(R.color.swipeSecondaryColor)
+        }
+
+    }
+
 
     // layout properties with attribute <... app:productImage ...> call upon this code
     @BindingAdapter("itemImage")

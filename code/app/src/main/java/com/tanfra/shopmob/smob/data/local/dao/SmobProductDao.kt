@@ -46,7 +46,7 @@ interface SmobProductDao {
     // - using LIKE to perform a regex search on field 'smobLists.items', as this is a JSON encoded
     //   serialization of the underlying List<SmobListItem>
     //
-    @Query("SELECT * FROM smobProducts INNER JOIN smobLists ON smobLists.listId=:listId AND smobLists.listItems LIKE '%' || smobProducts.productId  || '%'")
+    @Query("SELECT * FROM smobProducts INNER JOIN smobLists ON smobLists.listId=:listId AND smobLists.listItems LIKE '%' || smobProducts.productId  || '%' ORDER BY smobProducts.productCategoryMain ASC, smobProducts.productCategorySub")
     fun getSmobProductsByListId(listId: String): Flow<List<SmobProductDTO>>
 
     /**

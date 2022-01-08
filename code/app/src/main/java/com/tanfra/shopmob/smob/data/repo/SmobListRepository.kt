@@ -207,7 +207,7 @@ class SmobListRepository(
 
 
     /**
-     * Synchronize all smob lists in the db by retrieval from the backend using the (net) API
+     * Update all smob lists in the local db by retrieving them from the backend using the (net) API
      */
     override suspend fun refreshDataInLocalDB() {
 
@@ -236,10 +236,11 @@ class SmobListRepository(
 
     }  // refreshSmobListsInDB()
 
+
     /**
-     * Synchronize an individual smob lists in the db by retrieval from the backend DB (API call)
+     * Update an individual smob list in the local db by retrieving it from the backend (API call)
      */
-    suspend fun refreshSmobListInLocalDB(id: String) {
+    override suspend fun refreshSmobListInLocalDB(id: String) {
 
         // initiate the (HTTP) GET request using the provided query parameters
         Timber.i("Sending GET request for SmobList data...")
@@ -263,6 +264,18 @@ class SmobListRepository(
             }  // coroutine scope (IO)
 
         }  // if (valid response)
+
+    }  // refreshSmobListInLocalDB()
+
+
+    /**
+     * Synchronize an individual smob lists in the remote db by sending it to the backend (API call)
+     */
+    override suspend fun refreshSmobListInRemoteDB(newList: SmobListATO) {
+
+        // initiate the (HTTP) PUT request
+        Timber.i("Sending PUT request for SmobList data...")
+        updateSmobListViaApi(newList.id, newList.asDatabaseModel())
 
     }  // refreshSmobListInLocalDB()
 

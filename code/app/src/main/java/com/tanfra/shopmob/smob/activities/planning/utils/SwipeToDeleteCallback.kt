@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.R
+import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import timber.log.Timber
 
 // swiping action on RVs
@@ -68,12 +69,58 @@ class SwipeToDeleteCallback(adapter: PlanningProductListAdapter) :
 
         when(direction) {
             ItemTouchHelper.LEFT -> {
-                // swipe left (delete from DB)
-                mAdapter.deleteItem(position, R.string.undo_delete)
+
+                // swipe left ("un-purchase" item)
+                val item = mAdapter.getItem(position)
+
+                when(item.status) {
+                    SmobItemStatus.DONE -> {
+                        item.status = SmobItemStatus.IN_PROGRESS
+                        mAdapter.setItem(position, item)
+
+                        // restore item in list
+                        mAdapter.restoreItem(position, R.string.undo_purchase)
+
+                        // send status to backend
+                        // TODO
+                    }
+                    SmobItemStatus.IN_PROGRESS -> {
+                        item.status = SmobItemStatus.OPEN
+                        mAdapter.setItem(position, item)
+
+                        // restore item in list
+                        mAdapter.restoreItem(position, R.string.undo_purchase)
+
+                        // send status to backend
+                        // TODO
+                    }
+                    else -> {
+                        // throw item off the list
+                        mAdapter.deleteItem(position, R.string.undo_delete)
+                    }
+                }  // when (status)
             }
             ItemTouchHelper.RIGHT -> {
+
                 // swipe right (purchase item)
-                mAdapter.deleteItem(position, R.string.undo_purchase)
+                val item = mAdapter.getItem(position)
+
+                when(item.status) {
+                    SmobItemStatus.OPEN -> {
+                        item.status = SmobItemStatus.IN_PROGRESS
+                        mAdapter.setItem(position, item)
+                    }
+                    else -> {
+                        item.status = SmobItemStatus.DONE
+                        mAdapter.setItem(position, item)
+                    }
+                }  // when (status)
+
+                // restore item in list
+                mAdapter.restoreItem(position, R.string.undo_purchase)
+
+                // send status to backend
+                // TODO
             }
         }
     }

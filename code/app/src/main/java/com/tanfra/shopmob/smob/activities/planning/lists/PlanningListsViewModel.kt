@@ -1,6 +1,7 @@
 package com.tanfra.shopmob.smob.activities.planning.lists
 
 import android.app.Application
+import androidx.lifecycle.asLiveData
 
 import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.base.BaseViewModel
@@ -27,6 +28,18 @@ class PlanningListsViewModel(
         started = WhileSubscribed(5000),
         initialValue = Resource.loading(null)
     )
+
+    // Detailed investigation of Flow vs. LiveData: LD seems the better fit for UI layer
+    // see: https://bladecoder.medium.com/kotlins-flow-in-viewmodels-it-s-complicated-556b472e281a
+    //
+    // --> reverting back to LiveData at ViewModel layer (collection point) and profiting of the
+    //     much less cumbersome handling of the data incl. the better "lifecycle optimized" behavior
+    //
+    // --> using ".asLiveData()", as the incoming flow is not based on "suspendable" operations
+    //     (already handled internally at Room level --> no "suspend fun" for read operations, see
+    //     DAO)
+    // --> alternative (with Coroutine scope would be to use ... = liveData { ... suspend fun ... })
+//    val smobList = repoFlow.getAllSmobLists().asLiveData()
 
     /**
      * update all items in the local DB by querying the backend - triggered on "swipe down"

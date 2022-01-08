@@ -47,8 +47,13 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
         }
     }
 
+    // public getter
     fun getItem(position: Int) = _items[position]
 
+    // public setter
+    fun setItem(position: Int, value: T) {
+        _items[position] = value
+    }
 
     /**
      * Adds data to the actual Dataset
@@ -75,7 +80,7 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
 
 
     // define 'leftSwipeConfirmed' as abstract class - to be overridden in (specific) parent class
-    abstract fun leftSwipeConfirmed(item: T)
+    abstract fun leftSwipeConfirmed(position: Int, items: List<T>, rootView: View)
 
 
     open fun getLifecycleOwner(): LifecycleOwner? {
@@ -101,6 +106,28 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
         // snackbar w/h undo button
         showUndoSnackbar(textResId)
 
+    }
+
+    // swipe left/right --> delete item (w/h possibility of undo)
+    fun restoreItem(position: Int, textResId: Int) {
+
+        // set-up undo
+        mRecentlyDeletedItem = items.get(position)
+        mRecentlyDeletedItemPosition = position
+
+        // delete item from list
+        _items.removeAt(position)
+        notifyItemRemoved(position)
+
+        _items.add(
+            mRecentlyDeletedItemPosition,
+            mRecentlyDeletedItem!!
+        )
+        notifyItemInserted(mRecentlyDeletedItemPosition)
+
+        // reset temporary undo memory
+        mRecentlyDeletedItem = null
+        mRecentlyDeletedItemPosition = -1
     }
 
     // swipe left/right --> mark/unmark item as purchased
@@ -142,7 +169,11 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
 
                             // snackbar "expired" wht. the user clicking on UNDO
                             // call associated left-swipe action (to be overridden in parent class)
-                            leftSwipeConfirmed(mRecentlyDeletedItem!!)
+                            leftSwipeConfirmed(
+                                mRecentlyDeletedItemPosition,
+                                _items,
+                                rootView,
+                            )
 
                             // reset temporary undo memory
                             mRecentlyDeletedItem = null

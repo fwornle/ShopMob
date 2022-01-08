@@ -25,5 +25,7 @@ interface SmobListDataSource {
     suspend fun deleteSmobList(id: String)
     suspend fun deleteAllSmobLists()
     suspend fun refreshDataInLocalDB()
+    suspend fun refreshSmobListInLocalDB(id: String)
+    suspend fun refreshSmobListInRemoteDB(smobListATO: SmobListATO)
 
 }

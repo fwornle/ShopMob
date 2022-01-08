@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class PlanningProductListViewModel(
     app: Application,
-    private val listRepoFlow: SmobListDataSource,
+    val listRepoFlow: SmobListDataSource,  // public, as used (externally) to update the smobList
     private val productRepoFlow: SmobProductDataSource
 ) : BaseViewModel(app) {
 
