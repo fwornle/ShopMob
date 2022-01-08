@@ -25,12 +25,14 @@ interface SmobProductApi {
         ): Response<ArrayList<SmobProductNTO>>
 
         // HTTP POST (insert a new product)
+        @Headers("Content-Type: application/json")
         @POST("${Constants.SMOB_API_URL}/products")
         suspend fun saveSmobProduct(
                 @Body newProduct: SmobProductNTO
         ): Response<Void>
 
         // HTTP PUT (update a specific product)
+        @Headers("Content-Type: application/json")
         @PUT("${Constants.SMOB_API_URL}/products/{id}")
         suspend fun updateSmobProductById(
                 @Path(value = "id", encoded = true) id: String,
@@ -38,6 +40,7 @@ interface SmobProductApi {
         ): Response<Void>
 
         // HTTP DELETE (delete a specific product)
+        @Headers("Content-Type: application/json")
         @DELETE("${Constants.SMOB_API_URL}/products/{id}")
         suspend fun deleteSmobProductById(
                 @Path(value = "id", encoded = true) id: String,

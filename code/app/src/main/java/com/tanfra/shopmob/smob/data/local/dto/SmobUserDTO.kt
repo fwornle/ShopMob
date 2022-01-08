@@ -7,7 +7,7 @@ import java.util.*
 @Entity(tableName = "smobUsers")
 @RewriteQueriesToDropUnusedColumns
 data class SmobUserDTO(
-    @PrimaryKey @ColumnInfo(name = "userId") val id: String = UUID.randomUUID().toString(),
+    @PrimaryKey @ColumnInfo(name = "userId") var id: String,
     @ColumnInfo(name = "userUserame") var username: String,
     @ColumnInfo(name = "userName") var name: String,
     @ColumnInfo(name = "userEmail") var email: String,

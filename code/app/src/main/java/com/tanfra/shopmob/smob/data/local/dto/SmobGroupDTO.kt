@@ -19,7 +19,7 @@ import java.util.*
 @Entity(tableName = "smobGroups")
 @RewriteQueriesToDropUnusedColumns
 data class SmobGroupDTO(
-    @PrimaryKey @ColumnInfo(name = "groupId") val id: String = UUID.randomUUID().toString(),
+    @PrimaryKey @ColumnInfo(name = "groupId") var id: String,
     @ColumnInfo(name = "groupName") var name: String,
     @ColumnInfo(name = "groupDescription") var description: String?,
     @ColumnInfo(name = "groupType") var type: GroupType,

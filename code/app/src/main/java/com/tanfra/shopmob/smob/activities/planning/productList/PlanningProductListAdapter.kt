@@ -35,11 +35,17 @@ class PlanningProductListAdapter(rootView: View, callBack: (selectedSmobATO: Smo
 
             // collect SmobList flow
             val updatedList = SmobListATO(
-                item.id,
+                item.listId,
                 item.listName,
                 item.listDescription,
                 // replace list of products on smob list with updated list of products
-                item.listItems.map { product -> if(product.id == item.id) SmobListItem(product.id, product.status) else product },
+                item.listItems.map { product ->
+                    if(product.id == item.id) {
+                        SmobListItem(product.id, item.listItemStatus!!)
+                    } else {
+                        product
+                    }
+                                   },
                 item.listMembers,
                 item.listLifecycle,
             )

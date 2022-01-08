@@ -21,7 +21,7 @@ import java.util.*
 @Entity(tableName = "smobShops")
 @RewriteQueriesToDropUnusedColumns
 data class SmobShopDTO(
-    @PrimaryKey @ColumnInfo(name = "shopId") val id: String = UUID.randomUUID().toString(),
+    @PrimaryKey @ColumnInfo(name = "shopId") var id: String,
     @ColumnInfo(name = "shopName") var name: String,
     @ColumnInfo(name = "shopDescription") var description: String?,
     @ColumnInfo(name = "shopImageUrl") var imageUrl: String?,

@@ -25,12 +25,14 @@ interface SmobUserApi {
         ): Response<ArrayList<SmobUserNTO>>
 
         // HTTP POST (insert a new user)
+        @Headers("Content-Type: application/json")
         @POST("${Constants.SMOB_API_URL}/users")
         suspend fun saveSmobUser(
                 @Body newUser: SmobUserNTO
         ): Response<Void>
 
         // HTTP PUT (update a specific user)
+        @Headers("Content-Type: application/json")
         @PUT("${Constants.SMOB_API_URL}/users/{id}")
         suspend fun updateSmobUserById(
                 @Path(value = "id", encoded = true) id: String,
@@ -38,6 +40,7 @@ interface SmobUserApi {
         ): Response<Void>
 
         // HTTP DELETE (delete a specific user)
+        @Headers("Content-Type: application/json")
         @DELETE("${Constants.SMOB_API_URL}/users/{id}")
         suspend fun deleteSmobUserById(
                 @Path(value = "id", encoded = true) id: String,

@@ -20,7 +20,7 @@ import java.util.*
 @Entity(tableName = "smobProducts")
 @RewriteQueriesToDropUnusedColumns
 data class SmobProductDTO(
-    @PrimaryKey @ColumnInfo(name = "productId") val id: String = UUID.randomUUID().toString(),
+    @PrimaryKey @ColumnInfo(name = "productId") var id: String,
     @ColumnInfo(name = "productName") var name: String,
     @ColumnInfo(name = "productDescription") var description: String?,
     @ColumnInfo(name = "productImageUrl") var imageUrl: String?,

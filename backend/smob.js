@@ -1,8 +1,19 @@
 const { image, random, internet } = require('faker')
 const faker = require('faker/locale/de')
+const fs = require('fs');
 
-// test me...
-smob()
+
+// convert JSON object to string
+const data = JSON.stringify(smob());
+
+// write JSON string to a file
+fs.writeFile('db.json', data, (err) => {
+    if (err) {
+        throw err;
+    }
+    console.log("JSON data is saved.");
+});
+
 
 
 function rand(max) {

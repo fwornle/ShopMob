@@ -25,12 +25,14 @@ interface SmobGroupApi {
         ): Response<ArrayList<SmobGroupNTO>>
 
         // HTTP POST (insert a new group)
+        @Headers("Content-Type: application/json")
         @POST("${Constants.SMOB_API_URL}/groups")
         suspend fun saveSmobGroup(
                 @Body newGroup: SmobGroupNTO
         ): Response<Void>
 
         // HTTP PUT (update a specific group)
+        @Headers("Content-Type: application/json")
         @PUT("${Constants.SMOB_API_URL}/groups/{id}")
         suspend fun updateSmobGroupById(
                 @Path(value = "id", encoded = true) id: String,
@@ -38,6 +40,7 @@ interface SmobGroupApi {
         ): Response<Void>
 
         // HTTP DELETE (delete a specific group)
+        @Headers("Content-Type: application/json")
         @DELETE("${Constants.SMOB_API_URL}/groups/{id}")
         suspend fun deleteSmobGroupById(
                 @Path(value = "id", encoded = true) id: String,

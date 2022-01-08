@@ -44,7 +44,7 @@ class RefreshSmobStaticDataWorkerFast(appContext: Context, params: WorkerParamet
             //           --> need to "sub-divide" this into 15 further
             // ... for an alternative (periodic re-scheduling of oneShot work) see:
             //     https://stackoverflow.com/questions/51202905/execute-task-every-second-using-work-manager-api
-            for(idx in 1 .. 14) {
+            for(idx in 1 .. 140) {
 
                 // update users in local DB from backend DB
                 Timber.i("Refreshing data in local DB ($idx/14)")
@@ -55,7 +55,7 @@ class RefreshSmobStaticDataWorkerFast(appContext: Context, params: WorkerParamet
                 smobListDataSource.refreshDataInLocalDB()
 
                 // suspend for 60 seconds
-                delay(60000)
+                delay(6000)
 
             }
 
