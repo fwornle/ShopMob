@@ -76,31 +76,43 @@ class PlanningProductListViewModel(
 
         return itemsFlow.combine(listFlow) { items, list ->
 
-            // evaluate/unwrap Resource
-            when(items.status) {
-                Status.SUCCESS -> {
-                    // received the items on the list alright --> process
-                    items.data?.map { product ->
-                        // at this point, the products on the shopping lists have been properly
-                        // received --> implies that the list itself is also available
-                        // output merged data type (with product item status)
-                        SmobProductOnListATO(
-                            id = product.id,
-                            name = product.name,
-                            description = product.description,
-                            imageUrl = product.imageUrl,
-                            category = product.category,
-                            activity = product.activity,
-                            status = list.data?.items?.filter { item -> item.id == product.id }?.first()?.status,
-                        )
-                    }
-                }
-                else -> {
-                    // Status.LOADING or Status.ERROR -> do nothing
-                    null
-                }
+            // unwrap list (from Resource)
+            list.data?.let { rawList ->
 
-            }  // when
+                // evaluate/unwrap Resource
+                when(items.status) {
+
+                    Status.SUCCESS -> {
+                        // received the items on the list alright --> process
+                        items.data?.map { product ->
+                            // at this point, the products on the shopping lists have been properly
+                            // received --> implies that the list itself is also available
+                            // output merged data type (with product item status)
+                            SmobProductOnListATO(
+                                id = product.id,
+                                productName = product.name,
+                                productDescription = product.description,
+                                productImageUrl = product.imageUrl,
+                                productCategory = product.category,
+                                productActivity = product.activity,
+                                listItemStatus = rawList.items.first { item -> item.id == product.id }.status,
+                                listId = rawList.id,
+                                listName = rawList.name,
+                                listDescription = rawList.description,
+                                listItems = rawList.items,
+                                listMembers = rawList.members,
+                                listLifecycle = rawList.lifecycle,
+                            )
+                        }
+                    }
+                    else -> {
+                        // Status.LOADING or Status.ERROR -> do nothing
+                        null
+                    }
+
+                }  // when
+
+            }  // unwrap list
 
         }  // combine(Flow_1, Flow_2)
             .stateIn(

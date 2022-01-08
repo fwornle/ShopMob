@@ -79,8 +79,8 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
     abstract fun getLayoutRes(viewType: Int): Int
 
 
-    // define 'leftSwipeConfirmed' as abstract class - to be overridden in (specific) parent class
-    abstract fun leftSwipeConfirmed(position: Int, items: List<T>, rootView: View)
+    // declare abstract class 'uiActionConfirmed' - to be overridden in (specific) parent class
+    abstract fun uiActionConfirmed(item: T, rootView: View)
 
 
     open fun getLifecycleOwner(): LifecycleOwner? {
@@ -109,7 +109,7 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
     }
 
     // swipe left/right --> delete item (w/h possibility of undo)
-    fun restoreItem(position: Int, textResId: Int) {
+    fun restoreItem(position: Int) {
 
         // set-up undo
         mRecentlyDeletedItem = items.get(position)
@@ -128,21 +128,6 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
         // reset temporary undo memory
         mRecentlyDeletedItem = null
         mRecentlyDeletedItemPosition = -1
-    }
-
-    // swipe left/right --> mark/unmark item as purchased
-    fun markItem(position: Int, textResId: Int) {
-
-        // mark item as purchased
-        // TODO - after Repo action
-        // TODO - after Repo action
-        // TODO - after Repo action
-//        _items[position].
-        notifyItemRemoved(position)
-
-        // snackbar w/h undo button
-        showUndoSnackbar(textResId)
-
     }
 
     private fun showUndoSnackbar(textResId: Int) {
@@ -169,11 +154,7 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
 
                             // snackbar "expired" wht. the user clicking on UNDO
                             // call associated left-swipe action (to be overridden in parent class)
-                            leftSwipeConfirmed(
-                                mRecentlyDeletedItemPosition,
-                                _items,
-                                rootView,
-                            )
+                            mRecentlyDeletedItem?. let { uiActionConfirmed(it, rootView) }
 
                             // reset temporary undo memory
                             mRecentlyDeletedItem = null

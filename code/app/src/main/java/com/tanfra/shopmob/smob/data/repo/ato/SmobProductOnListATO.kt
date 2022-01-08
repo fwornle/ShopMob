@@ -1,8 +1,6 @@
 package com.tanfra.shopmob.smob.data.repo.ato
 
-import com.tanfra.shopmob.smob.data.local.utils.ActivityStatus
-import com.tanfra.shopmob.smob.data.local.utils.ProductCategory
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.*
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
@@ -10,10 +8,16 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SmobProductOnListATO(
     override val id: String,
-    var name: String,
-    var description: String?,
-    var imageUrl: String?,
-    var category: @Contextual ProductCategory,
-    var activity: @Contextual ActivityStatus,
-    var status: @Contextual SmobItemStatus?,
+    var productName: String,
+    var productDescription: String?,
+    var productImageUrl: String?,
+    var productCategory: @Contextual ProductCategory,
+    var productActivity: @Contextual ActivityStatus,
+    var listItemStatus: @Contextual SmobItemStatus?,
+    val listId: String,
+    var listName: String,
+    var listDescription: String?,
+    var listItems: List<@Contextual SmobListItem>,
+    var listMembers: List<String>,
+    var listLifecycle: @Contextual SmobListLifecycle,
 ) : Ato(), java.io.Serializable

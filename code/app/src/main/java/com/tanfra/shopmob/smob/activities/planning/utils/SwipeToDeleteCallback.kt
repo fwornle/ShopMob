@@ -8,10 +8,11 @@ import android.graphics.drawable.ColorDrawable
 import androidx.core.content.ContextCompat
 import android.graphics.drawable.Drawable
 import android.view.View
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
-import timber.log.Timber
+import com.tanfra.shopmob.smob.data.repo.ato.SmobProductOnListATO
 
 // swiping action on RVs
 // ref: https://medium.com/@zackcosborn/step-by-step-recyclerview-swipe-to-delete-and-undo-7bbae1fce27e
@@ -73,26 +74,27 @@ class SwipeToDeleteCallback(adapter: PlanningProductListAdapter) :
                 // swipe left ("un-purchase" item)
                 val item = mAdapter.getItem(position)
 
-                when(item.status) {
+                when(item.listItemStatus) {
                     SmobItemStatus.DONE -> {
-                        item.status = SmobItemStatus.IN_PROGRESS
+                        item.listItemStatus = SmobItemStatus.IN_PROGRESS
                         mAdapter.setItem(position, item)
 
                         // restore item in list
-                        mAdapter.restoreItem(position, R.string.undo_purchase)
+                        mAdapter.restoreItem(position)
 
                         // send status to backend
-                        // TODO
+                        mAdapter.uiActionConfirmed(item, viewHolder.itemView)
+
                     }
                     SmobItemStatus.IN_PROGRESS -> {
-                        item.status = SmobItemStatus.OPEN
+                        item.listItemStatus = SmobItemStatus.OPEN
                         mAdapter.setItem(position, item)
 
                         // restore item in list
-                        mAdapter.restoreItem(position, R.string.undo_purchase)
+                        mAdapter.restoreItem(position)
 
                         // send status to backend
-                        // TODO
+                        mAdapter.uiActionConfirmed(item, viewHolder.itemView)
                     }
                     else -> {
                         // throw item off the list
@@ -105,22 +107,23 @@ class SwipeToDeleteCallback(adapter: PlanningProductListAdapter) :
                 // swipe right (purchase item)
                 val item = mAdapter.getItem(position)
 
-                when(item.status) {
+                when(item.listItemStatus) {
                     SmobItemStatus.OPEN -> {
-                        item.status = SmobItemStatus.IN_PROGRESS
+                        item.listItemStatus = SmobItemStatus.IN_PROGRESS
                         mAdapter.setItem(position, item)
                     }
                     else -> {
-                        item.status = SmobItemStatus.DONE
+                        item.listItemStatus = SmobItemStatus.DONE
                         mAdapter.setItem(position, item)
                     }
                 }  // when (status)
 
                 // restore item in list
-                mAdapter.restoreItem(position, R.string.undo_purchase)
+                mAdapter.restoreItem(position)
 
                 // send status to backend
-                // TODO
+                mAdapter.uiActionConfirmed(item, viewHolder.itemView)
+
             }
         }
     }

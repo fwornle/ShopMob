@@ -18,14 +18,14 @@ import timber.log.Timber
 class PlanningProductListAdapter(rootView: View, callBack: (selectedSmobATO: SmobProductOnListATO) -> Unit) :
     BaseRecyclerViewAdapter<SmobProductOnListATO>(rootView, callBack), KoinComponent {
 
-    // inject ViewModel from Koin service locator
-    val _viewModel: PlanningProductListViewModel by inject()
+    // inject _viewModel from Koin service locator
+    private val _viewModel: PlanningProductListViewModel by inject()
 
     // allow the BaseRecyclerViewAdapter to access the item layout for this particular RV list
     override fun getLayoutRes(viewType: Int) = R.layout.smob_products_item
 
-    // called, when the "UNDO" snackbar has expired
-    override fun leftSwipeConfirmed(position: Int, items: List<SmobProductOnListATO>, rootView: View) {
+    // called, when the user action has been confirmed and the local DB / backend needs updated
+    override fun uiActionConfirmed(item: SmobProductOnListATO, rootView: View) {
 
         // left-swipe confirmed --> purge item from local DB & server
         Timber.i("Left-swipe confirmed: purging item from server")
@@ -34,27 +34,19 @@ class PlanningProductListAdapter(rootView: View, callBack: (selectedSmobATO: Smo
         rootView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
 
             // collect SmobList flow
-            val daList = _viewModel.smobList
-            daList.collect { daResource ->
-                val updatedList = daResource.data?.let {
-                    SmobListATO(
-                        it.id,
-                        it.name,
-                        it.description,
-                        // replace list of products on smob list with updated list of products
-                        items.map { item -> SmobListItem(item.id, item.status!!) },
-                        it.members,
-                        it.lifecycle,
-                    )
-                }
+            val updatedList = SmobListATO(
+                item.id,
+                item.listName,
+                item.listDescription,
+                // replace list of products on smob list with updated list of products
+                item.listItems.map { product -> if(product.id == item.id) SmobListItem(product.id, product.status) else product },
+                item.listMembers,
+                item.listLifecycle,
+            )
 
-                // store updated smobList in local DB
-                _viewModel.listRepoFlow.updateSmobList(updatedList!!)
-
-                // also trigger an update of the remote DB
-                _viewModel.listRepoFlow.refreshSmobListInRemoteDB(updatedList)
-
-            }  // collect flow
+            // store updated smobList in local DB
+            // ... this also triggers an immediate push to the backend (once stored locally)
+            _viewModel.listRepoFlow.updateSmobList(updatedList)
 
         }  // coroutine scope (lifecycleScope)
 

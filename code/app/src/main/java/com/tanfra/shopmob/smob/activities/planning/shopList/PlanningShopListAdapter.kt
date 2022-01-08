@@ -15,7 +15,7 @@ class PlanningShopListAdapter(rootView: View, callBack: (selectedSmobATO: SmobSh
     override fun getLayoutRes(viewType: Int) = R.layout.smob_shops_item
 
     // called, when the "UNDO" snackbar has expired
-    override fun leftSwipeConfirmed(position: Int, items: List<SmobShopATO>, rootView: View) {
+    override fun uiActionConfirmed(item: SmobShopATO, rootView: View) {
 
         // left-swipe confirmed --> purge item from local DB & server
         Timber.i("Left-swipe confirmed: purging item from server")
