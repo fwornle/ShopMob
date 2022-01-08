@@ -10,7 +10,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.tanfra.shopmob.R
+import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.databinding.ActivityShoppingBinding
+import timber.log.Timber
 
 /**
  * The SmobActivity that holds the SmobShopping fragments
@@ -51,6 +53,35 @@ class SmobShoppingActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    // when the app is no longer visible...
+    override fun onStop() {
+        super.onStop()
+
+        Timber.i("ShopMob in the background - cancelling fast polling")
+        SmobApp.cancelRecurringWorkFast()
+
+    }
+
+    // when the app comes back into the foreground...
+    override fun onRestart() {
+        super.onRestart()
+
+        Timber.i("ShopMob restarting - restarting fast polling")
+        SmobApp.delayedInitRecurringWorkFast()
+
+    }
+
+    // when the app is switched off (= "destroyed")...
+    // ... stop polling
+    override fun onDestroy() {
+        super.onDestroy()
+
+        Timber.i("ShopMob switching off - cancelling all polling")
+        SmobApp.cancelRecurringWorkFast()
+        SmobApp.cancelRecurringWorkSlow()
+
     }
 
 }

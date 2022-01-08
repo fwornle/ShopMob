@@ -11,14 +11,14 @@ import retrofit2.HttpException
 import timber.log.Timber
 
 // use WorkManager to do work - derived from CoroutineWorker, as we have async work to be done
-// ... neeed to inherit from KoinComponent to use Koin based DI in this module:
+// ... need to inherit from KoinComponent to use Koin based DI in this module:
 //     see: https://stackoverflow.com/questions/57349196/koin-injecting-into-workmanager
-class RefreshSmobStaticDataWorker(appContext: Context, params: WorkerParameters):
+class RefreshSmobStaticDataWorkerFast(appContext: Context, params: WorkerParameters):
     CoroutineWorker(appContext, params), KoinComponent {
 
     // UUID for our work (to be scheduled by WorkManager)
     companion object {
-        const val WORK_NAME = "SmobStaticDataWorker"
+        const val WORK_NAME_FAST = "SmobStaticDataWorkerFast"
     }
 
     // fetch repositories from Koin service locator
@@ -36,7 +36,7 @@ class RefreshSmobStaticDataWorker(appContext: Context, params: WorkerParameters)
             // fetch smob data from backend - also initializes LiveData _statusSmobDataSync to
             // LOADING
             // ... received data is used to update the DB
-            Timber.i("Running scheduled work (refreshSmobStaticDataInDB)")
+            Timber.i("Running scheduled work ($WORK_NAME_FAST) ---------------------------")
 
             // WORKAROUND (for missing backend - no update notifications yet --> polling)
             // ... run every minute
@@ -44,10 +44,10 @@ class RefreshSmobStaticDataWorker(appContext: Context, params: WorkerParameters)
             //           --> need to "sub-divide" this into 15 further
             // ... for an alternative (periodic re-scheduling of oneShot work) see:
             //     https://stackoverflow.com/questions/51202905/execute-task-every-second-using-work-manager-api
-            for(idx in 1 .. 15) {
+            for(idx in 1 .. 14) {
 
                 // update users in local DB from backend DB
-                Timber.i("Refreshing data in local DB ($idx/15)")
+                Timber.i("Refreshing data in local DB ($idx/14)")
                 smobUserDataSource.refreshDataInLocalDB()
                 smobGroupDataSource.refreshDataInLocalDB()
                 smobProductDataSource.refreshDataInLocalDB()
@@ -60,13 +60,13 @@ class RefreshSmobStaticDataWorker(appContext: Context, params: WorkerParameters)
             }
 
             // return 'success' - done
-            Timber.i("Scheduled work (refreshAsteroidsInDB) run successfully")
+            Timber.i("Scheduled work ($WORK_NAME_FAST) completed successfully")
             Result.success()
 
         } catch (e: HttpException) {
 
             // return 'failure' - retry
-            Timber.i("Scheduled work (refreshAsteroidsInDB) could not be run - retrying")
+            Timber.i("Scheduled work ($WORK_NAME_FAST) could not be run - retrying")
             Result.retry()
 
         }

@@ -12,6 +12,7 @@ import com.tanfra.shopmob.databinding.ActivityAuthenticationBinding
 import com.tanfra.shopmob.smob.activities.planning.SmobPlanningActivity
 import timber.log.Timber
 import com.google.firebase.auth.FirebaseAuth
+import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 
 
@@ -50,6 +51,36 @@ class SmobAuthenticationActivity : AppCompatActivity() {
         }
 
     }
+
+    // when the app is no longer visible...
+    override fun onStop() {
+        super.onStop()
+
+        Timber.i("ShopMob in the background - cancelling fast polling")
+        SmobApp.cancelRecurringWorkFast()
+
+    }
+
+    // when the app comes back into the foreground...
+    override fun onRestart() {
+        super.onRestart()
+
+        Timber.i("ShopMob restarting - restarting fast polling")
+        SmobApp.delayedInitRecurringWorkFast()
+
+    }
+
+    // when the app is switched off (= "destroyed")...
+    // ... stop polling
+    override fun onDestroy() {
+        super.onDestroy()
+
+        Timber.i("ShopMob switching off - cancelling all polling")
+        SmobApp.cancelRecurringWorkFast()
+        SmobApp.cancelRecurringWorkSlow()
+
+    }
+
 
     // firebaseUI auth flow
     private fun launchSignInFlow() {

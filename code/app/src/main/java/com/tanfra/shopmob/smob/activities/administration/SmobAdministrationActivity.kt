@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.databinding.ActivityAdministrationBinding
 import com.tanfra.shopmob.smob.activities.details.createIntent
 import timber.log.Timber
@@ -64,4 +65,34 @@ class SmobAdministrationActivity : AppCompatActivity() {
         }
 
     }
+
+    // when the app is no longer visible...
+    override fun onStop() {
+        super.onStop()
+
+        Timber.i("ShopMob in the background - cancelling fast polling")
+        SmobApp.cancelRecurringWorkFast()
+
+    }
+
+    // when the app comes back into the foreground...
+    override fun onRestart() {
+        super.onRestart()
+
+        Timber.i("ShopMob restarting - restarting fast polling")
+        SmobApp.delayedInitRecurringWorkFast()
+
+    }
+
+    // when the app is switched off (= "destroyed")...
+    // ... stop polling
+    override fun onDestroy() {
+        super.onDestroy()
+
+        Timber.i("ShopMob switching off - cancelling all polling")
+        SmobApp.cancelRecurringWorkFast()
+        SmobApp.cancelRecurringWorkSlow()
+
+    }
+
 }
