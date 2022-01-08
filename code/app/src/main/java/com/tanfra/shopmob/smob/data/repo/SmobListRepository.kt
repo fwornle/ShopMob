@@ -271,11 +271,11 @@ class SmobListRepository(
     /**
      * Synchronize an individual smob lists in the remote db by sending it to the backend (API call)
      */
-    override suspend fun refreshSmobListInRemoteDB(newList: SmobListATO) {
+    override suspend fun refreshSmobListInRemoteDB(smobListATO: SmobListATO) {
 
         // initiate the (HTTP) PUT request
         Timber.i("Sending PUT request for SmobList data...")
-        updateSmobListViaApi(newList.id, newList.asDatabaseModel())
+        updateSmobListViaApi(smobListATO.id, smobListATO.asDatabaseModel())
 
     }  // refreshSmobListInLocalDB()
 

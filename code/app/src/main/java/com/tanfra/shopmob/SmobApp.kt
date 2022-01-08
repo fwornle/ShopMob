@@ -22,6 +22,11 @@ import org.koin.core.context.startKoin
 import timber.log.Timber
 import java.util.*
 import java.util.concurrent.TimeUnit
+import androidx.lifecycle.LiveData
+
+import androidx.work.WorkManager
+import com.google.common.util.concurrent.ListenableFuture
+
 
 class SmobApp : Application(), KoinComponent, Configuration.Provider {
 
@@ -53,15 +58,19 @@ class SmobApp : Application(), KoinComponent, Configuration.Provider {
         delayedInitRecurringWorkSlow()
         delayedInitRecurringWorkFast()
 
+        // start them both
+        scheduleRecurringWorkSlow()
+        scheduleRecurringWorkFast()
+
     }  // onCreate
 
 
     // share some global variables (simple version)
     companion object {
 
-        // IDs of Workmanager jobs - available for all
-        lateinit var repeatingRequestSlowID: UUID
-        lateinit var repeatingRequestFastID: UUID
+        // WorkManager job requests
+        lateinit var repeatingRequestSlow: PeriodicWorkRequest
+        lateinit var repeatingRequestFast: PeriodicWorkRequest
 
         // application context
         lateinit var smobAppContext: Context
@@ -71,23 +80,47 @@ class SmobApp : Application(), KoinComponent, Configuration.Provider {
 
         // ... schedule some work: slow update cycle
         fun delayedInitRecurringWorkSlow() = applicationScope.launch {
+
+            // setup the slow polling job
             setupRecurringWorkSlow()
+
+            // ... and start it
+            if(isWorkCancelled(repeatingRequestSlow.id))
+                scheduleRecurringWorkSlow()
+
         }
 
         // ... schedule some work: fast update cycle
         fun delayedInitRecurringWorkFast() = applicationScope.launch {
+
+            // setup the fast polling job
             setupRecurringWorkFast()
+
+            // ... and start it
+            if(isWorkCancelled(repeatingRequestFast.id))
+                scheduleRecurringWorkFast()
+
         }
 
         // ... cancel work: fast update cycle
-        fun cancelRecurringWorkFast() {
-            WorkManager.getInstance(smobAppContext).cancelWorkById(repeatingRequestFastID)
+        fun cancelRecurringWorkFast() = applicationScope.launch {
+            if(!isWorkCancelled(repeatingRequestFast.id)) {
+                Timber.i("Stopping fast polling work job...")
+                WorkManager.getInstance(smobAppContext).cancelWorkById(repeatingRequestFast.id)
+            }
         }
 
         // ... cancel work: slow update cycle
-        fun cancelRecurringWorkSlow() {
-            WorkManager.getInstance(smobAppContext).cancelWorkById(repeatingRequestSlowID)
+        fun cancelRecurringWorkSlow() = applicationScope.launch {
+            if(!isWorkCancelled(repeatingRequestSlow.id)) {
+                Timber.i("Stopping slow polling work job...")
+                WorkManager.getInstance(smobAppContext).cancelWorkById(repeatingRequestSlow.id)
+            }
         }
+
+        // ... check if some job (by ID) has already been cancelled
+        private fun isWorkCancelled(id: UUID): Boolean = WorkManager.getInstance(smobAppContext).getWorkInfoById(id).isCancelled
+
 
         // configure the actual work to be scheduled by WorkManager
         private fun setupRecurringWorkSlow() {
@@ -116,7 +149,7 @@ class SmobApp : Application(), KoinComponent, Configuration.Provider {
             //     --> within this 15 minute block (run on a coroutine), take 'sub-steps' with delay()
             //
             // slow polling task - when app is in background
-            val repeatingRequestSlow = PeriodicWorkRequestBuilder<RefreshSmobStaticDataWorkerSlow>(
+            repeatingRequestSlow = PeriodicWorkRequestBuilder<RefreshSmobStaticDataWorkerSlow>(
                 15,
                 TimeUnit.MINUTES
             )
@@ -124,9 +157,10 @@ class SmobApp : Application(), KoinComponent, Configuration.Provider {
                 .setInitialDelay(30, TimeUnit.SECONDS)
                 .build()
 
-            // set in companion object, to provide access to this job from all lifecycle callbacks
-            repeatingRequestSlowID = repeatingRequestSlow.id
+        }  // setupRecurringWorkSlow
 
+        // ... now schedule the slow polling job
+        fun scheduleRecurringWorkSlow() = applicationScope.launch {
 
             // register 'repeating request' with WorkManager for the specified 'work job'
             //
@@ -139,14 +173,13 @@ class SmobApp : Application(), KoinComponent, Configuration.Provider {
             // ... subsequently (= after one run), the policy can be (/ should be?) changed to KEEP
             //
             // slow polling job
+            Timber.i("Starting slow polling work job...")
             WorkManager.getInstance(smobAppContext).enqueueUniquePeriodicWork(
                 RefreshSmobStaticDataWorkerSlow.WORK_NAME_SLOW,
                 ExistingPeriodicWorkPolicy.REPLACE,
                 repeatingRequestSlow
             )
-
-        }  // setupRecurringWorkSlow
-
+        }
 
         // configure the actual work to be scheduled by WorkManager
         private fun setupRecurringWorkFast() {
@@ -159,26 +192,29 @@ class SmobApp : Application(), KoinComponent, Configuration.Provider {
 
             // fast polling task - when app is in foreground
             // ... note: it's fast, as we "sub-schedule" every minute (within "doWork")
-            val repeatingRequestFast = PeriodicWorkRequestBuilder<RefreshSmobStaticDataWorkerFast>(
+            repeatingRequestFast = PeriodicWorkRequestBuilder<RefreshSmobStaticDataWorkerFast>(
                 15,
                 TimeUnit.MINUTES
             )
                 .setConstraints(constraintsFast)
                 .build()
 
-            // set in companion object, to provide access to this job from all lifecycle callbacks
-            repeatingRequestFastID = repeatingRequestFast.id
+        }  // setupRecurringWorkFast
+
+        // ... now schedule the slow polling job
+        fun scheduleRecurringWorkFast() = applicationScope.launch {
 
             // fast polling job
+            Timber.i("Starting fast polling work job...")
             WorkManager.getInstance(smobAppContext).enqueueUniquePeriodicWork(
                 RefreshSmobStaticDataWorkerFast.WORK_NAME_FAST,
                 ExistingPeriodicWorkPolicy.REPLACE,
                 repeatingRequestFast
             )
 
-        }  // setupRecurringWorkFast
+        }
 
-    }
+    }  // companion object
 
 
     // Initialize WorkManager (needed after WM 2.6, see:
@@ -188,7 +224,5 @@ class SmobApp : Application(), KoinComponent, Configuration.Provider {
             .setMinimumLoggingLevel(android.util.Log.INFO)
             .build()
     }
-
-
 
 }

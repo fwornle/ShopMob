@@ -10,434 +10,443 @@
             type="com.tanfra.shopmob.smob.activities.details.DetailsViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clSmobShopDetails"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_marginStart="@dimen/horizontal_margin_small"
-        android:layout_marginEnd="@dimen/horizontal_margin_small"
-        android:layout_marginTop="@dimen/vertical_margin_large"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
         >
 
-
-        <!-- centered (red) progress bar, indicating the loading state when accessing the DB -->
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fadeVisible="@{viewModel.showLoading.booleanValue()}"
-            android:gravity="center"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
-
-
-        <TextView
-            android:id="@+id/tvHeading"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clSmobShopDetails"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/smob_shop_details"
-            android:textSize="@dimen/text_size_large"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/ivSmobDetails"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
-
-        <ImageView
-            android:id="@+id/ivSmobDetails"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/image_header_height"
-            android:layout_marginTop="@dimen/vertical_margin_image"
-            android:layout_marginBottom="@dimen/vertical_margin_image"
             android:layout_marginStart="@dimen/horizontal_margin_small"
             android:layout_marginEnd="@dimen/horizontal_margin_small"
-            android:contentDescription="@{viewModel.smobShopDetailsItem.description}"
-            android:scaleType="fitCenter"
-            app:layout_constraintTop_toTopOf="@id/tvHeading"
-            app:layout_constraintBottom_toTopOf="@+id/clTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:itemImage="@{viewModel.smobShopDetailsItem.imageUrl}"
-            tools:src="@drawable/smob_1"
-            />
-
-
-        <!-- row: title -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/ivSmobDetails"
-            app:layout_constraintBottom_toTopOf="@+id/clDescription"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            >
-
-            <!-- invisible TV for alignment of label and edit text field -->
-            <TextView
-                android:id="@+id/tvAnchorTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_anchor_login"
-                android:text="@string/anchor_char"
-                android:textSize="@dimen/invisible_gap_details"
-                android:visibility="invisible"
-                app:layout_constraintHorizontal_weight="0.1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                />
-
-
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_small"
-                android:layout_marginEnd="@dimen/horizontal_margin_small"
-                android:text="@string/title_shop"
-                android:textSize="@dimen/label_text_size"
-                app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorTitle"
-                app:layout_constraintEnd_toStartOf="@+id/tvAnchorTitle"
-                app:layout_constraintHorizontal_weight="0.2"
-                tools:labelFor="@id/tvTitleText" />
-
-            <TextView
-                android:id="@+id/tvTitleText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_small"
-                android:layout_marginEnd="@dimen/horizontal_margin_huge"
-                android:text="@{viewModel.smobShopDetailsItem.name}"
-                tools:text="Some product name"
-                android:textSize="@dimen/label_text_size"
-                app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorTitle"
-                app:layout_constraintStart_toEndOf="@+id/tvAnchorTitle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="0.7"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <!-- row: Description -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/clTitle"
-            app:layout_constraintBottom_toTopOf="@+id/clLocation"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            >
-
-            <!-- invisible TV for alignment of label and edit text field -->
-            <TextView
-                android:id="@+id/tvAnchorDesc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_anchor_login"
-                android:text="@string/anchor_char"
-                android:textSize="@dimen/invisible_gap_details"
-                android:visibility="invisible"
-                app:layout_constraintHorizontal_weight="0.1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                />
-
-
-            <TextView
-                android:id="@+id/tvDesc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_small"
-                android:layout_marginEnd="@dimen/horizontal_margin_small"
-                android:text="@string/description"
-                android:textSize="@dimen/label_text_size"
-                app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorDesc"
-                app:layout_constraintEnd_toStartOf="@+id/tvAnchorDesc"
-                app:layout_constraintHorizontal_weight="0.2"
-                tools:labelFor="@id/tvTitleText" />
-
-            <TextView
-                android:id="@+id/tvDescText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_small"
-                android:layout_marginEnd="@dimen/horizontal_margin_huge"
-                android:text="@{viewModel.smobShopDetailsItem.description}"
-                tools:text="Some product description"
-                android:textSize="@dimen/label_text_size"
-                app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorDesc"
-                app:layout_constraintStart_toEndOf="@+id/tvAnchorDesc"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="0.7"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <!-- row: Location -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/clDescription"
-            app:layout_constraintBottom_toTopOf="@+id/clShopType"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            >
-
-            <!-- invisible TV for alignment of label and edit text field -->
-            <TextView
-                android:id="@+id/tvAnchorLoc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_anchor_login"
-                android:text="@string/anchor_char"
-                android:textSize="@dimen/invisible_gap_details"
-                android:visibility="invisible"
-                app:layout_constraintHorizontal_weight="0.1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                />
-
-
-            <TextView
-                android:id="@+id/tvLoc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_small"
-                android:layout_marginEnd="@dimen/horizontal_margin_small"
-                android:text="@string/location"
-                android:textSize="@dimen/label_text_size"
-                app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorLoc"
-                app:layout_constraintEnd_toStartOf="@+id/tvAnchorLoc"
-                app:layout_constraintHorizontal_weight="0.2"
-                tools:labelFor="@id/tvTitleText" />
-
-            <TextView
-                android:id="@+id/tvLocText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_small"
-                android:layout_marginEnd="@dimen/horizontal_margin_huge"
-                android:layout_marginBottom="@dimen/vertical_margin_large"
-                android:text="@{@string/location_latlong(viewModel.smobShopDetailsItem.location.latitude, viewModel.smobShopDetailsItem.location.longitude)}"
-                tools:text="Shop location (lat./long.)"
-                android:textSize="@dimen/label_text_size"
-                app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorLoc"
-                app:layout_constraintStart_toEndOf="@+id/tvAnchorLoc"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="0.7"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <!-- row: ShopType -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clShopType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/clLocation"
-            app:layout_constraintBottom_toTopOf="@+id/clShopCategory"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            >
-
-            <!-- invisible TV for alignment of label and edit text field -->
-            <TextView
-                android:id="@+id/tvAnchorShopType"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_anchor_login"
-                android:text="@string/anchor_char"
-                android:textSize="@dimen/invisible_gap_details"
-                android:visibility="invisible"
-                app:layout_constraintHorizontal_weight="0.1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                />
-
-
-            <TextView
-                android:id="@+id/tvShopType"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_small"
-                android:layout_marginEnd="@dimen/horizontal_margin_small"
-                android:text="@string/storeType"
-                android:textSize="@dimen/label_text_size"
-                app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorShopType"
-                app:layout_constraintEnd_toStartOf="@+id/tvAnchorShopType"
-                app:layout_constraintHorizontal_weight="0.2"
-                tools:labelFor="@id/tvTitleText" />
-
-            <TextView
-                android:id="@+id/tvShopTypeText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_small"
-                android:layout_marginEnd="@dimen/horizontal_margin_huge"
-                android:layout_marginBottom="@dimen/vertical_margin_large"
-                android:text="@{viewModel.smobShopDetailsItem.type.toString()}"
-                tools:text="Some store type"
-                android:textSize="@dimen/label_text_size"
-                app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorShopType"
-                app:layout_constraintStart_toEndOf="@+id/tvAnchorShopType"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="0.7"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <!-- row: ShopCategory -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clShopCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/clShopType"
-            app:layout_constraintBottom_toTopOf="@id/clBusinessHours"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            >
-
-            <!-- invisible TV for alignment of label and edit text field -->
-            <TextView
-                android:id="@+id/tvAnchorShopCat"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_anchor_login"
-                android:text="@string/anchor_char"
-                android:textSize="@dimen/invisible_gap_details"
-                android:visibility="invisible"
-                app:layout_constraintHorizontal_weight="0.1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                />
-
-
-            <TextView
-                android:id="@+id/tvShopCat"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_small"
-                android:layout_marginEnd="@dimen/horizontal_margin_small"
-                android:text="@string/storeCategory"
-                android:textSize="@dimen/label_text_size"
-                app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorShopCat"
-                app:layout_constraintEnd_toStartOf="@+id/tvAnchorShopCat"
-                app:layout_constraintHorizontal_weight="0.2"
-                tools:labelFor="@id/tvTitleText" />
-
-            <TextView
-                android:id="@+id/tvShopCatText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_small"
-                android:layout_marginEnd="@dimen/horizontal_margin_huge"
-                android:layout_marginBottom="@dimen/vertical_margin_large"
-                android:text="@{viewModel.smobShopDetailsItem.category.toString()}"
-                tools:text="Some store category"
-                android:textSize="@dimen/label_text_size"
-                app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorShopCat"
-                app:layout_constraintStart_toEndOf="@+id/tvAnchorShopCat"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="0.7"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <!-- row: BusinessHours -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clBusinessHours"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/clShopCategory"
-            app:layout_constraintBottom_toTopOf="@id/btFloorPlan"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            >
-
-            <!-- invisible TV for alignment of label and edit text field -->
-            <TextView
-                android:id="@+id/tvAnchorBussHours"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_anchor_login"
-                android:text="@string/anchor_char"
-                android:textSize="@dimen/invisible_gap_details"
-                android:visibility="invisible"
-                app:layout_constraintHorizontal_weight="0.1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                />
-
-
-            <TextView
-                android:id="@+id/tvBussHours"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_small"
-                android:layout_marginEnd="@dimen/horizontal_margin_small"
-                android:text="@string/storeBusiness"
-                android:textSize="@dimen/label_text_size"
-                app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorBussHours"
-                app:layout_constraintEnd_toStartOf="@+id/tvAnchorBussHours"
-                app:layout_constraintHorizontal_weight="0.2"
-                tools:labelFor="@id/tvTitleText" />
-
-            <TextView
-                android:id="@+id/tvBussHoursText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_small"
-                android:layout_marginEnd="@dimen/horizontal_margin_huge"
-                android:layout_marginBottom="@dimen/vertical_margin_large"
-                android:text="@{@string/storeBusinessTable(viewModel.smobShopDetailsItem.business[0], viewModel.smobShopDetailsItem.business[1], viewModel.smobShopDetailsItem.business[2], viewModel.smobShopDetailsItem.business[3], viewModel.smobShopDetailsItem.business[4], viewModel.smobShopDetailsItem.business[5], viewModel.smobShopDetailsItem.business[6])}"
-                tools:text="Business hours"
-                android:textSize="@dimen/table_text_size"
-                app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorBussHours"
-                app:layout_constraintStart_toEndOf="@+id/tvAnchorBussHours"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="0.7"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <!-- Button to open floor plan of shop -->
-        <Button
-            android:id="@+id/btFloorPlan"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/horizontal_margin_small"
             android:layout_marginTop="@dimen/vertical_margin_large"
-            android:paddingStart="@dimen/button_padding"
-            android:paddingEnd="@dimen/button_padding"
-            android:text="@string/floor_plan"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/button_text_size"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/clBusinessHours"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            />
+            android:layout_height="wrap_content"
+            >
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- centered (red) progress bar, indicating the loading state when accessing the DB -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fadeVisible="@{viewModel.showLoading.booleanValue()}"
+                android:gravity="center"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+
+            <TextView
+                android:id="@+id/tvHeading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/smob_shop_details"
+                android:textSize="@dimen/text_size_large"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/ivSmobDetails"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+            <ImageView
+                android:id="@+id/ivSmobDetails"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/image_header_height"
+                android:layout_marginTop="@dimen/vertical_margin_image"
+                android:layout_marginBottom="@dimen/vertical_margin_image"
+                android:layout_marginStart="@dimen/horizontal_margin_small"
+                android:layout_marginEnd="@dimen/horizontal_margin_small"
+                android:contentDescription="@{viewModel.smobShopDetailsItem.description}"
+                android:scaleType="fitCenter"
+                app:layout_constraintTop_toTopOf="@id/tvHeading"
+                app:layout_constraintBottom_toTopOf="@+id/clTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:itemImage="@{viewModel.smobShopDetailsItem.imageUrl}"
+                tools:src="@drawable/smob_1"
+                />
+
+
+            <!-- row: title -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/ivSmobDetails"
+                app:layout_constraintBottom_toTopOf="@+id/clDescription"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                >
+
+                <!-- invisible TV for alignment of label and edit text field -->
+                <TextView
+                    android:id="@+id/tvAnchorTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_anchor_login"
+                    android:text="@string/anchor_char"
+                    android:textSize="@dimen/invisible_gap_details"
+                    android:visibility="invisible"
+                    app:layout_constraintHorizontal_weight="0.1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/horizontal_margin_small"
+                    android:text="@string/title_shop"
+                    android:textSize="@dimen/label_text_size"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorTitle"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAnchorTitle"
+                    app:layout_constraintHorizontal_weight="0.2"
+                    tools:labelFor="@id/tvTitleText" />
+
+                <TextView
+                    android:id="@+id/tvTitleText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/horizontal_margin_huge"
+                    android:text="@{viewModel.smobShopDetailsItem.name}"
+                    tools:text="Some product name"
+                    android:textSize="@dimen/label_text_size"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorTitle"
+                    app:layout_constraintStart_toEndOf="@+id/tvAnchorTitle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="0.7"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <!-- row: Description -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/clTitle"
+                app:layout_constraintBottom_toTopOf="@+id/clLocation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                >
+
+                <!-- invisible TV for alignment of label and edit text field -->
+                <TextView
+                    android:id="@+id/tvAnchorDesc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_anchor_login"
+                    android:text="@string/anchor_char"
+                    android:textSize="@dimen/invisible_gap_details"
+                    android:visibility="invisible"
+                    app:layout_constraintHorizontal_weight="0.1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+
+                <TextView
+                    android:id="@+id/tvDesc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/horizontal_margin_small"
+                    android:text="@string/description"
+                    android:textSize="@dimen/label_text_size"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorDesc"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAnchorDesc"
+                    app:layout_constraintHorizontal_weight="0.2"
+                    tools:labelFor="@id/tvTitleText" />
+
+                <TextView
+                    android:id="@+id/tvDescText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/horizontal_margin_huge"
+                    android:text="@{viewModel.smobShopDetailsItem.description}"
+                    tools:text="Some product description"
+                    android:textSize="@dimen/label_text_size"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorDesc"
+                    app:layout_constraintStart_toEndOf="@+id/tvAnchorDesc"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="0.7"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <!-- row: Location -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/clDescription"
+                app:layout_constraintBottom_toTopOf="@+id/clShopType"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                >
+
+                <!-- invisible TV for alignment of label and edit text field -->
+                <TextView
+                    android:id="@+id/tvAnchorLoc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_anchor_login"
+                    android:text="@string/anchor_char"
+                    android:textSize="@dimen/invisible_gap_details"
+                    android:visibility="invisible"
+                    app:layout_constraintHorizontal_weight="0.1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+
+                <TextView
+                    android:id="@+id/tvLoc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/horizontal_margin_small"
+                    android:text="@string/location"
+                    android:textSize="@dimen/label_text_size"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorLoc"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAnchorLoc"
+                    app:layout_constraintHorizontal_weight="0.2"
+                    tools:labelFor="@id/tvTitleText" />
+
+                <TextView
+                    android:id="@+id/tvLocText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/horizontal_margin_huge"
+                    android:layout_marginBottom="@dimen/vertical_margin_large"
+                    android:text="@{@string/location_latlong(viewModel.smobShopDetailsItem.location.latitude, viewModel.smobShopDetailsItem.location.longitude)}"
+                    tools:text="Shop location (lat./long.)"
+                    android:textSize="@dimen/label_text_size"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorLoc"
+                    app:layout_constraintStart_toEndOf="@+id/tvAnchorLoc"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="0.7"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <!-- row: ShopType -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clShopType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/clLocation"
+                app:layout_constraintBottom_toTopOf="@+id/clShopCategory"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                >
+
+                <!-- invisible TV for alignment of label and edit text field -->
+                <TextView
+                    android:id="@+id/tvAnchorShopType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_anchor_login"
+                    android:text="@string/anchor_char"
+                    android:textSize="@dimen/invisible_gap_details"
+                    android:visibility="invisible"
+                    app:layout_constraintHorizontal_weight="0.1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+
+                <TextView
+                    android:id="@+id/tvShopType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/horizontal_margin_small"
+                    android:text="@string/storeType"
+                    android:textSize="@dimen/label_text_size"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorShopType"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAnchorShopType"
+                    app:layout_constraintHorizontal_weight="0.2"
+                    tools:labelFor="@id/tvTitleText" />
+
+                <TextView
+                    android:id="@+id/tvShopTypeText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/horizontal_margin_huge"
+                    android:layout_marginBottom="@dimen/vertical_margin_large"
+                    android:text="@{viewModel.smobShopDetailsItem.type.toString()}"
+                    tools:text="Some store type"
+                    android:textSize="@dimen/label_text_size"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorShopType"
+                    app:layout_constraintStart_toEndOf="@+id/tvAnchorShopType"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="0.7"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <!-- row: ShopCategory -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clShopCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/clShopType"
+                app:layout_constraintBottom_toTopOf="@id/clBusinessHours"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                >
+
+                <!-- invisible TV for alignment of label and edit text field -->
+                <TextView
+                    android:id="@+id/tvAnchorShopCat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_anchor_login"
+                    android:text="@string/anchor_char"
+                    android:textSize="@dimen/invisible_gap_details"
+                    android:visibility="invisible"
+                    app:layout_constraintHorizontal_weight="0.1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+
+                <TextView
+                    android:id="@+id/tvShopCat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/horizontal_margin_small"
+                    android:text="@string/storeCategory"
+                    android:textSize="@dimen/label_text_size"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorShopCat"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAnchorShopCat"
+                    app:layout_constraintHorizontal_weight="0.2"
+                    tools:labelFor="@id/tvTitleText" />
+
+                <TextView
+                    android:id="@+id/tvShopCatText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/horizontal_margin_huge"
+                    android:layout_marginBottom="@dimen/vertical_margin_large"
+                    android:text="@{viewModel.smobShopDetailsItem.category.toString()}"
+                    tools:text="Some store category"
+                    android:textSize="@dimen/label_text_size"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorShopCat"
+                    app:layout_constraintStart_toEndOf="@+id/tvAnchorShopCat"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="0.7"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <!-- row: BusinessHours -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clBusinessHours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/clShopCategory"
+                app:layout_constraintBottom_toTopOf="@id/btFloorPlan"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                >
+
+                <!-- invisible TV for alignment of label and edit text field -->
+                <TextView
+                    android:id="@+id/tvAnchorBussHours"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_anchor_login"
+                    android:text="@string/anchor_char"
+                    android:textSize="@dimen/invisible_gap_details"
+                    android:visibility="invisible"
+                    app:layout_constraintHorizontal_weight="0.1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+
+                <TextView
+                    android:id="@+id/tvBussHours"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/horizontal_margin_small"
+                    android:text="@string/storeBusiness"
+                    android:textSize="@dimen/label_text_size"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorBussHours"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAnchorBussHours"
+                    app:layout_constraintHorizontal_weight="0.2"
+                    tools:labelFor="@id/tvTitleText" />
+
+                <TextView
+                    android:id="@+id/tvBussHoursText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/horizontal_margin_huge"
+                    android:layout_marginBottom="@dimen/vertical_margin_large"
+                    android:text="@{@string/storeBusinessTable(viewModel.smobShopDetailsItem.business[0], viewModel.smobShopDetailsItem.business[1], viewModel.smobShopDetailsItem.business[2], viewModel.smobShopDetailsItem.business[3], viewModel.smobShopDetailsItem.business[4], viewModel.smobShopDetailsItem.business[5], viewModel.smobShopDetailsItem.business[6])}"
+                    tools:text="Business hours"
+                    android:textSize="@dimen/table_text_size"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorBussHours"
+                    app:layout_constraintStart_toEndOf="@+id/tvAnchorBussHours"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="0.7"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <!-- Button to open floor plan of shop -->
+            <Button
+                android:id="@+id/btFloorPlan"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/horizontal_margin_small"
+                android:layout_marginTop="@dimen/vertical_margin_large"
+                android:paddingStart="@dimen/button_padding"
+                android:paddingEnd="@dimen/button_padding"
+                android:text="@string/floor_plan"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/button_text_size"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/clBusinessHours"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </layout>

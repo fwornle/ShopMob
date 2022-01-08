@@ -66,33 +66,14 @@ class SmobAdministrationActivity : AppCompatActivity() {
 
     }
 
-    // when the app is no longer visible...
+    override fun onStart() {
+        super.onStart()
+        SmobApp.scheduleRecurringWorkFast()
+    }
+
     override fun onStop() {
         super.onStop()
-
-        Timber.i("ShopMob in the background - cancelling fast polling")
         SmobApp.cancelRecurringWorkFast()
-
-    }
-
-    // when the app comes back into the foreground...
-    override fun onRestart() {
-        super.onRestart()
-
-        Timber.i("ShopMob restarting - restarting fast polling")
-        SmobApp.delayedInitRecurringWorkFast()
-
-    }
-
-    // when the app is switched off (= "destroyed")...
-    // ... stop polling
-    override fun onDestroy() {
-        super.onDestroy()
-
-        Timber.i("ShopMob switching off - cancelling all polling")
-        SmobApp.cancelRecurringWorkFast()
-        SmobApp.cancelRecurringWorkSlow()
-
     }
 
 }
