@@ -123,15 +123,15 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
 
 
     // fetch worker class form service locator
-    val wManager: SmobAppWork by inject()
+    private val wManager: SmobAppWork by inject()
 
-    override fun onStart() {
-        super.onStart()
-        wManager.scheduleRecurringWorkFast()
+    override fun onResume() {
+        super.onResume()
+        wManager.delayedInitRecurringWorkFast()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
         wManager.cancelRecurringWorkFast()
     }
 

@@ -1,15 +1,17 @@
 package com.tanfra.shopmob.smob.work
 
 import android.content.Context
-import androidx.work.CoroutineWorker
-import androidx.work.WorkerParameters
+import androidx.work.*
 import com.tanfra.shopmob.Constants
 import com.tanfra.shopmob.smob.data.repo.dataSource.*
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import retrofit2.HttpException
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 // use WorkManager to do work - derived from CoroutineWorker, as we have async work to be done
 // ... need to inherit from KoinComponent to use Koin based DI in this module:
@@ -22,6 +24,9 @@ class RefreshSmobStaticDataWorkerFast(appContext: Context, params: WorkerParamet
         const val WORK_NAME_FAST = "SmobStaticDataWorkerFast"
     }
 
+    // fetch worker class form service locator
+    private val wManager: SmobAppWork by inject()
+
     // fetch repositories from Koin service locator
     private val smobUserDataSource: SmobUserDataSource by inject()
     private val smobGroupDataSource: SmobGroupDataSource by inject()
@@ -32,35 +37,29 @@ class RefreshSmobStaticDataWorkerFast(appContext: Context, params: WorkerParamet
     // define work to be done
     override suspend fun doWork(): Result {
 
-        // retrieve data --> this work should be done in as many seconds as specified by this input
-        val nDelay = inputData.getLong(Constants.WORK_POLLING_FAST_KEY, 15 * 60)
-        val nRuns = 15 * 60 / nDelay
+        // rescheduling
+        val nextRequest = wManager.setupRecurringWorkFast()
 
         return try {
 
             // fetch smob data from backend
             // ... received data is used to update the DB
             Timber.i("Running scheduled work ($WORK_NAME_FAST) ---------------------------")
-            Timber.i("nDelay: $nDelay, nRuns: $nRuns")
+            Timber.i("Work ID:  ${getId()}")
 
-            // WORKAROUND (for missing backend - no update notifications yet --> polling)
-            for(idx in 1 .. 140) {
+            // update users in local DB from backend DB
+            smobUserDataSource.refreshDataInLocalDB()
+            smobGroupDataSource.refreshDataInLocalDB()
+            smobProductDataSource.refreshDataInLocalDB()
+            smobShopDataSource.refreshDataInLocalDB()
+            smobListDataSource.refreshDataInLocalDB()
 
-                // update users in local DB from backend DB
-                Timber.i("Refreshing data in local DB ($idx/$nRuns)")
-                smobUserDataSource.refreshDataInLocalDB()
-                smobGroupDataSource.refreshDataInLocalDB()
-                smobProductDataSource.refreshDataInLocalDB()
-                smobShopDataSource.refreshDataInLocalDB()
-                smobListDataSource.refreshDataInLocalDB()
-
-                // suspend for one (sub)-interval
-                delay(nDelay * 1000)
-
-            }
+            // re-schedule
+            wManager.scheduleRecurringWorkFast(nextRequest)
 
             // return 'success' - done
             Timber.i("Scheduled work ($WORK_NAME_FAST) completed successfully")
+            Timber.i("Work ID:  ${nextRequest.getId()}")
             Result.success()
 
         } catch (e: HttpException) {
