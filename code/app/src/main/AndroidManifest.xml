@@ -19,6 +19,8 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE"/>
 
+
+
     <!-- note: adding network security config to instruct the android firewall to pass through
          traffic from/to 10.0.2.2 (= localhost on the host running the emulator). This is needed
          to work with the fake backend, which is used during development.
@@ -75,9 +77,15 @@
                 android:resource="@xml/shortcuts" />
         </activity>
 
+        <!-- prevent config changes from restarting the activity - needed, as we get here
+             via an Intent (from planning) and the config change would call "finish"... which
+             would take us back to planning
+         -->
         <activity
             android:exported="true"
-            android:name=".smob.ui.shopping.SmobShoppingActivity" >
+            android:name=".smob.ui.shopping.SmobShoppingActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            >
         </activity>
 
         <activity
@@ -85,9 +93,15 @@
             android:name=".smob.ui.administration.SmobAdministrationActivity" >
         </activity>
 
+        <!-- prevent config changes from restarting the activity - needed, as we get here
+             via an Intent (from planning) and the config change would call "finish"... which
+             would take us back to planning
+         -->
         <activity
             android:exported="true"
-            android:name=".smob.ui.details.SmobDetailsActivity">
+            android:name=".smob.ui.details.SmobDetailsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            >
         </activity>
 
         <!-- WorkManager >= 2.6 needs to remove the androidx-startup code / the WorkManager
