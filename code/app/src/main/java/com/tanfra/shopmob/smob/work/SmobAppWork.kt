@@ -11,15 +11,27 @@ import java.util.concurrent.TimeUnit
 
 class SmobAppWork(context: Context): Configuration.Provider {
 
-    // WorkManager job requests
-    lateinit var repeatingRequestSlow: PeriodicWorkRequest
-    lateinit var repeatingRequestFast: PeriodicWorkRequest
+    // define WorkManager job requests
+    private var repeatingRequestSlow = setupRecurringWorkSlow()
+    private var repeatingRequestFast = setupRecurringWorkFast()
 
-    // application context
+    // convenience: store handle to application context
     var smobAppContext: Context
 
     init {
+
+        // set application context
         smobAppContext = context
+
+        // provide custom configuration
+        // ... see: https://developer.android.com/topic/libraries/architecture/workmanager/advanced/custom-configuration#custom
+        val myConfig = Configuration.Builder()
+            .setMinimumLoggingLevel(android.util.Log.INFO)
+            .build()
+
+        // initialize WorkManager
+        WorkManager.initialize(smobAppContext, myConfig)
+
     }
 
     // add a coroutine scope to be used with WorkManger scheduled work
@@ -80,7 +92,7 @@ class SmobAppWork(context: Context): Configuration.Provider {
 
 
     // configure the actual work to be scheduled by WorkManager
-    private fun setupRecurringWorkSlow() {
+    private fun setupRecurringWorkSlow(): PeriodicWorkRequest {
 
         // define some constraints und which the repeating request should be scheduled:
         // WIFI, charging
@@ -106,7 +118,7 @@ class SmobAppWork(context: Context): Configuration.Provider {
         //     --> within this 15 minute block (run on a coroutine), take 'sub-steps' with delay()
         //
         // slow polling task - when app is in background
-        repeatingRequestSlow = PeriodicWorkRequestBuilder<RefreshSmobStaticDataWorkerSlow>(
+        return PeriodicWorkRequestBuilder<RefreshSmobStaticDataWorkerSlow>(
             15,
             TimeUnit.MINUTES
         )
@@ -139,7 +151,7 @@ class SmobAppWork(context: Context): Configuration.Provider {
     }
 
     // configure the actual work to be scheduled by WorkManager
-    private fun setupRecurringWorkFast() {
+    private fun setupRecurringWorkFast(): PeriodicWorkRequest {
 
         // work scheduling constraints - fast polling
         val constraintsFast = Constraints.Builder()
@@ -149,7 +161,7 @@ class SmobAppWork(context: Context): Configuration.Provider {
 
         // fast polling task - when app is in foreground
         // ... note: it's fast, as we "sub-schedule" every minute (within "doWork")
-        repeatingRequestFast = PeriodicWorkRequestBuilder<RefreshSmobStaticDataWorkerFast>(
+        return PeriodicWorkRequestBuilder<RefreshSmobStaticDataWorkerFast>(
             15,
             TimeUnit.MINUTES
         )
