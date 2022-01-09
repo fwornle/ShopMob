@@ -4,24 +4,16 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
-import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.core.content.getSystemService
 import com.tanfra.shopmob.BuildConfig
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.activities.details.SmobDetailsActivity
-import com.tanfra.shopmob.smob.activities.details.SmobDetailsSources
+import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
+import com.tanfra.shopmob.smob.ui.details.SmobDetailsSources
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 
 private const val NOTIFICATION_CHANNEL_ID = BuildConfig.APPLICATION_ID + ".channel"
-
-// Android version check for "O" (Oreo)
-fun ifSupportsOreo(f: () -> Unit) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        f()
-    }
-}
 
 // append notification manager as service to Context
 val Context.notificationManager: NotificationManager?

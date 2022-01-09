@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.tanfra.shopmob.smob.activities.administration.AdminViewModel" />
+            type="com.tanfra.shopmob.smob.ui.administration.AdminViewModel" />
     </data>
 
     <ScrollView

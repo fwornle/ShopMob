@@ -20,11 +20,11 @@ import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.*
-import com.tanfra.shopmob.smob.activities.authentication.SmobAuthenticationActivity
-import com.tanfra.shopmob.smob.activities.planning.SmobPlanningActivity
+import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
+import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import com.tanfra.shopmob.smob.data.local.LocalDB
-import com.tanfra.shopmob.smob.activities.planning.shopList.PlanningShopListViewModel
-import com.tanfra.shopmob.smob.activities.planning.shopEdit.PlanningShopEditViewModel
+import com.tanfra.shopmob.smob.ui.planning.shopList.PlanningShopListViewModel
+import com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditViewModel
 import com.tanfra.shopmob.util.DataBindingIdlingResource
 import com.tanfra.shopmob.util.monitorActivity
 import com.tanfra.shopmob.utils.EspressoIdlingResource

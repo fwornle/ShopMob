@@ -251,8 +251,7 @@ class SmobListRepository(
 
             Timber.i("SmobList data GET request complete (success)")
 
-
-            // send POST request to server - coroutine to avoid blocking the main (UI) thread
+            // store data in local DB
             withContext(Dispatchers.IO) {
 
                 // store list data in DB - if any

@@ -7,7 +7,7 @@
 
     <activity
         android:id="@+id/smobShoppingActivity"
-        android:name="com.tanfra.shopmob.smob.activities.shopping.SmobShoppingActivity"
+        android:name="com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity"
         android:label="Smob Shopping Activity" />
 
 </navigation>

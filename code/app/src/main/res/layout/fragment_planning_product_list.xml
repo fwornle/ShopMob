@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.tanfra.shopmob.smob.activities.planning.productList.PlanningProductListViewModel" />
+            type="com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

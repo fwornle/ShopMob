@@ -7,7 +7,7 @@
 
     <activity
         android:id="@+id/smobActivityPlanning"
-        android:name="com.tanfra.shopmob.smob.activities.planning.SmobPlanningActivity"
+        android:name="com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity"
         android:label="Planning" />
 
     <!-- cross activity navigation made easy...
@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/smobPlanningListsFragment"
-        android:name="com.tanfra.shopmob.smob.activities.planning.lists.PlanningListsFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsFragment"
         android:label="Planning Lists">
         <action
             android:id="@+id/action_planningListsFragment_to_planningProductListFragment"
@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/smobPlanningProductListFragment"
-        android:name="com.tanfra.shopmob.smob.activities.planning.productList.PlanningProductListFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListFragment"
         android:label="Planning Product List">
         <action
             android:id="@+id/action_planningProductListFragment_to_planningProductEditFragment"
@@ -41,7 +41,7 @@
 
     <fragment
         android:id="@+id/smobPlanningProductEditFragment"
-        android:name="com.tanfra.shopmob.smob.activities.planning.productEdit.PlanningProductEditFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.productEdit.PlanningProductEditFragment"
         android:label="Planning Product Edit">
         <action
             android:id="@+id/action_planningProductEditFragment_to_planningShopListFragment"
@@ -53,7 +53,7 @@
 
     <fragment
         android:id="@+id/smobPlanningShopListFragment"
-        android:name="com.tanfra.shopmob.smob.activities.planning.shopList.PlanningShopListFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.shopList.PlanningShopListFragment"
         android:label="Planning Shop List">
         <action
             android:id="@+id/action_planningShopListFragment_to_planningProductEditFragment"
@@ -65,7 +65,7 @@
 
     <fragment
         android:id="@+id/smobPlanningShopEditFragment"
-        android:name="com.tanfra.shopmob.smob.activities.planning.shopEdit.PlanningShopEditFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditFragment"
         android:label="Planning Shop Edit">
         <action
             android:id="@+id/action_planningShopEditFragment_to_planningShopMapFragmen"
@@ -77,7 +77,7 @@
 
     <fragment
         android:id="@+id/smobPlanningShopMapFragment"
-        android:name="com.tanfra.shopmob.smob.activities.planning.shopEdit.selectlocation.PlanningShopMapFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.shopEdit.selectlocation.PlanningShopMapFragment"
         android:label="Select Shop Location" />
 
 </navigation>

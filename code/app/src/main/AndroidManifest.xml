@@ -17,6 +17,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <!-- note: adding network security config to instruct the android firewall to pass through
          traffic from/to 10.0.2.2 (= localhost on the host running the emulator). This is needed
@@ -58,7 +59,7 @@
 
         <activity
             android:exported="true"
-            android:name=".smob.activities.authentication.SmobAuthenticationActivity">
+            android:name=".smob.ui.authentication.SmobAuthenticationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -67,7 +68,7 @@
 
         <activity
             android:exported="true"
-            android:name=".smob.activities.planning.SmobPlanningActivity">
+            android:name=".smob.ui.planning.SmobPlanningActivity">
             <nav-graph android:value="@navigation/nav_graph_planning" />
             <meta-data
                 android:name="android.app.shortcuts"
@@ -76,17 +77,17 @@
 
         <activity
             android:exported="true"
-            android:name=".smob.activities.shopping.SmobShoppingActivity" >
+            android:name=".smob.ui.shopping.SmobShoppingActivity" >
         </activity>
 
         <activity
             android:exported="true"
-            android:name=".smob.activities.administration.SmobAdministrationActivity" >
+            android:name=".smob.ui.administration.SmobAdministrationActivity" >
         </activity>
 
         <activity
             android:exported="true"
-            android:name=".smob.activities.details.SmobDetailsActivity">
+            android:name=".smob.ui.details.SmobDetailsActivity">
         </activity>
 
         <!-- WorkManager >= 2.6 needs to remove the androidx-startup code / the WorkManager

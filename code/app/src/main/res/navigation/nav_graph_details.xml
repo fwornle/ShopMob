@@ -7,17 +7,17 @@
 
     <activity
         android:id="@+id/smobDetailsActivity"
-        android:name="com.tanfra.shopmob.smob.activities.details.SmobDetailsActivity"
+        android:name="com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity"
         android:label="Smob Details Activity" />
 
     <fragment
         android:id="@+id/smobDetailsProductFragment"
-        android:name="com.tanfra.shopmob.smob.activities.details.DetailsProductFragment"
+        android:name="com.tanfra.shopmob.smob.ui.details.DetailsProductFragment"
         android:label="Product Details"/>
 
     <fragment
         android:id="@+id/smobDetailsShopFragment"
-        android:name="com.tanfra.shopmob.smob.activities.details.DetailsShopFragment"
+        android:name="com.tanfra.shopmob.smob.ui.details.DetailsShopFragment"
         android:label="Shop Details">
         <action
             android:id="@+id/action_smobDetailsShopFragment_to_smobDetailsProductFragment"

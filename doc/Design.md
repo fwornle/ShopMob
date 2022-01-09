@@ -303,9 +303,9 @@ The _smobList_ entries of the _smobLists_ table adheres to the following schema:
   "name": "smob list name",
   "description": "our daily groceries",
   "items": [
-    { "id": "productId1", "status": "OPEN|IN_PROGRESS|DONE" },
-    { "id": "productId2", "status": "OPEN|IN_PROGRESS|DONE" },
-    { "id": "productId3", "status": "OPEN|IN_PROGRESS|DONE" },
+    { "id": "productId1", "status": "OPEN|IN_PROGRESS|DONE|DELETED" },
+    { "id": "productId2", "status": "OPEN|IN_PROGRESS|DONE|DELETED" },
+    { "id": "productId3", "status": "OPEN|IN_PROGRESS|DONE|DELETED" },
     { }
   ],
   "members": [
@@ -315,7 +315,7 @@ The _smobList_ entries of the _smobLists_ table adheres to the following schema:
     "..."
   ],
   "lifecycle": {
-    "status": "OPEN|IN_PROGRESS|DONE",
+    "status": "OPEN|IN_PROGRESS|DONE|DELETED",
     "completion": 35
   }
 }

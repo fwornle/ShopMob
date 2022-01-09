@@ -19,7 +19,7 @@ var mime = {
     js: 'application/javascript'
 };
 
-server.get('*', function (req, res) {
+server.get('/images*', function (req, res) {
     var file = path.join(dir, req.path.replace(/\/$/, '/index.html'));
     if (file.indexOf(dir + path.sep) !== 0) {
         return res.status(403).end('Forbidden');

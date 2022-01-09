@@ -1,12 +1,12 @@
 package com.tanfra.shopmob.smob
 
-import com.tanfra.shopmob.smob.activities.administration.AdminViewModel
-import com.tanfra.shopmob.smob.activities.details.DetailsViewModel
-import com.tanfra.shopmob.smob.activities.planning.lists.PlanningListsViewModel
-import com.tanfra.shopmob.smob.activities.planning.productEdit.PlanningProductEditViewModel
-import com.tanfra.shopmob.smob.activities.planning.productList.PlanningProductListViewModel
-import com.tanfra.shopmob.smob.activities.planning.shopEdit.PlanningShopEditViewModel
-import com.tanfra.shopmob.smob.activities.planning.shopList.PlanningShopListViewModel
+import com.tanfra.shopmob.smob.ui.administration.AdminViewModel
+import com.tanfra.shopmob.smob.ui.details.DetailsViewModel
+import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsViewModel
+import com.tanfra.shopmob.smob.ui.planning.productEdit.PlanningProductEditViewModel
+import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
+import com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditViewModel
+import com.tanfra.shopmob.smob.ui.planning.shopList.PlanningShopListViewModel
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource

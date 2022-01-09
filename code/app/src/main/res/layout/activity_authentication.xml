@@ -11,7 +11,7 @@
         android:background="@color/white"
         android:orientation="vertical"
         android:gravity="center"
-        tools:context=".smob.activities.authentication.SmobAuthenticationActivity">
+        tools:context=".smob.ui.authentication.SmobAuthenticationActivity">
 
         <ImageView
             android:id="@+id/icon"
