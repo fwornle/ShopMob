@@ -122,6 +122,18 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
     }  // onCreate
 
 
+//    // change configuration from portrait to landscape
+//    override fun onConfigurationChanged(newConfig: Configuration) {
+//        super.onConfigurationChanged(newConfig)
+//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            //Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show()
+//            setContentView(R.layout.fragment_details_product)
+//        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+//            //Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+//            setContentView(R.layout.fragment_details_product)
+//        }
+//    }
+
     // fetch worker class form service locator
     private val wManager: SmobAppWork by inject()
 
