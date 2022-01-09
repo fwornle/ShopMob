@@ -9,8 +9,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.databinding.ActivityPlanningBinding
+import com.tanfra.shopmob.smob.work.SmobAppWork
+import org.koin.android.ext.android.inject
 
 
 /**
@@ -54,20 +55,23 @@ class SmobPlanningActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+
+
+    // fetch worker class form service locator
+    val wManager: SmobAppWork by inject()
 
     override fun onStart() {
         super.onStart()
-        SmobApp.scheduleRecurringWorkFast()
+        wManager.scheduleRecurringWorkFast()
     }
 
     override fun onStop() {
         super.onStop()
-        SmobApp.cancelRecurringWorkFast()
-    }
-
-
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        wManager.cancelRecurringWorkFast()
     }
 
 }

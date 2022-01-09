@@ -5,9 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.databinding.ActivityAdministrationBinding
 import com.tanfra.shopmob.smob.ui.details.createIntent
+import com.tanfra.shopmob.smob.work.SmobAppWork
+import org.koin.android.ext.android.inject
 import timber.log.Timber
 
 
@@ -66,14 +67,18 @@ class SmobAdministrationActivity : AppCompatActivity() {
 
     }
 
+
+    // fetch worker class form service locator
+    val wManager: SmobAppWork by inject()
+
     override fun onStart() {
         super.onStart()
-        SmobApp.scheduleRecurringWorkFast()
+        wManager.scheduleRecurringWorkFast()
     }
 
     override fun onStop() {
         super.onStop()
-        SmobApp.cancelRecurringWorkFast()
+        wManager.cancelRecurringWorkFast()
     }
 
 }

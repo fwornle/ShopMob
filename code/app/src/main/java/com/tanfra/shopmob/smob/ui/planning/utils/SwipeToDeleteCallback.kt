@@ -137,7 +137,7 @@ class SwipeToDeleteCallback(adapter: PlanningProductListAdapter) :
                     }
                     else -> {
                         // already "DONE" --> indicate haptically
-                        val vib = SmobApp.smobAppContext.getSystemService(Vibrator::class.java)
+                        val vib = mAdapter.rootView.context.getSystemService(Vibrator::class.java)
                         vibrateDevice(vib, 150)
                     }
 

@@ -10,8 +10,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.databinding.ActivityShoppingBinding
+import com.tanfra.shopmob.smob.work.SmobAppWork
+import org.koin.android.ext.android.inject
 
 /**
  * The SmobActivity that holds the SmobShopping fragments
@@ -55,14 +56,18 @@ class SmobShoppingActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+
+    // fetch worker class form service locator
+    val wManager: SmobAppWork by inject()
+
     override fun onStart() {
         super.onStart()
-        SmobApp.scheduleRecurringWorkFast()
+        wManager.scheduleRecurringWorkFast()
     }
 
     override fun onStop() {
         super.onStop()
-        SmobApp.cancelRecurringWorkFast()
+        wManager.cancelRecurringWorkFast()
     }
 
 }

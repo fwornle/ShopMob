@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob
+package com.tanfra.shopmob.smob.ui
 
 import com.tanfra.shopmob.smob.ui.administration.AdminViewModel
 import com.tanfra.shopmob.smob.ui.details.DetailsViewModel
