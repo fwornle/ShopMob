@@ -85,9 +85,14 @@ class PlanningProductListViewModel(
                     Status.SUCCESS -> {
                         // received the items on the list alright --> process
                         items.data?.map { product ->
+
                             // at this point, the products on the shopping lists have been properly
                             // received --> implies that the list itself is also available
                             // output merged data type (with product item status)
+
+                            // fetch product details from 'items' list on the smobList
+                            val productOnList = rawList.items.first { item -> item.id == product.id }
+
                             SmobProductOnListATO(
                                 id = product.id,
                                 productName = product.name,
@@ -95,7 +100,8 @@ class PlanningProductListViewModel(
                                 productImageUrl = product.imageUrl,
                                 productCategory = product.category,
                                 productActivity = product.activity,
-                                listItemStatus = rawList.items.first { item -> item.id == product.id }.status,
+                                listItemStatus = productOnList.status,
+                                listItemPosition = productOnList.listPosition,
                                 listId = rawList.id,
                                 listName = rawList.name,
                                 listDescription = rawList.description,

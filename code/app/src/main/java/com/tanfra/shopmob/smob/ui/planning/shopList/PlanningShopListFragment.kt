@@ -16,6 +16,7 @@ import com.tanfra.shopmob.databinding.FragmentPlanningShopListBinding
 import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsSources
+import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent

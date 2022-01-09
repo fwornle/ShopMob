@@ -14,6 +14,7 @@ data class SmobProductOnListATO(
     var productCategory: @Contextual ProductCategory,
     var productActivity: @Contextual ActivityStatus,
     var listItemStatus: @Contextual SmobItemStatus?,
+    var listItemPosition: Long?,
     val listId: String,
     var listName: String,
     var listDescription: String?,

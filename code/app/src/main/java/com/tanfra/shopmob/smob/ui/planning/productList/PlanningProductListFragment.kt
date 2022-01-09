@@ -21,6 +21,7 @@ import timber.log.Timber
 import com.tanfra.shopmob.smob.ui.planning.utils.SwipeToDeleteCallback
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.databinding.FragmentPlanningProductListBinding
+import com.tanfra.shopmob.utils.setup
 
 
 class PlanningProductListFragment : BaseFragment(), KoinComponent {

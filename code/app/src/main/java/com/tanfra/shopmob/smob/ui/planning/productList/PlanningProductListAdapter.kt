@@ -28,8 +28,13 @@ class PlanningProductListAdapter(rootView: View, callBack: (selectedSmobATO: Smo
         // take out all items which have been deleted by swiping
         return items
             .filter { item -> item.listItemStatus != SmobItemStatus.DELETED  }
-            .sortedWith(compareBy({ it.productCategory.main }, { it.productCategory.sub }))
-        
+            .sortedWith(
+                compareBy(
+                    { it.productCategory.main },
+                    { it.productCategory.sub },
+                    { it.listItemPosition },
+                    )
+            )
     }
 
     // allow the BaseRecyclerViewAdapter to access the item layout for this particular RV list
@@ -52,7 +57,8 @@ class PlanningProductListAdapter(rootView: View, callBack: (selectedSmobATO: Smo
                 // replace list of products on smob list with updated list of products
                 item.listItems.map { product ->
                     if(product.id == item.id) {
-                        SmobListItem(product.id, item.listItemStatus!!)
+                        // set new status (list property)
+                        SmobListItem(product.id, item.listItemStatus!!, product.listPosition)
                     } else {
                         product
                     }
