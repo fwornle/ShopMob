@@ -3,6 +3,7 @@ package com.tanfra.shopmob.smob.work
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.tanfra.shopmob.Constants
 import com.tanfra.shopmob.smob.data.repo.dataSource.*
 import kotlinx.coroutines.delay
 import org.koin.core.component.KoinComponent
@@ -31,31 +32,30 @@ class RefreshSmobStaticDataWorkerFast(appContext: Context, params: WorkerParamet
     // define work to be done
     override suspend fun doWork(): Result {
 
+        // retrieve data --> this work should be done in as many seconds as specified by this input
+        val nDelay = inputData.getLong(Constants.WORK_POLLING_FAST_KEY, 15 * 60)
+        val nRuns = 15 * 60 / nDelay
+
         return try {
 
-            // fetch smob data from backend - also initializes LiveData _statusSmobDataSync to
-            // LOADING
+            // fetch smob data from backend
             // ... received data is used to update the DB
             Timber.i("Running scheduled work ($WORK_NAME_FAST) ---------------------------")
+            Timber.i("nDelay: $nDelay, nRuns: $nRuns")
 
             // WORKAROUND (for missing backend - no update notifications yet --> polling)
-            // ... run every minute
-            //     note: WorkManager (re)-schedules this work job every 15 minutes
-            //           --> need to "sub-divide" this into 15 further
-            // ... for an alternative (periodic re-scheduling of oneShot work) see:
-            //     https://stackoverflow.com/questions/51202905/execute-task-every-second-using-work-manager-api
             for(idx in 1 .. 140) {
 
                 // update users in local DB from backend DB
-                Timber.i("Refreshing data in local DB ($idx/14)")
+                Timber.i("Refreshing data in local DB ($idx/$nRuns)")
                 smobUserDataSource.refreshDataInLocalDB()
                 smobGroupDataSource.refreshDataInLocalDB()
                 smobProductDataSource.refreshDataInLocalDB()
                 smobShopDataSource.refreshDataInLocalDB()
                 smobListDataSource.refreshDataInLocalDB()
 
-                // suspend for 60 seconds
-                delay(6000)
+                // suspend for one (sub)-interval
+                delay(nDelay * 1000)
 
             }
 

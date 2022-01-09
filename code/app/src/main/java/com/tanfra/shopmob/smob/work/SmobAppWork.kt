@@ -2,6 +2,7 @@ package com.tanfra.shopmob.smob.work
 
 import android.content.Context
 import androidx.work.*
+import com.tanfra.shopmob.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -165,6 +166,7 @@ class SmobAppWork(context: Context): Configuration.Provider {
             15,
             TimeUnit.MINUTES
         )
+            .setInputData(workDataOf(Constants.WORK_POLLING_FAST_KEY to Constants.WORK_POLLING_FAST_TIME_SECONDS))
             .setConstraints(constraintsFast)
             .build()
 
