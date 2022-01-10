@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clSmobShoppingZones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/horizontal_margin_small"
+        android:layout_marginEnd="@dimen/horizontal_margin_small"
+        android:layout_marginTop="@dimen/vertical_margin_small"
+        >
+
+        <include
+            android:id="@+id/includes"
+            layout="@layout/fragment_shopping_zones_content" />
+
+        <Button
+            android:id="@+id/btDismiss"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/vertical_margin_huge"
+            android:layout_marginBottom="@dimen/vertical_margin_large"
+            android:layout_marginStart="@dimen/horizontal_margin_small"
+            android:paddingStart="@dimen/button_padding"
+            android:paddingEnd="@dimen/button_padding"
+            android:text="@string/dismiss"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/button_text_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

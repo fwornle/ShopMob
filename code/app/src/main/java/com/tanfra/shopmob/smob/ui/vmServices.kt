@@ -10,6 +10,7 @@ import com.tanfra.shopmob.smob.ui.planning.shopList.PlanningShopListViewModel
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
+import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -78,6 +79,18 @@ val vmServices = module {
     // shared with all details fragments (and the activity)
     viewModel {
         DetailsViewModel(
+            get(),  // app (context)
+            get() as SmobProductDataSource,  // repo as data source
+            get() as SmobShopDataSource,  // repo as data source
+        )
+    }
+
+
+    // shopping view model ----------------------------------------------------
+
+    // (currently) shared with all details fragments (and the activity)
+    viewModel {
+        SmobShoppingViewModel(
             get(),  // app (context)
             get() as SmobProductDataSource,  // repo as data source
             get() as SmobShopDataSource,  // repo as data source

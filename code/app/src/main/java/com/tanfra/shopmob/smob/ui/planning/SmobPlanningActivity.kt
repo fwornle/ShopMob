@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
+import androidx.navigation.ui.NavigationUI.setupWithNavController
+import androidx.navigation.ui.navigateUp
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.ActivityPlanningBinding
 import com.tanfra.shopmob.smob.work.SmobAppWork
@@ -23,6 +27,7 @@ class SmobPlanningActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlanningBinding
 
     // use navController activity wide
+    private lateinit var drawerLayout: DrawerLayout
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -33,16 +38,41 @@ class SmobPlanningActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_planning)
         setContentView(binding.root)
 
+        // enable drawer (navbar)
+        drawerLayout = binding.drawerLayout
+
+
         // set-up navController
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment_planning) as NavHostFragment
 
         navController = navHostFragment.navController
 
-        // use actionBar (instead of the system's ActivityBar)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(this, navController)
+        // use actionBar (instead of the system's ActivityBar) - with drawer layout
+        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
 
+        // lock drawer layout on all pages/destinations but the start destination
+        navController.addOnDestinationChangedListener {
+                nc: NavController,
+                nd: NavDestination,
+                args: Bundle?
+            ->
+            if (nd.id == nc.graph.startDestination) {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+            } else {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            }
+        }
+
+        // configure drawer layout
+        setupActionBarWithNavController(this, navController, drawerLayout)
+        setupWithNavController(binding.navView, navController)
+
+    }
+
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp(drawerLayout) || super.onSupportNavigateUp()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -53,10 +83,6 @@ class SmobPlanningActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
 
