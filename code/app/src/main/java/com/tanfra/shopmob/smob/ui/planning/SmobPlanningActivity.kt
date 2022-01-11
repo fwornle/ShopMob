@@ -1,8 +1,10 @@
 package com.tanfra.shopmob.smob.ui.planning
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -41,7 +43,6 @@ class SmobPlanningActivity : AppCompatActivity() {
         // enable drawer (navbar)
         drawerLayout = binding.drawerLayout
 
-
         // set-up navController
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment_planning) as NavHostFragment
@@ -50,6 +51,7 @@ class SmobPlanningActivity : AppCompatActivity() {
 
         // use actionBar (instead of the system's ActivityBar) - with drawer layout
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
+
 
         // lock drawer layout on all pages/destinations but the start destination
         navController.addOnDestinationChangedListener {
@@ -75,14 +77,17 @@ class SmobPlanningActivity : AppCompatActivity() {
         return navController.navigateUp(drawerLayout) || super.onSupportNavigateUp()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                navController.popBackStack()
-                return true
-            }
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        android.R.id.home -> {
+            if(drawerLayout.isDrawerOpen(GravityCompat.END))
+                drawerLayout.closeDrawer(GravityCompat.START)
+            else
+                drawerLayout.openDrawer(GravityCompat.END)
+            true
         }
-        return super.onOptionsItemSelected(item)
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
     }
 
 

@@ -12,11 +12,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentPlanningListsBinding
 import com.tanfra.shopmob.smob.ui.administration.SmobAdminTask
 import com.tanfra.shopmob.smob.ui.administration.SmobAdministrationActivity
 import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
+import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListFragmentDirections
 import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import org.koin.core.component.KoinComponent
@@ -45,7 +47,7 @@ class PlanningListsFragment : BaseFragment(), KoinComponent {
         binding.viewModel = _viewModel
 
         setHasOptionsMenu(true)
-        setDisplayHomeAsUpEnabled(false)
+        setDisplayHomeAsUpEnabled(true)
         setTitle(getString(R.string.app_name))
 
         // install listener for SwipeRefreshLayout view
@@ -132,6 +134,9 @@ class PlanningListsFragment : BaseFragment(), KoinComponent {
                         // and we're done here
                         this.activity?.finish()
                     }
+            }
+            android.R.id.home -> {
+                _viewModel.navigationCommand.postValue(NavigationCommand.Back)
             }
         }  // when(item...)
 

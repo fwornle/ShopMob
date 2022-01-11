@@ -9,7 +9,7 @@
     <string name="app_name_details_product">ShopMob Product Details</string>
     <string name="app_name_details_shop">ShopMob Shop Details</string>
     <string name="app_name_shopping_zones">ShopMob Shop Floorplan</string>
-    <string name="shopping_zones">Shop Zones</string>
+    <string name="shop_list">Shops</string>
     <string name="shopping_sections">Shop Sections</string>
     <string name="icon_shopping_cart">Shopping Cart</string>
     <string name="shopping">Shopping at the supermarket</string>

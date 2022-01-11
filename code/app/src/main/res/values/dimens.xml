@@ -32,5 +32,6 @@
     <dimen name="image_size_medium">200dp</dimen>
     <dimen name="image_size_large">600dp</dimen>
     <dimen name="horizontal_margin">8dp</dimen>
+    <dimen name="tall_toolbar_height">56dp</dimen>
 
 </resources>

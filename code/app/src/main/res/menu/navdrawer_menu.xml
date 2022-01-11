@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/clSmobShoppingZones"
-            android:icon="@drawable/android"
-            android:title="@string/shopping_zones" />
+            android:id="@+id/smobPlanningShopListFragment"
+            android:icon="@drawable/ic_baseline_shopping_cart_24"
+            android:title="@string/shop_list" />
     </group>
 </menu>
