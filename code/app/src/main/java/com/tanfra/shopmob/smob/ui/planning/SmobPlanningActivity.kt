@@ -77,20 +77,6 @@ class SmobPlanningActivity : AppCompatActivity() {
         return navController.navigateUp(drawerLayout) || super.onSupportNavigateUp()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        android.R.id.home -> {
-            if(drawerLayout.isDrawerOpen(GravityCompat.END))
-                drawerLayout.closeDrawer(GravityCompat.START)
-            else
-                drawerLayout.openDrawer(GravityCompat.END)
-            true
-        }
-        else -> {
-            super.onOptionsItemSelected(item)
-        }
-    }
-
-
 
     // fetch worker class form service locator
     private val wManager: SmobAppWork by inject()
