@@ -22,12 +22,6 @@ import com.tanfra.shopmob.smob.ui.planning.utils.SwipeToDeleteCallback
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.databinding.FragmentPlanningProductListBinding
 import com.tanfra.shopmob.utils.setup
-import androidx.core.view.GravityCompat
-
-import androidx.drawerlayout.widget.DrawerLayout
-
-
-
 
 
 class PlanningProductListFragment : BaseFragment(), KoinComponent {

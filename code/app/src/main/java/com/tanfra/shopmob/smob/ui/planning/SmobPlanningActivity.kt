@@ -11,6 +11,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.*
+import androidx.navigation.ui.setupWithNavController
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.ActivityPlanningBinding
 import com.tanfra.shopmob.smob.work.SmobAppWork
@@ -73,8 +74,8 @@ class SmobPlanningActivity : AppCompatActivity() {
         }
 
         // configure drawer layout
+        binding.navView.setupWithNavController(navController)
         setupActionBarWithNavController(this, navController, drawerLayout)
-        setupWithNavController(binding.navView, navController)
     }
 
 
@@ -91,11 +92,17 @@ class SmobPlanningActivity : AppCompatActivity() {
         }
     }
 
-
 //    override fun onSupportNavigateUp(): Boolean {
 //        return navController.navigateUp(drawerLayout) || super.onSupportNavigateUp()
 //    }
-
+//
+//    override fun onBackPressed() {
+//        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+//            binding.drawerLayout.closeDrawer(GravityCompat.START)
+//        } else {
+//            super.onBackPressed()
+//        }
+//    }
 
     // fetch worker class form service locator
     private val wManager: SmobAppWork by inject()
