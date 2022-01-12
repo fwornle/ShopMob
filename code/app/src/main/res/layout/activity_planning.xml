@@ -8,8 +8,19 @@
             android:id="@+id/drawerLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            tools:openDrawer="start"
             tools:context=".smob.ui.planning.SmobPlanningActivity"
             >
+
+                <com.google.android.material.navigation.NavigationView
+                    android:id="@+id/navView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start"
+                    android:clipToPadding="false"
+                    app:menu="@menu/navdrawer_menu"
+                    app:headerLayout="@layout/nav_header"
+                    />
 
                 <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/nav_host_fragment_planning"
@@ -18,16 +29,6 @@
                     android:layout_height="match_parent"
                     app:defaultNavHost="true"
                     app:navGraph="@navigation/nav_graph_planning" />
-
-                <com.google.android.material.navigation.NavigationView
-                    android:id="@+id/navView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="start"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:menu="@menu/navdrawer_menu"
-                    app:headerLayout="@layout/nav_header"
-                    />
 
         </androidx.drawerlayout.widget.DrawerLayout>
 

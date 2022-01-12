@@ -6,10 +6,11 @@
     <string name="app_name_planning">Shop for: %1$s</string>
     <string name="app_name_planning_shop">ShopMob: %1$s</string>
     <string name="app_name_admin">ShopMob Administration</string>
+    <string name="admin">Administration</string>
     <string name="app_name_details_product">ShopMob Product Details</string>
     <string name="app_name_details_shop">ShopMob Shop Details</string>
     <string name="app_name_shopping_zones">ShopMob Shop Floorplan</string>
-    <string name="shop_list">Shops</string>
+    <string name="shop_list">Stores</string>
     <string name="shopping_sections">Shop Sections</string>
     <string name="icon_shopping_cart">Shopping Cart</string>
     <string name="shopping">Shopping at the supermarket</string>
@@ -74,5 +75,7 @@
     <string name="static_shortcut_label_short">Active Shopping List</string>
     <string name="static_shortcut_label_long">This link takes you to the last active ShopMob shopping list.</string>
     <string name="static_shortcut_disabled_message">No active ShopMob shopping list found</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
 
 </resources>
