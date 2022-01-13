@@ -2,19 +2,24 @@
 <navigation
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_planning"
     app:startDestination="@id/smobPlanningListsFragment">
 
     <activity
         android:id="@+id/smobActivityPlanning"
         android:name="com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity"
-        android:label="Planning" />
+        android:label="Planning"
+        tools:layout="@layout/activity_planning"
+        />
 
     <!-- cross activity navigation made easy... -->
     <fragment
         android:id="@+id/smobAdminSelectFragment"
         android:name="com.tanfra.shopmob.smob.ui.administration.AdminSelectFragment"
-        android:label="Administration Selector">
+        android:label="Administration Selector"
+        tools:layout="@layout/fragment_administration_select"
+        >
     </fragment>
 
     <!-- cross activity navigation made easy...
@@ -28,7 +33,9 @@
     <fragment
         android:id="@+id/smobPlanningListsFragment"
         android:name="com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsFragment"
-        android:label="Planning Lists">
+        android:label="Planning Lists"
+        tools:layout="@layout/fragment_planning_lists"
+        >
         <action
             android:id="@+id/action_planningListsFragment_to_planningProductListFragment"
             app:destination="@id/smobPlanningProductListFragment" />
@@ -37,7 +44,9 @@
     <fragment
         android:id="@+id/smobPlanningProductListFragment"
         android:name="com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListFragment"
-        android:label="Planning Product List">
+        android:label="Planning Product List"
+        tools:layout="@layout/fragment_planning_product_list"
+        >
         <action
             android:id="@+id/action_planningProductListFragment_to_planningProductEditFragment"
             app:destination="@id/smobPlanningProductEditFragment" />
@@ -49,7 +58,9 @@
     <fragment
         android:id="@+id/smobPlanningProductEditFragment"
         android:name="com.tanfra.shopmob.smob.ui.planning.productEdit.PlanningProductEditFragment"
-        android:label="Planning Product Edit">
+        android:label="Planning Product Edit"
+        tools:layout="@layout/fragment_planning_product_edit"
+        >
         <action
             android:id="@+id/action_planningProductEditFragment_to_planningShopListFragment"
             app:destination="@id/smobPlanningShopListFragment" />
@@ -61,7 +72,9 @@
     <fragment
         android:id="@+id/smobPlanningShopListFragment"
         android:name="com.tanfra.shopmob.smob.ui.planning.shopList.PlanningShopListFragment"
-        android:label="Planning Shop List">
+        android:label="Planning Shop List"
+        tools:layout="@layout/fragment_planning_shop_list"
+        >
         <action
             android:id="@+id/action_planningShopListFragment_to_planningProductEditFragment"
             app:destination="@id/smobPlanningProductEditFragment" />
@@ -73,7 +86,9 @@
     <fragment
         android:id="@+id/smobPlanningShopEditFragment"
         android:name="com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditFragment"
-        android:label="Planning Shop Edit">
+        android:label="Planning Shop Edit"
+        tools:layout="@layout/fragment_planning_shop_edit"
+        >
         <action
             android:id="@+id/action_planningShopEditFragment_to_planningShopMapFragmen"
             app:destination="@id/smobPlanningShopMapFragment" />
@@ -85,6 +100,8 @@
     <fragment
         android:id="@+id/smobPlanningShopMapFragment"
         android:name="com.tanfra.shopmob.smob.ui.planning.shopEdit.selectlocation.PlanningShopMapFragment"
-        android:label="Select Shop Location" />
+        android:label="Select Shop Location"
+        tools:layout="@layout/fragment_planning_shop_map"
+        />
 
 </navigation>
