@@ -1,5 +1,7 @@
 package com.tanfra.shopmob.smob.ui.shopping
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +13,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.ActivityShoppingBinding
+import com.tanfra.shopmob.smob.ui.administration.SmobAdminTask
+import com.tanfra.shopmob.smob.ui.administration.SmobAdministrationActivity
+import com.tanfra.shopmob.smob.ui.details.createIntent
 import com.tanfra.shopmob.smob.work.SmobAppWork
 import org.koin.android.ext.android.inject
 
@@ -19,12 +24,20 @@ import org.koin.android.ext.android.inject
  */
 class SmobShoppingActivity : AppCompatActivity() {
 
+    // Intent gateway for lists which want their content to be displayed (generic details screen)
+    companion object{
+        // intent 'extra' data specifier
+        private const val EXTRA_SmobAdminTask = "EXTRA_SmobAdminTask"
+
+        // caller (typically outside this activity) can create an intent with a SmobAdminTask
+        fun newIntent(context: Context, smobTask: SmobAdminTask): Intent {
+            return context.createIntent<SmobShoppingActivity>(EXTRA_SmobAdminTask to smobTask)
+        }
+    }
+
+
     // bind views
     private lateinit var binding: ActivityShoppingBinding
-
-    // use navController activity wide
-    private lateinit var navController: NavController
-    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,28 +46,8 @@ class SmobShoppingActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_shopping)
         setContentView(binding.root)
 
-        // set-up navController
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment_planning) as NavHostFragment
-
-        navController = navHostFragment.navController
-
-        // use actionBar (instead of the system's ActivityBar)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        NavigationUI.setupActionBarWithNavController(this, navController)
-
     }
 
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                binding.navHostFragmentShopping.findNavController().popBackStack()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
 
     // fetch worker class form service locator

@@ -8,7 +8,7 @@
         app:constraintSetStart="@+id/start"
         app:constraintSetEnd="@+id/end">
         <OnSwipe
-            app:touchAnchorId="@id/ivDownloadSymbol"
+            app:touchAnchorId="@id/ivCartSymbol"
             app:touchAnchorSide="middle"
             />
 
@@ -17,19 +17,19 @@
             <!-- transition path -->
             <KeyPosition
                 app:framePosition="20"
-                app:motionTarget="@id/ivDownloadSymbol"
+                app:motionTarget="@id/ivCartSymbol"
                 app:keyPositionType="parentRelative"
                 app:percentX="0.1"
                 />
             <KeyPosition
                 app:framePosition="40"
-                app:motionTarget="@id/ivDownloadSymbol"
+                app:motionTarget="@id/ivCartSymbol"
                 app:keyPositionType="parentRelative"
                 app:percentX="0.5"
                 />
             <KeyPosition
                 app:framePosition="60"
-                app:motionTarget="@id/ivDownloadSymbol"
+                app:motionTarget="@id/ivCartSymbol"
                 app:keyPositionType="parentRelative"
                 app:percentX="0.9"
                 />
@@ -37,21 +37,21 @@
             <!--  attribute changes along the transition -->
             <KeyAttribute
                 app:framePosition="40"
-                app:motionTarget="@id/ivDownloadSymbol"
+                app:motionTarget="@id/ivCartSymbol"
                 android:scaleY="0.5"
                 android:scaleX="0.5"
                 android:rotation="-360"
                 />
             <KeyAttribute
                 app:framePosition="60"
-                app:motionTarget="@id/ivDownloadSymbol"
+                app:motionTarget="@id/ivCartSymbol"
                 android:scaleY="0.2"
                 android:scaleX="0.2"
                 android:rotation="-720"
                 />
             <KeyAttribute
                 app:framePosition="100"
-                app:motionTarget="@id/ivDownloadSymbol"
+                app:motionTarget="@id/ivCartSymbol"
                 android:rotation="-1080"
                 />
 
@@ -61,15 +61,15 @@
     <!-- Constraints to apply at the start of the animation -->
     <ConstraintSet android:id="@+id/start">
         <Constraint
-            android:id="@id/ivDownloadSymbol"
+            android:id="@id/ivCartSymbol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvRepoName" />
+            app:layout_constraintTop_toBottomOf="@id/tvShopName" />
 
         <Constraint
-            android:id="@id/ivRepoPreview"
+            android:id="@id/ivShopPreview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0.0"
@@ -81,7 +81,7 @@
     <!-- Constraints to apply at the end of the animation -->
     <ConstraintSet android:id="@+id/end">
         <Constraint
-            android:id="@id/ivDownloadSymbol"
+            android:id="@id/ivCartSymbol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0.0"
@@ -90,13 +90,13 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <Constraint
-            android:id="@id/ivRepoPreview"
+            android:id="@id/ivShopPreview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvRepoName" />
+            app:layout_constraintTop_toBottomOf="@id/tvShopName" />
             />
     </ConstraintSet>
 

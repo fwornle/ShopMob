@@ -19,6 +19,7 @@ import com.tanfra.shopmob.smob.ui.administration.SmobAdminTask
 import com.tanfra.shopmob.smob.ui.administration.SmobAdministrationActivity
 import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
 import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListFragmentDirections
+import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
 import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import org.koin.core.component.KoinComponent
@@ -83,6 +84,15 @@ class PlanningListsFragment : BaseFragment(), KoinComponent {
         // "+" FAB
         binding.addSmobItemFab.setOnClickListener {
             navigateToAddSmobList()
+        }
+
+
+        // "SHOP" FAB
+        binding.goShop.setOnClickListener {
+            val intent = SmobShoppingActivity.newIntent(requireContext(), SmobAdminTask.NEW_LIST)
+            wrapEspressoIdlingResource {
+                startActivity(intent)
+            }
         }
 
     }

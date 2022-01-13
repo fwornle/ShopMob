@@ -49,16 +49,6 @@ class SmobShoppingZonesFragment : BaseFragment(), KoinComponent {
 
         binding.lifecycleOwner = viewLifecycleOwner
 
-        // set onClick handler for DISMISS button
-        // ... navigate back to the main app
-        binding.btDismiss.setOnClickListener {
-
-            // ... go shopping
-            val intent = Intent(this.context, SmobPlanningActivity::class.java)
-            startActivity(intent)
-
-        }
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

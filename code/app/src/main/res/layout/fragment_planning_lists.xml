@@ -73,6 +73,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/goShop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_normal"
+                android:src="@drawable/ic_baseline_shopping_cart_24"
+                android:contentDescription="@string/add_smob_item"
+                app:fabSize="normal"
+                app:layout_anchor="@id/smobItemsRecyclerView"
+                app:layout_anchorGravity="center_vertical"
+                app:layout_constraintTop_toBottomOf="@id/progressBar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

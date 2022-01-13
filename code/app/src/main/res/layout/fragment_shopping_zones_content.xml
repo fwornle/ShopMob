@@ -12,30 +12,31 @@
     tools:showIn="@layout/activity_shopping">
 
     <TextView
-        android:id="@+id/tvRepoHeader"
+        android:id="@+id/tvShopHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name_details_shop"
         android:textColor="@color/primaryDarkColor"
-        android:layout_margin="@dimen/margin_normal"
+        android:layout_margin="@dimen/text_size_large"
         android:textStyle="bold"
         android:textSize="@dimen/text_size_large"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/tvRepoName"
+        app:layout_constraintBottom_toTopOf="@+id/tvShopName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
 
     <TextView
-        android:id="@+id/tvRepoName"
+        android:id="@+id/tvShopName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal"
         android:padding="@dimen/margin_normal"
-        android:text=""
-        tools:text="da repo url"
+        android:text="@string/coming_soon"
+        tools:text="da shop name"
         android:textColor="@color/primaryDarkColor"
         android:textSize="@dimen/text_size_normal"
-        app:layout_constraintTop_toBottomOf="@id/tvRepoHeader"
+        app:layout_constraintTop_toBottomOf="@id/tvShopHeader"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
@@ -44,14 +45,14 @@
     <!-- the following views are constraint by the MotionLayout -->
 
     <ImageView
-        android:id="@+id/ivDownloadSymbol"
+        android:id="@+id/ivCartSymbol"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/image_size_medium"
+        android:layout_height="@dimen/image_size_small"
         android:contentDescription="@string/icon_shopping_cart"
-        android:src="@drawable/ic_baseline_shopping_cart_24" />
+        android:src="@drawable/shopping_icon" />
 
     <ImageView
-        android:id="@+id/ivRepoPreview"
+        android:id="@+id/ivShopPreview"
         android:layout_width="match_parent"
         android:layout_height="@dimen/image_size_large"
         android:contentDescription="@string/shopping"

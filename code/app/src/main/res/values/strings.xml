@@ -77,5 +77,6 @@
     <string name="static_shortcut_disabled_message">No active ShopMob shopping list found</string>
     <string name="open">open</string>
     <string name="close">close</string>
+    <string name="coming_soon">… coming soon.</string>
 
 </resources>
