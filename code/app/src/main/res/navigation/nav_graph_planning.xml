@@ -39,6 +39,20 @@
         <action
             android:id="@+id/action_planningListsFragment_to_planningProductListFragment"
             app:destination="@id/smobPlanningProductListFragment" />
+        <action
+            android:id="@+id/action_planningListsFragment_to_planningListsEditFragment"
+            app:destination="@id/smobPlanningListsEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/smobPlanningListsEditFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.listsEdit.PlanningListsEditFragment"
+        android:label="Planning Lists Edit"
+        tools:layout="@layout/fragment_planning_lists_edit"
+        >
+        <action
+            android:id="@+id/action_planningListsEditFragment_to_planningProductListsFragment"
+            app:destination="@id/smobPlanningProductListFragment" />
     </fragment>
 
     <fragment

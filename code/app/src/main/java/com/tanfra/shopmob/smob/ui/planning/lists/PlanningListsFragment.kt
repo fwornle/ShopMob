@@ -12,13 +12,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
 import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentPlanningListsBinding
 import com.tanfra.shopmob.smob.ui.administration.SmobAdminTask
-import com.tanfra.shopmob.smob.ui.administration.SmobAdministrationActivity
 import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
-import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListFragmentDirections
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
 import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
@@ -81,26 +78,25 @@ class PlanningListsFragment : BaseFragment(), KoinComponent {
         // RV - incl. onClick listener for items
         setupRecyclerView()
 
-        // "+" FAB
-        binding.addSmobItemFab.setOnClickListener {
-            navigateToAddSmobList()
-        }
-
-
-        // "SHOP" FAB
-        binding.goShop.setOnClickListener {
-            val intent = SmobShoppingActivity.newIntent(requireContext(), SmobAdminTask.NEW_LIST)
-            wrapEspressoIdlingResource {
-                startActivity(intent)
-            }
-        }
+        // "+" FAB and "SHOP FAB
+        binding.addSmobItemFab.setOnClickListener { navigateToAddSmobList() }
+        binding.goShop.setOnClickListener { navigateToShopping() }
 
     }
 
     // FAB handler --> navigate to selected fragment of the admin activity
     private fun navigateToAddSmobList() {
-        // request fragment "list administration"
-        val intent = SmobAdministrationActivity.newIntent(requireContext(), SmobAdminTask.NEW_LIST)
+        // request fragment "listEdit"
+        _viewModel.navigationCommand.postValue(
+            NavigationCommand.To(
+                PlanningListsFragmentDirections.actionPlanningListsFragmentToPlanningListsEditFragment()
+            )
+        )
+    }
+
+    // "SHOP" FAB handler --> navigate to selected fragment of the admin activity
+    private fun navigateToShopping() {
+        val intent = SmobShoppingActivity.newIntent(requireContext(), SmobAdminTask.NEW_LIST)
         wrapEspressoIdlingResource {
             startActivity(intent)
         }

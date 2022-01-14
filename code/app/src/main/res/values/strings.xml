@@ -19,6 +19,11 @@
     <string name="smob_item_desc">ShopMob Item Description</string>
     <string name="smob_item_location">ShopMob Item Location</string>
     <string name="smob_item_saved">ShopMob Item Saved!</string>
+
+    <string name="smob_list_name">ShopMob Shopping List Name</string>
+    <string name="smob_list_desc">ShopMob Shopping List Description</string>
+    <string name="smob_list_saved">ShopMob Shop List Saved!</string>
+
     <string name="logout">Logout</string>
     <string name="welcome_message">Welcome to\nShopMob</string>
     <string name="login">Login</string>
@@ -40,7 +45,9 @@
     <!-- Error strings -->
     <string name="smob_icon">ShopMob icon</string>
     <string name="add_smob_item">Add ShopMob item</string>
+    <string name="add_smob_shop">Add ShopMob shop</string>
     <string name="save_smob_item">Save ShopMob item</string>
+    <string name="save_smob_shop">Save ShopMob shop</string>
 
     <!-- buttons -->
     <string name="ok">OK</string>

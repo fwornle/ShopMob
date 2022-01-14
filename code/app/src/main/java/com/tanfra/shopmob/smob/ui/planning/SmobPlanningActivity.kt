@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.*
 import androidx.navigation.ui.setupWithNavController
 import com.tanfra.shopmob.R
@@ -78,6 +79,11 @@ class SmobPlanningActivity : AppCompatActivity() {
         setupActionBarWithNavController(this, navController, drawerLayout)
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_planning) as NavHostFragment
+        val navController = navHostFragment.navController
+        return navigateUp(navController, drawerLayout)
+    }
 
     // handle home button
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

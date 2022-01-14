@@ -14,7 +14,7 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context="com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsFragment">
+        tools:context="com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsEditFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -25,10 +25,10 @@
                 android:id="@+id/smobItemsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:stateFlowResource="@{viewModel.smobList}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:stateFlowResource="@{viewModel.smobList}" />
 
             <TextView
                 android:id="@+id/noDataTextView"
@@ -69,7 +69,7 @@
                 app:layout_anchor="@id/smobItemsRecyclerView"
                 app:layout_anchorGravity="bottom|right|end"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/goShop"
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
@@ -78,15 +78,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_normal"
+                android:layout_marginBottom="269dp"
+                android:contentDescription="@string/add_smob_shop"
                 android:src="@drawable/ic_baseline_shopping_cart_24"
-                android:contentDescription="@string/add_smob_item"
                 app:fabSize="normal"
                 app:layout_anchor="@id/smobItemsRecyclerView"
-                app:layout_anchorGravity="center_vertical"
-                app:layout_constraintTop_toBottomOf="@id/progressBar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
+                app:layout_anchorGravity="bottom|left|start"
+                app:layout_constraintBottom_toBottomOf="@+id/smobItemsRecyclerView"
+                app:layout_constraintEnd_toStartOf="@id/add_smob_item_fab"
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
