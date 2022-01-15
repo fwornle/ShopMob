@@ -33,6 +33,8 @@ import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.databinding.FragmentPlanningShopMapBinding
 import com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditViewModel
 import com.tanfra.shopmob.smob.data.local.utils.ShopLocation
+import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
+import com.tanfra.shopmob.smob.ui.planning.utils.openSoftKeyboard
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
 import timber.log.Timber
@@ -440,23 +442,5 @@ class PlanningShopMapFragment : BaseFragment(), OnMapReadyCallback {
         }  // permissions checked
 
     }  // enableMyLocation
-
-
-    // programmatically open keyboard to allow focus on EditText box to be set automatically
-    // ... see: https://stackoverflow.com/questions/50743467/focus-edit-text-programmatically-kotlin
-    private fun openSoftKeyboard(context: Context, view: View) {
-        view.requestFocus()
-        // open the soft keyboard
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-    }
-
-    // programmatically close keyboard
-    // ... see: https://stackoverflow.com/questions/1109022/how-do-you-close-hide-the-android-soft-keyboard-programmatically
-    private fun closeSoftKeyboard(context: Context, view: View) {
-        // close the soft keyboard
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
-    }
 
 }

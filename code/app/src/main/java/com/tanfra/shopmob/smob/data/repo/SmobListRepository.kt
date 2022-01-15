@@ -111,11 +111,15 @@ class SmobListRepository(
             smobListDao.saveSmobList(dbList)
 
             // then push to backend DB
-            // ... use 'update', as list may already exist (equivalent of REPLACE w/h local DB)
-            //
-            // ... could do a read back first, if we're anxious...
-            //smobListDao.getSmobListById(dbList.id)?.let { smobListApi.updateSmobList(it.id, it.asNetworkModel()) }
-            smobListApi.updateSmobListById(dbList.id, dbList.asNetworkModel())
+            // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
+            val testRead = getSmobListViaApi(dbList.id)
+            if (testRead.data?.id != dbList.id) {
+                // item not found in backend --> use POST to create it
+                saveSmobListViaApi(dbList)
+            } else {
+                // item already exists in backend DB --> use PUT to update it
+                smobListApi.updateSmobListById(dbList.id, dbList.asNetworkModel())
+            }
 
         }  // idlingResource (testing)
 
@@ -381,13 +385,8 @@ class SmobListRepository(
 
     // net-facing setter: save a specific (new) list
     private suspend fun saveSmobListViaApi(smobListDTO: SmobListDTO) = withContext(ioDispatcher) {
-
-        // support espresso testing (w/h coroutines)
-        wrapEspressoIdlingResource {
             smobListApi.saveSmobList(smobListDTO.asNetworkModel())
-        }
-
-    }  // saveSmobListToApi
+    }
 
 
     // net-facing setter: update a specific (existing) list
@@ -395,23 +394,13 @@ class SmobListRepository(
         id: String,
         smobListDTO: SmobListDTO,
     ) = withContext(ioDispatcher) {
-
-        // support espresso testing (w/h coroutines)
-        wrapEspressoIdlingResource {
             smobListApi.updateSmobListById(id, smobListDTO.asNetworkModel())
-        }
-
-    }  // updateSmobListToApi
+    }
 
 
     // net-facing setter: delete a specific (existing) list
     private suspend fun deleteSmobListViaApi(id: String) = withContext(ioDispatcher) {
-
-        // support espresso testing (w/h coroutines)
-        wrapEspressoIdlingResource {
             smobListApi.deleteSmobListById(id)
-        }
-
-    }  // deleteSmobListToApi
+    }
 
 }

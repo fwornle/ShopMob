@@ -13,6 +13,7 @@ import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.local.utils.SmobListLifecycle
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
+import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import java.util.*
@@ -55,6 +56,9 @@ class PlanningListsEditFragment : BaseFragment(), KoinComponent {
 
         // clicking on the 'saveSmobList' FAB saves the newly created smobList
         binding.saveSmobList.setOnClickListener {
+
+            // close SoftKeyboard
+            closeSoftKeyboard(requireContext(), view)
 
             // initialize data record to be written to DB
             // ... if no better values have been provided by the user (taken from viewModel), this

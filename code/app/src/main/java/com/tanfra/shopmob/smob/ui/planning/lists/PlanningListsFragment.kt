@@ -84,7 +84,7 @@ class PlanningListsFragment : BaseFragment(), KoinComponent {
         // RV - incl. onClick listener for items
         setupRecyclerView()
 
-        // "+" FAB and "SHOP FAB
+        // handlers for "+" FAB and "SHOP" FAB
         binding.addSmobItemFab.setOnClickListener { navigateToAddSmobList() }
         binding.goShop.setOnClickListener { navigateToShopping() }
 

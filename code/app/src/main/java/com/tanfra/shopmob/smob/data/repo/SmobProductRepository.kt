@@ -140,11 +140,15 @@ class SmobProductRepository(
             smobProductDao.saveSmobProduct(dbProduct)
 
             // then push to backend DB
-            // ... use 'update', as product may already exist (equivalent of REPLACE w/h local DB)
-            //
-            // ... could do a read back first, if we're anxious...
-            //smobProductDao.getSmobProductById(dbProduct.id)?.let { smobProductApi.updateSmobProduct(it.id, it.asNetworkModel()) }
-            smobProductApi.updateSmobProductById(dbProduct.id, dbProduct.asNetworkModel())
+            // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
+            val testRead = getSmobProductViaApi(dbProduct.id)
+            if (testRead.data?.id != dbProduct.id) {
+                // item not found in backend --> use POST to create it
+                saveSmobProductViaApi(dbProduct)
+            } else {
+                // item already exists in backend DB --> use PUT to update it
+                smobProductApi.updateSmobProductById(dbProduct.id, dbProduct.asNetworkModel())
+            }
 
         }  // idlingResource (testing)
 
@@ -399,13 +403,8 @@ class SmobProductRepository(
 
     // net-facing setter: save a specific (new) product
     private suspend fun saveSmobProductViaApi(smobProductDTO: SmobProductDTO) = withContext(ioDispatcher) {
-
-        // support espresso testing (w/h coroutines)
-        wrapEspressoIdlingResource {
-            smobProductApi.saveSmobProduct(smobProductDTO.asNetworkModel())
-        }
-
-    }  // saveSmobProductToApi
+        smobProductApi.saveSmobProduct(smobProductDTO.asNetworkModel())
+    }
 
 
     // net-facing setter: update a specific (existing) product
@@ -413,23 +412,13 @@ class SmobProductRepository(
         id: String,
         smobProductDTO: SmobProductDTO,
     ) = withContext(ioDispatcher) {
-
-        // support espresso testing (w/h coroutines)
-        wrapEspressoIdlingResource {
-            smobProductApi.updateSmobProductById(id, smobProductDTO.asNetworkModel())
-        }
-
-    }  // updateSmobProductToApi
+        smobProductApi.updateSmobProductById(id, smobProductDTO.asNetworkModel())
+    }
 
 
     // net-facing setter: delete a specific (existing) product
     private suspend fun deleteSmobProductViaApi(id: String) = withContext(ioDispatcher) {
-
-        // support espresso testing (w/h coroutines)
-        wrapEspressoIdlingResource {
-            smobProductApi.deleteSmobProductById(id)
-        }
-
-    }  // deleteSmobProductToApi
+        smobProductApi.deleteSmobProductById(id)
+    }
 
 }

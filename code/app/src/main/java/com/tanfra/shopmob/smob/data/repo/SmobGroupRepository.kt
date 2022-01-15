@@ -112,11 +112,15 @@ class SmobGroupRepository(
             smobGroupDao.saveSmobGroup(dbGroup)
 
             // then push to backend DB
-            // ... use 'update', as group may already exist (equivalent of REPLACE w/h local DB)
-            //
-            // ... could do a read back first, if we're anxious...
-            //smobGroupDao.getSmobGroupById(dbGroup.id)?.let { smobGroupApi.updateSmobGroup(it.id, it.asNetworkModel()) }
-            smobGroupApi.updateSmobGroupById(dbGroup.id, dbGroup.asNetworkModel())
+            // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
+            val testRead = getSmobGroupViaApi(dbGroup.id)
+            if (testRead.data?.id != dbGroup.id) {
+                // item not found in backend --> use POST to create it
+                saveSmobGroupViaApi(dbGroup)
+            } else {
+                // item already exists in backend DB --> use PUT to update it
+                smobGroupApi.updateSmobGroupById(dbGroup.id, dbGroup.asNetworkModel())
+            }
 
         }  // idlingResource (testing)
 
@@ -370,13 +374,8 @@ class SmobGroupRepository(
 
     // net-facing setter: save a specific (new) group
     private suspend fun saveSmobGroupViaApi(smobGroupDTO: SmobGroupDTO) = withContext(ioDispatcher) {
-
-        // support espresso testing (w/h coroutines)
-        wrapEspressoIdlingResource {
             smobGroupApi.saveSmobGroup(smobGroupDTO.asNetworkModel())
-        }
-
-    }  // saveSmobGroupToApi
+    }
 
 
     // net-facing setter: update a specific (existing) group
@@ -384,23 +383,13 @@ class SmobGroupRepository(
         id: String,
         smobGroupDTO: SmobGroupDTO,
     ) = withContext(ioDispatcher) {
-
-        // support espresso testing (w/h coroutines)
-        wrapEspressoIdlingResource {
             smobGroupApi.updateSmobGroupById(id, smobGroupDTO.asNetworkModel())
-        }
-
-    }  // updateSmobGroupToApi
+    }
 
 
     // net-facing setter: delete a specific (existing) group
     private suspend fun deleteSmobGroupViaApi(id: String) = withContext(ioDispatcher) {
-
-        // support espresso testing (w/h coroutines)
-        wrapEspressoIdlingResource {
-            smobGroupApi.deleteSmobGroupById(id)
-        }
-
-    }  // deleteSmobGroupToApi
+        smobGroupApi.deleteSmobGroupById(id)
+    }
 
 }

@@ -150,11 +150,15 @@ class SmobShopRepository(
                 smobShopDao.updateSmobShop(dbShop)
 
                 // then push to backend DB
-                // ... use 'update', as shop may already exist (equivalent of REPLACE w/h local DB)
-                //
-                // ... could do a read back first, if we're anxious...
-                //smobShopDao.getSmobShopById(dbShop.id)?.let { smobShopApi.updateSmobShop(it.id, it.asNetworkModel()) }
-                smobShopApi.updateSmobShopById(dbShop.id, dbShop.asNetworkModel())
+                // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
+                val testRead = getSmobShopViaApi(dbShop.id)
+                if (testRead.data?.id != dbShop.id) {
+                    // item not found in backend --> use POST to create it
+                    saveSmobShopViaApi(dbShop)
+                } else {
+                    // item already exists in backend DB --> use PUT to update it
+                    smobShopApi.updateSmobShopById(dbShop.id, dbShop.asNetworkModel())
+                }
 
             }
         }
@@ -374,13 +378,8 @@ class SmobShopRepository(
 
     // net-facing setter: save a specific (new) shop
     private suspend fun saveSmobShopViaApi(smobShopDTO: SmobShopDTO) = withContext(ioDispatcher) {
-
-        // support espresso testing (w/h coroutines)
-        wrapEspressoIdlingResource {
-            smobShopApi.saveSmobShop(smobShopDTO.asNetworkModel())
-        }
-
-    }  // saveSmobShopToApi
+        smobShopApi.saveSmobShop(smobShopDTO.asNetworkModel())
+    }
 
 
     // net-facing setter: update a specific (existing) shop
@@ -388,23 +387,13 @@ class SmobShopRepository(
         id: String,
         smobShopDTO: SmobShopDTO,
     ) = withContext(ioDispatcher) {
-
-        // support espresso testing (w/h coroutines)
-        wrapEspressoIdlingResource {
-            smobShopApi.updateSmobShopById(id, smobShopDTO.asNetworkModel())
-        }
-
-    }  // updateSmobShopToApi
+        smobShopApi.updateSmobShopById(id, smobShopDTO.asNetworkModel())
+    }
 
 
     // net-facing setter: delete a specific (existing) shop
     private suspend fun deleteSmobShopViaApi(id: String) = withContext(ioDispatcher) {
-
-        // support espresso testing (w/h coroutines)
-        wrapEspressoIdlingResource {
-            smobShopApi.deleteSmobShopById(id)
-        }
-
-    }  // deleteSmobShopToApi
+        smobShopApi.deleteSmobShopById(id)
+    }
 
 }
