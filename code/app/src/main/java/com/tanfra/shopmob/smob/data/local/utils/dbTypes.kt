@@ -83,7 +83,7 @@ data class ShopLocation(
 @Serializable
 data class SmobListItem(
     val id: String,
-    val status: SmobItemStatus,
+    var status: SmobItemStatus,
     val listPosition: Long,
 ) : java.io.Serializable
 

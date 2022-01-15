@@ -24,15 +24,12 @@ class PlanningListsAdapter(rootView: View, callBack: (selectedSmobATO: SmobListA
     // filter (and sort) list - straight through, if not needed
     override fun listFilter(items: List<SmobListATO>): List<SmobListATO> {
 
-        // consolidate list item data (prior to displaying them)
-        items.map { item -> consolidateListItem(item) }
-
         // take out all items which have been deleted by swiping
         return items
             .filter { item -> item.itemStatus != SmobItemStatus.DELETED  }
+            .map { item -> consolidateListItem(item) }
             .sortedWith(
                 compareBy(
-                    { it.itemStatus },
                     { it.itemPosition },
                 )
             )
@@ -46,9 +43,16 @@ class PlanningListsAdapter(rootView: View, callBack: (selectedSmobATO: SmobListA
     override fun uiActionConfirmed(item: SmobListATO, rootView: View) {
 
         // consolidate list item data (prior to writing to the DB)
-        val itemAdjusted = consolidateListItem(item)
+        val itemAdjusted = if(item.itemStatus != SmobItemStatus.DELETED) {
+            // user swiped right --> marking all sub-entries as "IN_PROGRESS" + aggregating here
+            consolidateListItem(item)
+        } else {
+            // user swiped left --> delete list (by marking it as DELETED)
+            item
+        }
 
-        // collect current list from smobList (flow)
+        // update (PUT) adjusted smobList item
+        // ... also used to "DELETE" a list (marked as DELETED, then filtered out)
         rootView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
 
             // collect SmobList flow
@@ -77,7 +81,7 @@ class PlanningListsAdapter(rootView: View, callBack: (selectedSmobATO: SmobListA
 
         }  // coroutine scope (lifecycleScope)
 
-    }  // leftSwipeConfirmed
+    }  // uiActionConfirmed
 
 
     // recompute status & completion rate from linked list items
@@ -97,10 +101,13 @@ class PlanningListsAdapter(rootView: View, callBack: (selectedSmobATO: SmobListA
         }
 
         // ... completion rate (= nDONE/nTOTAL)
-        val doneItems = valItems.filter { daItem -> daItem.status == SmobItemStatus.DONE }.size
-        val completionRate = (100.0 * doneItems / nValItems).roundToInt().toDouble()
-        item.lifecycle.completion = completionRate
-
+        item.lifecycle.completion = when(nValItems) {
+            0 -> 0.0
+            else -> {
+                val doneItems = valItems.filter { daItem -> daItem.status == SmobItemStatus.DONE }.size
+                (100.0 * doneItems / nValItems).roundToInt().toDouble()
+            }
+        }
 
         // return adjusted item
         return item

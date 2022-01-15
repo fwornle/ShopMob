@@ -56,8 +56,15 @@ abstract class BaseSwipeActionHandler<T: BaseRecyclerViewAdapter<Ato>>(adapter: 
     // abstract declaration of list specific functions --------------------------------
     // ... to be implemented in the concrete adapter (--> parent class)
 
-    // possibility to apply side effects of a swiping action --> can be straight through
-    abstract fun swipeActionSideEffect(listViewAdapter: T, position: Int)
+    // each list has their own semantics wrt. swiping
+    // ... list specific implementation, to be overridden in concrete (parent) class
+    abstract fun swipeActionStateMachine(
+        direction: Int,
+        item: Ato,
+        position: Int,
+        viewHolder: RecyclerView.ViewHolder,
+        adapter: T,
+    )
 
 
     // up/down swipes (re-ordering)
@@ -74,6 +81,12 @@ abstract class BaseSwipeActionHandler<T: BaseRecyclerViewAdapter<Ato>>(adapter: 
     // left/right
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
+//        // swiping complete -> remove background (green/red)
+//        bgOnTheRight.setBounds(0, 0, 0, 0)
+//        bgOnTheLeft.setBounds(0, 0, 0, 0)
+//        iconTrash?.setBounds(0, 0, 0, 0)
+//        iconTick?.setBounds(0, 0, 0, 0)
+
         // get item
         val position = viewHolder.bindingAdapterPosition
         val item = mAdapter.getItem(position)
@@ -83,82 +96,7 @@ abstract class BaseSwipeActionHandler<T: BaseRecyclerViewAdapter<Ato>>(adapter: 
         mAdapter.mSnapshotItemPosition = position
 
         // process swiping action
-        when(direction) {
-
-            ItemTouchHelper.LEFT -> {
-
-                // swipe left ("un-purchase" item)
-                when(item.itemStatus) {
-                    SmobItemStatus.DONE -> {
-
-                        // change item status
-                        item.itemStatus = SmobItemStatus.IN_PROGRESS
-                        mAdapter.setItem(position, item)
-
-                        // restore RV item view (removing the animation effects)
-                        mAdapter.restoreItemView(position)
-
-                        // send status to DB/backend
-                        mAdapter.uiActionConfirmed(item, viewHolder.itemView)
-
-                    }
-                    SmobItemStatus.IN_PROGRESS -> {
-
-                        // change item status
-                        item.itemStatus = SmobItemStatus.OPEN
-                        mAdapter.setItem(position, item)
-
-                        // restore RV item view (removing the animation effects)
-                        mAdapter.restoreItemView(position)
-
-                        // send status to DB/backend
-                        mAdapter.uiActionConfirmed(item, viewHolder.itemView)
-
-                    }
-                    else -> {
-
-                        // mark item as 'deleted'
-                        item.itemStatus = SmobItemStatus.DELETED
-                        mAdapter.setItem(position, item)
-
-                        // throw item off the list
-                        // --> swings by UNDO... communication to DB/backend from there
-                        mAdapter.deleteItem(position, R.string.undo_delete)
-                    }
-
-                }  // when (status)
-
-            } // LEFT
-
-            ItemTouchHelper.RIGHT -> {
-
-                // swipe right (purchase item)
-                when(item.itemStatus) {
-                    SmobItemStatus.NEW, SmobItemStatus.OPEN -> {
-                        item.itemStatus = SmobItemStatus.IN_PROGRESS
-                        mAdapter.setItem(position, item)
-                    }
-                    SmobItemStatus.IN_PROGRESS -> {
-                        item.itemStatus = SmobItemStatus.DONE
-                        mAdapter.setItem(position, item)
-                    }
-                    else -> {
-                        // already "DONE" --> indicate haptically
-                        val vib = mAdapter.rootView.context.getSystemService(Vibrator::class.java)
-                        vibrateDevice(vib, 150)
-                    }
-
-                }  // when (status)
-
-                // restore RV item view (removing the animation effects)
-                mAdapter.restoreItemView(position)
-
-                // send status to DB/backend
-                mAdapter.uiActionConfirmed(item, viewHolder.itemView)
-
-            }  // RIGHT
-
-        }  // when (direction)
+        swipeActionStateMachine(direction, item, position, viewHolder, mAdapter)
 
     }  // onSwiped
 

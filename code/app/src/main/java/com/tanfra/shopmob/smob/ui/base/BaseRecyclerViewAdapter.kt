@@ -12,6 +12,7 @@ import android.view.View
 import com.google.android.material.snackbar.BaseTransientBottomBar
 
 import com.google.android.material.snackbar.Snackbar
+import com.tanfra.shopmob.R
 
 
 abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callback: ((item: T) -> Unit)? = null) :
@@ -121,7 +122,7 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
 
     }
 
-    // restore RV item view (at the end of a 'right' swipe or after 'undo'
+    // restore RV item view (at the end of a 'right' swipe or after 'undo')
     // ... i. e. whenever the item is not deleted and remains on the list (only status has changed)
     fun restoreItemView(position: Int) {
 
@@ -143,7 +144,7 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
     }
 
     private fun showUndoSnackbar(textResId: Int) {
-        val view: View = rootView.findViewById(com.tanfra.shopmob.R.id.smobItemsRecyclerView)
+        val view: View = rootView.findViewById(R.id.smobItemsRecyclerView)
 
         Snackbar
             .make(
@@ -151,7 +152,7 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
                 Snackbar.LENGTH_LONG
             )
             .apply {
-                setAction(com.tanfra.shopmob.R.string.undo) { _ -> undoDelete() }
+                setAction(R.string.undo) { _ -> undoDelete() }
                 addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
                     override fun onShown(transientBottomBar: Snackbar?) {
                         super.onShown(transientBottomBar)
