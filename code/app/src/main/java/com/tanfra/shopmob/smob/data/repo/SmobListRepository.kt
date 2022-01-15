@@ -103,25 +103,22 @@ class SmobListRepository(
      */
     override suspend fun saveSmobList(smobListATO: SmobListATO): Unit = withContext(ioDispatcher) {
 
-        // support espresso testing (w/h coroutines)
-        wrapEspressoIdlingResource {
+        // first store in local DB first
+        val dbList = smobListATO.asDatabaseModel()
+        //Timber.i("about to save new list in DB +++++++++++++++++++++++++")
+        smobListDao.saveSmobList(dbList)
+        //Timber.i("just saved new list in DB +++++++++++++++++++++++++")
 
-            // first store in local DB first
-            val dbList = smobListATO.asDatabaseModel()
-            smobListDao.saveSmobList(dbList)
-
-            // then push to backend DB
-            // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
-            val testRead = getSmobListViaApi(dbList.id)
-            if (testRead.data?.id != dbList.id) {
-                // item not found in backend --> use POST to create it
-                saveSmobListViaApi(dbList)
-            } else {
-                // item already exists in backend DB --> use PUT to update it
-                smobListApi.updateSmobListById(dbList.id, dbList.asNetworkModel())
-            }
-
-        }  // idlingResource (testing)
+        // then push to backend DB
+        // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
+        val testRead = getSmobListViaApi(dbList.id)
+        if (testRead.data?.id != dbList.id) {
+            // item not found in backend --> use POST to create it
+            saveSmobListViaApi(dbList)
+        } else {
+            // item already exists in backend DB --> use PUT to update it
+            smobListApi.updateSmobListById(dbList.id, dbList.asNetworkModel())
+        }
 
     }
 

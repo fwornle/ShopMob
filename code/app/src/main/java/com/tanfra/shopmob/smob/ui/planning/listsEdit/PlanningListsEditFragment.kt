@@ -30,6 +30,9 @@ class PlanningListsEditFragment : BaseFragment(), KoinComponent {
     // assemble smobList data item
     private lateinit var daSmobListATO: SmobListATO
 
+    // new lists are created at the highest position (+1)
+    private var listPosMax: Long = 0L
+
 
     // create fragment view
     override fun onCreateView(
@@ -40,6 +43,9 @@ class PlanningListsEditFragment : BaseFragment(), KoinComponent {
         // inflate fragment layout and return binding object
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_planning_lists_edit, container, false)
+
+        // fetch currently highest list position from incoming bundle
+        listPosMax = arguments?.getLong("listPosMax") ?: 0L
 
         setDisplayHomeAsUpEnabled(true)
 
@@ -66,12 +72,12 @@ class PlanningListsEditFragment : BaseFragment(), KoinComponent {
             daSmobListATO = SmobListATO(
                 UUID.randomUUID().toString(),
                 SmobItemStatus.NEW,
-                -1L,
+                listPosMax + 1,
                 _viewModel.smobListName.value ?: "mystery list",
                 _viewModel.smobListDescription.value ?: "something exciting",
                 listOf(),
                 listOf(),
-                SmobListLifecycle(SmobItemStatus.OPEN, 0.0),
+                SmobListLifecycle(SmobItemStatus.NEW, 0.0),
             )
 
             // store smob List in DB

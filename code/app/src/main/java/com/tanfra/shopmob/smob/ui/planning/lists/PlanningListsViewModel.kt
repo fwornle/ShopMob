@@ -1,6 +1,7 @@
 package com.tanfra.shopmob.smob.ui.planning.lists
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 
 import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.smob.ui.base.BaseViewModel
@@ -64,6 +65,7 @@ class PlanningListsViewModel(
         }
 
     }  // swipeRefreshDataInLocalDB
+
 
     /**
      * Inform the user that the list is empty
