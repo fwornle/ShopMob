@@ -12,7 +12,7 @@ class PlanningProductListSwipeActionHandler(adapter: PlanningProductListAdapter)
 
     // apply side effect of swiping action
     override fun swipeActionSideEffect(listViewAdapter: BaseRecyclerViewAdapter<Ato>, position: Int) {
-        Timber.i("Applying side effects to item with status: (${listViewAdapter.getItem(position).itemStatus}")
+        Timber.i("Possibility to apply post-swipe side effects.")
     }
 
 }

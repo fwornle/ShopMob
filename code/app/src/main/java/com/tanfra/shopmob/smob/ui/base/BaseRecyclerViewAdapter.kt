@@ -81,7 +81,7 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
     @SuppressLint("NotifyDataSetChanged")
     fun addData(items: List<T>) {
 
-        // call item filter (e.g. remove items in status 'DELETED'
+        // call item filter (e.g. remove items in status 'DELETED', consolidate changes, etc.)
         // ... list specific --> call function from concrete adapter
         _items.addAll(listFilter(items))
         notifyDataSetChanged()

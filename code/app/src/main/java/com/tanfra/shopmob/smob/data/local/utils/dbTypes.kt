@@ -90,5 +90,5 @@ data class SmobListItem(
 @Serializable
 data class SmobListLifecycle(
     val status: SmobItemStatus,
-    val completion: Double
+    var completion: Double
 ) : java.io.Serializable
