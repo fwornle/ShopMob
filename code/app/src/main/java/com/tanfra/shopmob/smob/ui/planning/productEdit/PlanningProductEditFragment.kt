@@ -11,10 +11,7 @@ import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.databinding.FragmentPlanningProductEditBinding
-import com.tanfra.shopmob.smob.data.local.utils.ActivityStatus
-import com.tanfra.shopmob.smob.data.local.utils.ProductCategory
-import com.tanfra.shopmob.smob.data.local.utils.ProductMainCategory
-import com.tanfra.shopmob.smob.data.local.utils.ProductSubCategory
+import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.ui.planning.listsEdit.PlanningListsEditViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -76,6 +73,8 @@ class PlanningProductEditFragment : BaseFragment(), KoinComponent {
             //     is going to be the data record written to the DB
             daSmobProductATO = SmobProductATO(
                 UUID.randomUUID().toString(),
+                SmobItemStatus.NEW,
+                -1L,
                 _viewModel.smobProductName.value ?: "mystery item",
                 _viewModel.smobProductDescription.value ?: "something strange",
                 _viewModel.smobProductImageUrl.value ?: "mystery picture",

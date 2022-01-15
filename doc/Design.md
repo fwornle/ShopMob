@@ -214,6 +214,8 @@ The _smobUser_ entries of the _smobUsers_ table adheres to the following schema:
 ```json
 {
   "id": "UUID-user",
+  "itemStatus": "NEW|OPEN|IN_PROGRESS|DONE|DELETED",
+  "itemPosition": 0,
   "username": "username",
   "name": "name",
   "email": "max@mustermann.com",
@@ -228,6 +230,8 @@ The _smobGroup_ entries of the _smobGroups_ table adheres to the following schem
 ```json
 {
   "id": "UUID-group",
+  "itemStatus": "NEW|OPEN|IN_PROGRESS|DONE|DELETED",
+  "itemPosition": 0,
   "name": "group name",
   "description": "daily groceries",
   "type": "(default)OTHER|FAMILY|FRIENDS|WORK",
@@ -251,6 +255,8 @@ The _smobProduct_ entries of the _smobProducts_ table adheres to the following s
 ```json
 {
   "id": "UUID-product",
+  "itemStatus": "NEW|OPEN|IN_PROGRESS|DONE|DELETED",
+  "itemPosition": 0,
   "name": "product name",
   "description": "lactose free",
   "imageUrl": "URL",
@@ -272,6 +278,8 @@ The _smobStore_ entries of the _smobStores_ table adheres to the following schem
 ```json
 {
   "id": "UUID-store",
+  "itemStatus": "NEW|OPEN|IN_PROGRESS|DONE|DELETED",
+  "itemPosition": 0,
   "name": "store name",
   "description": "it's a good-e store",
   "imageUrl": "a pretty store",
@@ -300,12 +308,14 @@ The _smobList_ entries of the _smobLists_ table adheres to the following schema:
 ```json
 {
   "id": "UUID-list",
+  "itemStatus": "NEW|OPEN|IN_PROGRESS|DONE|DELETED",
+  "itemPosition": 0,
   "name": "smob list name",
   "description": "our daily groceries",
   "items": [
-    { "id": "productId1", "status": "OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 1 },
-    { "id": "productId2", "status": "OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 2 },
-    { "id": "productId3", "status": "OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 3 },
+    { "id": "productId1", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 1 },
+    { "id": "productId2", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 2 },
+    { "id": "productId3", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 3 },
     { }
   ],
   "members": [
@@ -315,7 +325,7 @@ The _smobList_ entries of the _smobLists_ table adheres to the following schema:
     "..."
   ],
   "lifecycle": {
-    "status": "OPEN|IN_PROGRESS|DONE|DELETED",
+    "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED",
     "completion": 35
   }
 }

@@ -9,6 +9,8 @@ import java.util.*
  * Immutable model class for a SmobList. In order to compile with Room
  *
  * @param id             id of the smobList
+ * @param itemStatus     status of an item of the smobList (in a list)
+ * @param itemPosition   position of an item of the smobList (in a list)
  * @param name           name of the smobList
  * @param description    optional description
  * @param items          list of descriptors (id, state) of items on the smobList
@@ -20,6 +22,8 @@ import java.util.*
 @RewriteQueriesToDropUnusedColumns
 data class SmobListDTO(
     @PrimaryKey @ColumnInfo(name = "listId") var id: String,
+    @ColumnInfo(name = "listItemStatus") var itemStatus: SmobItemStatus,
+    @ColumnInfo(name = "listItemPosition") var itemPosition: Long,
     @ColumnInfo(name = "listName") var name: String,
     @ColumnInfo(name = "listDescription") var description: String?,
     @ColumnInfo(name = "listItems") var items: List<SmobListItem>,

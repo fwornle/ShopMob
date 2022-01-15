@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class PlanningListsViewModel(
     app: Application,
-    private val repoFlow: SmobListDataSource
+    val repoFlow: SmobListDataSource
 ) : BaseViewModel(app) {
 
     // list that holds the smob data items to be displayed on the UI

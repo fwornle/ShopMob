@@ -2,7 +2,6 @@ package com.tanfra.shopmob.smob.ui.planning.utils
 
 import android.graphics.Canvas
 import android.graphics.Color
-import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import android.graphics.drawable.ColorDrawable
 import androidx.core.content.ContextCompat
@@ -11,21 +10,22 @@ import android.os.Vibrator
 import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.repo.ato.Ato
+import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 
 // swiping action on RVs
 // ref: https://medium.com/@zackcosborn/step-by-step-recyclerview-swipe-to-delete-and-undo-7bbae1fce27e
 // ... code adapted from there
 
-class SwipeToDeleteCallback(adapter: PlanningProductListAdapter) :
+class SwipeToDeleteCallback<T: BaseRecyclerViewAdapter<Ato>>(adapter: T) :
     ItemTouchHelper.SimpleCallback(
         0,
         ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
     ) {
 
     // RV adapter to be acted upon
-    private val mAdapter: PlanningProductListAdapter
+    private val mAdapter: T
 
     // drawing primitives
     private val iconTrash: Drawable?
@@ -81,11 +81,11 @@ class SwipeToDeleteCallback(adapter: PlanningProductListAdapter) :
             ItemTouchHelper.LEFT -> {
 
                 // swipe left ("un-purchase" item)
-                when(item.listItemStatus) {
+                when(item.itemStatus) {
                     SmobItemStatus.DONE -> {
 
                         // change item status
-                        item.listItemStatus = SmobItemStatus.IN_PROGRESS
+                        item.itemStatus = SmobItemStatus.IN_PROGRESS
                         mAdapter.setItem(position, item)
 
                         // restore RV item view (removing the animation effects)
@@ -98,7 +98,7 @@ class SwipeToDeleteCallback(adapter: PlanningProductListAdapter) :
                     SmobItemStatus.IN_PROGRESS -> {
 
                         // change item status
-                        item.listItemStatus = SmobItemStatus.OPEN
+                        item.itemStatus = SmobItemStatus.OPEN
                         mAdapter.setItem(position, item)
 
                         // restore RV item view (removing the animation effects)
@@ -111,7 +111,7 @@ class SwipeToDeleteCallback(adapter: PlanningProductListAdapter) :
                     else -> {
 
                         // mark item as 'deleted'
-                        item.listItemStatus = SmobItemStatus.DELETED
+                        item.itemStatus = SmobItemStatus.DELETED
                         mAdapter.setItem(position, item)
 
                         // throw item off the list
@@ -126,13 +126,13 @@ class SwipeToDeleteCallback(adapter: PlanningProductListAdapter) :
             ItemTouchHelper.RIGHT -> {
 
                 // swipe right (purchase item)
-                when(item.listItemStatus) {
+                when(item.itemStatus) {
                     SmobItemStatus.OPEN -> {
-                        item.listItemStatus = SmobItemStatus.IN_PROGRESS
+                        item.itemStatus = SmobItemStatus.IN_PROGRESS
                         mAdapter.setItem(position, item)
                     }
                     SmobItemStatus.IN_PROGRESS -> {
-                        item.listItemStatus = SmobItemStatus.DONE
+                        item.itemStatus = SmobItemStatus.DONE
                         mAdapter.setItem(position, item)
                     }
                     else -> {

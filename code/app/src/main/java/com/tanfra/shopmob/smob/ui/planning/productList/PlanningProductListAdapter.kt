@@ -27,12 +27,12 @@ class PlanningProductListAdapter(rootView: View, callBack: (selectedSmobATO: Smo
 
         // take out all items which have been deleted by swiping
         return items
-            .filter { item -> item.listItemStatus != SmobItemStatus.DELETED  }
+            .filter { item -> item.itemStatus != SmobItemStatus.DELETED  }
             .sortedWith(
                 compareBy(
                     { it.productCategory.main },
                     { it.productCategory.sub },
-                    { it.listItemPosition },
+                    { it.itemPosition },
                     )
             )
     }
@@ -52,13 +52,15 @@ class PlanningProductListAdapter(rootView: View, callBack: (selectedSmobATO: Smo
             // collect SmobList flow
             val updatedList = SmobListATO(
                 item.listId,
+                item.itemStatus,
+                item.itemPosition,
                 item.listName,
                 item.listDescription,
                 // replace list of products on smob list with updated list of products
                 item.listItems.map { product ->
                     if(product.id == item.id) {
                         // set new status (list property)
-                        SmobListItem(product.id, item.listItemStatus!!, product.listPosition)
+                        SmobListItem(product.id, item.itemStatus, product.listPosition)
                     } else {
                         product
                     }

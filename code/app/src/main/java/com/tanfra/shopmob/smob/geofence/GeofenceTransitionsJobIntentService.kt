@@ -93,6 +93,8 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
                                 sendNotification(
                                     this@GeofenceTransitionsJobIntentService, SmobShopATO(
                                         smobShopItem.id,
+                                        smobShopItem.itemStatus,
+                                        smobShopItem.itemPosition,
                                         smobShopItem.name,
                                         smobShopItem.description,
                                         smobShopItem.imageUrl,

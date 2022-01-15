@@ -21,6 +21,8 @@ import timber.log.Timber
 import com.tanfra.shopmob.smob.ui.planning.utils.SwipeToDeleteCallback
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.databinding.FragmentPlanningProductListBinding
+import com.tanfra.shopmob.smob.data.repo.ato.Ato
+import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.utils.setup
 
 
@@ -109,9 +111,7 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
         setupRecyclerView()
 
         // "+" FAB
-        binding.addSmobItemFab.setOnClickListener {
-            navigateToPlanningProductEdit()
-        }
+        binding.addSmobItemFab.setOnClickListener { navigateToPlanningProductEdit() }
 
     }
 
@@ -148,7 +148,8 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
         binding.smobItemsRecyclerView.setup(adapter)
 
         // enable swiping left/right
-        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapter))
+        @Suppress("UNCHECKED_CAST")
+        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapter as BaseRecyclerViewAdapter<Ato>))
         itemTouchHelper.attachToRecyclerView(binding.smobItemsRecyclerView)
 
     }

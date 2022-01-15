@@ -12,14 +12,19 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentPlanningListsBinding
+import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.ui.administration.SmobAdminTask
 import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
+import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
+import com.tanfra.shopmob.smob.ui.planning.utils.SwipeToDeleteCallback
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
 import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import org.koin.core.component.KoinComponent
+
 
 class PlanningListsFragment : BaseFragment(), KoinComponent {
 
@@ -126,6 +131,12 @@ class PlanningListsFragment : BaseFragment(), KoinComponent {
 
         // setup the recycler view using the extension function
         binding.smobItemsRecyclerView.setup(adapter)
+
+        // enable swiping left/right
+        @Suppress("UNCHECKED_CAST")
+        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapter as BaseRecyclerViewAdapter<Ato>))
+        itemTouchHelper.attachToRecyclerView(binding.smobItemsRecyclerView)
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

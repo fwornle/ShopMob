@@ -7,6 +7,7 @@ import com.tanfra.shopmob.smob.data.local.dao.SmobGroupDao
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
 import com.tanfra.shopmob.smob.data.local.utils.GroupType
+import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.net.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.api.SmobGroupApi
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
@@ -322,6 +323,8 @@ class SmobGroupRepository(
         // ... this is useless here --> but needs to be done like this in the viewModel
         val dummySmobGroupDTO = SmobGroupDTO(
             "DUMMY",
+            SmobItemStatus.NEW,
+            -1L,
             "",
             "",
             GroupType.OTHER,

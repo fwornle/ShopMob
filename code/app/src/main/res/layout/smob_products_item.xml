@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/padding_medium"
         android:foregroundTint="@color/swipePrimaryColor"
-        app:statusColor="@{item.listItemStatus}"
+        app:statusColor="@{item.itemStatus}"
         app:fadeVisible="@{true}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@{item.listItemStatus.toString()}"
+                android:text="@{item.itemStatus.toString()}"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/text_size_small"
                 app:layout_constraintBottom_toBottomOf="@+id/tvProductDescription"

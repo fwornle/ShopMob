@@ -6,6 +6,7 @@ import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
 import com.tanfra.shopmob.smob.data.local.dao.SmobUserDao
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
+import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.net.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.api.SmobUserApi
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
@@ -321,6 +322,8 @@ class SmobUserRepository(
         // ... this is useless here --> but needs to be done like this in the viewModel
         val dummySmobUserDTO = SmobUserDTO(
             "DUMMY",
+            SmobItemStatus.NEW,
+            -1L,
             "",
             "",
             "",

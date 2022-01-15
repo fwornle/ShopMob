@@ -8,6 +8,7 @@ import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
 import com.tanfra.shopmob.smob.data.local.utils.ProductMainCategory
 import com.tanfra.shopmob.smob.data.local.utils.ProductSubCategory
+import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.net.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.api.SmobProductApi
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
@@ -350,6 +351,8 @@ class SmobProductRepository(
         // ... this is useless here --> but needs to be done like this in the viewModel
         val dummySmobProductDTO = SmobProductDTO(
             "DUMMY",
+            SmobItemStatus.NEW,
+            -1L,
             "",
             "",
             "",

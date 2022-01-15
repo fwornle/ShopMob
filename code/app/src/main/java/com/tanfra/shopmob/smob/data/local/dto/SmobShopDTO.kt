@@ -3,12 +3,15 @@ package com.tanfra.shopmob.smob.data.local.dto
 import androidx.room.*
 import com.tanfra.shopmob.smob.data.local.utils.ShopCategory
 import com.tanfra.shopmob.smob.data.local.utils.ShopType
+import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import java.util.*
 
 /**
  * Immutable model class for a SmobShop. In order to compile with Room
  *
  * @param id             id of the smobShop
+ * @param itemStatus     status of an item of the smobShop (in a list)
+ * @param itemPosition   position of an item of the smobShop (in a list)
  * @param name           name of the smobShop
  * @param description    (optional) description of the smobShop
  * @param imageUrl       (optional) URL to image of the smobShop
@@ -22,6 +25,8 @@ import java.util.*
 @RewriteQueriesToDropUnusedColumns
 data class SmobShopDTO(
     @PrimaryKey @ColumnInfo(name = "shopId") var id: String,
+    @ColumnInfo(name = "shopItemStatus") var itemStatus: SmobItemStatus,
+    @ColumnInfo(name = "shopItemPosition") var itemPosition: Long,
     @ColumnInfo(name = "shopName") var name: String,
     @ColumnInfo(name = "shopDescription") var description: String?,
     @ColumnInfo(name = "shopImageUrl") var imageUrl: String?,

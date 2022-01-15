@@ -55,6 +55,8 @@ class PlanningProductEditViewModel(
                 saveSmobProductItem(
                     SmobProductATO(
                         smobProductData.id,
+                        smobProductData.itemStatus,
+                        smobProductData.itemPosition,
                         smobProductData.name,
                         smobProductData.description,
                         smobProductData.imageUrl,

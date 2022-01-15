@@ -61,6 +61,8 @@ class PlanningListsEditFragment : BaseFragment(), KoinComponent {
             //     is going to be the data record written to the DB
             daSmobListATO = SmobListATO(
                 UUID.randomUUID().toString(),
+                SmobItemStatus.NEW,
+                -1L,
                 _viewModel.smobListName.value ?: "mystery list",
                 _viewModel.smobListDescription.value ?: "something exciting",
                 listOf(),

@@ -95,13 +95,13 @@ class PlanningProductListViewModel(
 
                             SmobProductOnListATO(
                                 id = product.id,
+                                itemStatus = productOnList.status,
+                                itemPosition = productOnList.listPosition,
                                 productName = product.name,
                                 productDescription = product.description,
                                 productImageUrl = product.imageUrl,
                                 productCategory = product.category,
                                 productActivity = product.activity,
-                                listItemStatus = productOnList.status,
-                                listItemPosition = productOnList.listPosition,
                                 listId = rawList.id,
                                 listName = rawList.name,
                                 listDescription = rawList.description,

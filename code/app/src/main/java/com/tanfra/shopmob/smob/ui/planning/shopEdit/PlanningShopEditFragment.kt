@@ -33,6 +33,7 @@ import com.tanfra.shopmob.databinding.FragmentPlanningShopEditBinding
 import com.tanfra.shopmob.smob.data.local.utils.ShopCategory
 import com.tanfra.shopmob.smob.data.local.utils.ShopLocation
 import com.tanfra.shopmob.smob.data.local.utils.ShopType
+import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.lang.Double.NaN
@@ -151,6 +152,8 @@ class PlanningShopEditFragment : BaseFragment() {
             //     is going to be the data record written to the DB
             daSmobShopATO = SmobShopATO(
                 UUID.randomUUID().toString(),
+                SmobItemStatus.NEW,
+                -1L,
                 _viewModel.smobShopName.value ?: "mystery shop",
                 _viewModel.smobShopDescription.value ?: "something strange",
                 _viewModel.smobShopDescription.value ?: "some mystery picture",

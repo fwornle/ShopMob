@@ -334,6 +334,8 @@ class SmobListRepository(
         // ... this is useless here --> but needs to be done like this in the viewModel
         val dummySmobListDTO = SmobListDTO(
             "DUMMY",
+            SmobItemStatus.NEW,
+            -1L,
             "",
             "",
             listOf(),
