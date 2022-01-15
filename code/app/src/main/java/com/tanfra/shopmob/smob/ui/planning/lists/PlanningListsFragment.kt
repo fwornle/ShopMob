@@ -19,10 +19,11 @@ import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.ui.administration.SmobAdminTask
 import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
-import com.tanfra.shopmob.smob.ui.planning.utils.SwipeToDeleteCallback
+import com.tanfra.shopmob.smob.ui.planning.utils.BaseSwipeActionHandler
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
 import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.core.component.KoinComponent
 
 
@@ -133,8 +134,7 @@ class PlanningListsFragment : BaseFragment(), KoinComponent {
         binding.smobItemsRecyclerView.setup(adapter)
 
         // enable swiping left/right
-        @Suppress("UNCHECKED_CAST")
-        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapter as BaseRecyclerViewAdapter<Ato>))
+        val itemTouchHelper = ItemTouchHelper(PlanningListsSwipeActionHandler(adapter))
         itemTouchHelper.attachToRecyclerView(binding.smobItemsRecyclerView)
 
     }

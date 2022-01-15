@@ -18,7 +18,7 @@ import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 // ref: https://medium.com/@zackcosborn/step-by-step-recyclerview-swipe-to-delete-and-undo-7bbae1fce27e
 // ... code adapted from there
 
-class SwipeToDeleteCallback<T: BaseRecyclerViewAdapter<Ato>>(adapter: T) :
+abstract class BaseSwipeActionHandler<T: BaseRecyclerViewAdapter<Ato>>(adapter: T) :
     ItemTouchHelper.SimpleCallback(
         0,
         ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
@@ -52,6 +52,13 @@ class SwipeToDeleteCallback<T: BaseRecyclerViewAdapter<Ato>>(adapter: T) :
         )
 
     }
+
+    // abstract declaration of list specific functions --------------------------------
+    // ... to be implemented in the concrete adapter (--> parent class)
+
+    // possibility to apply side effects of a swiping action --> can be straight through
+    abstract fun swipeActionSideEffect(listViewAdapter: T, position: Int)
+
 
     // up/down swipes (re-ordering)
     // ... disabled
@@ -127,7 +134,7 @@ class SwipeToDeleteCallback<T: BaseRecyclerViewAdapter<Ato>>(adapter: T) :
 
                 // swipe right (purchase item)
                 when(item.itemStatus) {
-                    SmobItemStatus.OPEN -> {
+                    SmobItemStatus.NEW, SmobItemStatus.OPEN -> {
                         item.itemStatus = SmobItemStatus.IN_PROGRESS
                         mAdapter.setItem(position, item)
                     }

@@ -32,6 +32,8 @@ function smob () {
     for (let id = 0; id < 20; id++) {
 
         var uuid = faker.datatype.uuid()
+        var listItemStatus = 'OPEN'
+        var listItemPosition = id
         var username = faker.internet.userName()
         var name = faker.fake("{{name.lastName}}, {{name.firstName}}")
         var email = faker.internet.email()
@@ -39,6 +41,8 @@ function smob () {
 
         smobUsers.push({
             "id": uuid,
+            "itemStatus": listItemStatus,
+            "itemPosition": listItemPosition,
             "username": username,
             "name": name,
             "email": email,
@@ -58,6 +62,8 @@ function smob () {
     for (let id = 0; id < 5; id++) {
 
         var uuid = faker.datatype.uuid()
+        var listItemStatus = 'OPEN'
+        var listItemPosition = id
         var name = faker.lorem.word()
         var description = faker.lorem.words(rand(5))
         var type = faker.helpers.randomize(groupTypes)
@@ -67,6 +73,8 @@ function smob () {
 
         smobGroups.push({
             "id": uuid,
+            "itemStatus": listItemStatus,
+            "itemPosition": listItemPosition,
             "name": name,
             "description": description,
             "type": type,
@@ -118,6 +126,8 @@ function smob () {
     for (let id = 0; id < daProducts.length; id++) {
 
         var uuid = daProducts[id].id
+        var listItemStatus = 'OPEN'
+        var listItemPosition = id
         var name = daProducts[id].name
         var description = daProducts[id].description
         var imageUrl = `https://placeimg.com/200/150/tech?${id}`
@@ -128,6 +138,8 @@ function smob () {
 
         smobProducts.push({
             "id": uuid,
+            "itemStatus": listItemStatus,
+            "itemPosition": listItemPosition,
             "name": name,
             "description": description,
             "imageUrl": imageUrl,
@@ -169,6 +181,8 @@ function smob () {
     for (let id = 0; id < daShops.length; id++) {
 
         var uuid = daShops[id].id
+        var listItemStatus = 'OPEN'
+        var listItemPosition = id
         var name = daShops[id].name
         var description = faker.lorem.words()
         var imageUrl = `https://placeimg.com/200/150/arch?${id}`
@@ -180,6 +194,8 @@ function smob () {
 
         // {
         //     "id": "UUID-store",
+        //     "itemStatus": "NEW",
+        //     "itemPosition": 0,
         //     "name": "store name",
         //     "description": "it's a good-e store",
         //     "imageUrl": "some URL",
@@ -200,6 +216,8 @@ function smob () {
 
         smobShops.push({
             "id": uuid,
+            "itemStatus": listItemStatus,
+            "itemPosition": listItemPosition,
             "name": name,
             "description": description,
             "imageUrl": imageUrl,
@@ -217,6 +235,7 @@ function smob () {
 
     }
             
+
     // define some lists
     const daLists = [
         { id: faker.datatype.uuid(), name: 'Groceries', },
@@ -233,6 +252,8 @@ function smob () {
     for (let id = 0; id < daLists.length; id++) {
 
         var uuid = daLists[id].id
+        var listItemStatus = 'OPEN'
+        var listItemPosition = id
         var name = daLists[id].name
         var description = faker.lorem.words()
         var itemsOnList = [...Array(rand(20)).keys()].map(_ => faker.helpers.randomize(productIds)).sort()
@@ -265,6 +286,8 @@ function smob () {
 
         // {
         //     "id": "UUID-list",
+        //     "itemStatus": "NEW",
+        //     "itemPosition": 0,
         //     "name": "smob list name",
         //     "description": "our daily groceries",
         //     "items": [
@@ -287,6 +310,8 @@ function smob () {
 
         smobLists.push({
             "id": uuid,
+            "itemStatus": listItemStatus,
+            "itemPosition": listItemPosition,
             "name": name,
             "description": description,
             "items": items,
@@ -334,10 +359,5 @@ function businessHours() {
 
     return weAreOpen
 }
-
-
-// write to file
-// fs.writeFile('db.json', smob(), 'utf8', callback);
-
 
 module.exports = smob

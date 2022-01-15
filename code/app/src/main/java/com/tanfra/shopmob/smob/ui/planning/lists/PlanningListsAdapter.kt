@@ -29,6 +29,7 @@ class PlanningListsAdapter(rootView: View, callBack: (selectedSmobATO: SmobListA
             .filter { item -> item.itemStatus != SmobItemStatus.DELETED  }
             .sortedWith(
                 compareBy(
+                    { it.itemStatus },
                     { it.itemPosition },
                 )
             )

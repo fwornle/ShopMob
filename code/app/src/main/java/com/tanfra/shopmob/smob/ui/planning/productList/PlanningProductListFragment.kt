@@ -18,7 +18,7 @@ import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
-import com.tanfra.shopmob.smob.ui.planning.utils.SwipeToDeleteCallback
+import com.tanfra.shopmob.smob.ui.planning.utils.BaseSwipeActionHandler
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.databinding.FragmentPlanningProductListBinding
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
@@ -148,8 +148,7 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
         binding.smobItemsRecyclerView.setup(adapter)
 
         // enable swiping left/right
-        @Suppress("UNCHECKED_CAST")
-        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapter as BaseRecyclerViewAdapter<Ato>))
+        val itemTouchHelper = ItemTouchHelper(PlanningProductListSwipeActionHandler(adapter))
         itemTouchHelper.attachToRecyclerView(binding.smobItemsRecyclerView)
 
     }

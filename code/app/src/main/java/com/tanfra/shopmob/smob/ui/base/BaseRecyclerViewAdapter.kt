@@ -36,7 +36,6 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
     abstract fun listFilter(items: List<T>): List<T>
 
 
-
     // generic adapter functionality --------------------------------------------------
 
     /**

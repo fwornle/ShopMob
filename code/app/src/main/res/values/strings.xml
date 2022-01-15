@@ -29,6 +29,8 @@
     <string name="smob_list_name">ShopMob Shopping List Name</string>
     <string name="smob_list_desc">ShopMob Shopping List Description</string>
     <string name="smob_list_saved">ShopMob Shop List Saved!</string>
+    <string name="smob_list_completion">%1$.0f %%</string>
+
 
     <string name="logout">Logout</string>
     <string name="welcome_message">Welcome to\nShopMob</string>
