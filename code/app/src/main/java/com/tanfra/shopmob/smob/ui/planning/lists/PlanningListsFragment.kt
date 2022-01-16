@@ -88,13 +88,14 @@ class PlanningListsFragment : BaseFragment(), KoinComponent {
         // RV - incl. onClick listener for items
         setupRecyclerView()
 
-        // handlers for "+" FAB and "SHOP" FAB
+        // handlers for "+" FAB, "SHOP" FAB and "STORE" FAB
         binding.addSmobItemFab.setOnClickListener { navigateToAddSmobList() }
         binding.goShop.setOnClickListener { navigateToShopping() }
+        binding.defineShop.setOnClickListener { navigateToShopEditFragment() }
 
     }
 
-    // FAB handler --> navigate to selected fragment of the admin activity
+    // "+" FAB handler --> navigate to selected fragment of the admin activity
     private fun navigateToAddSmobList() {
 
         // determine hightest index in all smobLists
@@ -122,12 +123,22 @@ class PlanningListsFragment : BaseFragment(), KoinComponent {
 
     }
 
-    // "SHOP" FAB handler --> navigate to selected fragment of the admin activity
+    // "SHOP" FAB handler --> navigate to shopping activity (SmobShoppingActivity)
     private fun navigateToShopping() {
         val intent = SmobShoppingActivity.newIntent(requireContext(), SmobAdminTask.NEW_LIST)
         wrapEspressoIdlingResource {
             startActivity(intent)
         }
+    }
+
+    // "STORE" FAB handler --> navigate to shop/store management fragment
+    private fun navigateToShopEditFragment() {
+        // use the navigationCommand live data to navigate between the fragments
+        _viewModel.navigationCommand.postValue(
+            NavigationCommand.To(
+                PlanningListsFragmentDirections.actionPlanningListsFragmentToPlanningListsEditFragment()
+            )
+        )
     }
 
     private fun setupRecyclerView() {

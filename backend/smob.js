@@ -137,7 +137,7 @@ function smob () {
         var frequencyPurchase = faker.datatype.number(100)
         var inShopCategory = daProducts[id].inShopCategory
         var inShopName = daProducts[id].inShopName
-        var inShopLocation = [faker.datatype.float(100), faker.datatype.float(100)]
+        var inShopLocation = { "latitude": faker.datatype.float(100), "longitude": faker.datatype.float(100) }
 
         smobProducts.push({
             "id": uuid,

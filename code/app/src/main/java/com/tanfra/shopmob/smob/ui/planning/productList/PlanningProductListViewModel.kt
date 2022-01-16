@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 
 class PlanningProductListViewModel(
     val app: Application,
-    val listRepoFlow: SmobListDataSource,  // public, as used (externally) to update the smobList
+    val listDataSource: SmobListDataSource,  // public, as used (externally) to update the smobList
     private val productDataSource: SmobProductDataSource,
     val shopDataSource: SmobShopDataSource,
     ) : BaseViewModel(app) {
@@ -41,7 +41,7 @@ class PlanningProductListViewModel(
      */
     @ExperimentalCoroutinesApi
     fun fetchSmobListFlow(id: String): Flow<Resource<SmobListATO?>> {
-        val fetchFlow = listRepoFlow.getSmobList(id)
+        val fetchFlow = listDataSource.getSmobList(id)
         return fetchFlow
     }
 
@@ -309,5 +309,19 @@ class PlanningProductListViewModel(
         }
 
     }  // swipeRefreshShopDataInLocalDB
+
+    /**
+     * Save the smob product to the data source
+     */
+    fun saveSmobListItem(smobListData: SmobListATO) {
+        showLoading.value = true
+        viewModelScope.launch {
+            listDataSource.saveSmobList(smobListData)
+            showLoading.value = false
+
+            showToast.value = app.getString(R.string.smob_list_saved)
+            navigationCommand.value = NavigationCommand.Back
+        }
+    }
 
 }

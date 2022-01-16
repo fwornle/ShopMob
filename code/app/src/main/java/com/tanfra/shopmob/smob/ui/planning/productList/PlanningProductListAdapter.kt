@@ -12,7 +12,6 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobProductOnListATO
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import timber.log.Timber
 
 
 // use data binding to show the smob item on the RV item
@@ -68,7 +67,7 @@ class PlanningProductListAdapter(rootView: View, callBack: (selectedSmobATO: Smo
 
             // store updated smobList in local DB
             // ... this also triggers an immediate push to the backend (once stored locally)
-            _viewModel.listRepoFlow.updateSmobList(updatedList)
+            _viewModel.listDataSource.updateSmobList(updatedList)
 
         }  // coroutine scope (lifecycleScope)
 

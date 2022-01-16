@@ -15,6 +15,7 @@ import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.databinding.FragmentPlanningProductEditBinding
 import com.tanfra.shopmob.smob.data.local.utils.*
+import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -22,6 +23,7 @@ import org.koin.core.component.KoinComponent
 import timber.log.Timber
 import java.lang.Double.NaN
 import java.util.*
+import kotlin.math.roundToInt
 
 
 @SuppressLint("UnspecifiedImmutableFlag")
@@ -79,13 +81,22 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
             val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss", Locale.GERMANY)
             val currentDate = sdf.format(Date())
 
+            // fetch items on current shopping list
+            val currList = _viewModel.smobList.value.data
+            val valItems = currList?.items?.filter { itm -> itm.status != SmobItemStatus.DELETED }
+            val nValItems = valItems?.size ?: 0
+            val itemMaxPosition = currList?.items?.fold(0L) { max, item ->
+                if(item.listPosition > max) { item.listPosition } else { max }
+            } ?: 0L
+
+
             // initialize data record to be written to DB
             // ... if no better values have been provided by the user (taken from viewModel), this
             //     is going to be the data record written to the DB
             daSmobProductATO = SmobProductATO(
                 UUID.randomUUID().toString(),
                 SmobItemStatus.NEW,
-                -1L,
+                itemMaxPosition + 1,
                 _viewModel.smobProductName.value ?: "",
                 _viewModel.smobProductDescription.value ?: "",
                 _viewModel.smobProductImageUrl.value ?: "",
@@ -106,6 +117,60 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
             _viewModel.validateAndSaveSmobItem(daSmobProductATO)
 
             // add smob item to the currently open shopping list
+            currList?.items?.toMutableList()?.add(
+                SmobListItem(
+                    daSmobProductATO.id,
+                    daSmobProductATO.itemStatus,
+                    daSmobProductATO.itemPosition,
+                )
+            )
+
+            // create updated list (to be sent to the DB/backend)
+            val newList = SmobListATO(
+                currList!!.id,
+                currList.itemStatus,
+                currList.itemPosition,
+                currList.name,
+                currList.description,
+                currList.items,
+                currList.members,
+                SmobListLifecycle(
+                    if(currList.lifecycle.status.ordinal <= SmobItemStatus.OPEN.ordinal) {
+                        SmobItemStatus.OPEN
+                    } else {
+                        currList.lifecycle.status
+                    },
+                    when(nValItems) {
+                        0 -> 0.0
+                        else -> {
+                            val doneItems = valItems!!.filter { daItem -> daItem.status == SmobItemStatus.DONE }.size
+                            (100.0 * doneItems / nValItems).roundToInt().toDouble()
+                        }
+                    }
+                ),
+            )
+
+            // store new List in DB
+            _viewModel.saveSmobListItem(newList)
+
+            // refresh list
+            newList.id.let {
+
+                // register flows in viewModel
+                _viewModel._smobList = _viewModel.fetchSmobListFlow(it)  // holds the item 'status'
+                _viewModel._smobListItems = _viewModel.fetchSmobListItemsFlow(it)
+
+                // turn to StateFlows
+                _viewModel.smobList = _viewModel.smobListFlowToStateFlow(_viewModel._smobList)
+                _viewModel.smobListItems = _viewModel.smobListItemsFlowToStateFlow(_viewModel._smobListItems)
+
+                // combine the flows and turn into StateFlow
+                _viewModel.smobListItemsWithStatus = _viewModel.combineFlowsAndConvertToStateFlow(
+                    _viewModel._smobList,
+                    _viewModel._smobListItems,
+                )
+
+            }
 
         }  // onClickListener (FAB - save)
 
