@@ -190,12 +190,12 @@ class PlanningProductListViewModel(
     // default values
     init {
         selectedShop.value = SmobShopATO(
-            "no shop selected yet (id)",
+            "no product selected yet (id)",
             SmobItemStatus.NEW,
             -1L,
-            "no shop selected yet",
-            "no shop selected yet",
-            "no shop selected yet",
+            "",
+            "",
+            "",
             ShopLocation(Double.NaN, Double.NaN),
             ShopType.INDIVIDUAL,
             ShopCategory.OTHER,

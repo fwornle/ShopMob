@@ -117,7 +117,8 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
             _viewModel.validateAndSaveSmobItem(daSmobProductATO)
 
             // add smob item to the currently open shopping list
-            currList?.items?.toMutableList()?.add(
+            val newItems = currList?.items?.toMutableList() ?: mutableListOf()
+            newItems.add(
                 SmobListItem(
                     daSmobProductATO.id,
                     daSmobProductATO.itemStatus,
@@ -132,7 +133,7 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
                 currList.itemPosition,
                 currList.name,
                 currList.description,
-                currList.items,
+                newItems,
                 currList.members,
                 SmobListLifecycle(
                     if(currList.lifecycle.status.ordinal <= SmobItemStatus.OPEN.ordinal) {
@@ -152,25 +153,6 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
 
             // store new List in DB
             _viewModel.saveSmobListItem(newList)
-
-            // refresh list
-            newList.id.let {
-
-                // register flows in viewModel
-                _viewModel._smobList = _viewModel.fetchSmobListFlow(it)  // holds the item 'status'
-                _viewModel._smobListItems = _viewModel.fetchSmobListItemsFlow(it)
-
-                // turn to StateFlows
-                _viewModel.smobList = _viewModel.smobListFlowToStateFlow(_viewModel._smobList)
-                _viewModel.smobListItems = _viewModel.smobListItemsFlowToStateFlow(_viewModel._smobListItems)
-
-                // combine the flows and turn into StateFlow
-                _viewModel.smobListItemsWithStatus = _viewModel.combineFlowsAndConvertToStateFlow(
-                    _viewModel._smobList,
-                    _viewModel._smobListItems,
-                )
-
-            }
 
         }  // onClickListener (FAB - save)
 
