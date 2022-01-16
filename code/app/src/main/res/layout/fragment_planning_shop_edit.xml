@@ -24,38 +24,72 @@
             tools:context="com.tanfra.shopmob.smob.ui.planning.shopList.PlanningShopEditFragment">
 
 
-        <EditText
-                android:id="@+id/smobShopName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/smob_shop_name"
-                android:autofillHints="@string/smob_shop_name"
-                android:inputType="textCapSentences|textAutoCorrect"
-                android:text="@={viewModel.smobShopName}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+            <EditText
+                    android:id="@+id/smobShopName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_standard"
+                    android:layout_marginStart="@dimen/horiz_margin_small"
+                    android:layout_marginTop="@dimen/vert_margin_small"
+                    android:layout_marginEnd="@dimen/horiz_margin_small"
+                    android:hint="@string/smob_shop_name"
+                    android:autofillHints="@string/smob_shop_name"
+                    android:inputType="textCapSentences|textAutoCorrect"
+                    android:text="@={viewModel.locatedShop.name}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
 
             <EditText
                 android:id="@+id/smobShopDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_standard"
+                android:layout_marginStart="@dimen/horiz_margin_small"
+                android:layout_marginTop="@dimen/vert_margin_small"
+                android:layout_marginEnd="@dimen/horiz_margin_small"
                 android:gravity="start"
                 android:hint="@string/smob_shop_desc"
                 android:autofillHints="@string/smob_shop_desc"
                 android:inputType="textCapSentences|textAutoCorrect"
                 android:lines="10"
-                android:text="@={viewModel.smobShopDescription}"
+                android:text="@={viewModel.locatedShop.description}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/smobShopName"
                 />
 
+            <Spinner
+                android:id="@+id/smobShopCategory"
+                style="@style/Widget.AppCompat.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/dropdownListPreferredItemHeight"
+                android:layout_margin="@dimen/margin_standard"
+                android:layout_marginStart="@dimen/horiz_margin_small"
+                android:layout_marginTop="@dimen/vert_margin_small"
+                android:layout_marginEnd="@dimen/horiz_margin_small"
+                android:prompt="@string/smob_item_mainCat"
+                android:background="@drawable/spinner_bg"
+                android:dropDownWidth="match_parent"
+                android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+                android:paddingEnd="14dp"
+                android:popupBackground="@drawable/spinner_bg"
+                android:popupElevation="3dp"
+                android:stateListAnimator="@drawable/spinner_sla"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/smobShopDescription"
+                tools:ignore="RtlSymmetry" />
+            
             <TextView
                 android:id="@+id/defineLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_standard"
+                android:layout_marginStart="@dimen/horiz_margin_small"
+                android:layout_marginTop="@dimen/vert_margin_small"
+                android:layout_marginEnd="@dimen/horiz_margin_small"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
@@ -65,7 +99,7 @@
                 app:drawableStartCompat="@drawable/ic_location"
                 app:drawableLeftCompat="@drawable/ic_location"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/smobShopDescription"
+                app:layout_constraintTop_toBottomOf="@id/smobShopCategory"
                 />
 
 
@@ -78,24 +112,13 @@
                 android:textColor="@color/primaryColor"
                 app:layout_constraintTop_toTopOf="@id/defineLocation"
                 app:layout_constraintBottom_toBottomOf="@id/defineLocation"
-                app:layout_constraintEnd_toStartOf="@id/selectedShopLocation"
+                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="(shop name)" />
 
-            <TextView
-                android:id="@+id/selectedShopLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_normal"
-                android:text="@{viewModel.locatedShop.category.toString()}"
-                android:textColor="@color/black"
-                app:layout_constraintTop_toTopOf="@id/defineLocation"
-                app:layout_constraintBottom_toBottomOf="@id/defineLocation"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:text="SUPERMARKET" />
 
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/saveSmobItem"
+                android:id="@+id/saveSmobShop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_normal"
@@ -113,6 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:fadeVisible="@{viewModel.showLoading.booleanValue()}"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

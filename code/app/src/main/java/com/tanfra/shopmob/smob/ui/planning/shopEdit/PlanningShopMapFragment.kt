@@ -63,7 +63,7 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
     // last marker data - will be initialized to viewModel data (in case the user has already
     // typed in a name for the SmobShop to be defined)
     private var lastMarker: Marker? = null
-    private var lastMarkerTitle: String? = null
+    private var lastMarkerName: String? = null
     private var lastMarkerDescription: String? = null
     private var lastMarkerLocation: String? = null
 
@@ -81,9 +81,14 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
         binding.viewModel = _viewModel
 
         // viewModel now initialized --> use VM data to initalize local fragment variables
-        lastMarkerTitle = _viewModel.smobShopName.value ?: "Exciting..."  // default
-        lastMarkerDescription = _viewModel.smobShopDescription.value ?: "Something is happening"  // default
-        lastMarkerLocation = _viewModel.smobShopName.value
+        lastMarkerName = _viewModel.locatedShop.value?.name ?: "Exciting..."  // default
+        lastMarkerDescription = _viewModel.locatedShop.value?.description ?: "Something is happening"  // default
+        lastMarkerLocation = String.format(
+            Locale.getDefault(),
+            getString(R.string.lat_long_snippet),
+            _viewModel.locatedShop.value?.location?.latitude ?: NaN,
+            _viewModel.locatedShop.value?.location?.longitude ?: NaN,
+        )
 
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(true)
@@ -188,7 +193,7 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
     private fun onLocationSelected() {
 
         // store latitude / longitude in viewModel
-        _viewModel.smobShopLocation.value =
+        _viewModel.locatedShop.value?.location =
             ShopLocation(
             lastMarker?.position?.latitude ?: NaN,
             lastMarker?.position?.longitude ?: NaN
@@ -239,7 +244,7 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
                 MarkerOptions()
                     .position(latLng)
                     //.title(getString(R.string.dropped_pin))
-                    .title(lastMarkerTitle)
+                    .title(lastMarkerName)
                     .snippet("$lastMarkerDescription (at $lastMarkerLocation)")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
             )
@@ -264,7 +269,7 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
             lastMarker = map.addMarker(
                 MarkerOptions()
                     .position(poi.latLng)
-                    .title(lastMarkerTitle)
+                    .title(lastMarkerName)
                     .snippet("$lastMarkerDescription (at ${poi.name})")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
             )
@@ -282,7 +287,7 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
     private fun activateUiControls(location: String? = null) {
 
         // set location string, if provided (POI)
-        location?.let { _viewModel.smobShopName.value = it }
+        location?.let { _viewModel.locatedShop.value?.name = it }
 
         // marker dropped - reveal OK/Cancel buttons and Name edit textbox
         binding.etLocationName.visibility = EditText.VISIBLE
@@ -307,7 +312,7 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
     // remove latest set marker and clear associated viewModel variables (coords only - keep name)
     private fun deleteLastMarker() {
         lastMarker?.remove()
-        _viewModel.smobShopLocation.value = null
+        _viewModel.locatedShop.value?.location = ShopLocation(NaN, NaN)
     }
 
     // request access to user location and, if granted, fly to current location

@@ -229,7 +229,7 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
             }
             else -> {
                 // should not happen - unless someone added a third spinner
-                Timber.i("Unknown spinner found: $p1")
+                Timber.i("Unknown spinner found: $p0")
             }
         }
     }

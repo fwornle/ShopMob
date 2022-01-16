@@ -17,13 +17,6 @@ class PlanningShopEditViewModel(
     private val shopDataSource: SmobShopDataSource
     ) : BaseViewModel(app) {
 
-    val smobShopName = MutableLiveData<String?>()
-    val smobShopDescription = MutableLiveData<String?>()
-    val smobShopLocation = MutableLiveData<ShopLocation?>()
-    val smobShopType = MutableLiveData<ShopType?>()
-    val smobShopCategory = MutableLiveData<ShopCategory?>()
-    val smobShopBusiness = MutableLiveData<List<String>?>()
-
     var locatedShop = MutableLiveData<SmobShopATO>()
 
     // log the state of geoFencing
@@ -36,12 +29,12 @@ class PlanningShopEditViewModel(
     // default values
     init {
         locatedShop.value = SmobShopATO(
-            "no shop selected yet (id)",
+            "invalid-id-shop",
             SmobItemStatus.NEW,
             -1L,
-            "no shop selected yet",
-            "no shop selected yet",
-            "no shop selected yet",
+            "",
+            "",
+            "",
             ShopLocation(NaN, NaN),
             ShopType.INDIVIDUAL,
             ShopCategory.OTHER,
@@ -57,13 +50,6 @@ class PlanningShopEditViewModel(
      * Clear the live data objects to start fresh next time the view model gets called
      */
     fun onClear() {
-        smobShopName.value = null
-        smobShopDescription.value = null
-        smobShopLocation.value = null
-        smobShopType.value = null
-        smobShopCategory.value = null
-        smobShopBusiness.value = null
-
         geoFencingOn.value = null
     }
 

@@ -12,6 +12,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -30,10 +32,7 @@ import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import timber.log.Timber
 import com.google.android.gms.location.LocationServices
 import com.tanfra.shopmob.databinding.FragmentPlanningShopEditBinding
-import com.tanfra.shopmob.smob.data.local.utils.ShopCategory
-import com.tanfra.shopmob.smob.data.local.utils.ShopLocation
-import com.tanfra.shopmob.smob.data.local.utils.ShopType
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
@@ -42,7 +41,7 @@ import java.util.*
 
 
 @SuppressLint("UnspecifiedImmutableFlag")
-class PlanningShopEditFragment : BaseFragment(), KoinComponent {
+class PlanningShopEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener, KoinComponent {
 
     // get the view model (from Koin) this time as a singleton to be shared with another fragment
     override val _viewModel: PlanningShopEditViewModel by sharedViewModel()
@@ -145,9 +144,12 @@ class PlanningShopEditFragment : BaseFragment(), KoinComponent {
             )
         }
 
-        // clicking on the 'saveSmobItem' FAB...
+        // configure spinner (shop category)
+        setupSpinners()
+
+        // clicking on the 'saveSmobShop' FAB...
         // ... installs the geofencing request and triggers the saving to DB
-        binding.saveSmobItem.setOnClickListener {
+        binding.saveSmobShop.setOnClickListener {
 
             // initialize data record to be written to DB
             // ... if no better values have been provided by the user (taken from viewModel), this
@@ -156,13 +158,13 @@ class PlanningShopEditFragment : BaseFragment(), KoinComponent {
                 UUID.randomUUID().toString(),
                 SmobItemStatus.NEW,
                 -1L,
-                _viewModel.smobShopName.value ?: "mystery shop",
-                _viewModel.smobShopDescription.value ?: "something strange",
-                _viewModel.smobShopDescription.value ?: "some mystery picture",
-                _viewModel.smobShopLocation.value ?: ShopLocation(NaN, NaN),
-                _viewModel.smobShopType.value ?: ShopType.INDIVIDUAL,
-                _viewModel.smobShopCategory.value ?: ShopCategory.OTHER,
-                _viewModel.smobShopBusiness.value ?: listOf(
+                _viewModel.locatedShop.value?.name ?: "mystery shop",
+                _viewModel.locatedShop.value?.description ?: "something strange",
+                _viewModel.locatedShop.value?.imageUrl ?: "some mystery picture",
+                _viewModel.locatedShop.value?.location ?: ShopLocation(NaN, NaN),
+                _viewModel.locatedShop.value?.type ?: ShopType.INDIVIDUAL,
+                _viewModel.locatedShop.value?.category ?: ShopCategory.OTHER,
+                _viewModel.locatedShop.value?.business ?: listOf(
                     "Monday: closed",
                     "Tuesday: closed",
                     "Wednesday: closed",
@@ -190,6 +192,45 @@ class PlanningShopEditFragment : BaseFragment(), KoinComponent {
         //make sure to clear the view model after destroy, as it's a single view model.
         _viewModel.onClear()
     }
+
+    // set-up spinners (categories)
+    private fun setupSpinners() {
+
+        // ShopCategory
+        // create an ArrayAdapter using the enum and a default spinner layout
+        ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, ShopCategory.values())
+            .also {
+                // specify the layout to use when the list of choices appears
+                it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                // apply the adapter to the spinner
+                binding.smobShopCategory.adapter = it
+            }
+
+        // hook up onItemSelected listener (to this fragment)
+        binding.smobShopCategory.onItemSelectedListener = this
+
+    }
+
+    // spinner: item selection made
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        // we might have several spinners at some point...
+        when(p0) {
+            binding.smobShopCategory -> {
+                // set shop category in VM
+                _viewModel.locatedShop.value?.category = ShopCategory.values()[p2]
+            }
+            else -> {
+                // should not happen - unless someone added more spinners
+                Timber.i("Unknown spinner found: $p0")
+            }
+        }
+    }
+
+    // spinner: no item selected
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+        Timber.i("No selection made... (this is never called?!) $p0")
+    }
+
 
 
     // registration of lambda function to be called when the permission CHECKING activity returns
