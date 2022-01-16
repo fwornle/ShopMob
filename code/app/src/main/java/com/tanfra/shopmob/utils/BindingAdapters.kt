@@ -69,6 +69,7 @@ object BindingAdapters {
         }  // coroutine scope
     }
 
+
     /**
      * Use binding adapter to set the recycler view data using livedata object
      */
@@ -140,6 +141,7 @@ object BindingAdapters {
             SmobItemStatus.OPEN -> view.setBackgroundResource(R.color.swipeSecondaryLightColor)
             SmobItemStatus.IN_PROGRESS -> view.setBackgroundResource(R.color.swipePrimaryColor)
             SmobItemStatus.DONE -> view.setBackgroundResource(R.color.swipeSecondaryColor)
+            else -> view.setBackgroundResource(R.color.white)
         }
 
     }

@@ -10,14 +10,21 @@ import kotlinx.serialization.encodeToString
 // ... ref: https://github.com/Kotlin/kotlinx.serialization
 class LocalDbConverters {
 
-    // ItemActivity converter
+    // ShopLocation converter
+    @TypeConverter
+    fun locationToJson(value: ShopLocation?) = Json.encodeToString(value)
+
+    @TypeConverter
+    fun jsonToLocation(value: String) = Json.decodeFromString<ShopLocation>(value)
+
+    // ActivityStatus converter
     @TypeConverter
     fun activityToJson(value: ActivityStatus?) = Json.encodeToString(value)
 
     @TypeConverter
     fun jsonToActivity(value: String) = Json.decodeFromString<ActivityStatus>(value)
 
-    // SmobListEntry converter - List
+    // SmobListItem converter - List
     @TypeConverter
     fun listEntryToJson(value: List<SmobListItem?>) = Json.encodeToString(value)
 

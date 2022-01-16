@@ -10,6 +10,7 @@ import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
 import kotlinx.coroutines.launch
+import java.lang.Double
 
 class PlanningShopEditViewModel(
     val app: Application,
@@ -22,7 +23,6 @@ class PlanningShopEditViewModel(
     val smobShopType = MutableLiveData<ShopType?>()
     val smobShopCategory = MutableLiveData<ShopCategory?>()
     val smobShopBusiness = MutableLiveData<List<String>>()
-
 
     // log the state of geoFencing
     //

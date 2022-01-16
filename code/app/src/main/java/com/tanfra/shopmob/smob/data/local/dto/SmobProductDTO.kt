@@ -1,10 +1,7 @@
 package com.tanfra.shopmob.smob.data.local.dto
 
 import androidx.room.*
-import com.tanfra.shopmob.smob.data.local.utils.ProductMainCategory
-import com.tanfra.shopmob.smob.data.local.utils.ProductSubCategory
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
-import java.util.*
+import com.tanfra.shopmob.smob.data.local.utils.*
 
 /**
  * Immutable model class for a SmobProduct. In order to compile with Room
@@ -19,6 +16,9 @@ import java.util.*
  * @param categorySub    (default)other|dairy|bread|fruit_vegetable|canned_food|beverages|...
  * @param activityDate   data class (ActivityState) member "date": of last purchase of this product
  * @param activityReps   data class (ActivityState) member "reps": number of repetitions of purchase
+ * @param inShopCategory category of shop in which such a product can be found
+ * @param inShopName     name of a specific shop (or a chain) in which this product can be found
+ * @param inShopLocation location information of a specific shop in which the product can be found
  */
 @Entity(tableName = "smobProducts")
 @RewriteQueriesToDropUnusedColumns
@@ -33,4 +33,7 @@ data class SmobProductDTO(
     @ColumnInfo(name = "productCategorySub") var categorySub: ProductSubCategory,
     @ColumnInfo(name = "productActivityDate") var activityDate: String,
     @ColumnInfo(name = "productActivityReps") var activityReps: Long,
+    @ColumnInfo(name = "productInShopCategory") var inShopCategory: ShopCategory,
+    @ColumnInfo(name = "productInShopName") var inShopName: String,
+    @ColumnInfo(name = "productInShopLocation") var inShopLocation: ShopLocation,
 )

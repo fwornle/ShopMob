@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.tanfra.shopmob.smob.ui.planning.shopList.PlanningShopListViewModel" />
+            type="com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -25,7 +25,7 @@
                 android:id="@+id/smobItemsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:stateFlowResource="@{viewModel.smobList}"
+                app:stateFlowResource="@{viewModel.smobShopList}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

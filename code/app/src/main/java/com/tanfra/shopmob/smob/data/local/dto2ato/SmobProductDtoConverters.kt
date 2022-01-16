@@ -3,6 +3,7 @@ package com.tanfra.shopmob.smob.data.local.dto2ato
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.local.dto.SmobProductDTO
 import com.tanfra.shopmob.smob.data.local.utils.ActivityStatus
+import com.tanfra.shopmob.smob.data.local.utils.InShop
 import com.tanfra.shopmob.smob.data.local.utils.ProductCategory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
@@ -23,6 +24,7 @@ fun Flow<List<SmobProductDTO>>.asDomainModel(): Flow<List<SmobProductATO>> = tra
                 imageUrl = it.imageUrl,
                 category = ProductCategory(it.categoryMain, it.categorySub),
                 activity = ActivityStatus(it.activityDate, it.activityReps),
+                inShop = InShop(it.inShopCategory, it.inShopName, it.inShopLocation)
             )
         }
     )
@@ -42,6 +44,9 @@ fun List<SmobProductATO>.asDatabaseModel(): List<SmobProductDTO> {
             categorySub = it.category.sub,
             activityDate = it.activity.date,
             activityReps = it.activity.reps,
+            inShopCategory = it.inShop.category,
+            inShopName = it.inShop.name,
+            inShopLocation = it.inShop.location,
         )
     }
 }
@@ -62,6 +67,7 @@ fun Flow<SmobProductDTO?>.asDomainModel(): Flow<SmobProductATO?> = transform {
                 imageUrl = it.imageUrl,
                 category = ProductCategory(it.categoryMain, it.categorySub),
                 activity = ActivityStatus(it.activityDate, it.activityReps),
+                inShop = InShop(it.inShopCategory, it.inShopName, it.inShopLocation)
             )
         }
     )
@@ -81,6 +87,9 @@ fun SmobProductATO.asDatabaseModel(): SmobProductDTO {
             categorySub = it.category.sub,
             activityDate = it.activity.date,
             activityReps = it.activity.reps,
-        )
+            inShopCategory = it.inShop.category,
+            inShopName = it.inShop.name,
+            inShopLocation = it.inShop.location,
+            )
     }
 }

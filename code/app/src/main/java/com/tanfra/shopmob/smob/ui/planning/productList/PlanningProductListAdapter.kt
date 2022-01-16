@@ -43,9 +43,6 @@ class PlanningProductListAdapter(rootView: View, callBack: (selectedSmobATO: Smo
     // called, when the user action has been confirmed and the local DB / backend needs updated
     override fun uiActionConfirmed(item: SmobProductOnListATO, rootView: View) {
 
-        // left-swipe confirmed --> purge item from local DB & server
-        Timber.i("Left-swipe confirmed: purging item from server")
-
         // collect current list from smobList (flow)
         rootView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
 

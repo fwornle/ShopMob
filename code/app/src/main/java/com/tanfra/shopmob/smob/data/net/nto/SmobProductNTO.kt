@@ -1,8 +1,6 @@
 package com.tanfra.shopmob.smob.data.net.nto
 
-import com.tanfra.shopmob.smob.data.local.utils.ActivityStatus
-import com.tanfra.shopmob.smob.data.local.utils.ProductCategory
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.*
 
 // network data type
 data class SmobProductNTO(
@@ -14,5 +12,6 @@ data class SmobProductNTO(
     var imageUrl: String?,
     var category: ProductCategory,
     var activity: ActivityStatus,
+    var inShop: InShop,
 )
 

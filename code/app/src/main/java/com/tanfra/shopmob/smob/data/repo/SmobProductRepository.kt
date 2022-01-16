@@ -6,9 +6,7 @@ import com.tanfra.shopmob.smob.data.local.dto.SmobProductDTO
 import com.tanfra.shopmob.smob.data.local.dao.SmobProductDao
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
-import com.tanfra.shopmob.smob.data.local.utils.ProductMainCategory
-import com.tanfra.shopmob.smob.data.local.utils.ProductSubCategory
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.net.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.api.SmobProductApi
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
@@ -23,6 +21,7 @@ import kotlinx.coroutines.flow.flowOf
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
+import java.lang.Double.NaN
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -364,6 +363,9 @@ class SmobProductRepository(
             ProductSubCategory.OTHER,
             "",
             0,
+            ShopCategory.OTHER,
+            "dummy shop",
+            ShopLocation(NaN, NaN),
         )
         var result = Resource.loading(dummySmobProductDTO)
 

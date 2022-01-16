@@ -1,8 +1,6 @@
 package com.tanfra.shopmob.smob.data.repo.ato
 
-import com.tanfra.shopmob.smob.data.local.utils.ActivityStatus
-import com.tanfra.shopmob.smob.data.local.utils.ProductCategory
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.*
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
@@ -17,4 +15,5 @@ data class SmobProductATO(
     var imageUrl: String?,
     var category: @Contextual ProductCategory,
     var activity: @Contextual ActivityStatus,
+    var inShop: @Contextual InShop,
 ) : Ato(), java.io.Serializable

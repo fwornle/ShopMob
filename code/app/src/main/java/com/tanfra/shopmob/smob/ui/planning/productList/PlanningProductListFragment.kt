@@ -15,21 +15,18 @@ import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsSources
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
-import com.tanfra.shopmob.smob.ui.planning.utils.BaseSwipeActionHandler
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.databinding.FragmentPlanningProductListBinding
-import com.tanfra.shopmob.smob.data.repo.ato.Ato
-import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.utils.setup
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class PlanningProductListFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
-    override val _viewModel: PlanningProductListViewModel by viewModel()
+    override val _viewModel: PlanningProductListViewModel by sharedViewModel()
 
     // data binding for fragment_smob_planning_lists.xml
     private lateinit var binding: FragmentPlanningProductListBinding
@@ -87,7 +84,7 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
             binding.refreshLayout.setRefreshing(false)
 
             // refresh local DB data from backend (for this list) - also updates 'showNoData'
-            _viewModel.swipeRefreshDataInLocalDB()
+            _viewModel.swipeRefreshProductDataInLocalDB()
 
             // empty? --> inform user that there is no point swiping for further updates...
             if (_viewModel.showNoData.value == true) {
@@ -97,7 +94,7 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
         }
 
         // refresh local DB data from backend (for this list) - also updates 'showNoData'
-        _viewModel.swipeRefreshDataInLocalDB()
+        _viewModel.swipeRefreshProductDataInLocalDB()
 
         return binding.root
     }

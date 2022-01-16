@@ -6,7 +6,6 @@ import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsViewModel
 import com.tanfra.shopmob.smob.ui.planning.productEdit.PlanningProductEditViewModel
 import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
 import com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditViewModel
-import com.tanfra.shopmob.smob.ui.planning.shopList.PlanningShopListViewModel
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
@@ -36,27 +35,12 @@ val vmServices = module {
         )
     }
 
-    // ProductList fragment
+    // ProductList fragment & ProductEdit & ShopEdit
     viewModel {
         PlanningProductListViewModel(
             get(),  // app (context)
             get() as SmobListDataSource,  // repo as data source
             get() as SmobProductDataSource,  // repo as data source
-        )
-    }
-
-    // ProductEdit fragment
-    viewModel {
-        PlanningProductEditViewModel(
-            get(),  // app (context)
-            get() as SmobProductDataSource,  // repo as data source
-        )
-    }
-
-    // ShopList fragment
-    viewModel {
-        PlanningShopListViewModel(
-            get(),  // app (context)
             get() as SmobShopDataSource,  // repo as data source
         )
     }

@@ -16,14 +16,15 @@
     <string name="shopping">Shopping at the supermarket</string>
     <string name="no_data">No Data</string>
 
-    <string name="smob_item_title">ShopMob Item Title</string>
-    <string name="smob_item_desc">ShopMob Item Description</string>
-    <string name="smob_item_location">ShopMob Item Location</string>
+    <string name="smob_item_name">ShopMob Item</string>
+    <string name="smob_item_desc">ShopMob Item Description (optional)</string>
+    <string name="smob_item_mainCat">ShopMob Item Main Category (e.g. FOODS)</string>
+    <string name="smob_item_subCat">ShopMob Item Sub Category (e.g. DAIRY)</string>
     <string name="smob_item_saved">ShopMob Item Saved!</string>
 
-    <string name="smob_shop_title">ShopMob Shop Name</string>
+    <string name="smob_shop_name">ShopMob Shop Name</string>
     <string name="smob_shop_desc">ShopMob Shop Description</string>
-    <string name="smob_shop_location">ShopMob Shop Location</string>
+    <string name="smob_shop_prompt">Select Shop</string>
     <string name="smob_shop_saved">ShopMob Shop Saved!</string>
 
     <string name="smob_list_name">ShopMob Shopping List Name</string>
@@ -49,6 +50,11 @@
     <string name="settings">Settings</string>
     <string name="err_enter_title">Please enter title</string>
     <string name="err_select_location">Please select location</string>
+
+    <string name="err_enter_name">Please enter product name</string>
+    <string name="err_enter_catMain">Please enter product main category (e.g. FOODS)</string>
+    <string name="err_enter_catSub">Please enter product sub category (e.g. DAIRY)</string>
+    <string name="err_select_shop">Please select shop category (e.g. SUPERMARKET)</string>
 
     <!-- Error strings -->
     <string name="smob_icon">ShopMob icon</string>

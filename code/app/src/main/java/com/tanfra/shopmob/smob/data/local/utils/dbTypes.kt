@@ -61,6 +61,12 @@ enum class SmobItemStatus {
     DONE,
     DELETED,
 }
+@Serializable
+data class InShop(
+    val category: ShopCategory,
+    val name: String,
+    val location: ShopLocation,
+) : java.io.Serializable
 
 @Serializable
 data class ActivityStatus(
@@ -70,8 +76,8 @@ data class ActivityStatus(
 
 @Serializable
 data class ProductCategory(
-    val main: ProductMainCategory,
-    val sub: ProductSubCategory,
+    var main: ProductMainCategory,
+    var sub: ProductSubCategory,
 ) : java.io.Serializable
 
 @Serializable

@@ -93,30 +93,30 @@ function smob () {
 
     // define some (consistent) products
     const daProducts = [
-        { id: faker.datatype.uuid(), name: 'Milk', description: 'lactose free', catMain: 'FOODS', catSub: 'DAIRY', "listPosition": 1, },
-        { id: faker.datatype.uuid(), name: 'Cheese', description: 'Cheddar', catMain: 'FOODS', catSub: 'DAIRY', "listPosition": 2, },
-        { id: faker.datatype.uuid(), name: 'Bread', description: 'white sliced', catMain: 'FOODS', catSub: 'BREKKY', "listPosition": 3  },
-        { id: faker.datatype.uuid(), name: 'Pees', description: 'green', catMain: 'FOODS', catSub: 'CANNED_FOOD', "listPosition": 4, },
-        { id: faker.datatype.uuid(), name: 'Coffee', description: 'espresso 9', catMain: 'FOODS', catSub: 'BREKKY', "listPosition": 5, },
-        { id: faker.datatype.uuid(), name: 'Musli', description: 'no fruit', catMain: 'FOODS', catSub: 'BREKKY', "listPosition": 6, },
-        { id: faker.datatype.uuid(), name: 'Apples', description: 'Granny Smith', catMain: 'FOODS', catSub: 'FRUIT_VEGETABLE', "listPosition": 7,  },
-        { id: faker.datatype.uuid(), name: 'Beer', description: 'Tegernseer', catMain: 'FOODS', catSub: 'BEVERAGES', "listPosition": 8,  },
-        { id: faker.datatype.uuid(), name: 'Oranges', description: 'Sunny Vale', catMain: 'FOODS', catSub: 'FRUIT_VEGETABLE', "listPosition": 9,  },
-        { id: faker.datatype.uuid(), name: 'Nails', description: '100 x', catMain: 'HARDWARE', catSub: 'DIY', "listPosition": 1,  },
-        { id: faker.datatype.uuid(), name: 'Light Bulb', description: '60 W', catMain: 'HARDWARE', catSub: 'DIY', "listPosition": 2,  },
-        { id: faker.datatype.uuid(), name: 'Hammer', description: 'rubber', catMain: 'HARDWARE', catSub: 'TOOLS', "listPosition": 3,  },
-        { id: faker.datatype.uuid(), name: 'Ladder', description: 'foldable', catMain: 'HARDWARE', catSub: 'TOOLS', "listPosition": 4,  },
-        { id: faker.datatype.uuid(), name: 'Wood', description: 'Planks', catMain: 'HARDWARE', catSub: 'DIY', "listPosition": 5,  },    
-        { id: faker.datatype.uuid(), name: 'Paper', description: 'A4', catMain: 'SUPPLIES', catSub: 'OFFICE', "listPosition": 1,  },
-        { id: faker.datatype.uuid(), name: 'Stapler', description: 'large', catMain: 'SUPPLIES', catSub: 'OFFICE', "listPosition": 2,  },
-        { id: faker.datatype.uuid(), name: 'Pen', description: 'blue', catMain: 'SUPPLIES', catSub: 'OFFICE', "listPosition": 3,  },
-        { id: faker.datatype.uuid(), name: 'Stamp', description: '60 p', catMain: 'SUPPLIES', catSub: 'POSTAL', "listPosition": 4,  },
-        { id: faker.datatype.uuid(), name: 'Envelope', description: '100 x', catMain: 'SUPPLIES', catSub: 'POSTAL', "listPosition": 5,  },    
-        { id: faker.datatype.uuid(), name: 'Suit', description: 'blue', catMain: 'CLOTHING', catSub: 'BUSINESS', "listPosition": 1,  },
-        { id: faker.datatype.uuid(), name: 'Shirt', description: 'white', catMain: 'CLOTHING', catSub: 'BUSINESS', "listPosition": 2,  },
-        { id: faker.datatype.uuid(), name: 'T-Shirt', description: 'XXL', catMain: 'CLOTHING', catSub: 'LEISURE', "listPosition": 3,  },
-        { id: faker.datatype.uuid(), name: 'Shorts', description: 'swimming', catMain: 'CLOTHING', catSub: 'LEISURE', "listPosition": 4,  },
-        { id: faker.datatype.uuid(), name: 'Boots', description: 'black', catMain: 'CLOTHING', catSub: 'SHOES', "listPosition": 5,  },   
+        { id: faker.datatype.uuid(), name: 'Milk', description: 'lactose free', catMain: 'FOODS', catSub: 'DAIRY', listPosition: 1, inShopCategory: "SUPERMARKET", inShopName: "Rewe", },
+        { id: faker.datatype.uuid(), name: 'Cheese', description: 'Cheddar', catMain: 'FOODS', catSub: 'DAIRY', listPosition: 2, inShopCategory: "SUPERMARKET", inShopName: "Rewe", },
+        { id: faker.datatype.uuid(), name: 'Bread', description: 'white sliced', catMain: 'FOODS', catSub: 'BREKKY', listPosition: 3,  inShopCategory: "BAKERY", inShopName: "Wimmer", },
+        { id: faker.datatype.uuid(), name: 'Pees', description: 'green', catMain: 'FOODS', catSub: 'CANNED_FOOD', listPosition: 4, inShopCategory: "SUPERMARKET", inShopName: "Rewe", },
+        { id: faker.datatype.uuid(), name: 'Coffee', description: 'espresso 9', catMain: 'FOODS', catSub: 'BREKKY', listPosition: 5, inShopCategory: "SUPERMARKET", inShopName: "Rewe", },
+        { id: faker.datatype.uuid(), name: 'Musli', description: 'no fruit', catMain: 'FOODS', catSub: 'BREKKY', listPosition: 6, inShopCategory: "SUPERMARKET", inShopName: "Rewe", },
+        { id: faker.datatype.uuid(), name: 'Apples', description: 'Granny Smith', catMain: 'FOODS', catSub: 'FRUIT_VEGETABLE', listPosition: 7,  inShopCategory: "SUPERMARKET", inShopName: "Aldi", },
+        { id: faker.datatype.uuid(), name: 'Beer', description: 'Tegernseer', catMain: 'FOODS', catSub: 'BEVERAGES', listPosition: 8,  inShopCategory: "SUPERMARKET",  inShopName: "Aldi", },
+        { id: faker.datatype.uuid(), name: 'Oranges', description: 'Sunny Vale', catMain: 'FOODS', catSub: 'FRUIT_VEGETABLE', listPosition: 9,  inShopCategory: "SUPERMARKET", inShopName: "Lidl", },
+        { id: faker.datatype.uuid(), name: 'Nails', description: '100 x', catMain: 'HARDWARE', catSub: 'DIY', listPosition: 1,  inShopCategory: "HARDWARE", inShopName: "Bauhaus", },
+        { id: faker.datatype.uuid(), name: 'Light Bulb', description: '60 W', catMain: 'HARDWARE', catSub: 'DIY', listPosition: 2, inShopCategory: "HARDWARE", inShopName: "Bauhaus", },
+        { id: faker.datatype.uuid(), name: 'Hammer', description: 'rubber', catMain: 'HARDWARE', catSub: 'TOOLS', listPosition: 3, inShopCategory: "HARDWARE", inShopName: "Hornbach", },
+        { id: faker.datatype.uuid(), name: 'Ladder', description: 'foldable', catMain: 'HARDWARE', catSub: 'TOOLS', listPosition: 4, inShopCategory: "HARDWARE", inShopName: "Obi", },
+        { id: faker.datatype.uuid(), name: 'Wood', description: 'Planks', catMain: 'HARDWARE', catSub: 'DIY', listPosition: 5, inShopCategory: "HARDWARE", inShopName: "Obi", },    
+        { id: faker.datatype.uuid(), name: 'Paper', description: 'A4', catMain: 'SUPPLIES', catSub: 'OFFICE', listPosition: 1, inShopCategory: "SUPPLIES", inShopName: "Kaufhof", },
+        { id: faker.datatype.uuid(), name: 'Stapler', description: 'large', catMain: 'SUPPLIES', catSub: 'OFFICE', listPosition: 2, inShopCategory: "SUPPLIES", inShopName: "Kaufhof", },
+        { id: faker.datatype.uuid(), name: 'Pen', description: 'blue', catMain: 'SUPPLIES', catSub: 'OFFICE', listPosition: 3, inShopCategory: "SUPPLIES", inShopName: "Kaufhof", },
+        { id: faker.datatype.uuid(), name: 'Stamp', description: '60 p', catMain: 'SUPPLIES', catSub: 'POSTAL', listPosition: 4, inShopCategory: "SUPPLIES", inShopName: "Kaufhof", },
+        { id: faker.datatype.uuid(), name: 'Envelope', description: '100 x', catMain: 'SUPPLIES', catSub: 'POSTAL', listPosition: 5, inShopCategory: "SUPPLIES", inShopName: "Kaufhof", },    
+        { id: faker.datatype.uuid(), name: 'Suit', description: 'blue', catMain: 'CLOTHING', catSub: 'BUSINESS', listPosition: 1, inShopCategory: "CLOTHING", inShopName: "Zara", },
+        { id: faker.datatype.uuid(), name: 'Shirt', description: 'white', catMain: 'CLOTHING', catSub: 'BUSINESS', listPosition: 2, inShopCategory: "CLOTHING", inShopName: "Zara", },
+        { id: faker.datatype.uuid(), name: 'T-Shirt', description: 'XXL', catMain: 'CLOTHING', catSub: 'LEISURE', listPosition: 3, inShopCategory: "CLOTHING", inShopName: "Zara", },
+        { id: faker.datatype.uuid(), name: 'Shorts', description: 'swimming', catMain: 'CLOTHING', catSub: 'LEISURE', listPosition: 4, inShopCategory: "CLOTHING", inShopName: "Kaufhof", },
+        { id: faker.datatype.uuid(), name: 'Boots', description: 'black', catMain: 'CLOTHING', catSub: 'SHOES', listPosition: 5, inShopCategory: "CLOTHING", inShopName: "Salamander", },   
     ]
     
 
@@ -135,6 +135,9 @@ function smob () {
         var catSub = daProducts[id].catSub
         var dateLastPurchase = faker.date.recent().toDateString()
         var frequencyPurchase = faker.datatype.number(100)
+        var inShopCategory = daProducts[id].inShopCategory
+        var inShopName = daProducts[id].inShopName
+        var inShopLocation = [faker.datatype.float(100), faker.datatype.float(100)]
 
         smobProducts.push({
             "id": uuid,
@@ -150,7 +153,12 @@ function smob () {
             "activity": {
                 "date": dateLastPurchase,
                 "reps": frequencyPurchase,
-              }
+              },
+            "inShop": {
+                "category": inShopCategory,
+                "name": inShopName,
+                "location": inShopLocation
+            }
         })
 
         // log all productIds
@@ -261,7 +269,7 @@ function smob () {
             prodId => { return { 
                 "id": prodId, 
                 "status": faker.helpers.randomize(itemStatus), 
-                "listPosition": daProducts.find(product => product.id == prodId).listPosition,
+                listPosition: daProducts.find(product => product.id == prodId).listPosition,
             } 
         }
         )

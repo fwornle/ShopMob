@@ -2,24 +2,30 @@ package com.tanfra.shopmob.smob.ui.planning.productList
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.tanfra.shopmob.R
+import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.ui.base.BaseViewModel
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductOnListATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
+import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.launch
 
 class PlanningProductListViewModel(
-    app: Application,
+    val app: Application,
     val listRepoFlow: SmobListDataSource,  // public, as used (externally) to update the smobList
-    private val productRepoFlow: SmobProductDataSource
-) : BaseViewModel(app) {
+    private val productDataSource: SmobProductDataSource,
+    val shopDataSource: SmobShopDataSource,
+    ) : BaseViewModel(app) {
 
     // collect the upstream selected smobList as well as the list of SmobProductATO items
     // ... lateinit, as this can only be done once the fragment is created (and the id's are here)
@@ -28,6 +34,7 @@ class PlanningProductListViewModel(
     lateinit var smobList: StateFlow<Resource<SmobListATO?>>
     lateinit var smobListItems: StateFlow<Resource<List<SmobProductATO>?>>
     lateinit var smobListItemsWithStatus: StateFlow<List<SmobProductOnListATO>?>
+
 
     /**
      * fetch the flow of the upstream list the user just selected
@@ -52,7 +59,7 @@ class PlanningProductListViewModel(
      */
     @ExperimentalCoroutinesApi
     fun fetchSmobListItemsFlow(id: String): Flow<Resource<List<SmobProductATO>?>> {
-        val fetchFlow = productRepoFlow.getSmobProductsByListId(id)
+        val fetchFlow = productDataSource.getSmobProductsByListId(id)
         return fetchFlow
     }
 
@@ -135,13 +142,13 @@ class PlanningProductListViewModel(
      * update all items in the local DB by querying the backend - triggered on "swipe down"
      */
     @ExperimentalCoroutinesApi
-    fun swipeRefreshDataInLocalDB() {
+    fun swipeRefreshProductDataInLocalDB() {
 
         // user is impatient - trigger update of local DB from net
         viewModelScope.launch {
 
             // update backend DB (from net API)
-            productRepoFlow.refreshDataInLocalDB()
+            productDataSource.refreshDataInLocalDB()
 
             // handle potential errors
             smobListItems.collect {
@@ -156,7 +163,7 @@ class PlanningProductListViewModel(
 
         }
 
-    }  // swipeRefreshDataInLocalDB
+    }  // swipeRefreshProductDataInLocalDB
 
     /**
      * Inform the user that the list is empty
@@ -165,5 +172,142 @@ class PlanningProductListViewModel(
     private fun updateShowNoData(smobListNewest: Resource<List<*>?>) {
         showNoData.value = (smobListNewest.status == Status.SUCCESS && smobListNewest.data!!.isEmpty())
     }
+
+
+    // (ex) PlanningProductEditViewModel contents ------------------------------------------------
+    // (ex) PlanningProductEditViewModel contents ------------------------------------------------
+    // (ex) PlanningProductEditViewModel contents ------------------------------------------------
+
+    var smobProductName = MutableLiveData<String?>()
+    var smobProductDescription = MutableLiveData<String?>()
+    var smobProductImageUrl = MutableLiveData<String?>()
+    val smobProductCategory = MutableLiveData<ProductCategory>()
+
+    // this will be overwritten from within the shopList, as soon as the user selects a shop from the list
+    // ... it remains active until a new shop is chosen
+    var selectedShop = MutableLiveData<SmobShopATO>()
+
+    // default values
+    init {
+        selectedShop.value = SmobShopATO(
+            "no shop selected yet (id)",
+            SmobItemStatus.NEW,
+            -1L,
+            "no shop selected yet",
+            "no shop selected yet",
+            "no shop selected yet",
+            ShopLocation(Double.NaN, Double.NaN),
+            ShopType.INDIVIDUAL,
+            ShopCategory.OTHER,
+            listOf(),
+        )
+
+        smobProductCategory.value = ProductCategory(ProductMainCategory.OTHER, ProductSubCategory.OTHER)
+    }
+
+    /**
+     * Clear the live data objects to start fresh next time the view model gets called
+     */
+    fun onClear() {
+        smobProductName.value = null
+        smobProductDescription.value = null
+        smobProductImageUrl.value = null
+    }
+
+    /**
+     * Validate the entered data then saves the smob product to the DataSource
+     */
+    fun validateAndSaveSmobItem(shopMobData: SmobProductATO) {
+        if (validateEnteredData(shopMobData)) {
+            saveSmobProductItem(shopMobData)
+        }
+    }
+
+    /**
+     * Save the smob product to the data source
+     */
+    private fun saveSmobProductItem(smobProductData: SmobProductATO) {
+        showLoading.value = true
+        viewModelScope.launch {
+            productDataSource.saveSmobProduct(smobProductData)
+            showLoading.value = false
+
+            showToast.value = app.getString(R.string.smob_item_saved)
+            navigationCommand.value = NavigationCommand.Back
+        }
+    }
+
+    /**
+     * Validate the entered data and show error to the user if there's any invalid data
+     */
+    private fun validateEnteredData(shopMobData: SmobProductATO): Boolean {
+
+        // need product name
+        if (shopMobData.name.isEmpty()) {
+            showSnackBarInt.value = R.string.err_enter_name
+            return false
+        }
+
+        // need product main category (FOODS)
+        if (shopMobData.category.main == ProductMainCategory.OTHER) {
+            showSnackBarInt.value = R.string.err_enter_catMain
+            return false
+        }
+
+        // need product sub category (DAIRY)
+        if (shopMobData.category.sub == ProductSubCategory.OTHER) {
+            showSnackBarInt.value = R.string.err_enter_catSub
+            return false
+        }
+
+        // need shop category (SUPERMARKET)
+        if (shopMobData.inShop.category == ShopCategory.OTHER) {
+            showSnackBarInt.value = R.string.err_select_shop
+            return false
+        }
+
+        // all good --> validation passed
+        return true
+    }
+
+
+    // (ex) ShopListViewModel contents ------------------------------------------------
+    // (ex) ShopListViewModel contents ------------------------------------------------
+    // (ex) ShopListViewModel contents ------------------------------------------------
+
+    // list that holds the SmobShop data items to be displayed on the UI
+    // ... flow, converted to StateFlow --> data changes in the backend are observed
+    val smobShopList = shopDataSource.getAllSmobShops().stateIn(
+        scope = viewModelScope,
+        started = WhileSubscribed(5000),
+        initialValue = Resource.loading(null)
+    )
+
+
+    /**
+     * update all items in the local DB by querying the backend - triggered on "swipe down"
+     */
+    @ExperimentalCoroutinesApi
+    fun swipeRefreshShopDataInLocalDB() {
+
+        // user is impatient - trigger update of local DB from net
+        viewModelScope.launch {
+
+            // update backend DB (from net API)
+            shopDataSource.refreshDataInLocalDB()
+
+            smobShopList.collect {
+
+                if(it.status == Status.ERROR) {
+                    showSnackBar.value = it.message!!
+                }
+
+                // check if the "no data" symbol has to be shown (empty list)
+                updateShowNoData(it)
+            }
+
+        }
+
+    }  // swipeRefreshShopDataInLocalDB
 
 }
