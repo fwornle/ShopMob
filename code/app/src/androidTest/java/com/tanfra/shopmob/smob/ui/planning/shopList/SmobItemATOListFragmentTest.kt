@@ -26,9 +26,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import com.tanfra.shopmob.smob.data.local.FakeItemDataSource
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
-import com.tanfra.shopmob.smob.ui.planning.productEdit.PlanningProductEditViewModel
+import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
 import com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditViewModel
 import com.tanfra.shopmob.util.DataBindingIdlingResource
 import com.tanfra.shopmob.util.monitorFragment
@@ -119,8 +120,9 @@ class SmobItemATOListFragmentTest: AutoCloseKoinTest() {
             // declare a ViewModel - to be injected into Fragment with dedicated injector using
             // "by viewModel()"
             viewModel {
-                PlanningProductEditViewModel(
+                PlanningProductListViewModel(
                     get(),  // app (context)
+                    get() as SmobListDataSource,  // repo as data source
                     get() as SmobProductDataSource,  // repo as data source
                     get() as SmobShopDataSource,  // repo as data source
                 )

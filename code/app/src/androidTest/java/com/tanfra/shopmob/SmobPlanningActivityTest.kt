@@ -23,13 +23,14 @@ import androidx.test.uiautomator.*
 import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import com.tanfra.shopmob.smob.data.local.LocalDB
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditViewModel
 import com.tanfra.shopmob.util.DataBindingIdlingResource
 import com.tanfra.shopmob.util.monitorActivity
 import com.tanfra.shopmob.utils.EspressoIdlingResource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
-import com.tanfra.shopmob.smob.ui.planning.productEdit.PlanningProductEditViewModel
+import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matcher
@@ -122,8 +123,9 @@ class SmobPlanningActivityTest: AutoCloseKoinTest() {
 
         val myModule = module {
             viewModel {
-                PlanningProductEditViewModel(
+                PlanningProductListViewModel(
                     appContext,
+                    get() as SmobListDataSource,
                     get() as SmobProductDataSource,
                     get() as SmobShopDataSource
                 )

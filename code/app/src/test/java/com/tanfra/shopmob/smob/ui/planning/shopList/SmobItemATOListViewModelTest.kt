@@ -10,7 +10,7 @@ import com.tanfra.shopmob.smob.testutils.MainCoroutineRule
 import com.tanfra.shopmob.smob.testutils.getOrAwaitValue
 
 import com.tanfra.shopmob.smob.data.repo.utils.Status
-import com.tanfra.shopmob.smob.ui.planning.productEdit.PlanningProductEditViewModel
+import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -30,7 +30,8 @@ import java.util.*
 class SmobUserATOListViewModelTest: AutoCloseKoinTest() {
 
     // viewModel
-    private lateinit var _viewModel: PlanningProductEditViewModel
+    private lateinit var _viewModel: PlanningProductListViewModel by inject()
+
 
     // smob item repository and fake data
     private lateinit var smobUserRepo: SmobUserDataSource
