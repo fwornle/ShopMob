@@ -36,12 +36,13 @@ import com.tanfra.shopmob.smob.data.local.utils.ShopType
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.core.component.KoinComponent
 import java.lang.Double.NaN
 import java.util.*
 
 
 @SuppressLint("UnspecifiedImmutableFlag")
-class PlanningShopEditFragment : BaseFragment() {
+class PlanningShopEditFragment : BaseFragment(), KoinComponent {
 
     // get the view model (from Koin) this time as a singleton to be shared with another fragment
     override val _viewModel: PlanningShopEditViewModel by sharedViewModel()
@@ -135,12 +136,13 @@ class PlanningShopEditFragment : BaseFragment() {
         // clicking on the 'selectLocation' textView takes you to the fragment "select location"
         // ... by means of the observer function of MutableLiveData element 'navigationCommand'
         //     --> see BaseFragment.kt... where the observer (lambda) is installed
-        binding.selectLocation.setOnClickListener {
+        binding.defineLocation.setOnClickListener {
             //            Navigate to another fragment to get the user location
-            _viewModel.navigationCommand.value =
+            _viewModel.navigationCommand.postValue(
                 NavigationCommand.To(
-                    PlanningShopEditFragmentDirections.actionPlanningShopEditFragmentToPlanningShopListFragment()
+                    PlanningShopEditFragmentDirections.actionPlanningShopEditFragmentToPlanningShopMapFragment()
                 )
+            )
         }
 
         // clicking on the 'saveSmobItem' FAB...

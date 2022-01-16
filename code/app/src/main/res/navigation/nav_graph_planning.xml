@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_planningListsFragment_to_planningListsEditFragment"
             app:destination="@id/smobPlanningListsEditFragment" />
+        <action
+            android:id="@+id/action_planningListsFragment_to_planningShopEditFragment"
+            app:destination="@id/smobPlanningShopEditFragment" />
     </fragment>
 
     <fragment
@@ -104,7 +107,7 @@
         tools:layout="@layout/fragment_planning_shop_edit"
         >
         <action
-            android:id="@+id/action_planningShopEditFragment_to_planningShopMapFragmen"
+            android:id="@+id/action_planningShopEditFragment_to_planningShopMapFragment"
             app:destination="@id/smobPlanningShopMapFragment" />
         <action
             android:id="@+id/action_planningShopEditFragment_to_planningShopListFragment"
@@ -113,8 +116,8 @@
 
     <fragment
         android:id="@+id/smobPlanningShopMapFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.shopEdit.selectlocation.PlanningShopMapFragment"
-        android:label="Select Shop Location"
+        android:name="com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopMapFragment"
+        android:label="Select Store Location"
         tools:layout="@layout/fragment_planning_shop_map"
         />
 

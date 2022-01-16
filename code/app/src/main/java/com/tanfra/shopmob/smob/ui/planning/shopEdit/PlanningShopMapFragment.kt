@@ -1,8 +1,7 @@
-package com.tanfra.shopmob.smob.ui.planning.shopEdit.selectlocation
+package com.tanfra.shopmob.smob.ui.planning.shopEdit
 
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
@@ -11,7 +10,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
@@ -31,23 +29,23 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.databinding.FragmentPlanningShopMapBinding
-import com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditViewModel
 import com.tanfra.shopmob.smob.data.local.utils.ShopLocation
 import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
 import com.tanfra.shopmob.smob.ui.planning.utils.openSoftKeyboard
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.core.component.KoinComponent
 import timber.log.Timber
 import java.lang.Double.NaN
 import java.util.*
 
-// note: all three concrete viewModels (SmobItemsList, SaveSmobItems, SelectLocation) inherit from
-//       a common "base viewModel" (BaseViewModel)
-//       ... which defines the LiveData/Event elements shared by all three (derived) viewModels
-class PlanningShopMapFragment : BaseFragment(), OnMapReadyCallback {
+// sharing the viewModel with PlanningShopEditFragment
+class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallback {
 
     // use Koin to get the view model of the SaveSmobItem
-    override val _viewModel: PlanningShopEditViewModel by inject()
+    override val _viewModel: PlanningShopEditViewModel by sharedViewModel()
+
+    // access to fragment views
     private lateinit var binding: FragmentPlanningShopMapBinding
     
     // permissions (user location, background and foreground)
@@ -62,14 +60,12 @@ class PlanningShopMapFragment : BaseFragment(), OnMapReadyCallback {
     private var userLongitude = 11.581632522306991
     private var zoomLevel = 12f
 
-    // last marker data...
+    // last marker data - will be initialized to viewModel data (in case the user has already
+    // typed in a name for the SmobShop to be defined)
     private var lastMarker: Marker? = null
-    private var lastMarkerTitle: String? = _viewModel.smobShopName.value
-        ?: "Exciting..."  // default
-    private var lastMarkerDescription: String? = _viewModel.smobShopDescription.value
-        ?: "Something is happening"  // default
-    private var lastMarkerLocation: String? = _viewModel.smobShopName.value
-
+    private var lastMarkerTitle: String? = null
+    private var lastMarkerDescription: String? = null
+    private var lastMarkerLocation: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -79,10 +75,15 @@ class PlanningShopMapFragment : BaseFragment(), OnMapReadyCallback {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_planning_shop_map, container, false)
 
+        binding.lifecycleOwner = viewLifecycleOwner
+
         // associate injected viewModel with layout (data binding)
         binding.viewModel = _viewModel
 
-        binding.lifecycleOwner = viewLifecycleOwner
+        // viewModel now initialized --> use VM data to initalize local fragment variables
+        lastMarkerTitle = _viewModel.smobShopName.value ?: "Exciting..."  // default
+        lastMarkerDescription = _viewModel.smobShopDescription.value ?: "Something is happening"  // default
+        lastMarkerLocation = _viewModel.smobShopName.value
 
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(true)

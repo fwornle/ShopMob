@@ -114,11 +114,15 @@ class SmobShopRepository(
             smobShopDao.saveSmobShop(dbShop)
 
             // then push to backend DB
-            // ... use 'update', as shop may already exist (equivalent of REPLACE w/h local DB)
-            //
-            // ... could do a read back first, if we're anxious...
-            //smobShopDao.getSmobShopById(dbShop.id)?.let { smobShopApi.updateSmobShop(it.id, it.asNetworkModel()) }
-            smobShopApi.updateSmobShopById(dbShop.id, dbShop.asNetworkModel())
+            // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
+            val testRead = getSmobShopViaApi(dbShop.id)
+            if (testRead.data?.id != dbShop.id) {
+                // item not found in backend --> use POST to create it
+                saveSmobShopViaApi(dbShop)
+            } else {
+                // item already exists in backend DB --> use PUT to update it
+                smobShopApi.updateSmobShopById(dbShop.id, dbShop.asNetworkModel())
+            }
 
         }  // idlingResource (testing)
 

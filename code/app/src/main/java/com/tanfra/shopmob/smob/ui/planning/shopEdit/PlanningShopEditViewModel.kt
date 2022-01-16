@@ -10,7 +10,7 @@ import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
 import kotlinx.coroutines.launch
-import java.lang.Double
+import java.lang.Double.NaN
 
 class PlanningShopEditViewModel(
     val app: Application,
@@ -22,7 +22,9 @@ class PlanningShopEditViewModel(
     val smobShopLocation = MutableLiveData<ShopLocation?>()
     val smobShopType = MutableLiveData<ShopType?>()
     val smobShopCategory = MutableLiveData<ShopCategory?>()
-    val smobShopBusiness = MutableLiveData<List<String>>()
+    val smobShopBusiness = MutableLiveData<List<String>?>()
+
+    var locatedShop = MutableLiveData<SmobShopATO>()
 
     // log the state of geoFencing
     //
@@ -31,6 +33,25 @@ class PlanningShopEditViewModel(
     //       which resets a possibly previously set geoFencingOn
     val geoFencingOn = MutableLiveData<Boolean?>()
 
+    // default values
+    init {
+        locatedShop.value = SmobShopATO(
+            "no shop selected yet (id)",
+            SmobItemStatus.NEW,
+            -1L,
+            "no shop selected yet",
+            "no shop selected yet",
+            "no shop selected yet",
+            ShopLocation(NaN, NaN),
+            ShopType.INDIVIDUAL,
+            ShopCategory.OTHER,
+            listOf(),
+        )
+
+        // initialize the rest...
+        onClear()
+
+    }
 
     /**
      * Clear the live data objects to start fresh next time the view model gets called
@@ -41,7 +62,7 @@ class PlanningShopEditViewModel(
         smobShopLocation.value = null
         smobShopType.value = null
         smobShopCategory.value = null
-        smobShopBusiness.value = listOf()
+        smobShopBusiness.value = null
 
         geoFencingOn.value = null
     }

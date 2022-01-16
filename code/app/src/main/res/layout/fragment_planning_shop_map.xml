@@ -16,7 +16,7 @@
         android:layout_height="match_parent">
 
         <!-- map container
-             could switch to cloud basded styling by adding:
+             could switch to cloud based styling by adding:
              map:mapId="@string/cloud_styling_basic_map_id"
          -->
         <androidx.fragment.app.FragmentContainerView

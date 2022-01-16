@@ -27,7 +27,7 @@ val netServices = module {
         // add logging (in debug mode only)
         // ... even during debug mode: disable when working (by adding hardcoded 'false &&')
         if (
-            //false &&
+            false &&
             BuildConfig.DEBUG
         ) {
 
