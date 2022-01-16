@@ -190,94 +190,107 @@
       "description": "ullam",
       "type": "FAMILY",
       "members": [
+        "0c4e6054-5fd8-48a8-817c-f6611278f755",
+        "19a3ba83-841b-498a-998b-b1ef9131b8c7",
         "f8a8c6b5-3876-4c0a-8011-a56f2754c5b3"
       ],
       "activity": {
-        "date": "2021-03-04T10:04:04.668Z",
-        "reps": 6
+        "date": "2021-10-06T05:54:58.480Z",
+        "reps": 19
       }
     },
     {
-      "id": "94101e9d-c428-451f-9ed5-67a9f0310a02",
+      "id": "101e9dc4-2851-4f1e-9567-a9f0310a02be",
       "itemStatus": "OPEN",
       "itemPosition": 1,
-      "name": "impedit",
-      "description": "",
-      "type": "WORK",
-      "members": [],
+      "name": "molestiae",
+      "description": "qui",
+      "type": "FAMILY",
+      "members": [
+        "19a3ba83-841b-498a-998b-b1ef9131b8c7",
+        "289644a6-0dea-40f2-bce0-cb4fcddb5ff6",
+        "34b46bad-09a7-40ab-a7b1-f8110a9fcc89",
+        "34b46bad-09a7-40ab-a7b1-f8110a9fcc89",
+        "39fbaadf-0e40-4861-9f23-9553f193a46a",
+        "465ca607-c295-4adb-a861-f732eae81a75",
+        "631f7ea5-4ae4-4734-9656-ecdbb7f86d3b",
+        "6b4d62cc-c4a4-4fa6-93a7-e8b67270c994"
+      ],
       "activity": {
-        "date": "2021-02-11T21:25:49.214Z",
-        "reps": 15
+        "date": "2021-10-18T12:09:40.509Z",
+        "reps": 12
       }
     },
     {
-      "id": "677698dd-7a33-46c3-ac21-9f34b65a49fe",
+      "id": "36c32c21-9f34-4b65-a49f-e0fa805c9351",
       "itemStatus": "OPEN",
       "itemPosition": 2,
-      "name": "ipsa",
-      "description": "a",
+      "name": "aut",
+      "description": "",
       "type": "FRIENDS",
       "members": [
-        "0c4e6054-5fd8-48a8-817c-f6611278f755",
-        "39fbaadf-0e40-4861-9f23-9553f193a46a",
-        "6b4d62cc-c4a4-4fa6-93a7-e8b67270c994",
-        "b98c56ab-d229-4fd5-bd11-603e7e83104d",
-        "bb463b8b-b76c-4f6a-9726-65ab5730b69b",
-        "ddb56034-668b-48f0-9ac0-90be246c355d",
+        "1d21d940-8b10-4915-b5ea-558b9a3f94a3",
+        "289644a6-0dea-40f2-bce0-cb4fcddb5ff6",
+        "465ca607-c295-4adb-a861-f732eae81a75",
+        "d7bb95b6-5a55-4334-bac1-c606272614e6",
+        "d7bb95b6-5a55-4334-bac1-c606272614e6",
+        "f8a8c6b5-3876-4c0a-8011-a56f2754c5b3"
+      ],
+      "activity": {
+        "date": "2021-11-02T15:34:41.471Z",
+        "reps": 13
+      }
+    },
+    {
+      "id": "497f43c9-2890-4f8e-8320-cf5e4e669b93",
+      "itemStatus": "OPEN",
+      "itemPosition": 3,
+      "name": "amet",
+      "description": "reprehenderit odit at quod",
+      "type": "OTHER",
+      "members": [
+        "19a3ba83-841b-498a-998b-b1ef9131b8c7",
+        "34b46bad-09a7-40ab-a7b1-f8110a9fcc89",
+        "631f7ea5-4ae4-4734-9656-ecdbb7f86d3b",
+        "757e108b-d767-490c-8657-fc9c529c372e",
         "e858a057-eeb3-410b-ae58-df07e0a8e899"
       ],
       "activity": {
-        "date": "2021-12-13T13:34:38.797Z",
-        "reps": 6
+        "date": "2021-08-14T02:17:48.141Z",
+        "reps": 19
       }
     },
     {
-      "id": "1a0bea80-3497-4f43-8928-90f8e0320cf5",
-      "itemStatus": "OPEN",
-      "itemPosition": 3,
-      "name": "aut",
-      "description": "veniam sint",
-      "type": "FAMILY",
-      "members": [
-        "0c4e6054-5fd8-48a8-817c-f6611278f755",
-        "0c4e6054-5fd8-48a8-817c-f6611278f755",
-        "1d21d940-8b10-4915-b5ea-558b9a3f94a3",
-        "295c71ad-3d9e-4e21-972b-616d861737c5"
-      ],
-      "activity": {
-        "date": "2021-10-29T16:06:02.436Z",
-        "reps": 10
-      }
-    },
-    {
-      "id": "261db2ce-d7f6-4c4c-ae8d-c6d4ef4d5c9a",
+      "id": "c4cee8dc-6d4e-4f4d-9c9a-7ce46b729863",
       "itemStatus": "OPEN",
       "itemPosition": 4,
-      "name": "odio",
-      "description": "",
-      "type": "WORK",
+      "name": "asperiores",
+      "description": "possimus",
+      "type": "OTHER",
       "members": [
-        "6b4d62cc-c4a4-4fa6-93a7-e8b67270c994",
+        "39fbaadf-0e40-4861-9f23-9553f193a46a",
+        "631f7ea5-4ae4-4734-9656-ecdbb7f86d3b",
+        "76ade417-7f38-469c-97dc-948650456bad",
         "b98c56ab-d229-4fd5-bd11-603e7e83104d",
-        "f8a8c6b5-3876-4c0a-8011-a56f2754c5b3"
+        "ddb56034-668b-48f0-9ac0-90be246c355d"
       ],
       "activity": {
-        "date": "2021-04-18T12:44:48.174Z",
-        "reps": 9
+        "date": "2021-11-23T16:50:32.769Z",
+        "reps": 2
       }
     }
   ],
   "shops": [
     {
-      "id": "bbefc083-7572-40c8-9662-5167205f3646",
+      "id": "6b89f571-513e-4c78-bd5a-3e5157a70dc5",
       "itemStatus": "OPEN",
       "itemPosition": 0,
       "name": "Lidl",
-      "description": "qui illo voluptas",
+      "description": "voluptate et quam",
       "imageUrl": "https://placeimg.com/200/150/arch?0",
       "location": {
-        "latitude": "40.6466",
-        "longitude": "-161.5946"
+        "latitude": "-15.0454",
+        "longitude": "143.9709"
       },
       "type": "CHAIN",
       "category": "SUPERMARKET",
@@ -292,15 +305,15 @@
       ]
     },
     {
-      "id": "e640d015-ade7-4e0d-adba-bfc35a57cb66",
+      "id": "6873747d-5a77-46e8-a983-a8f9004803c6",
       "itemStatus": "OPEN",
       "itemPosition": 1,
       "name": "Aldi",
-      "description": "occaecati ea ut",
+      "description": "aut fugit explicabo",
       "imageUrl": "https://placeimg.com/200/150/arch?1",
       "location": {
-        "latitude": "40.8944",
-        "longitude": "7.6555"
+        "latitude": "52.8390",
+        "longitude": "117.5509"
       },
       "type": "CHAIN",
       "category": "SUPERMARKET",
@@ -315,15 +328,15 @@
       ]
     },
     {
-      "id": "9f571513-ec78-4fd5-a3e5-157a70dc56e6",
+      "id": "8597a064-6aa5-453b-8fff-157408852dae",
       "itemStatus": "OPEN",
       "itemPosition": 2,
       "name": "Rewe",
-      "description": "harum amet officia",
+      "description": "eum quia molestias",
       "imageUrl": "https://placeimg.com/200/150/arch?2",
       "location": {
-        "latitude": "4.8407",
-        "longitude": "-6.7986"
+        "latitude": "-42.4085",
+        "longitude": "73.5802"
       },
       "type": "CHAIN",
       "category": "SUPERMARKET",
@@ -338,15 +351,15 @@
       ]
     },
     {
-      "id": "3747d5a7-76e8-4298-ba8f-9004803c6cd8",
+      "id": "bb56014d-1879-44aa-9700-353779b1cad5",
       "itemStatus": "OPEN",
       "itemPosition": 3,
       "name": "Edeka",
-      "description": "sunt voluptas exercitationem",
+      "description": "aut impedit sit",
       "imageUrl": "https://placeimg.com/200/150/arch?3",
       "location": {
-        "latitude": "-31.2776",
-        "longitude": "32.3688"
+        "latitude": "-13.8794",
+        "longitude": "-114.1484"
       },
       "type": "CHAIN",
       "category": "SUPERMARKET",
@@ -361,15 +374,15 @@
       ]
     },
     {
-      "id": "7a0646aa-553b-44ff-b157-408852dae4bb",
+      "id": "7c611e4b-6730-496e-acd9-9b6777da5c1d",
       "itemStatus": "OPEN",
       "itemPosition": 4,
       "name": "Obi",
-      "description": "quia blanditiis iusto",
+      "description": "similique aut ea",
       "imageUrl": "https://placeimg.com/200/150/arch?4",
       "location": {
-        "latitude": "43.4489",
-        "longitude": "-55.0274"
+        "latitude": "-10.3189",
+        "longitude": "118.2051"
       },
       "type": "CHAIN",
       "category": "HARDWARE",
@@ -384,15 +397,15 @@
       ]
     },
     {
-      "id": "6014d187-94aa-4970-8353-779b1cad5627",
+      "id": "f66c3706-2f51-496a-b0be-7342089a244a",
       "itemStatus": "OPEN",
       "itemPosition": 5,
       "name": "Bauhaus",
-      "description": "eos rerum consequuntur",
+      "description": "vel molestiae non",
       "imageUrl": "https://placeimg.com/200/150/arch?5",
       "location": {
-        "latitude": "54.9588",
-        "longitude": "-36.5126"
+        "latitude": "-16.2966",
+        "longitude": "-74.0542"
       },
       "type": "CHAIN",
       "category": "HARDWARE",
@@ -407,15 +420,15 @@
       ]
     },
     {
-      "id": "11e4b673-096e-4acd-99b6-777da5c1d7df",
+      "id": "5ebea172-8bd0-4bd3-94b7-063415236674",
       "itemStatus": "OPEN",
       "itemPosition": 6,
       "name": "Hornbach",
-      "description": "qui odit id",
+      "description": "mollitia totam aut",
       "imageUrl": "https://placeimg.com/200/150/arch?6",
       "location": {
-        "latitude": "-19.1000",
-        "longitude": "-43.2818"
+        "latitude": "74.8965",
+        "longitude": "179.5245"
       },
       "type": "CHAIN",
       "category": "HARDWARE",
@@ -430,15 +443,15 @@
       ]
     },
     {
-      "id": "c37062f5-196a-4f0b-a734-2089a244a645",
+      "id": "a0b81746-f280-4cf0-8171-a04e64df9b84",
       "itemStatus": "OPEN",
       "itemPosition": 7,
       "name": "Höffner",
-      "description": "quasi nihil omnis",
+      "description": "nobis et accusamus",
       "imageUrl": "https://placeimg.com/200/150/arch?7",
       "location": {
-        "latitude": "72.3909",
-        "longitude": "72.8436"
+        "latitude": "65.1001",
+        "longitude": "177.0497"
       },
       "type": "CHAIN",
       "category": "FURNITURE",
@@ -453,15 +466,15 @@
       ]
     },
     {
-      "id": "ea1728bd-0bd3-454b-b063-415236674efa",
+      "id": "dd0262ea-81b9-4f13-befa-76944d732c86",
       "itemStatus": "OPEN",
       "itemPosition": 8,
       "name": "Segmüller",
-      "description": "quis possimus nihil",
+      "description": "tempore aut eveniet",
       "imageUrl": "https://placeimg.com/200/150/arch?8",
       "location": {
-        "latitude": "-85.8328",
-        "longitude": "74.3328"
+        "latitude": "-80.2880",
+        "longitude": "151.9351"
       },
       "type": "CHAIN",
       "category": "FURNITURE",
@@ -476,15 +489,15 @@
       ]
     },
     {
-      "id": "81746f28-0cf0-4c17-9a04-e64df9b84dfd",
+      "id": "0aa70d86-4a39-49d4-b762-e2b191b84c6c",
       "itemStatus": "OPEN",
       "itemPosition": 9,
       "name": "XXX Lutz",
-      "description": "autem voluptas a",
+      "description": "fugit doloribus et",
       "imageUrl": "https://placeimg.com/200/150/arch?9",
       "location": {
-        "latitude": "66.3361",
-        "longitude": "-162.6640"
+        "latitude": "-30.7806",
+        "longitude": "164.8242"
       },
       "type": "CHAIN",
       "category": "FURNITURE",
@@ -499,15 +512,15 @@
       ]
     },
     {
-      "id": "262ea81b-9f13-43ef-a769-44d732c860e0",
+      "id": "e2f2d7bd-ec28-482b-a1bc-52059ab2ba24",
       "itemStatus": "OPEN",
       "itemPosition": 10,
       "name": "Wimmer",
-      "description": "molestiae dolorem repellat",
+      "description": "eius itaque eligendi",
       "imageUrl": "https://placeimg.com/200/150/arch?10",
       "location": {
-        "latitude": "22.6891",
-        "longitude": "64.6732"
+        "latitude": "-29.5215",
+        "longitude": "92.4858"
       },
       "type": "CHAIN",
       "category": "BAKERY",
@@ -520,11 +533,34 @@
         "09:00 - 12:00, 14:00 - 18:00",
         "closed"
       ]
+    },
+    {
+      "id": "dc1122bb-b7d1-4ef9-a64e-57f10b2801e2",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Diamaltpark",
+      "description": "Finally...",
+      "imageUrl": "Finally...",
+      "location": {
+        "latitude": 48.19626885535174,
+        "longitude": 11.463369727134705
+      },
+      "type": "INDIVIDUAL",
+      "category": "OTHER",
+      "business": [
+        "Monday: closed",
+        "Tuesday: closed",
+        "Wednesday: closed",
+        "Thursday: closed",
+        "Friday: closed",
+        "Saturday: closed",
+        "Sunday: closed"
+      ]
     }
   ],
   "products": [
     {
-      "id": "729863fc-1d31-45a2-b4ec-c850efd9d0ea",
+      "id": "74ecc850-efd9-4d0e-a664-2b90b0a0318b",
       "itemStatus": "OPEN",
       "itemPosition": 0,
       "name": "Milk",
@@ -535,12 +571,20 @@
         "sub": "DAIRY"
       },
       "activity": {
-        "date": "Fri Jan 14 2022",
-        "reps": 62
+        "date": "Sat Jan 15 2022",
+        "reps": 6
+      },
+      "inShop": {
+        "category": "SUPERMARKET",
+        "name": "Rewe",
+        "location": {
+          "latitude": 19100,
+          "longitude": 89700
+        }
       }
     },
     {
-      "id": "6642b90b-0a03-418b-8ebf-5fc7ae038bd2",
+      "id": "8ebf5fc7-ae03-48bd-a992-48dc614de258",
       "itemStatus": "OPEN",
       "itemPosition": 1,
       "name": "Cheese",
@@ -552,11 +596,19 @@
       },
       "activity": {
         "date": "Sat Jan 15 2022",
-        "reps": 89
+        "reps": 22
+      },
+      "inShop": {
+        "category": "SUPERMARKET",
+        "name": "Rewe",
+        "location": {
+          "latitude": 79800,
+          "longitude": 26800
+        }
       }
     },
     {
-      "id": "99248dc6-14de-4258-96c3-3ae0ec585e28",
+      "id": "56c33ae0-ec58-45e2-8d04-2cc4787d5d4e",
       "itemStatus": "OPEN",
       "itemPosition": 2,
       "name": "Bread",
@@ -568,11 +620,19 @@
       },
       "activity": {
         "date": "Sat Jan 15 2022",
-        "reps": 11
+        "reps": 19
+      },
+      "inShop": {
+        "category": "BAKERY",
+        "name": "Wimmer",
+        "location": {
+          "latitude": 12400,
+          "longitude": 96800
+        }
       }
     },
     {
-      "id": "d042cc47-87d5-4d4e-b56d-e9acd5d2fab3",
+      "id": "f56de9ac-d5d2-4fab-bccb-79db0b0008bc",
       "itemStatus": "OPEN",
       "itemPosition": 3,
       "name": "Pees",
@@ -583,12 +643,20 @@
         "sub": "CANNED_FOOD"
       },
       "activity": {
-        "date": "Sat Jan 15 2022",
-        "reps": 86
+        "date": "Sun Jan 16 2022",
+        "reps": 11
+      },
+      "inShop": {
+        "category": "SUPERMARKET",
+        "name": "Rewe",
+        "location": {
+          "latitude": 67500,
+          "longitude": 72200
+        }
       }
     },
     {
-      "id": "ccb79db0-b000-48bc-b3a7-e6d6b198a7ba",
+      "id": "b3a7e6d6-b198-4a7b-aa87-070cb0b1f8e7",
       "itemStatus": "OPEN",
       "itemPosition": 4,
       "name": "Coffee",
@@ -599,12 +667,20 @@
         "sub": "BREKKY"
       },
       "activity": {
-        "date": "Sat Jan 15 2022",
-        "reps": 89
+        "date": "Sun Jan 16 2022",
+        "reps": 94
+      },
+      "inShop": {
+        "category": "SUPERMARKET",
+        "name": "Rewe",
+        "location": {
+          "latitude": 38600,
+          "longitude": 66800
+        }
       }
     },
     {
-      "id": "a87070cb-0b1f-48e7-b2af-7c356c1aa839",
+      "id": "72af7c35-6c1a-4a83-972f-d0e224cffef2",
       "itemStatus": "OPEN",
       "itemPosition": 5,
       "name": "Musli",
@@ -615,12 +691,20 @@
         "sub": "BREKKY"
       },
       "activity": {
-        "date": "Sat Jan 15 2022",
-        "reps": 58
+        "date": "Sun Jan 16 2022",
+        "reps": 86
+      },
+      "inShop": {
+        "category": "SUPERMARKET",
+        "name": "Rewe",
+        "location": {
+          "latitude": 49400,
+          "longitude": 24200
+        }
       }
     },
     {
-      "id": "72fd0e22-4cff-4ef2-8f6c-183e1ee68a8a",
+      "id": "cf6c183e-1ee6-48a8-a650-2a724858fb74",
       "itemStatus": "OPEN",
       "itemPosition": 6,
       "name": "Apples",
@@ -631,12 +715,20 @@
         "sub": "FRUIT_VEGETABLE"
       },
       "activity": {
-        "date": "Fri Jan 14 2022",
-        "reps": 93
+        "date": "Sun Jan 16 2022",
+        "reps": 68
+      },
+      "inShop": {
+        "category": "SUPERMARKET",
+        "name": "Aldi",
+        "location": {
+          "latitude": 12200,
+          "longitude": 70100
+        }
       }
     },
     {
-      "id": "6502a724-858f-4b74-a658-f5a53213f5f1",
+      "id": "a658f5a5-3213-4f5f-99e0-73cc7e3765e4",
       "itemStatus": "OPEN",
       "itemPosition": 7,
       "name": "Beer",
@@ -648,11 +740,19 @@
       },
       "activity": {
         "date": "Sat Jan 15 2022",
-        "reps": 69
+        "reps": 46
+      },
+      "inShop": {
+        "category": "SUPERMARKET",
+        "name": "Aldi",
+        "location": {
+          "latitude": 52000,
+          "longitude": 87100
+        }
       }
     },
     {
-      "id": "9e073cc7-e376-45e4-b191-afdce2634abc",
+      "id": "f191afdc-e263-44ab-8ac7-2dfe3b9499f7",
       "itemStatus": "OPEN",
       "itemPosition": 8,
       "name": "Oranges",
@@ -663,12 +763,20 @@
         "sub": "FRUIT_VEGETABLE"
       },
       "activity": {
-        "date": "Sat Jan 15 2022",
-        "reps": 19
+        "date": "Sun Jan 16 2022",
+        "reps": 70
+      },
+      "inShop": {
+        "category": "SUPERMARKET",
+        "name": "Lidl",
+        "location": {
+          "latitude": 72000,
+          "longitude": 89500
+        }
       }
     },
     {
-      "id": "ac72dfe3-b949-49f7-af9b-8dc71103fc7c",
+      "id": "af9b8dc7-1103-4fc7-8595-5c862cb73d41",
       "itemStatus": "OPEN",
       "itemPosition": 9,
       "name": "Nails",
@@ -679,12 +787,20 @@
         "sub": "DIY"
       },
       "activity": {
-        "date": "Fri Jan 14 2022",
-        "reps": 96
+        "date": "Sat Jan 15 2022",
+        "reps": 76
+      },
+      "inShop": {
+        "category": "HARDWARE",
+        "name": "Bauhaus",
+        "location": {
+          "latitude": 1600,
+          "longitude": 52000
+        }
       }
     },
     {
-      "id": "5955c862-cb73-4d41-9707-64df2e67c183",
+      "id": "570764df-2e67-4c18-b647-7d51c77bd9f1",
       "itemStatus": "OPEN",
       "itemPosition": 10,
       "name": "Light Bulb",
@@ -695,12 +811,20 @@
         "sub": "DIY"
       },
       "activity": {
-        "date": "Sat Jan 15 2022",
-        "reps": 80
+        "date": "Sun Jan 16 2022",
+        "reps": 50
+      },
+      "inShop": {
+        "category": "HARDWARE",
+        "name": "Bauhaus",
+        "location": {
+          "latitude": 33100,
+          "longitude": 45400
+        }
       }
     },
     {
-      "id": "6477d51c-77bd-49f1-bb98-d9f94eb405ea",
+      "id": "3b98d9f9-4eb4-405e-a1cb-2f58a3a9a93a",
       "itemStatus": "OPEN",
       "itemPosition": 11,
       "name": "Hammer",
@@ -711,12 +835,20 @@
         "sub": "TOOLS"
       },
       "activity": {
-        "date": "Sat Jan 15 2022",
-        "reps": 86
+        "date": "Sun Jan 16 2022",
+        "reps": 2
+      },
+      "inShop": {
+        "category": "HARDWARE",
+        "name": "Hornbach",
+        "location": {
+          "latitude": 75100,
+          "longitude": 53500
+        }
       }
     },
     {
-      "id": "1cb2f58a-3a9a-493a-b2de-b9708a933088",
+      "id": "f2deb970-8a93-4308-8ddb-d215a4b54cff",
       "itemStatus": "OPEN",
       "itemPosition": 12,
       "name": "Ladder",
@@ -728,11 +860,19 @@
       },
       "activity": {
         "date": "Sat Jan 15 2022",
-        "reps": 12
+        "reps": 42
+      },
+      "inShop": {
+        "category": "HARDWARE",
+        "name": "Obi",
+        "location": {
+          "latitude": 43400,
+          "longitude": 15700
+        }
       }
     },
     {
-      "id": "ddbd215a-4b54-4cff-8017-84b83c5e95ee",
+      "id": "401784b8-3c5e-495e-ab23-8468dcf90809",
       "itemStatus": "OPEN",
       "itemPosition": 13,
       "name": "Wood",
@@ -743,12 +883,20 @@
         "sub": "DIY"
       },
       "activity": {
-        "date": "Fri Jan 14 2022",
-        "reps": 9
+        "date": "Sun Jan 16 2022",
+        "reps": 12
+      },
+      "inShop": {
+        "category": "HARDWARE",
+        "name": "Obi",
+        "location": {
+          "latitude": 39100,
+          "longitude": 44900
+        }
       }
     },
     {
-      "id": "b238468d-cf90-4809-bc58-aeafde3c5386",
+      "id": "7c58aeaf-de3c-4538-a244-a55cc319cd9d",
       "itemStatus": "OPEN",
       "itemPosition": 14,
       "name": "Paper",
@@ -759,12 +907,20 @@
         "sub": "OFFICE"
       },
       "activity": {
-        "date": "Sat Jan 15 2022",
-        "reps": 68
+        "date": "Sun Jan 16 2022",
+        "reps": 4
+      },
+      "inShop": {
+        "category": "SUPPLIES",
+        "name": "Kaufhof",
+        "location": {
+          "latitude": 36400,
+          "longitude": 98700
+        }
       }
     },
     {
-      "id": "244a55cc-319c-4d9d-9961-9f8afac6882c",
+      "id": "d9619f8a-fac6-4882-8e03-8a0e73f35ddd",
       "itemStatus": "OPEN",
       "itemPosition": 15,
       "name": "Stapler",
@@ -775,12 +931,20 @@
         "sub": "OFFICE"
       },
       "activity": {
-        "date": "Fri Jan 14 2022",
-        "reps": 61
+        "date": "Sun Jan 16 2022",
+        "reps": 38
+      },
+      "inShop": {
+        "category": "SUPPLIES",
+        "name": "Kaufhof",
+        "location": {
+          "latitude": 30900,
+          "longitude": 38200
+        }
       }
     },
     {
-      "id": "e038a0e7-3f35-4ddd-a5f4-925f2d1ec801",
+      "id": "25f4925f-2d1e-4c80-9409-5cebf0df216f",
       "itemStatus": "OPEN",
       "itemPosition": 16,
       "name": "Pen",
@@ -791,12 +955,20 @@
         "sub": "OFFICE"
       },
       "activity": {
-        "date": "Fri Jan 14 2022",
-        "reps": 38
+        "date": "Sat Jan 15 2022",
+        "reps": 5
+      },
+      "inShop": {
+        "category": "SUPPLIES",
+        "name": "Kaufhof",
+        "location": {
+          "latitude": 89900,
+          "longitude": 42700
+        }
       }
     },
     {
-      "id": "4095cebf-0df2-416f-b133-aa7955178f59",
+      "id": "3133aa79-5517-48f5-9684-d6b8807dde38",
       "itemStatus": "OPEN",
       "itemPosition": 17,
       "name": "Stamp",
@@ -807,12 +979,20 @@
         "sub": "POSTAL"
       },
       "activity": {
-        "date": "Fri Jan 14 2022",
-        "reps": 16
+        "date": "Sun Jan 16 2022",
+        "reps": 1
+      },
+      "inShop": {
+        "category": "SUPPLIES",
+        "name": "Kaufhof",
+        "location": {
+          "latitude": 82300,
+          "longitude": 3000
+        }
       }
     },
     {
-      "id": "684d6b88-07dd-4e38-b45f-c61b0b56e36f",
+      "id": "345fc61b-0b56-4e36-bc16-793541dc5616",
       "itemStatus": "OPEN",
       "itemPosition": 18,
       "name": "Envelope",
@@ -823,12 +1003,20 @@
         "sub": "POSTAL"
       },
       "activity": {
-        "date": "Fri Jan 14 2022",
-        "reps": 49
+        "date": "Sun Jan 16 2022",
+        "reps": 34
+      },
+      "inShop": {
+        "category": "SUPPLIES",
+        "name": "Kaufhof",
+        "location": {
+          "latitude": 64200,
+          "longitude": 82100
+        }
       }
     },
     {
-      "id": "c1679354-1dc5-4616-bad5-f74bac1fb06f",
+      "id": "3ad5f74b-ac1f-4b06-be24-ef68459a03f3",
       "itemStatus": "OPEN",
       "itemPosition": 19,
       "name": "Suit",
@@ -840,11 +1028,19 @@
       },
       "activity": {
         "date": "Sat Jan 15 2022",
-        "reps": 18
+        "reps": 46
+      },
+      "inShop": {
+        "category": "CLOTHING",
+        "name": "Zara",
+        "location": {
+          "latitude": 90700,
+          "longitude": 1400
+        }
       }
     },
     {
-      "id": "e24ef684-59a0-43f3-83bf-979ca76969ef",
+      "id": "03bf979c-a769-469e-bfa3-3b043f776bc3",
       "itemStatus": "OPEN",
       "itemPosition": 20,
       "name": "Shirt",
@@ -855,12 +1051,20 @@
         "sub": "BUSINESS"
       },
       "activity": {
-        "date": "Fri Jan 14 2022",
-        "reps": 12
+        "date": "Sat Jan 15 2022",
+        "reps": 16
+      },
+      "inShop": {
+        "category": "CLOTHING",
+        "name": "Zara",
+        "location": {
+          "latitude": 81800,
+          "longitude": 74000
+        }
       }
     },
     {
-      "id": "fa33b043-f776-4bc3-8d16-f88d9d68a9dc",
+      "id": "cd16f88d-9d68-4a9d-8a4f-7b6d409a2a51",
       "itemStatus": "OPEN",
       "itemPosition": 21,
       "name": "T-Shirt",
@@ -871,12 +1075,20 @@
         "sub": "LEISURE"
       },
       "activity": {
-        "date": "Fri Jan 14 2022",
-        "reps": 87
+        "date": "Sun Jan 16 2022",
+        "reps": 74
+      },
+      "inShop": {
+        "category": "CLOTHING",
+        "name": "Zara",
+        "location": {
+          "latitude": 99700,
+          "longitude": 75500
+        }
       }
     },
     {
-      "id": "a4f7b6d4-09a2-4a51-8dd9-a1e90733e095",
+      "id": "cdd9a1e9-0733-4e09-9e95-5246c9c9b61f",
       "itemStatus": "OPEN",
       "itemPosition": 22,
       "name": "Shorts",
@@ -887,12 +1099,20 @@
         "sub": "LEISURE"
       },
       "activity": {
-        "date": "Fri Jan 14 2022",
-        "reps": 52
+        "date": "Sun Jan 16 2022",
+        "reps": 35
+      },
+      "inShop": {
+        "category": "CLOTHING",
+        "name": "Kaufhof",
+        "location": {
+          "latitude": 67900,
+          "longitude": 35200
+        }
       }
     },
     {
-      "id": "e955246c-9c9b-461f-808e-b6ed5265bfa9",
+      "id": "808eb6ed-5265-4bfa-9895-e312d1e19de6",
       "itemStatus": "OPEN",
       "itemPosition": 23,
       "name": "Boots",
@@ -903,329 +1123,490 @@
         "sub": "SHOES"
       },
       "activity": {
-        "date": "Fri Jan 14 2022",
-        "reps": 32
+        "date": "Sun Jan 16 2022",
+        "reps": 81
+      },
+      "inShop": {
+        "category": "CLOTHING",
+        "name": "Salamander",
+        "location": {
+          "latitude": 71400,
+          "longitude": 39800
+        }
+      }
+    },
+    {
+      "id": "c30b03ab-b234-448e-bdff-7c397c0c8490",
+      "itemStatus": "NEW",
+      "itemPosition": 1,
+      "name": "Beer",
+      "description": "Lots of",
+      "imageUrl": "",
+      "category": {
+        "main": "FOODS",
+        "sub": "BEVERAGES"
+      },
+      "activity": {
+        "date": "16/1/2022 03:56:44",
+        "reps": 0
+      },
+      "inShop": {
+        "category": "SUPERMARKET",
+        "name": "Rewe",
+        "location": {
+          "latitude": -42.4085,
+          "longitude": 73.5802
+        }
+      }
+    },
+    {
+      "id": "550be824-7b59-4532-8d30-72bf7ffa5b62",
+      "itemStatus": "NEW",
+      "itemPosition": 1,
+      "name": "Beer",
+      "description": "Lots of",
+      "imageUrl": "",
+      "category": {
+        "main": "FOODS",
+        "sub": "BEVERAGES"
+      },
+      "activity": {
+        "date": "16/1/2022 04:26:48",
+        "reps": 0
+      },
+      "inShop": {
+        "category": "SUPERMARKET",
+        "name": "Rewe",
+        "location": {
+          "latitude": -42.4085,
+          "longitude": 73.5802
+        }
+      }
+    },
+    {
+      "id": "dffa434b-9f8e-4230-95ad-687ef004a89b",
+      "itemStatus": "NEW",
+      "itemPosition": 1,
+      "name": "Whisky",
+      "description": "Tons",
+      "imageUrl": "",
+      "category": {
+        "main": "FOODS",
+        "sub": "BEVERAGES"
+      },
+      "activity": {
+        "date": "16/1/2022 04:27:51",
+        "reps": 0
+      },
+      "inShop": {
+        "category": "SUPERMARKET",
+        "name": "Aldi",
+        "location": {
+          "latitude": 52.839,
+          "longitude": 117.5509
+        }
       }
     }
   ],
   "lists": [
     {
-      "id": "2d7bdec2-882b-461b-8520-59ab2ba245c6",
-      "itemStatus": "OPEN",
-      "itemPosition": 4,
+      "id": "0e30fca1-ce69-472d-82db-26f814d36ad7",
+      "itemStatus": "DONE",
+      "itemPosition": 8,
       "name": "Groceries",
-      "description": "quis qui doloribus",
+      "description": "quos nesciunt laudantium",
       "items": [
         {
-          "id": "6477d51c-77bd-49f1-bb98-d9f94eb405ea",
+          "id": "3133aa79-5517-48f5-9684-d6b8807dde38",
           "status": "DONE",
-          "listPosition": 3
-        },
-        {
-          "id": "729863fc-1d31-45a2-b4ec-c850efd9d0ea",
-          "status": "DONE",
-          "listPosition": 1
-        },
-        {
-          "id": "9e073cc7-e376-45e4-b191-afdce2634abc",
-          "status": "DONE",
-          "listPosition": 9
-        },
-        {
-          "id": "d042cc47-87d5-4d4e-b56d-e9acd5d2fab3",
-          "status": "IN_PROGRESS",
           "listPosition": 4
         },
         {
-          "id": "e955246c-9c9b-461f-808e-b6ed5265bfa9",
-          "status": "IN_PROGRESS",
+          "id": "401784b8-3c5e-495e-ab23-8468dcf90809",
+          "status": "DONE",
           "listPosition": 5
-        }
-      ],
-      "members": [
-        "6b4d62cc-c4a4-4fa6-93a7-e8b67270c994",
-        "b98c56ab-d229-4fd5-bd11-603e7e83104d",
-        "f8a8c6b5-3876-4c0a-8011-a56f2754c5b3"
-      ],
-      "lifecycle": {
-        "status": "IN_PROGRESS",
-        "completion": 60
-      }
-    },
-    {
-      "id": "66e11618-0b09-406d-a897-faddaee1f83f",
-      "itemStatus": "OPEN",
-      "itemPosition": 1,
-      "name": "Xmas party",
-      "description": "accusamus dicta asperiores",
-      "items": [
-        {
-          "id": "1cb2f58a-3a9a-493a-b2de-b9708a933088",
-          "status": "DONE",
-          "listPosition": 4
         },
         {
-          "id": "244a55cc-319c-4d9d-9961-9f8afac6882c",
-          "status": "DONE",
-          "listPosition": 2
-        },
-        {
-          "id": "244a55cc-319c-4d9d-9961-9f8afac6882c",
-          "status": "OPEN",
-          "listPosition": 2
-        },
-        {
-          "id": "5955c862-cb73-4d41-9707-64df2e67c183",
-          "status": "DONE",
-          "listPosition": 2
-        },
-        {
-          "id": "6502a724-858f-4b74-a658-f5a53213f5f1",
+          "id": "a658f5a5-3213-4f5f-99e0-73cc7e3765e4",
           "status": "DONE",
           "listPosition": 8
         },
         {
-          "id": "6642b90b-0a03-418b-8ebf-5fc7ae038bd2",
+          "id": "f191afdc-e263-44ab-8ac7-2dfe3b9499f7",
+          "status": "IN_PROGRESS",
+          "listPosition": 9
+        }
+      ],
+      "members": [
+        "39fbaadf-0e40-4861-9f23-9553f193a46a",
+        "631f7ea5-4ae4-4734-9656-ecdbb7f86d3b",
+        "76ade417-7f38-469c-97dc-948650456bad",
+        "b98c56ab-d229-4fd5-bd11-603e7e83104d",
+        "ddb56034-668b-48f0-9ac0-90be246c355d"
+      ],
+      "lifecycle": {
+        "status": "DONE",
+        "completion": 50
+      }
+    },
+    {
+      "id": "c8d374bc-540d-43d0-9547-80303a818117",
+      "itemStatus": "OPEN",
+      "itemPosition": 1,
+      "name": "Xmas party",
+      "description": "et et reprehenderit",
+      "items": [
+        {
+          "id": "03bf979c-a769-469e-bfa3-3b043f776bc3",
+          "status": "OPEN",
+          "listPosition": 2
+        },
+        {
+          "id": "3133aa79-5517-48f5-9684-d6b8807dde38",
+          "status": "DONE",
+          "listPosition": 4
+        },
+        {
+          "id": "345fc61b-0b56-4e36-bc16-793541dc5616",
+          "status": "IN_PROGRESS",
+          "listPosition": 5
+        },
+        {
+          "id": "401784b8-3c5e-495e-ab23-8468dcf90809",
+          "status": "DONE",
+          "listPosition": 5
+        },
+        {
+          "id": "a658f5a5-3213-4f5f-99e0-73cc7e3765e4",
+          "status": "DONE",
+          "listPosition": 8
+        },
+        {
+          "id": "cdd9a1e9-0733-4e09-9e95-5246c9c9b61f",
+          "status": "DONE",
+          "listPosition": 4
+        },
+        {
+          "id": "d9619f8a-fac6-4882-8e03-8a0e73f35ddd",
+          "status": "IN_PROGRESS",
+          "listPosition": 2
+        }
+      ],
+      "members": [
+        "39fbaadf-0e40-4861-9f23-9553f193a46a",
+        "631f7ea5-4ae4-4734-9656-ecdbb7f86d3b",
+        "76ade417-7f38-469c-97dc-948650456bad",
+        "b98c56ab-d229-4fd5-bd11-603e7e83104d",
+        "ddb56034-668b-48f0-9ac0-90be246c355d"
+      ],
+      "lifecycle": {
+        "status": "IN_PROGRESS",
+        "completion": 57
+      }
+    },
+    {
+      "id": "1bdf3471-7193-431b-8444-2d0651d74ab4",
+      "itemStatus": "OPEN",
+      "itemPosition": 2,
+      "name": "After work event",
+      "description": "eaque veritatis laborum",
+      "items": [
+        {
+          "id": "03bf979c-a769-469e-bfa3-3b043f776bc3",
+          "status": "DONE",
+          "listPosition": 2
+        },
+        {
+          "id": "03bf979c-a769-469e-bfa3-3b043f776bc3",
           "status": "IN_PROGRESS",
           "listPosition": 2
         },
         {
-          "id": "72fd0e22-4cff-4ef2-8f6c-183e1ee68a8a",
+          "id": "345fc61b-0b56-4e36-bc16-793541dc5616",
+          "status": "DONE",
+          "listPosition": 5
+        },
+        {
+          "id": "3ad5f74b-ac1f-4b06-be24-ef68459a03f3",
+          "status": "DONE",
+          "listPosition": 1
+        },
+        {
+          "id": "72af7c35-6c1a-4a83-972f-d0e224cffef2",
+          "status": "IN_PROGRESS",
+          "listPosition": 6
+        },
+        {
+          "id": "72af7c35-6c1a-4a83-972f-d0e224cffef2",
+          "status": "IN_PROGRESS",
+          "listPosition": 6
+        },
+        {
+          "id": "72af7c35-6c1a-4a83-972f-d0e224cffef2",
+          "status": "OPEN",
+          "listPosition": 6
+        },
+        {
+          "id": "74ecc850-efd9-4d0e-a664-2b90b0a0318b",
+          "status": "IN_PROGRESS",
+          "listPosition": 1
+        },
+        {
+          "id": "7c58aeaf-de3c-4538-a244-a55cc319cd9d",
+          "status": "IN_PROGRESS",
+          "listPosition": 1
+        },
+        {
+          "id": "7c58aeaf-de3c-4538-a244-a55cc319cd9d",
+          "status": "IN_PROGRESS",
+          "listPosition": 1
+        },
+        {
+          "id": "a658f5a5-3213-4f5f-99e0-73cc7e3765e4",
+          "status": "IN_PROGRESS",
+          "listPosition": 8
+        },
+        {
+          "id": "af9b8dc7-1103-4fc7-8595-5c862cb73d41",
+          "status": "IN_PROGRESS",
+          "listPosition": 1
+        },
+        {
+          "id": "b3a7e6d6-b198-4a7b-aa87-070cb0b1f8e7",
+          "status": "OPEN",
+          "listPosition": 5
+        },
+        {
+          "id": "cd16f88d-9d68-4a9d-8a4f-7b6d409a2a51",
+          "status": "OPEN",
+          "listPosition": 3
+        },
+        {
+          "id": "d9619f8a-fac6-4882-8e03-8a0e73f35ddd",
+          "status": "OPEN",
+          "listPosition": 2
+        },
+        {
+          "id": "f191afdc-e263-44ab-8ac7-2dfe3b9499f7",
+          "status": "DONE",
+          "listPosition": 9
+        },
+        {
+          "id": "f2deb970-8a93-4308-8ddb-d215a4b54cff",
+          "status": "OPEN",
+          "listPosition": 4
+        }
+      ],
+      "members": [
+        "39fbaadf-0e40-4861-9f23-9553f193a46a",
+        "631f7ea5-4ae4-4734-9656-ecdbb7f86d3b",
+        "76ade417-7f38-469c-97dc-948650456bad",
+        "b98c56ab-d229-4fd5-bd11-603e7e83104d",
+        "ddb56034-668b-48f0-9ac0-90be246c355d"
+      ],
+      "lifecycle": {
+        "status": "IN_PROGRESS",
+        "completion": 24
+      }
+    },
+    {
+      "id": "bf07f52e-bc67-4d1f-a37d-481ffa0953ab",
+      "itemStatus": "OPEN",
+      "itemPosition": 3,
+      "name": "Road trip",
+      "description": "atque mollitia et",
+      "items": [
+        {
+          "id": "345fc61b-0b56-4e36-bc16-793541dc5616",
+          "status": "IN_PROGRESS",
+          "listPosition": 5
+        },
+        {
+          "id": "56c33ae0-ec58-45e2-8d04-2cc4787d5d4e",
+          "status": "OPEN",
+          "listPosition": 3
+        },
+        {
+          "id": "56c33ae0-ec58-45e2-8d04-2cc4787d5d4e",
+          "status": "OPEN",
+          "listPosition": 3
+        },
+        {
+          "id": "56c33ae0-ec58-45e2-8d04-2cc4787d5d4e",
+          "status": "DONE",
+          "listPosition": 3
+        },
+        {
+          "id": "72af7c35-6c1a-4a83-972f-d0e224cffef2",
+          "status": "IN_PROGRESS",
+          "listPosition": 6
+        },
+        {
+          "id": "72af7c35-6c1a-4a83-972f-d0e224cffef2",
+          "status": "OPEN",
+          "listPosition": 6
+        },
+        {
+          "id": "72af7c35-6c1a-4a83-972f-d0e224cffef2",
+          "status": "DONE",
+          "listPosition": 6
+        },
+        {
+          "id": "7c58aeaf-de3c-4538-a244-a55cc319cd9d",
+          "status": "OPEN",
+          "listPosition": 1
+        },
+        {
+          "id": "af9b8dc7-1103-4fc7-8595-5c862cb73d41",
+          "status": "IN_PROGRESS",
+          "listPosition": 1
+        },
+        {
+          "id": "b3a7e6d6-b198-4a7b-aa87-070cb0b1f8e7",
+          "status": "OPEN",
+          "listPosition": 5
+        },
+        {
+          "id": "cd16f88d-9d68-4a9d-8a4f-7b6d409a2a51",
+          "status": "OPEN",
+          "listPosition": 3
+        },
+        {
+          "id": "cdd9a1e9-0733-4e09-9e95-5246c9c9b61f",
+          "status": "DONE",
+          "listPosition": 4
+        },
+        {
+          "id": "cf6c183e-1ee6-48a8-a650-2a724858fb74",
           "status": "DONE",
           "listPosition": 7
         },
         {
-          "id": "99248dc6-14de-4258-96c3-3ae0ec585e28",
-          "status": "DONE",
-          "listPosition": 3
-        },
-        {
-          "id": "a87070cb-0b1f-48e7-b2af-7c356c1aa839",
+          "id": "f191afdc-e263-44ab-8ac7-2dfe3b9499f7",
           "status": "OPEN",
-          "listPosition": 6
-        },
-        {
-          "id": "b238468d-cf90-4809-bc58-aeafde3c5386",
-          "status": "OPEN",
-          "listPosition": 1
-        },
-        {
-          "id": "c1679354-1dc5-4616-bad5-f74bac1fb06f",
-          "status": "DONE",
-          "listPosition": 1
-        },
-        {
-          "id": "ccb79db0-b000-48bc-b3a7-e6d6b198a7ba",
-          "status": "OPEN",
-          "listPosition": 5
-        },
-        {
-          "id": "e038a0e7-3f35-4ddd-a5f4-925f2d1ec801",
-          "status": "IN_PROGRESS",
-          "listPosition": 3
-        },
-        {
-          "id": "e955246c-9c9b-461f-808e-b6ed5265bfa9",
-          "status": "OPEN",
-          "listPosition": 5
-        },
-        {
-          "id": "e955246c-9c9b-461f-808e-b6ed5265bfa9",
-          "status": "IN_PROGRESS",
-          "listPosition": 5
+          "listPosition": 9
         }
       ],
       "members": [
-        "6b4d62cc-c4a4-4fa6-93a7-e8b67270c994",
+        "39fbaadf-0e40-4861-9f23-9553f193a46a",
+        "631f7ea5-4ae4-4734-9656-ecdbb7f86d3b",
+        "76ade417-7f38-469c-97dc-948650456bad",
         "b98c56ab-d229-4fd5-bd11-603e7e83104d",
-        "f8a8c6b5-3876-4c0a-8011-a56f2754c5b3"
+        "ddb56034-668b-48f0-9ac0-90be246c355d"
       ],
       "lifecycle": {
         "status": "IN_PROGRESS",
-        "completion": 47
+        "completion": 29
       }
     },
     {
-      "id": "b0e30fca-1ce6-4972-902d-b26f814d36ad",
-      "itemStatus": "OPEN",
-      "itemPosition": 2,
-      "name": "After work event",
-      "description": "ab molestiae consequuntur",
-      "items": [
-        {
-          "id": "244a55cc-319c-4d9d-9961-9f8afac6882c",
-          "status": "IN_PROGRESS",
-          "listPosition": 2
-        },
-        {
-          "id": "4095cebf-0df2-416f-b133-aa7955178f59",
-          "status": "DONE",
-          "listPosition": 4
-        },
-        {
-          "id": "4095cebf-0df2-416f-b133-aa7955178f59",
-          "status": "OPEN",
-          "listPosition": 4
-        },
-        {
-          "id": "6477d51c-77bd-49f1-bb98-d9f94eb405ea",
-          "status": "IN_PROGRESS",
-          "listPosition": 3
-        },
-        {
-          "id": "684d6b88-07dd-4e38-b45f-c61b0b56e36f",
-          "status": "IN_PROGRESS",
-          "listPosition": 5
-        },
-        {
-          "id": "684d6b88-07dd-4e38-b45f-c61b0b56e36f",
-          "status": "DONE",
-          "listPosition": 5
-        },
-        {
-          "id": "729863fc-1d31-45a2-b4ec-c850efd9d0ea",
-          "status": "DONE",
-          "listPosition": 1
-        },
-        {
-          "id": "729863fc-1d31-45a2-b4ec-c850efd9d0ea",
-          "status": "DONE",
-          "listPosition": 1
-        },
-        {
-          "id": "99248dc6-14de-4258-96c3-3ae0ec585e28",
-          "status": "DONE",
-          "listPosition": 3
-        },
-        {
-          "id": "a87070cb-0b1f-48e7-b2af-7c356c1aa839",
-          "status": "IN_PROGRESS",
-          "listPosition": 6
-        },
-        {
-          "id": "a87070cb-0b1f-48e7-b2af-7c356c1aa839",
-          "status": "DONE",
-          "listPosition": 6
-        },
-        {
-          "id": "ac72dfe3-b949-49f7-af9b-8dc71103fc7c",
-          "status": "IN_PROGRESS",
-          "listPosition": 1
-        },
-        {
-          "id": "d042cc47-87d5-4d4e-b56d-e9acd5d2fab3",
-          "status": "DONE",
-          "listPosition": 4
-        },
-        {
-          "id": "ddbd215a-4b54-4cff-8017-84b83c5e95ee",
-          "status": "DONE",
-          "listPosition": 5
-        },
-        {
-          "id": "e24ef684-59a0-43f3-83bf-979ca76969ef",
-          "status": "DONE",
-          "listPosition": 2
-        },
-        {
-          "id": "e24ef684-59a0-43f3-83bf-979ca76969ef",
-          "status": "IN_PROGRESS",
-          "listPosition": 2
-        }
-      ],
-      "members": [
-        "6b4d62cc-c4a4-4fa6-93a7-e8b67270c994",
-        "b98c56ab-d229-4fd5-bd11-603e7e83104d",
-        "f8a8c6b5-3876-4c0a-8011-a56f2754c5b3"
-      ],
-      "lifecycle": {
-        "status": "IN_PROGRESS",
-        "completion": 56
-      }
-    },
-    {
-      "id": "7c8d374b-c540-4d3d-8154-780303a81811",
-      "itemStatus": "OPEN",
-      "itemPosition": 3,
-      "name": "Road trip",
-      "description": "sit facilis impedit",
-      "items": [],
-      "members": [
-        "6b4d62cc-c4a4-4fa6-93a7-e8b67270c994",
-        "b98c56ab-d229-4fd5-bd11-603e7e83104d",
-        "f8a8c6b5-3876-4c0a-8011-a56f2754c5b3"
-      ],
-      "lifecycle": {
-        "status": "DONE",
-        "completion": 100
-      }
-    },
-    {
-      "id": "71bdf347-1719-4331-b044-42d0651d74ab",
+      "id": "b4fd7ff0-4f55-4270-a2c0-3c1bd0bad368",
       "itemStatus": "OPEN",
       "itemPosition": 4,
       "name": "Redecoration",
-      "description": "labore aut non",
+      "description": "laborum unde qui",
       "items": [
         {
-          "id": "6642b90b-0a03-418b-8ebf-5fc7ae038bd2",
-          "status": "OPEN",
+          "id": "03bf979c-a769-469e-bfa3-3b043f776bc3",
+          "status": "DONE",
           "listPosition": 2
         },
         {
-          "id": "729863fc-1d31-45a2-b4ec-c850efd9d0ea",
-          "status": "IN_PROGRESS",
-          "listPosition": 1
-        },
-        {
-          "id": "a87070cb-0b1f-48e7-b2af-7c356c1aa839",
+          "id": "3133aa79-5517-48f5-9684-d6b8807dde38",
           "status": "DONE",
-          "listPosition": 6
+          "listPosition": 4
         },
         {
-          "id": "ac72dfe3-b949-49f7-af9b-8dc71103fc7c",
-          "status": "IN_PROGRESS",
-          "listPosition": 1
+          "id": "345fc61b-0b56-4e36-bc16-793541dc5616",
+          "status": "DONE",
+          "listPosition": 5
         },
         {
-          "id": "b238468d-cf90-4809-bc58-aeafde3c5386",
+          "id": "3ad5f74b-ac1f-4b06-be24-ef68459a03f3",
           "status": "DONE",
           "listPosition": 1
         },
         {
-          "id": "b238468d-cf90-4809-bc58-aeafde3c5386",
-          "status": "DONE",
-          "listPosition": 1
+          "id": "401784b8-3c5e-495e-ab23-8468dcf90809",
+          "status": "OPEN",
+          "listPosition": 5
         },
         {
-          "id": "e038a0e7-3f35-4ddd-a5f4-925f2d1ec801",
+          "id": "56c33ae0-ec58-45e2-8d04-2cc4787d5d4e",
           "status": "OPEN",
           "listPosition": 3
         },
         {
-          "id": "e955246c-9c9b-461f-808e-b6ed5265bfa9",
+          "id": "74ecc850-efd9-4d0e-a664-2b90b0a0318b",
+          "status": "OPEN",
+          "listPosition": 1
+        },
+        {
+          "id": "808eb6ed-5265-4bfa-9895-e312d1e19de6",
           "status": "IN_PROGRESS",
           "listPosition": 5
         },
         {
-          "id": "fa33b043-f776-4bc3-8d16-f88d9d68a9dc",
-          "status": "IN_PROGRESS",
-          "listPosition": 3
+          "id": "d9619f8a-fac6-4882-8e03-8a0e73f35ddd",
+          "status": "OPEN",
+          "listPosition": 2
         },
         {
-          "id": "fa33b043-f776-4bc3-8d16-f88d9d68a9dc",
-          "status": "DONE",
-          "listPosition": 3
+          "id": "f191afdc-e263-44ab-8ac7-2dfe3b9499f7",
+          "status": "IN_PROGRESS",
+          "listPosition": 9
+        },
+        {
+          "id": "f191afdc-e263-44ab-8ac7-2dfe3b9499f7",
+          "status": "IN_PROGRESS",
+          "listPosition": 9
+        },
+        {
+          "id": "f2deb970-8a93-4308-8ddb-d215a4b54cff",
+          "status": "OPEN",
+          "listPosition": 4
         }
       ],
       "members": [
-        "6b4d62cc-c4a4-4fa6-93a7-e8b67270c994",
+        "39fbaadf-0e40-4861-9f23-9553f193a46a",
+        "631f7ea5-4ae4-4734-9656-ecdbb7f86d3b",
+        "76ade417-7f38-469c-97dc-948650456bad",
         "b98c56ab-d229-4fd5-bd11-603e7e83104d",
-        "f8a8c6b5-3876-4c0a-8011-a56f2754c5b3"
+        "ddb56034-668b-48f0-9ac0-90be246c355d"
       ],
       "lifecycle": {
         "status": "IN_PROGRESS",
-        "completion": 40
+        "completion": 33
+      }
+    },
+    {
+      "id": "18298336-c3cd-427a-9247-42e2889149aa",
+      "itemStatus": "DELETED",
+      "itemPosition": 9,
+      "name": "Partey",
+      "description": "End of udacity",
+      "items": [],
+      "members": [
+        ""
+      ],
+      "lifecycle": {
+        "status": "OPEN",
+        "completion": 0
+      }
+    },
+    {
+      "id": "75d8fbb3-8765-41d8-9f45-cf07d5d10ec6",
+      "itemStatus": "NEW",
+      "itemPosition": 10,
+      "name": "Party",
+      "description": "End of udacity",
+      "items": [],
+      "members": [
+        ""
+      ],
+      "lifecycle": {
+        "status": "OPEN",
+        "completion": 0
       }
     }
   ]
