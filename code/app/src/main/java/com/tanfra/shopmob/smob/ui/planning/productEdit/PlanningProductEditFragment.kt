@@ -10,14 +10,15 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
+import com.tanfra.shopmob.databinding.FragmentPlanningProductEditBinding
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
-import com.tanfra.shopmob.databinding.FragmentPlanningProductEditBinding
 import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
+import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
@@ -89,6 +90,8 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
                 if(item.listPosition > max) { item.listPosition } else { max }
             } ?: 0L
 
+            // close SoftKeyboard
+            closeSoftKeyboard(requireContext(), view)
 
             // initialize data record to be written to DB
             // ... if no better values have been provided by the user (taken from viewModel), this

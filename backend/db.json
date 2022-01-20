@@ -556,6 +556,126 @@
         "Saturday: closed",
         "Sunday: closed"
       ]
+    },
+    {
+      "id": "a46411d7-5ce9-4d00-94ad-c048d581bfc9",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Sport Bittl",
+      "description": "Test",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19143948391694,
+        "longitude": 11.466687619686128
+      },
+      "type": "INDIVIDUAL",
+      "category": "CLOTHING",
+      "business": []
+    },
+    {
+      "id": "6234500f-cdb6-4878-af5f-ea21dd7b12cb",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Sport Bittl2",
+      "description": "Test again",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19143948391694,
+        "longitude": 11.466687619686128
+      },
+      "type": "INDIVIDUAL",
+      "category": "HARDWARE",
+      "business": []
+    },
+    {
+      "id": "60be8dd8-c601-4994-9afe-5935a4df6c84",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Lidl",
+      "description": "Test",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19446661077098,
+        "longitude": 11.465429663658142
+      },
+      "type": "INDIVIDUAL",
+      "category": "OTHER",
+      "business": []
+    },
+    {
+      "id": "be99e9c0-c5d3-44ee-8633-b8ab49922026",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Lidl",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19446661077098,
+        "longitude": 11.465429663658142
+      },
+      "type": "INDIVIDUAL",
+      "category": "DRUGSTORE",
+      "business": []
+    },
+    {
+      "id": "c14cb82b-5275-4c32-8875-8b41f6f2964f",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Diamaltpark",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19626885535174,
+        "longitude": 11.463369727134705
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPERMARKET",
+      "business": []
+    },
+    {
+      "id": "61a4b48e-b7c8-4238-bfa3-1e35b084ad7f",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Lidl",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19446661077098,
+        "longitude": 11.465429663658142
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPERMARKET",
+      "business": []
+    },
+    {
+      "id": "bbb97957-3ebb-4149-9240-66ee8864f649",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Sport Bittl",
+      "description": "3",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19143948391694,
+        "longitude": 11.466687619686128
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPPLIES",
+      "business": []
+    },
+    {
+      "id": "d09d993d-6fab-4b01-82b1-1c873832e91a",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "ALDI SÜD",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19283416587666,
+        "longitude": 11.466210186481476
+      },
+      "type": "INDIVIDUAL",
+      "category": "HARDWARE",
+      "business": []
     }
   ],
   "products": [
@@ -1206,6 +1326,150 @@
           "longitude": 117.5509
         }
       }
+    },
+    {
+      "id": "9d52d4e4-158a-4798-9ba1-476489152e46",
+      "itemStatus": "NEW",
+      "itemPosition": 1,
+      "name": "Beer",
+      "description": "Me up",
+      "imageUrl": "",
+      "category": {
+        "main": "FOODS",
+        "sub": "BEVERAGES"
+      },
+      "activity": {
+        "date": "16/1/2022 11:39:39",
+        "reps": 0
+      },
+      "inShop": {
+        "category": "SUPERMARKET",
+        "name": "Aldi",
+        "location": {
+          "latitude": 52.839,
+          "longitude": 117.5509
+        }
+      }
+    },
+    {
+      "id": "714c5407-b917-45c9-80bd-347f9b67e45b",
+      "itemStatus": "NEW",
+      "itemPosition": 1,
+      "name": "Wine",
+      "description": "Is also fine",
+      "imageUrl": "",
+      "category": {
+        "main": "FOODS",
+        "sub": "BEVERAGES"
+      },
+      "activity": {
+        "date": "16/1/2022 11:44:09",
+        "reps": 0
+      },
+      "inShop": {
+        "category": "SUPERMARKET",
+        "name": "Lidl",
+        "location": {
+          "latitude": -15.0454,
+          "longitude": 143.9709
+        }
+      }
+    },
+    {
+      "id": "f5b4c635-849c-4849-985e-801b458cafda",
+      "itemStatus": "NEW",
+      "itemPosition": 1,
+      "name": "Beer",
+      "description": "Soon",
+      "imageUrl": "",
+      "category": {
+        "main": "FOODS",
+        "sub": "BEVERAGES"
+      },
+      "activity": {
+        "date": "16/1/2022 11:50:59",
+        "reps": 0
+      },
+      "inShop": {
+        "category": "SUPERMARKET",
+        "name": "Lidl",
+        "location": {
+          "latitude": -15.0454,
+          "longitude": 143.9709
+        }
+      }
+    },
+    {
+      "id": "92f81923-7937-4d3a-80f1-93bea2f0bd3d",
+      "itemStatus": "NEW",
+      "itemPosition": 2,
+      "name": "Snacks",
+      "description": "Too",
+      "imageUrl": "",
+      "category": {
+        "main": "FOODS",
+        "sub": "DAIRY"
+      },
+      "activity": {
+        "date": "16/1/2022 11:52:41",
+        "reps": 0
+      },
+      "inShop": {
+        "category": "SUPERMARKET",
+        "name": "Rewe",
+        "location": {
+          "latitude": -42.4085,
+          "longitude": 73.5802
+        }
+      }
+    },
+    {
+      "id": "534f32fd-6a33-4be5-b075-87919dfa83e6",
+      "itemStatus": "NEW",
+      "itemPosition": 3,
+      "name": "Swimming pool",
+      "description": "Tub",
+      "imageUrl": "",
+      "category": {
+        "main": "HARDWARE",
+        "sub": "DIY"
+      },
+      "activity": {
+        "date": "16/1/2022 11:54:55",
+        "reps": 0
+      },
+      "inShop": {
+        "category": "HARDWARE",
+        "name": "Bauhaus",
+        "location": {
+          "latitude": -16.2966,
+          "longitude": -74.0542
+        }
+      }
+    },
+    {
+      "id": "4c77d735-0e87-4054-a8ad-fcb3d0c66a42",
+      "itemStatus": "NEW",
+      "itemPosition": 1,
+      "name": "Beer",
+      "description": "Again",
+      "imageUrl": "",
+      "category": {
+        "main": "FOODS",
+        "sub": "BEVERAGES"
+      },
+      "activity": {
+        "date": "16/1/2022 11:55:55",
+        "reps": 0
+      },
+      "inShop": {
+        "category": "SUPERMARKET",
+        "name": "Aldi",
+        "location": {
+          "latitude": 52.839,
+          "longitude": 117.5509
+        }
+      }
     }
   ],
   "lists": [
@@ -1235,6 +1499,11 @@
           "id": "f191afdc-e263-44ab-8ac7-2dfe3b9499f7",
           "status": "IN_PROGRESS",
           "listPosition": 9
+        },
+        {
+          "id": "5d20eb48-a943-4b47-aa0d-b6acd55c665f",
+          "status": "NEW",
+          "listPosition": 10
         }
       ],
       "members": [
@@ -1246,19 +1515,19 @@
       ],
       "lifecycle": {
         "status": "DONE",
-        "completion": 50
+        "completion": 75
       }
     },
     {
       "id": "c8d374bc-540d-43d0-9547-80303a818117",
-      "itemStatus": "OPEN",
-      "itemPosition": 1,
+      "itemStatus": "DONE",
+      "itemPosition": 2,
       "name": "Xmas party",
       "description": "et et reprehenderit",
       "items": [
         {
           "id": "03bf979c-a769-469e-bfa3-3b043f776bc3",
-          "status": "OPEN",
+          "status": "DONE",
           "listPosition": 2
         },
         {
@@ -1596,11 +1865,48 @@
     },
     {
       "id": "75d8fbb3-8765-41d8-9f45-cf07d5d10ec6",
+      "itemStatus": "DELETED",
+      "itemPosition": 1,
+      "name": "Party",
+      "description": "End of udacity",
+      "items": [
+        {
+          "id": "f5b4c635-849c-4849-985e-801b458cafda",
+          "status": "DONE",
+          "listPosition": 1
+        },
+        {
+          "id": "92f81923-7937-4d3a-80f1-93bea2f0bd3d",
+          "status": "IN_PROGRESS",
+          "listPosition": 2
+        },
+        {
+          "id": "534f32fd-6a33-4be5-b075-87919dfa83e6",
+          "status": "NEW",
+          "listPosition": 3
+        }
+      ],
+      "members": [
+        ""
+      ],
+      "lifecycle": {
+        "status": "OPEN",
+        "completion": 33
+      }
+    },
+    {
+      "id": "21e3533d-ea98-43fc-a7fe-7544128c87de",
       "itemStatus": "NEW",
       "itemPosition": 10,
       "name": "Party",
-      "description": "End of udacity",
-      "items": [],
+      "description": "End of Udacity...",
+      "items": [
+        {
+          "id": "4c77d735-0e87-4054-a8ad-fcb3d0c66a42",
+          "status": "NEW",
+          "listPosition": 1
+        }
+      ],
       "members": [
         ""
       ],

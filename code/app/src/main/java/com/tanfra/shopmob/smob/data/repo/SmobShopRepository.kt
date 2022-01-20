@@ -55,22 +55,17 @@ class SmobShopRepository(
      */
     override fun getSmobShop(id: String): Flow<Resource<SmobShopATO>> {
 
-        // support espresso testing (w/h coroutines)
-        wrapEspressoIdlingResource {
-
-            // try to fetch data from the local DB
-            var atoFlow: Flow<SmobShopATO?> = flowOf(null)
-            return try {
-                // fetch data from DB (and convert to ATO)
-                atoFlow = smobShopDao.getSmobShopById(id).asDomainModel()
-                // wrap data in Resource (--> error/success/[loading])
-                atoFlow.asResource(null)
-            } catch (e: Exception) {
-                // handle exceptions --> error message returned in Resource.error
-                atoFlow.asResource(e.localizedMessage)
-            }
-
-        }  // idlingResource (testing)
+        // try to fetch data from the local DB
+        var atoFlow: Flow<SmobShopATO?> = flowOf(null)
+        return try {
+            // fetch data from DB (and convert to ATO)
+            atoFlow = smobShopDao.getSmobShopById(id).asDomainModel()
+            // wrap data in Resource (--> error/success/[loading])
+            atoFlow.asResource(null)
+        } catch (e: Exception) {
+            // handle exceptions --> error message returned in Resource.error
+            atoFlow.asResource(e.localizedMessage)
+        }
 
     }
 

@@ -10,14 +10,19 @@ import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentPlanningShopListBinding
 import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
 import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
 import com.tanfra.shopmob.utils.setup
+import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.launch
+import org.koin.androidx.scope.scope
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
+import timber.log.Timber
 
 
 class PlanningShopListFragment : BaseFragment(), KoinComponent {
@@ -98,6 +103,12 @@ class PlanningShopListFragment : BaseFragment(), KoinComponent {
 
             // this lambda is the 'callback' function which gets called when clicking an item in the
             // RecyclerView - it gets the data behind the clicked item as parameter
+            val daFlow = _viewModel.shopDataSource.getSmobShop(it.id)
+            viewLifecycleOwner.lifecycleScope.launch {
+                daFlow.collect {
+                    Timber.i("Received shop: ${it.data?.name}")
+                }
+            }
 
             // navigate back to smobPlanningProductEditFragment
             // ... communicate the selected SmobShop via shared ViewModel

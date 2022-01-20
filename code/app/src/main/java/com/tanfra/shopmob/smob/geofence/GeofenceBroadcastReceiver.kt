@@ -3,28 +3,29 @@ package com.tanfra.shopmob.smob.geofence
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.text.TextUtils
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofenceStatusCodes
 import com.google.android.gms.location.GeofencingEvent
 import com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditFragment.Companion.ACTION_GEOFENCE_EVENT
+import com.tanfra.shopmob.smob.work.SmobAppWork
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import timber.log.Timber
 
 /**
- * Triggered by the Geofence.  Since we can have many Geofences at once, we pull the request
+ * Triggered by the Geofence.  Since we can have many geoFences at once, we pull the request
  * ID from the first Geofence, and locate it within the cached data in our Room DB
- *
- * Or users can add the smob items and then close the app, So our app has to run in the background
- * and handle the geofencing in the background.
- * To do that you can use https://developer.android.com/reference/android/support/v4/app/JobIntentService to do that.
- *
  */
+class GeofenceBroadcastReceiver : BroadcastReceiver(), KoinComponent {
 
-class GeofenceBroadcastReceiver : BroadcastReceiver() {
+    // fetch WorkManager instance from Koin service locator
+    private val workManager: SmobAppWork by inject()
 
     // adapted from: https://developer.android.com/training/location/geofencing
     override fun onReceive(context: Context, intent: Intent) {
 
-        // are we triggered by a tripped geoFence wire?
+        // does this Broadcast reception concern "GeoFencing" at all?
         if (intent.action == ACTION_GEOFENCE_EVENT) {
 
             // yup --> grab the geoFencing event object from provided intent
@@ -32,22 +33,41 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
 
             // only process valid events...
             if (geofencingEvent.hasError()) {
-                val errorMessage = GeofenceStatusCodes.getStatusCodeString(geofencingEvent.errorCode)
+                val errorMessage = GeofenceStatusCodes
+                    .getStatusCodeString(geofencingEvent.errorCode)
+
                 Timber.e(errorMessage)
                 return
             }
 
+
+            // fetch transition type
+            val geofenceTransition = geofencingEvent.geofenceTransition
+
             // ... only looking for ENTER geoFence transitions:
-            when (geofencingEvent.geofenceTransition) {
+            when (geofenceTransition) {
                 Geofence.GEOFENCE_TRANSITION_ENTER,
                 // Geofence.GEOFENCE_TRANSITION_EXIT,
                 -> {
 
-                    // start JobIntentService to handle the geofencing transition events
-                    //
-                    // ... schedules background work to retrieve from local DB the smob item data
-                    //     associated with the newly triggered geoFence
-                    GeofenceTransitionsJobIntentService.enqueueWork(context, intent)
+                    // fetch all geoFences that have been triggered
+                    // ... note: a single event can trigger multiple geoFences
+                    val triggeringGeofences = geofencingEvent.triggeringGeofences
+
+                    // extract SmobShop IDs and turn into a JSON string (ready for transmission to
+                    // the WorkManager "doWork" job via (string) parameter
+                    val geofenceTransitionDetails = getGeofenceTransitionDetails(
+                        geofenceTransition,    // allow to distinguish between ENTER and EXIT
+                        triggeringGeofences,   // the SmobShop IDs
+                    )
+
+                    // schedule background work (WorkManager), handling potential geofencing entry
+                    // transition events
+                    val geoFenceWorkRequest = workManager
+                        .setupOnTimeJobForGeoFenceNotification(geofenceTransitionDetails)
+
+                    // schedule background job
+                    workManager.scheduleUniqueWorkForGeoFenceNotification(geoFenceWorkRequest)
 
                 }
                 else -> {
@@ -60,5 +80,32 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
         }  // if (ACTION_GEOFENCE_EVENT)
 
     }  // onReceive
+
+
+    // extract geoFence information and return as String (to be transmitted to the WorkManager job)
+    private fun getGeofenceTransitionDetails(
+        geofenceTransition: Int,
+        triggeringGeofences: List<Geofence>,
+    ): String {
+
+        // transition type as string (for transmission)
+        val geofenceTransitionString: String = getTransitionString(geofenceTransition)
+
+        // get the IDs of each geoFence that was triggered (= SmobShop.id)
+        val triggeringGeofencesIdsList = ArrayList<Any>()
+        for (geofence in triggeringGeofences) {
+            triggeringGeofencesIdsList.add(geofence.requestId)
+        }
+        val triggeringGeofencesIdsString: String = TextUtils.join(", ", triggeringGeofencesIdsList)
+        return "$geofenceTransitionString: $triggeringGeofencesIdsString"
+    }
+
+    private fun getTransitionString(transitionType: Int): String {
+        return when (transitionType) {
+            Geofence.GEOFENCE_TRANSITION_ENTER -> GeofenceTransitionsWorkService.ENTRY_STRING
+            Geofence.GEOFENCE_TRANSITION_EXIT -> GeofenceTransitionsWorkService.EXIT_STRING
+            else -> GeofenceTransitionsWorkService.INVALID_STRING
+        }
+    }
 
 }  // GeofenceBroadcastReceiver

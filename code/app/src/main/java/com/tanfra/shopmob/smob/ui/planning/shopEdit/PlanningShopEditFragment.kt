@@ -34,6 +34,7 @@ import com.google.android.gms.location.LocationServices
 import com.tanfra.shopmob.databinding.FragmentPlanningShopEditBinding
 import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
+import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
 import java.lang.Double.NaN
@@ -92,12 +93,23 @@ class PlanningShopEditFragment : BaseFragment(), AdapterView.OnItemSelectedListe
     private lateinit var daSmobShopATO: SmobShopATO
 
 
-    // A PendingIntent for the Broadcast Receiver that handles geofence transitions.
+    // define a PendingIntent for the configuration of the GeoFence monitoring code, allowing it to
+    // trigger the 'onReceive' method of the Broadcast Receiver (BCR) instance of ShopMob.
+    // The latter is triggered whenever android detects that the device has entered/exited from the
+    // perimeter around a registered geoFence. A bundle is added by the GeoFence monitoring code to
+    // the "payload intent" of the PendingIntent, carrying the information of which GeoFences have
+    // been triggered. This can be extracted and evaluated in 'onReceive'. As the BCR should not
+    // directly activate the app (the user might not want to react to the triggered GeoFence right
+    // away), it enqueues a oneTime WorkManager background job which, in turn, sends a notification
+    // to the user - provided all conditions for activation of this job (none) are fulfilled. All
+    // necessary information for this notification is obtained using the reference of the triggered
+    // GeoFence (provided to the BCR 'onReceive' method) and provided to the NotificationManager.
+    // In our case: SmobShop information from the local DB
     private val geofencePendingIntent: PendingIntent by lazy {
         val intent = Intent(context, GeofenceBroadcastReceiver::class.java)
         intent.action = ACTION_GEOFENCE_EVENT
-        // Use FLAG_UPDATE_CURRENT so that you get the same pending intent back when calling
-        // addGeofences() and removeGeofences().
+        // use FLAG_UPDATE_CURRENT so that you get the same pending intent back when calling
+        // GeofencingClient.addGeofences() and GeofencingClient.removeGeofences()
         PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
@@ -150,6 +162,9 @@ class PlanningShopEditFragment : BaseFragment(), AdapterView.OnItemSelectedListe
         // clicking on the 'saveSmobShop' FAB...
         // ... installs the geofencing request and triggers the saving to DB
         binding.saveSmobShop.setOnClickListener {
+
+            // close SoftKeyboard
+            closeSoftKeyboard(requireContext(), view)
 
             // initialize data record to be written to DB
             // ... if no better values have been provided by the user (taken from viewModel), this
@@ -528,19 +543,18 @@ class PlanningShopEditFragment : BaseFragment(), AdapterView.OnItemSelectedListe
             // define geoFence perimeter in geoFencing object
             val geoFenceObj = Geofence.Builder()
 
-                // Set the request ID of the geofence - use location name as ID (string)
+                // Set the request ID of the geofence - use SmobShop name as ID (string)
                 .setRequestId(daSmobShopATO.id)
 
                 // Set the circular region of this geofence
-                // ... safe args (!!) OK, as smob item is pre-initialized in calling function
                 .setCircularRegion(
                     daSmobShopATO.location.latitude,
                     daSmobShopATO.location.longitude,
                     GEOFENCE_RADIUS_IN_METERS
                 )
 
-                // Set the expiration duration of the geofence. This geofence gets automatically
-                // removed after this period of time
+                // Set the expiration duration of the geofence. Once set, the SmobShop will always
+                // trigger the geofence when entering the perimeter
                 .setExpirationDuration(NEVER_EXPIRE)
 
                 // Set the transition types of interest. Alerts are only generated for these
@@ -552,7 +566,7 @@ class PlanningShopEditFragment : BaseFragment(), AdapterView.OnItemSelectedListe
 
             // create geoFencing request for this location and set triggers
             val geoFencingRequest = GeofencingRequest.Builder().apply {
-                // trigger the request, if user is inside the perimeter of this location (for some time)
+                // trigger the request, if user enters the perimeter of this location
                 setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
                 addGeofences(listOf(geoFenceObj))
             }.build()
@@ -562,19 +576,20 @@ class PlanningShopEditFragment : BaseFragment(), AdapterView.OnItemSelectedListe
             geofencingClient.addGeofences(geoFencingRequest, geofencePendingIntent).run {
 
                 addOnSuccessListener {
-                    // Geofences added
-                    _viewModel.showToast.value =
-                        "GeoFence added for ShopMob location ${daSmobShopATO.location}"
 
-                    // store smob item in DB
-                    // ... this also takes the user back to the SmobItemListFragment
+                    // geoFence added
+                    _viewModel.showToast.value =
+                        "GeoFence added for ShopMob ${daSmobShopATO.name} at ${daSmobShopATO.location.longitude} / ${daSmobShopATO.location.latitude}"
+
+                    // store SmobShop in local DB (and sync to backend)
+                    // ... this also takes the user back to the SmobListsFragment
                     _viewModel.validateAndSaveSmobItem(daSmobShopATO)
 
                 }
 
                 addOnFailureListener {
 
-                    // Failed to add geofences
+                    // failed to add geoFence
                     when (it.message) {
                         "1000: " -> {
                             // ... might be thrown on older devices (< Android "Q") when gms

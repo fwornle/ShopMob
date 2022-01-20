@@ -1,7 +1,6 @@
 package com.tanfra.shopmob.smob.data.local.utils
 
 import androidx.room.TypeConverter
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString

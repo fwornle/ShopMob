@@ -3,6 +3,7 @@ package com.tanfra.shopmob.smob.work
 import android.content.Context
 import androidx.work.*
 import com.tanfra.shopmob.Constants
+import com.tanfra.shopmob.smob.geofence.GeofenceTransitionsWorkService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -171,6 +172,40 @@ class SmobAppWork(context: Context): Configuration.Provider {
                 ExistingWorkPolicy.REPLACE,
                 request
             )
+
+    }
+
+
+    // configure the geoFence notification work (job) to be scheduled by WorkManager
+    fun setupOnTimeJobForGeoFenceNotification(param: String): OneTimeWorkRequest {
+
+        // build data bundle to be communicated to background task
+        // ... includes everything that is needed in the display of the notification
+        //     (using JSON encoded string to transport SmobShop details, eg. name, category, ...)
+        val data = Data.Builder()
+            .putString(GeofenceTransitionsWorkService.GEOFENCE_EVENT_PARAM, param)
+            .build()
+
+        // geoFence task
+        return OneTimeWorkRequestBuilder<GeofenceTransitionsWorkService>()
+            .apply { setInputData(data) }
+            .addTag(GeofenceTransitionsWorkService.GEOFENCE_WORK_NAME)
+            .build()
+
+    }  // setupOnTimeJobForGeoFenceNotification
+
+    // schedule the geoFence notification background job
+    // ... as one-time unique job, triggered when the user clicks on the notification the installed
+    //     onReceive handler of the BroadcastReceiver has sent (onReceive triggered by geoFence)
+    fun scheduleUniqueWorkForGeoFenceNotification(request: OneTimeWorkRequest) = applicationScope.launch {
+
+        // geoFence job
+        Timber.i("Scheduling geoFence notification work job...")
+        WorkManager.getInstance(smobAppContext).enqueueUniqueWork(
+            GeofenceTransitionsWorkService.GEOFENCE_WORK_NAME,
+            ExistingWorkPolicy.KEEP,
+            request
+        )
 
     }
 
