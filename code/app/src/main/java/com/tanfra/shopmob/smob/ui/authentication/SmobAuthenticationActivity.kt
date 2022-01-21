@@ -132,18 +132,4 @@ class SmobAuthenticationActivity : AppCompatActivity() {
 
     }  // onSignInResult
 
-
-    // fetch worker class form service locator
-    private val wManager: SmobAppWork by inject()
-
-    override fun onResume() {
-        super.onResume()
-        wManager.delayedInitRecurringWorkFast()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        wManager.cancelRecurringWorkFast()
-    }
-
 }
