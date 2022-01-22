@@ -39,6 +39,7 @@ frame "activity_shopping" #LightGoldenRodYellow/GreenYellow {
 frame "activity_planning" #Lightcyan/Darkcyan {
     
     component fragment_planning_lists
+    component fragment_planning_lists_edit
     component fragment_planning_product_list
     component fragment_planning_product_edit
     component fragment_planning_shop_list
@@ -52,8 +53,11 @@ frame "activity_planning" #Lightcyan/Darkcyan {
     component shared_base_viewModel #lightblue
 
     
-    fragment_planning_lists -down-> fragment_planning_product_list #blue;text:blue : click item > 
-    fragment_planning_product_list -down-> fragment_planning_lists #red;text:red : back > 
+    fragment_planning_lists_edit -down-> fragment_planning_lists #red;text:red : back > 
+    fragment_planning_lists -down-> fragment_planning_lists_edit #blue;text:blue : click item > 
+
+    fragment_planning_lists_edit -down-> fragment_planning_product_list #blue;text:blue : click item >
+    fragment_planning_product_list -down-> fragment_planning_lists_edit #red;text:red : back >
 
     fragment_planning_product_list -down-> fragment_planning_product_edit #blue;text:blue : click item >
     fragment_planning_product_edit -down-> fragment_planning_product_list #red;text:red : back > 
@@ -70,7 +74,8 @@ frame "activity_planning" #Lightcyan/Darkcyan {
     fragment_planning_shop_map -down-> fragment_planning_shop_edit #green;text:green : Ok >
     fragment_planning_shop_map -down-> fragment_planning_shop_edit #red;text:red : Cancel > 
 
-    fragment_planning_lists_viewModel <-left-> fragment_planning_lists #black
+    fragment_planning_lists_viewModel <-left-> fragment_planning_lists #black : shared
+    fragment_planning_lists_viewModel <-left-> fragment_planning_lists_edit #black : shared
     fragment_planning_product_list_viewModel <-left-> fragment_planning_product_list #black : shared
     fragment_planning_product_list_viewModel <-left-> fragment_planning_product_edit #black : shared
     fragment_planning_product_list_viewModel <-left-> fragment_planning_shop_list #black : shared
