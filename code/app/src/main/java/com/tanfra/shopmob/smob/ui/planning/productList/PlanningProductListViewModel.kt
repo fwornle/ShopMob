@@ -13,10 +13,12 @@ import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.coroutines.coroutineContext
 
 class PlanningProductListViewModel(
     val app: Application,
@@ -40,7 +42,7 @@ class PlanningProductListViewModel(
     val smobList = _smobList.asStateFlow()
     val smobListItems = _smobListItems.asStateFlow()
     val smobListItemsWithStatus = _smobListItemsWithStatus.asStateFlow()
-
+    
 
     /**
      * collect the flow of the upstream list the user just selected
@@ -378,7 +380,7 @@ class PlanningProductListViewModel(
             // update backend DB (from net API)
             shopDataSource.refreshDataInLocalDB()
 
-            smobShopList.collect {
+            smobShopList.collectLatest {
 
                 if(it.status == Status.ERROR) {
                     showSnackBar.value = it.message!!
