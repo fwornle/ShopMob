@@ -49,7 +49,7 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
 
             when(transitionDir) {
 
-                ENTRY_STRING, "geoFenceTransitionDetails" -> {
+                ENTRY_STRING -> {
                     Timber.i("Received geoFence entry transition")
 
                     // sanity check

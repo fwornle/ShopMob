@@ -17,6 +17,7 @@ import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.utils.Status
+import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
 import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
 import com.tanfra.shopmob.smob.work.SmobAppWork
@@ -69,20 +70,10 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
         // clicking on the 'selectLocation' textView takes you to the fragment "PlanningShopList"
         // for shop selection
         binding.selectShop.setOnClickListener {
-
-
-            // schedule background work (WorkManager), handling potential geofencing entry
-            // transition events
-            val geoFenceWorkRequest = workManager
-                .setupOnTimeJobForGeoFenceNotification("geofenceTransitionDetails")
-
-            // schedule background job
-            workManager.scheduleUniqueWorkForGeoFenceNotification(geoFenceWorkRequest)
-
-//            _viewModel.navigationCommand.value =
-//                NavigationCommand.To(
-//                    PlanningProductEditFragmentDirections.actionPlanningProductEditFragmentToPlanningShopListFragment()
-//                )
+            _viewModel.navigationCommand.value =
+                NavigationCommand.To(
+                    PlanningProductEditFragmentDirections.actionPlanningProductEditFragmentToPlanningShopListFragment()
+                )
         }
 
         // set-up spinners

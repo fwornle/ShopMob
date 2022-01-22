@@ -107,16 +107,16 @@ class SmobShopRepository(
             val dbShop = smobShopATO.asDatabaseModel()
             smobShopDao.saveSmobShop(dbShop)
 
-//            // then push to backend DB
-//            // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
-//            val testRead = getSmobShopViaApi(dbShop.id)
-//            if (testRead.data?.id != dbShop.id) {
-//                // item not found in backend --> use POST to create it
-//                saveSmobShopViaApi(dbShop)
-//            } else {
-//                // item already exists in backend DB --> use PUT to update it
-//                smobShopApi.updateSmobShopById(dbShop.id, dbShop.asNetworkModel())
-//            }
+            // then push to backend DB
+            // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
+            val testRead = getSmobShopViaApi(dbShop.id)
+            if (testRead.data?.id != dbShop.id) {
+                // item not found in backend --> use POST to create it
+                saveSmobShopViaApi(dbShop)
+            } else {
+                // item already exists in backend DB --> use PUT to update it
+                smobShopApi.updateSmobShopById(dbShop.id, dbShop.asNetworkModel())
+            }
 
         }  // idlingResource (testing)
 
@@ -147,16 +147,16 @@ class SmobShopRepository(
                 val dbShop = smobShopATO.asDatabaseModel()
                 smobShopDao.updateSmobShop(dbShop)
 
-//                // then push to backend DB
-//                // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
-//                val testRead = getSmobShopViaApi(dbShop.id)
-//                if (testRead.data?.id != dbShop.id) {
-//                    // item not found in backend --> use POST to create it
-//                    saveSmobShopViaApi(dbShop)
-//                } else {
-//                    // item already exists in backend DB --> use PUT to update it
-//                    smobShopApi.updateSmobShopById(dbShop.id, dbShop.asNetworkModel())
-//                }
+                // then push to backend DB
+                // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
+                val testRead = getSmobShopViaApi(dbShop.id)
+                if (testRead.data?.id != dbShop.id) {
+                    // item not found in backend --> use POST to create it
+                    saveSmobShopViaApi(dbShop)
+                } else {
+                    // item already exists in backend DB --> use PUT to update it
+                    smobShopApi.updateSmobShopById(dbShop.id, dbShop.asNetworkModel())
+                }
 
             }
         }
@@ -181,7 +181,7 @@ class SmobShopRepository(
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
                 smobShopDao.deleteSmobShopById(id)
-//                smobShopApi.deleteSmobShopById(id)
+                smobShopApi.deleteSmobShopById(id)
             }
         }
     }

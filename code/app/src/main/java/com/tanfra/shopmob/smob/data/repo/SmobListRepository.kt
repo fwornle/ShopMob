@@ -109,16 +109,16 @@ class SmobListRepository(
         smobListDao.saveSmobList(dbList)
         //Timber.i("just saved new list in DB +++++++++++++++++++++++++")
 
-//        // then push to backend DB
-//        // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
-//        val testRead = getSmobListViaApi(dbList.id)
-//        if (testRead.data?.id != dbList.id) {
-//            // item not found in backend --> use POST to create it
-//            saveSmobListViaApi(dbList)
-//        } else {
-//            // item already exists in backend DB --> use PUT to update it
-//            smobListApi.updateSmobListById(dbList.id, dbList.asNetworkModel())
-//        }
+        // then push to backend DB
+        // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
+        val testRead = getSmobListViaApi(dbList.id)
+        if (testRead.data?.id != dbList.id) {
+            // item not found in backend --> use POST to create it
+            saveSmobListViaApi(dbList)
+        } else {
+            // item already exists in backend DB --> use PUT to update it
+            smobListApi.updateSmobListById(dbList.id, dbList.asNetworkModel())
+        }
 
     }
 
@@ -147,12 +147,12 @@ class SmobListRepository(
                 val dbList = smobListATO.asDatabaseModel()
                 smobListDao.updateSmobList(dbList)
 
-//                // then push to backend DB
-//                // ... use 'update', as list may already exist (equivalent of REPLACE w/h local DB)
-//                //
-//                // ... could do a read back first, if we're anxious...
-//                //smobListDao.getSmobListById(dbList.id)?.let { smobListApi.updateSmobList(it.id, it.asNetworkModel()) }
-//                smobListApi.updateSmobListById(dbList.id, dbList.asNetworkModel())
+                // then push to backend DB
+                // ... use 'update', as list may already exist (equivalent of REPLACE w/h local DB)
+                //
+                // ... could do a read back first, if we're anxious...
+                //smobListDao.getSmobListById(dbList.id)?.let { smobListApi.updateSmobList(it.id, it.asNetworkModel()) }
+                smobListApi.updateSmobListById(dbList.id, dbList.asNetworkModel())
 
             }
         }
@@ -177,7 +177,7 @@ class SmobListRepository(
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
                 smobListDao.deleteSmobListById(id)
-//                smobListApi.deleteSmobListById(id)
+                smobListApi.deleteSmobListById(id)
             }
         }
     }
@@ -193,14 +193,14 @@ class SmobListRepository(
                 // first delete all lists from local DB
                 smobListDao.deleteAllSmobLists()
 
-//                // then delete all lists from backend DB
-//                getSmobListsViaApi().let {
-//                    if (it.status.equals(Status.SUCCESS)) {
-//                        it.data?.map { smobListApi.deleteSmobListById(it.id) }
-//                    } else {
-//                        Timber.w("Unable to get SmobList IDs from backend DB (via API) - not deleting anything.")
-//                    }
-//                }
+                // then delete all lists from backend DB
+                getSmobListsViaApi().let {
+                    if (it.status.equals(Status.SUCCESS)) {
+                        it.data?.map { smobListApi.deleteSmobListById(it.id) }
+                    } else {
+                        Timber.w("Unable to get SmobList IDs from backend DB (via API) - not deleting anything.")
+                    }
+                }
             }
 
         }  // context: ioDispatcher

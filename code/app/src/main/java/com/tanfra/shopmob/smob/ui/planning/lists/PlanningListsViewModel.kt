@@ -95,7 +95,7 @@ class PlanningListsViewModel(
         viewModelScope.launch {
 
             // update backend DB (from net API)
-//            listsDataSource.refreshDataInLocalDB()
+            listsDataSource.refreshDataInLocalDB()
 
             // load SmobLists from local DB and store in StateFlow value
             fetchSmobLists()

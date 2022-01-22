@@ -110,12 +110,12 @@ class SmobUserRepository(
             val dbUser = smobUserATO.asDatabaseModel()
             smobUserDao.saveSmobUser(dbUser)
 
-//            // then push to backend DB
-//            // ... use 'update', as shop may already exist (equivalent of REPLACE w/h local DB)
-//            //
-//            // ... could do a read back first, if we're anxious...
-//            //smobUserDao.getSmobUserById(dbUser.id)?.let { smobUserApi.updateSmobUser(it.id, it.asNetworkModel()) }
-//            smobUserApi.updateSmobUserById(dbUser.id, dbUser.asNetworkModel())
+            // then push to backend DB
+            // ... use 'update', as shop may already exist (equivalent of REPLACE w/h local DB)
+            //
+            // ... could do a read back first, if we're anxious...
+            //smobUserDao.getSmobUserById(dbUser.id)?.let { smobUserApi.updateSmobUser(it.id, it.asNetworkModel()) }
+            smobUserApi.updateSmobUserById(dbUser.id, dbUser.asNetworkModel())
 
         }  // idlingResource (testing)
 
@@ -146,16 +146,16 @@ class SmobUserRepository(
                 val dbUser = smobUserATO.asDatabaseModel()
                 smobUserDao.updateSmobUser(dbUser)
 
-//                // then push to backend DB
-//                // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
-//                val testRead = getSmobUserViaApi(dbUser.id)
-//                if (testRead.data?.id != dbUser.id) {
-//                    // item not found in backend --> use POST to create it
-//                    saveSmobUserViaApi(dbUser)
-//                } else {
-//                    // item already exists in backend DB --> use PUT to update it
-//                    smobUserApi.updateSmobUserById(dbUser.id, dbUser.asNetworkModel())
-//                }
+                // then push to backend DB
+                // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
+                val testRead = getSmobUserViaApi(dbUser.id)
+                if (testRead.data?.id != dbUser.id) {
+                    // item not found in backend --> use POST to create it
+                    saveSmobUserViaApi(dbUser)
+                } else {
+                    // item already exists in backend DB --> use PUT to update it
+                    smobUserApi.updateSmobUserById(dbUser.id, dbUser.asNetworkModel())
+                }
 
             }
         }
@@ -180,7 +180,7 @@ class SmobUserRepository(
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
                 smobUserDao.deleteSmobUserById(id)
-//                smobUserApi.deleteSmobUserById(id)
+                smobUserApi.deleteSmobUserById(id)
             }
         }
     }
@@ -196,14 +196,14 @@ class SmobUserRepository(
                 // first delete all shops from local DB
                 smobUserDao.deleteAllSmobUsers()
 
-//                // then delete all shops from backend DB
-//                getSmobUsersViaApi().let {
-//                    if (it.status == Status.SUCCESS) {
-//                        it.data?.map { smobUserApi.deleteSmobUserById(it.id) }
-//                    } else {
-//                        Timber.w("Unable to get SmobUser IDs from backend DB (via API) - not deleting anything.")
-//                    }
-//                }
+                // then delete all shops from backend DB
+                getSmobUsersViaApi().let {
+                    if (it.status == Status.SUCCESS) {
+                        it.data?.map { smobUserApi.deleteSmobUserById(it.id) }
+                    } else {
+                        Timber.w("Unable to get SmobUser IDs from backend DB (via API) - not deleting anything.")
+                    }
+                }
             }
 
         }  // context: ioDispatcher

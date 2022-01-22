@@ -87,15 +87,6 @@ class PlanningProductListViewModel(
     }  // fetchSmobList
 
 
-//    // convert to StateFlow
-//    fun smobListFlowToStateFlow(inFlow: Flow<Resource<SmobListATO?>>): StateFlow<Resource<SmobListATO?>> {
-//        return inFlow.stateIn(
-//            scope = viewModelScope,
-//            started = WhileSubscribed(5000),
-//            initialValue = Resource.loading(null)
-//        )  // StateFlow<...>
-//    }
-
     /**
      * collect the flow of the list of items for the upstream list the user just selected
      */
@@ -141,14 +132,6 @@ class PlanningProductListViewModel(
 
     }  // fetchSmobListItems
 
-//    // convert to StateFlow
-//    fun smobListItemsFlowToStateFlow(inFlow: Flow<Resource<List<SmobProductATO>?>>): StateFlow<Resource<List<SmobProductATO>?>> {
-//        return inFlow.stateIn(
-//            scope = viewModelScope,
-//            started = WhileSubscribed(5000),
-//            initialValue = Resource.loading(null)
-//        )  // StateFlow<...>
-//    }
 
     /**
      * combine the two flows (products, shopping list [product status]) and turn into StateFlow
@@ -229,7 +212,6 @@ class PlanningProductListViewModel(
     }  //  combineFlowsAndConvertToStateFlow
 
 
-
     /**
      * update all items in the local DB by querying the backend - triggered on "swipe down"
      */
@@ -240,7 +222,7 @@ class PlanningProductListViewModel(
         viewModelScope.launch {
 
             // update backend DB (from net API)
-//            productDataSource.refreshDataInLocalDB()
+            productDataSource.refreshDataInLocalDB()
 
             // collect flow to update StateFlow with current value from DB
             fetchSmobList()
@@ -360,11 +342,11 @@ class PlanningProductListViewModel(
             return false
         }
 
-//        // need shop category (SUPERMARKET)
-//        if (shopMobData.inShop.category == ShopCategory.OTHER) {
-//            showSnackBarInt.value = R.string.err_select_shop
-//            return false
-//        }
+        // need shop category (SUPERMARKET)
+        if (shopMobData.inShop.category == ShopCategory.OTHER) {
+            showSnackBarInt.value = R.string.err_select_shop
+            return false
+        }
 
         // all good --> validation passed
         return true

@@ -111,16 +111,16 @@ class SmobGroupRepository(
             val dbGroup = smobGroupATO.asDatabaseModel()
             smobGroupDao.saveSmobGroup(dbGroup)
 
-//            // then push to backend DB
-//            // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
-//            val testRead = getSmobGroupViaApi(dbGroup.id)
-//            if (testRead.data?.id != dbGroup.id) {
-//                // item not found in backend --> use POST to create it
-//                saveSmobGroupViaApi(dbGroup)
-//            } else {
-//                // item already exists in backend DB --> use PUT to update it
-//                smobGroupApi.updateSmobGroupById(dbGroup.id, dbGroup.asNetworkModel())
-//            }
+            // then push to backend DB
+            // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
+            val testRead = getSmobGroupViaApi(dbGroup.id)
+            if (testRead.data?.id != dbGroup.id) {
+                // item not found in backend --> use POST to create it
+                saveSmobGroupViaApi(dbGroup)
+            } else {
+                // item already exists in backend DB --> use PUT to update it
+                smobGroupApi.updateSmobGroupById(dbGroup.id, dbGroup.asNetworkModel())
+            }
 
         }  // idlingResource (testing)
 
@@ -151,12 +151,12 @@ class SmobGroupRepository(
                 val dbGroup = smobGroupATO.asDatabaseModel()
                 smobGroupDao.updateSmobGroup(dbGroup)
 
-//                // then push to backend DB
-//                // ... use 'update', as group may already exist (equivalent of REPLACE w/h local DB)
-//                //
-//                // ... could do a read back first, if we're anxious...
-//                //smobGroupDao.getSmobGroupById(dbGroup.id)?.let { smobGroupApi.updateSmobGroup(it.id, it.asNetworkModel()) }
-//                smobGroupApi.updateSmobGroupById(dbGroup.id, dbGroup.asNetworkModel())
+                // then push to backend DB
+                // ... use 'update', as group may already exist (equivalent of REPLACE w/h local DB)
+                //
+                // ... could do a read back first, if we're anxious...
+                //smobGroupDao.getSmobGroupById(dbGroup.id)?.let { smobGroupApi.updateSmobGroup(it.id, it.asNetworkModel()) }
+                smobGroupApi.updateSmobGroupById(dbGroup.id, dbGroup.asNetworkModel())
 
             }
         }
@@ -181,7 +181,7 @@ class SmobGroupRepository(
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
                 smobGroupDao.deleteSmobGroupById(id)
-//                smobGroupApi.deleteSmobGroupById(id)
+                smobGroupApi.deleteSmobGroupById(id)
             }
         }
     }
@@ -197,14 +197,14 @@ class SmobGroupRepository(
                 // first delete all groups from local DB
                 smobGroupDao.deleteAllSmobGroups()
 
-//                // then delete all groups from backend DB
-//                getSmobGroupsViaApi().let {
-//                    if (it.status == Status.SUCCESS) {
-//                        it.data?.map { smobGroupApi.deleteSmobGroupById(it.id) }
-//                    } else {
-//                        Timber.w("Unable to get SmobGroup IDs from backend DB (via API) - not deleting anything.")
-//                    }
-//                }
+                // then delete all groups from backend DB
+                getSmobGroupsViaApi().let {
+                    if (it.status == Status.SUCCESS) {
+                        it.data?.map { smobGroupApi.deleteSmobGroupById(it.id) }
+                    } else {
+                        Timber.w("Unable to get SmobGroup IDs from backend DB (via API) - not deleting anything.")
+                    }
+                }
             }
 
         }  // context: ioDispatcher
