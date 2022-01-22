@@ -65,7 +65,7 @@ class SmobPlanningActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener {
                 nc: NavController,
                 nd: NavDestination,
-                args: Bundle?
+                _: Bundle?
             ->
             if (nd.id == nc.graph.startDestination) {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
@@ -109,5 +109,19 @@ class SmobPlanningActivity : AppCompatActivity() {
 //            super.onBackPressed()
 //        }
 //    }
+
+
+    // fetch worker class form service locator
+    private val wManager: SmobAppWork by inject()
+
+    override fun onResume() {
+        super.onResume()
+        wManager.delayedInitRecurringWorkFast()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        wManager.cancelRecurringWorkFast()
+    }
 
 }
