@@ -528,6 +528,21 @@
         "09:00 - 12:00, 14:00 - 18:00",
         "closed"
       ]
+    },
+    {
+      "id": "12acb0b5-0a8e-4824-9975-e4a11adce5cb",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Lidl",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19446661077098,
+        "longitude": 11.465429663658142
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPERMARKET",
+      "business": []
     }
   ],
   "products": [
@@ -1166,7 +1181,7 @@
       "items": [
         {
           "id": "13b98d9f-94eb-4405-aa1c-b2f58a3a9a93",
-          "status": "IN_PROGRESS",
+          "status": "DONE",
           "listPosition": 0
         },
         {
@@ -1213,7 +1228,7 @@
         },
         {
           "id": "4a658f5a-5321-43f5-b19e-073cc7e3765e",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
           "listPosition": 1
         },
         {
@@ -1228,7 +1243,7 @@
         },
         {
           "id": "f401784b-83c5-4e95-aeb2-38468dcf9080",
-          "status": "DONE",
+          "status": "IN_PROGRESS",
           "listPosition": 4
         }
       ],
@@ -1265,7 +1280,7 @@
         },
         {
           "id": "4f191afd-ce26-434a-bcac-72dfe3b9499f",
-          "status": "IN_PROGRESS",
+          "status": "DONE",
           "listPosition": 3
         },
         {
@@ -1280,7 +1295,7 @@
         },
         {
           "id": "7af9b8dc-7110-43fc-bc59-55c862cb73d4",
-          "status": "OPEN",
+          "status": "DONE",
           "listPosition": 6
         },
         {
@@ -1337,12 +1352,12 @@
         },
         {
           "id": "1570764d-f2e6-47c1-8364-77d51c77bd9f",
-          "status": "OPEN",
+          "status": "DONE",
           "listPosition": 3
         },
         {
           "id": "1570764d-f2e6-47c1-8364-77d51c77bd9f",
-          "status": "OPEN",
+          "status": "DONE",
           "listPosition": 4
         },
         {
@@ -1357,7 +1372,7 @@
         },
         {
           "id": "856c33ae-0ec5-485e-a8d0-42cc4787d5d4",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
           "listPosition": 7
         },
         {
@@ -1367,7 +1382,7 @@
         },
         {
           "id": "b8ebf5fc-7ae0-438b-9299-248dc614de25",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
           "listPosition": 9
         },
         {
@@ -1382,7 +1397,7 @@
         },
         {
           "id": "ef56de9a-cd5d-42fa-b3cc-b79db0b0008b",
-          "status": "IN_PROGRESS",
+          "status": "DONE",
           "listPosition": 12
         }
       ],
@@ -1509,7 +1524,7 @@
     },
     {
       "id": "1f028751-cc18-4507-ba91-69b4590ae874",
-      "itemStatus": "IN_PROGRESS",
+      "itemStatus": "DELETED",
       "itemPosition": 5,
       "name": "New List",
       "description": "Test",
