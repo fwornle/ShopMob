@@ -138,9 +138,10 @@ class PlanningListsViewModel(
      * Clear the live data objects to start fresh next time the view model gets instantiated
      */
     fun onClear() {
-        smobListName.value = null
-        smobListDescription.value = null
-        smobListImageUrl.value = null
+        // viewModel is initiated in background "doWork" job (coroutine)
+        smobListName.postValue(null)
+        smobListDescription.postValue(null)
+        smobListImageUrl.postValue(null)
     }
 
     /**
