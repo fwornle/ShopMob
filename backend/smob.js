@@ -266,10 +266,10 @@ function smob () {
         var description = faker.lorem.words()
         var itemsOnList = [...Array(rand(20)).keys()].map(_ => faker.helpers.randomize(productIds)).sort()
         var items = itemsOnList.map(
-            prodId => { return { 
+            (prodId, idx) => { return { 
                 "id": prodId, 
                 "status": faker.helpers.randomize(itemStatus), 
-                listPosition: daProducts.find(product => product.id == prodId).listPosition,
+                "listPosition": idx,
             } 
         }
         )
