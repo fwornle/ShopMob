@@ -12,23 +12,16 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
 import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentPlanningListsBinding
-import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.ui.administration.SmobAdminTask
 import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
-import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
-import com.tanfra.shopmob.smob.ui.planning.utils.BaseSwipeActionHandler
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
 import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
-import java.text.ParsePosition
 
 
 class PlanningListsFragment : BaseFragment(), KoinComponent {
@@ -69,7 +62,7 @@ class PlanningListsFragment : BaseFragment(), KoinComponent {
 
             // empty? --> inform user that there is no point swiping for further updates...
             if (_viewModel.showNoData.value == true) {
-                Toast.makeText(activity, getString(R.string.error_add_smob_items), Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, getString(R.string.error_add_smob_lists), Toast.LENGTH_SHORT).show()
             }
 
         }
@@ -99,10 +92,10 @@ class PlanningListsFragment : BaseFragment(), KoinComponent {
     private fun navigateToAddSmobList() {
 
         // determine hightest index in all smobLists
-        val highPos = _viewModel.smobList.value.let {
+        val highPos = _viewModel.getSmobLists().value.let {
             if (it.status == Status.SUCCESS) {
                 // return  highest index
-                it.data?.fold(0L) { max, list -> if (list.itemPosition > max) list.itemPosition else max } ?: 0L
+                it.data?.fold(0L) { max, list -> if (list?.itemPosition!! > max) list.itemPosition else max } ?: 0L
             } else {
                 0L
             }

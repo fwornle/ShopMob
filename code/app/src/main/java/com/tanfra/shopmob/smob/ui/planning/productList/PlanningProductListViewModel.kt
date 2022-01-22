@@ -4,11 +4,8 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.local.utils.*
+import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.base.BaseViewModel
-import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
-import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
-import com.tanfra.shopmob.smob.data.repo.ato.SmobProductOnListATO
-import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
@@ -19,6 +16,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class PlanningProductListViewModel(
     val app: Application,
@@ -27,112 +25,206 @@ class PlanningProductListViewModel(
     val shopDataSource: SmobShopDataSource,
     ) : BaseViewModel(app) {
 
-    // collect the upstream selected smobList as well as the list of SmobProductATO items
-    // ... lateinit, as this can only be done once the fragment is created (and the id's are here)
-    lateinit var _smobList: Flow<Resource<SmobListATO?>>
-    lateinit var _smobListItems: Flow<Resource<List<SmobProductATO>?>>
-    lateinit var smobList: StateFlow<Resource<SmobListATO?>>
-    lateinit var smobListItems: StateFlow<Resource<List<SmobProductATO>?>>
-    lateinit var smobListItemsWithStatus: StateFlow<List<SmobProductOnListATO>?>
+    // current list ID
+    var currListId: String? = null
+
+    // StateFlow variables to maintain 'latest fetched value'
+    // ... connected to flow --> observes the data source and updates on changes there
+    private val _smobList = MutableStateFlow<Resource<SmobListATO?>>(Resource.loading(null))
+    private val _smobListItems = MutableStateFlow<Resource<List<SmobProductATO>?>>(Resource.loading(null))
+
+    // combination of both flows (SmobList & product items on that list)
+    private val _smobListItemsWithStatus = MutableStateFlow<List<SmobProductOnListATO>?>(listOf())
+
+    // public getters
+    fun getSmobList(): StateFlow<Resource<SmobListATO?>> = _smobList
+    fun getSmobListItems(): StateFlow<Resource<List<SmobProductATO>?>> = _smobListItems
+    fun getSmobListItemsWithStatus(): StateFlow<List<SmobProductOnListATO>?> = _smobListItemsWithStatus
 
 
     /**
-     * fetch the flow of the upstream list the user just selected
+     * collect the flow of the upstream list the user just selected
      */
     @ExperimentalCoroutinesApi
-    fun fetchSmobListFlow(id: String): Flow<Resource<SmobListATO?>> {
-        val fetchFlow = listDataSource.getSmobList(id)
-        return fetchFlow
-    }
+    fun fetchSmobList() {
 
-    // convert to StateFlow
-    fun smobListFlowToStateFlow(inFlow: Flow<Resource<SmobListATO?>>): StateFlow<Resource<SmobListATO?>> {
-        return inFlow.stateIn(
-            scope = viewModelScope,
-            started = WhileSubscribed(5000),
-            initialValue = Resource.loading(null)
-        )  // StateFlow<...>
-    }
+        // list ID set yet?
+        currListId?.let { id ->
+
+            // collect flow
+            viewModelScope.launch {
+
+                // flow terminator
+                listDataSource.getSmobList(id)
+                    .catch { e ->
+                        // previously unhandled exception (= not handled at Room level)
+                        // --> catch it here and represent in Resource status
+                        _smobList.value = Resource.error(e.toString(), null)
+                        showSnackBar.value = _smobList.value.message
+                    }
+                    .collect {
+                        // no exception during flow collection
+                        when(it.status) {
+                            Status.SUCCESS -> {
+                                // --> store successfully received data in StateFlow value
+                                _smobList.value = it
+                            }
+                            Status.ERROR -> {
+                                // these are errors handled at Room level --> display
+                                showSnackBar.value = it.message
+                                _smobList.value = it  // still return Resource value (w/h error)
+                            }
+                            Status.LOADING -> {
+                                // could control visibility of progress bar here
+                            }
+                        }
+                    }
+
+            }  // coroutine
+
+        } // listId set
+
+    }  // fetchSmobList
+
+
+//    // convert to StateFlow
+//    fun smobListFlowToStateFlow(inFlow: Flow<Resource<SmobListATO?>>): StateFlow<Resource<SmobListATO?>> {
+//        return inFlow.stateIn(
+//            scope = viewModelScope,
+//            started = WhileSubscribed(5000),
+//            initialValue = Resource.loading(null)
+//        )  // StateFlow<...>
+//    }
 
     /**
-     * fetch the flow of the list of items for the upstream list the user just selected
+     * collect the flow of the list of items for the upstream list the user just selected
      */
     @ExperimentalCoroutinesApi
-    fun fetchSmobListItemsFlow(id: String): Flow<Resource<List<SmobProductATO>?>> {
-        val fetchFlow = productDataSource.getSmobProductsByListId(id)
-        return fetchFlow
-    }
+    fun fetchSmobListItems() {
 
-    // convert to StateFlow
-    fun smobListItemsFlowToStateFlow(inFlow: Flow<Resource<List<SmobProductATO>?>>): StateFlow<Resource<List<SmobProductATO>?>> {
-        return inFlow.stateIn(
-            scope = viewModelScope,
-            started = WhileSubscribed(5000),
-            initialValue = Resource.loading(null)
-        )  // StateFlow<...>
-    }
+        // list ID set yet?
+        currListId?.let { id ->
+
+            // collect flow
+            viewModelScope.launch {
+
+                // flow terminator
+                productDataSource.getSmobProductsByListId(id)
+                    .catch { e ->
+                        // previously unhandled exception (= not handled at Room level)
+                        // --> catch it here and represent in Resource status
+                        _smobListItems.value = Resource.error(e.toString(), null)
+                        showSnackBar.value = _smobListItems.value.message
+                    }
+                    .collect {
+                        // no exception during flow collection
+                        when(it.status) {
+                            Status.SUCCESS -> {
+                                // --> store successfully received data in StateFlow value
+                                _smobListItems.value = it
+                                updateShowNoData(it)
+                            }
+                            Status.ERROR -> {
+                                // these are errors handled at Room level --> display
+                                showSnackBar.value = it.message
+                                _smobListItems.value = it  // still return Resource value (w/h error)
+                            }
+                            Status.LOADING -> {
+                                // could control visibility of progress bar here
+                            }
+                        }
+                    }
+
+            }  // coroutine
+
+        }  // listId set
+
+    }  // fetchSmobListItems
+
+//    // convert to StateFlow
+//    fun smobListItemsFlowToStateFlow(inFlow: Flow<Resource<List<SmobProductATO>?>>): StateFlow<Resource<List<SmobProductATO>?>> {
+//        return inFlow.stateIn(
+//            scope = viewModelScope,
+//            started = WhileSubscribed(5000),
+//            initialValue = Resource.loading(null)
+//        )  // StateFlow<...>
+//    }
 
     /**
      * combine the two flows (products, shopping list [product status]) and turn into StateFlow
      */
     @ExperimentalCoroutinesApi
-    fun combineFlowsAndConvertToStateFlow(
-        listFlow: Flow<Resource<SmobListATO?>>,
-        itemsFlow: Flow<Resource<List<SmobProductATO>?>>,
-    ): StateFlow<List<SmobProductOnListATO>?> {
+    fun fetchCombinedFlows() {
 
-        return itemsFlow.combine(listFlow) { items, list ->
+        // list ID set yet?
+        currListId?.let { id ->
 
-            // unwrap list (from Resource)
-            list.data?.let { rawList ->
+            val itemsFlow = productDataSource.getSmobProductsByListId(id)
+            val listFlow = listDataSource.getSmobList(id)
 
-                // evaluate/unwrap Resource
-                when(items.status) {
+            // collect flow
+            viewModelScope.launch {
 
-                    Status.SUCCESS -> {
-                        // received the items on the list alright --> process
-                        items.data?.map { product ->
+                itemsFlow.combine(listFlow) { items, list ->
 
-                            // at this point, the products on the shopping lists have been properly
-                            // received --> implies that the list itself is also available
-                            // output merged data type (with product item status)
+                    // unwrap list (from Resource)
+                    list.data?.let { rawList ->
 
-                            // fetch product details from 'items' list on the smobList
-                            val productOnList = rawList.items.first { item -> item.id == product.id }
+                        // evaluate/unwrap Resource
+                        when (items.status) {
 
-                            SmobProductOnListATO(
-                                id = product.id,
-                                itemStatus = productOnList.status,
-                                itemPosition = productOnList.listPosition,
-                                productName = product.name,
-                                productDescription = product.description,
-                                productImageUrl = product.imageUrl,
-                                productCategory = product.category,
-                                productActivity = product.activity,
-                                listId = rawList.id,
-                                listName = rawList.name,
-                                listDescription = rawList.description,
-                                listItems = rawList.items,
-                                listMembers = rawList.members,
-                                listLifecycle = rawList.lifecycle,
-                            )
-                        }
+                            Status.SUCCESS -> {
+                                // received the items on the list alright --> process
+                                items.data?.map { product ->
+
+                                    // at this point, the products on the shopping lists have been properly
+                                    // received --> implies that the list itself is also available
+                                    // output merged data type (with product item status)
+
+                                    // fetch product details from 'items' list on the smobList
+                                    val productOnList =
+                                        rawList.items.first { item -> item.id == product.id }
+
+                                    SmobProductOnListATO(
+                                        id = product.id,
+                                        itemStatus = productOnList.status,
+                                        itemPosition = productOnList.listPosition,
+                                        productName = product.name,
+                                        productDescription = product.description,
+                                        productImageUrl = product.imageUrl,
+                                        productCategory = product.category,
+                                        productActivity = product.activity,
+                                        listId = rawList.id,
+                                        listName = rawList.name,
+                                        listDescription = rawList.description,
+                                        listItems = rawList.items,
+                                        listMembers = rawList.members,
+                                        listLifecycle = rawList.lifecycle,
+                                    )
+                                }
+                            }
+                            else -> {
+                                // Status.LOADING or Status.ERROR -> do nothing
+                                null
+                            }
+
+                        }  // when
+
+                    }  // unwrap list
+
+                }  // combine (flows)
+                    .catch { e ->
+                        // previously unhandled exception (= not handled at Room level) --> console
+                        Timber.e(e.toString())
                     }
-                    else -> {
-                        // Status.LOADING or Status.ERROR -> do nothing
-                        null
+                    .collect {
+                        // store collected flow data in StateFlow value
+                        _smobListItemsWithStatus.value = it
                     }
 
-                }  // when
+            }  // viewModelScope.launch
 
-            }  // unwrap list
-
-        }  // combine(Flow_1, Flow_2)
-            .stateIn(
-            scope = viewModelScope,
-            started = WhileSubscribed(5000),
-            initialValue = listOf()
-        )  // StateFlow<...>
+        }  // listId set
 
     }  //  combineFlowsAndConvertToStateFlow
 
@@ -148,18 +240,15 @@ class PlanningProductListViewModel(
         viewModelScope.launch {
 
             // update backend DB (from net API)
-            productDataSource.refreshDataInLocalDB()
+//            productDataSource.refreshDataInLocalDB()
 
-            // handle potential errors
-            smobListItems.collect {
+            // collect flow to update StateFlow with current value from DB
+            fetchSmobList()
+            fetchSmobListItems()
+            fetchCombinedFlows()
 
-                if(it.status == Status.ERROR) {
-                    showSnackBar.value = it.message!!
-                }
-
-                // check if the "no data" symbol has to be shown (empty list)
-                updateShowNoData(it)
-            }
+            // check if the "no data" symbol has to be shown (empty list)
+            updateShowNoData(_smobListItems.value)
 
         }
 
@@ -170,7 +259,12 @@ class PlanningProductListViewModel(
      */
     @ExperimentalCoroutinesApi
     private fun updateShowNoData(smobListNewest: Resource<List<*>?>) {
-        showNoData.value = (smobListNewest.status == Status.SUCCESS && smobListNewest.data!!.isEmpty())
+        showNoData.value = (
+                smobListNewest.status == Status.SUCCESS && smobListNewest.data!!.isEmpty() ||
+                smobListNewest.status == Status.SUCCESS && smobListNewest.data!!.all {
+                    (it as Ato).itemStatus == SmobItemStatus.DELETED
+                }
+                )
     }
 
 
@@ -196,7 +290,7 @@ class PlanningProductListViewModel(
             "",
             "",
             "",
-            ShopLocation(Double.NaN, Double.NaN),
+            ShopLocation(0.0, 0.0),
             ShopType.INDIVIDUAL,
             ShopCategory.OTHER,
             listOf(),
@@ -219,22 +313,28 @@ class PlanningProductListViewModel(
      */
     fun validateAndSaveSmobItem(shopMobData: SmobProductATO) {
         if (validateEnteredData(shopMobData)) {
-            saveSmobProductItem(shopMobData)
+            saveSmobProductItem(shopMobData, true)
         }
     }
 
     /**
      * Save the smob product to the data source
      */
-    private fun saveSmobProductItem(smobProductData: SmobProductATO) {
+    private fun saveSmobProductItem(smobProductData: SmobProductATO, navBack: Boolean) {
         showLoading.value = true
         viewModelScope.launch {
             productDataSource.saveSmobProduct(smobProductData)
             showLoading.value = false
 
-            showToast.value = app.getString(R.string.smob_item_saved)
-            navigationCommand.value = NavigationCommand.Back
+            // update StateFlow values by re-fetching flows from local DB
+            fetchSmobList()
+            fetchSmobListItems()
+            fetchCombinedFlows()
+
+            // only travel back, if requested
+            if(navBack) navigationCommand.value = NavigationCommand.Back
         }
+
     }
 
     /**
@@ -260,11 +360,11 @@ class PlanningProductListViewModel(
             return false
         }
 
-        // need shop category (SUPERMARKET)
-        if (shopMobData.inShop.category == ShopCategory.OTHER) {
-            showSnackBarInt.value = R.string.err_select_shop
-            return false
-        }
+//        // need shop category (SUPERMARKET)
+//        if (shopMobData.inShop.category == ShopCategory.OTHER) {
+//            showSnackBarInt.value = R.string.err_select_shop
+//            return false
+//        }
 
         // all good --> validation passed
         return true
@@ -313,14 +413,16 @@ class PlanningProductListViewModel(
     /**
      * Save the smob product to the data source
      */
-    fun saveSmobListItem(smobListData: SmobListATO) {
+    fun saveSmobListItem(smobListData: SmobListATO, goBack: Boolean) {
         showLoading.value = true
         viewModelScope.launch {
             listDataSource.saveSmobList(smobListData)
             showLoading.value = false
 
             showToast.value = app.getString(R.string.smob_list_saved)
-            navigationCommand.value = NavigationCommand.Back
+
+            // only travel back, if requested
+            if(goBack) navigationCommand.value = NavigationCommand.Back
         }
     }
 

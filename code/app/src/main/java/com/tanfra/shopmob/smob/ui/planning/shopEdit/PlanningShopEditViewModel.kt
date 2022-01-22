@@ -10,7 +10,6 @@ import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
 import kotlinx.coroutines.launch
-import java.lang.Double.NaN
 
 class PlanningShopEditViewModel(
     val app: Application,
@@ -35,7 +34,7 @@ class PlanningShopEditViewModel(
             "",
             "",
             "",
-            ShopLocation(NaN, NaN),
+            ShopLocation(0.0, 0.0),
             ShopType.INDIVIDUAL,
             ShopCategory.OTHER,
             listOf(),
@@ -86,8 +85,8 @@ class PlanningShopEditViewModel(
         }
 
         if (
-            shopData.location.latitude.isNaN() ||
-            shopData.location.longitude.isNaN()
+            shopData.location.latitude == 0.0 ||
+            shopData.location.longitude == 0.0
         ) {
             showSnackBarInt.value = R.string.err_select_location
             return false

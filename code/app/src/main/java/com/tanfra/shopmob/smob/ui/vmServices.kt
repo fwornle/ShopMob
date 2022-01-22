@@ -8,7 +8,6 @@ import com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditViewModel
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
-import com.tanfra.shopmob.smob.ui.planning.listsEdit.PlanningListsEditViewModel
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -21,14 +20,6 @@ val vmServices = module {
     // Lists fragment
     viewModel {
         PlanningListsViewModel(
-            get(),  // app (context)
-            get() as SmobListDataSource,  // repo as data source
-        )
-    }
-
-    // ListsEdit fragment
-    viewModel {
-        PlanningListsEditViewModel(
             get(),  // app (context)
             get() as SmobListDataSource,  // repo as data source
         )

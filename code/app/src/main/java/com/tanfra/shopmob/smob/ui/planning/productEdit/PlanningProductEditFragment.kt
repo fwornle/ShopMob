@@ -12,17 +12,18 @@ import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentPlanningProductEditBinding
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
-import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
+import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
 import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
+import com.tanfra.shopmob.smob.work.SmobAppWork
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import timber.log.Timber
-import java.lang.Double.NaN
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -58,6 +59,8 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
         return binding.root
     }
 
+    // fetch WorkManager instance from Koin service locator
+    private val workManager: SmobAppWork by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -66,10 +69,20 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
         // clicking on the 'selectLocation' textView takes you to the fragment "PlanningShopList"
         // for shop selection
         binding.selectShop.setOnClickListener {
-            _viewModel.navigationCommand.value =
-                NavigationCommand.To(
-                    PlanningProductEditFragmentDirections.actionPlanningProductEditFragmentToPlanningShopListFragment()
-                )
+
+
+            // schedule background work (WorkManager), handling potential geofencing entry
+            // transition events
+            val geoFenceWorkRequest = workManager
+                .setupOnTimeJobForGeoFenceNotification("geofenceTransitionDetails")
+
+            // schedule background job
+            workManager.scheduleUniqueWorkForGeoFenceNotification(geoFenceWorkRequest)
+
+//            _viewModel.navigationCommand.value =
+//                NavigationCommand.To(
+//                    PlanningProductEditFragmentDirections.actionPlanningProductEditFragmentToPlanningShopListFragment()
+//                )
         }
 
         // set-up spinners
@@ -79,83 +92,127 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
         // handler for 'SAVE' FAB clicks...
         binding.saveSmobItem.setOnClickListener {
 
+            // close SoftKeyboard
+            closeSoftKeyboard(requireContext(), view)
+
             val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss", Locale.GERMANY)
             val currentDate = sdf.format(Date())
 
             // fetch items on current shopping list
-            val currList = _viewModel.smobList.value.data
-            val valItems = currList?.items?.filter { itm -> itm.status != SmobItemStatus.DELETED }
-            val nValItems = valItems?.size ?: 0
-            val itemMaxPosition = currList?.items?.fold(0L) { max, item ->
-                if(item.listPosition > max) { item.listPosition } else { max }
-            } ?: 0L
+            // ... needed to append new item 'at the bottom' of the list and update the completion
+            //     rate (percent - decreases with every new item)
+            val currList = _viewModel.getSmobList().value
 
-            // close SoftKeyboard
-            closeSoftKeyboard(requireContext(), view)
+            // valid data? (making sure...)
+            if(currList.status == Status.SUCCESS) {
 
-            // initialize data record to be written to DB
-            // ... if no better values have been provided by the user (taken from viewModel), this
-            //     is going to be the data record written to the DB
-            daSmobProductATO = SmobProductATO(
-                UUID.randomUUID().toString(),
-                SmobItemStatus.NEW,
-                itemMaxPosition + 1,
-                _viewModel.smobProductName.value ?: "",
-                _viewModel.smobProductDescription.value ?: "",
-                _viewModel.smobProductImageUrl.value ?: "",
-                _viewModel.smobProductCategory.value
-                    ?: ProductCategory(ProductMainCategory.OTHER, ProductSubCategory.OTHER),
-                ActivityStatus(currentDate, 0),
-                _viewModel.selectedShop.value?.let { it1 ->
-                    InShop(
-                        it1.category,
-                        _viewModel.selectedShop.value!!.name,
-                        _viewModel.selectedShop.value!!.location,
-                    )
-                } ?: InShop(ShopCategory.OTHER, "mystery shop", ShopLocation(NaN, NaN)),
-            )
-
-            // store smob product in DB
-            // ... this also takes the user back to the SmobProductListFragment
-            _viewModel.validateAndSaveSmobItem(daSmobProductATO)
-
-            // add smob item to the currently open shopping list
-            val newItems = currList?.items?.toMutableList() ?: mutableListOf()
-            newItems.add(
-                SmobListItem(
-                    daSmobProductATO.id,
-                    daSmobProductATO.itemStatus,
-                    daSmobProductATO.itemPosition,
-                )
-            )
-
-            // create updated list (to be sent to the DB/backend)
-            val newList = SmobListATO(
-                currList!!.id,
-                currList.itemStatus,
-                currList.itemPosition,
-                currList.name,
-                currList.description,
-                newItems,
-                currList.members,
-                SmobListLifecycle(
-                    if(currList.lifecycle.status.ordinal <= SmobItemStatus.OPEN.ordinal) {
-                        SmobItemStatus.OPEN
+                val valItems =
+                    currList.data?.items?.filter { itm -> itm.status != SmobItemStatus.DELETED }
+                val nValItems = valItems?.size ?: 0
+                val itemMaxPosition = currList.data?.items?.fold(0L) { max, item ->
+                    if (item.listPosition > max) {
+                        item.listPosition
                     } else {
-                        currList.lifecycle.status
-                    },
-                    when(nValItems) {
-                        0 -> 0.0
-                        else -> {
-                            val doneItems = valItems!!.filter { daItem -> daItem.status == SmobItemStatus.DONE }.size
-                            (100.0 * doneItems / nValItems).roundToInt().toDouble()
-                        }
+                        max
                     }
-                ),
-            )
+                } ?: 0L
 
-            // store new List in DB
-            _viewModel.saveSmobListItem(newList)
+                // initialize data record to be written to DB
+                // ... if no better values have been provided by the user (taken from viewModel), this
+                //     is going to be the data record written to the DB
+                daSmobProductATO = SmobProductATO(
+                    UUID.randomUUID().toString(),
+                    SmobItemStatus.OPEN,
+                    itemMaxPosition + 1,
+                    _viewModel.smobProductName.value ?: "",
+                    _viewModel.smobProductDescription.value ?: "",
+                    _viewModel.smobProductImageUrl.value ?: "",
+                    _viewModel.smobProductCategory.value
+                        ?: ProductCategory(
+                            ProductMainCategory.OTHER,
+                            ProductSubCategory.OTHER
+                        ),
+                    ActivityStatus(currentDate, 0),
+                    _viewModel.selectedShop.value?.let { it1 ->
+                        InShop(
+                            it1.category,
+                            _viewModel.selectedShop.value!!.name,
+                            _viewModel.selectedShop.value!!.location,
+                        )
+                    } ?: InShop(
+                        ShopCategory.OTHER,
+                        "mystery shop",
+                        ShopLocation(0.0, 0.0)
+                    ),
+                )
+
+                // store smob product in DB
+                // ... this also takes the user back to the SmobProductListFragment
+                _viewModel.validateAndSaveSmobItem(daSmobProductATO)
+
+                // add smob item to the currently open shopping list
+                val newItems = currList.data?.items?.toMutableList() ?: mutableListOf()
+                newItems.add(
+                    SmobListItem(
+                        daSmobProductATO.id,
+                        daSmobProductATO.itemStatus,
+                        daSmobProductATO.itemPosition,
+                    )
+                )
+
+                // create updated smobList (to be sent to the DB/backend)
+                val newList = currList.data?.let {
+
+                    // list wasn't empty to begin with --> compute new completion rate
+                    SmobListATO(
+                        it.id,
+                        it.itemStatus,
+                        it.itemPosition,
+                        it.name,
+                        it.description,
+                        newItems,
+                        it.members,
+                        SmobListLifecycle(
+                            if (it.lifecycle.status.ordinal <= SmobItemStatus.OPEN.ordinal) {
+                                SmobItemStatus.OPEN
+                            } else {
+                                it.lifecycle.status
+                            },
+                            when (nValItems) {
+                                0 -> 0.0
+                                else -> {
+                                    val doneItems =
+                                        valItems!!.filter { daItem -> daItem.status == SmobItemStatus.DONE }.size
+                                    (100.0 * doneItems / nValItems).roundToInt().toDouble()
+                                }
+                            }
+                        ),
+                    )
+
+                } ?: SmobListATO(
+                    UUID.randomUUID().toString(),
+                    SmobItemStatus.NEW,
+                    0L,
+                    "magic list",
+                    "PlanningProductEditFragment: stateFlow not collected prior to using it",
+                    newItems,
+                    listOf(),
+                    SmobListLifecycle(
+                        SmobItemStatus.OPEN,
+                        0.0,
+                    ),
+                )
+
+                // store new List in DB - no need to trigger back navigation (already triggered
+                // when saving the product in the local DB
+                _viewModel.saveSmobListItem(newList, false)
+
+            } else {
+
+                // something must have gone wrong during flow collection
+                Timber.w("Could not store newly added product, as (parent) list flow collection failed.")
+
+            }  // check if smobList has been retrieved successfully
 
         }  // onClickListener (FAB - save)
 

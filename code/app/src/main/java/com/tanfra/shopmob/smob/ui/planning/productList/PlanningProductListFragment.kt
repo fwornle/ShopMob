@@ -56,19 +56,15 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
         // register flows fetch items of the selected upstream list (as well as the list itself)
         listId?.let {
 
-            // register flows in viewModel
-            _viewModel._smobList = _viewModel.fetchSmobListFlow(it)  // holds the item 'status'
-            _viewModel._smobListItems = _viewModel.fetchSmobListItemsFlow(it)
+            // set current list ID in viewModel
+            _viewModel.currListId = it
 
-            // turn to StateFlows
-            _viewModel.smobList = _viewModel.smobListFlowToStateFlow(_viewModel._smobList)
-            _viewModel.smobListItems = _viewModel.smobListItemsFlowToStateFlow(_viewModel._smobListItems)
+            // collect flows and store in StateFlow type (so that we have the latest value available
+            _viewModel.fetchSmobList()
+            _viewModel.fetchSmobListItems()
 
             // combine the flows and turn into StateFlow
-            _viewModel.smobListItemsWithStatus = _viewModel.combineFlowsAndConvertToStateFlow(
-                _viewModel._smobList,
-                _viewModel._smobListItems,
-            )
+            _viewModel.fetchCombinedFlows()
 
         }
 

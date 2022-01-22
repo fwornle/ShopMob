@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.flowOf
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
-import java.lang.Double.NaN
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -138,16 +137,16 @@ class SmobProductRepository(
             val dbProduct = smobProductATO.asDatabaseModel()
             smobProductDao.saveSmobProduct(dbProduct)
 
-            // then push to backend DB
-            // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
-            val testRead = getSmobProductViaApi(dbProduct.id)
-            if (testRead.data?.id != dbProduct.id) {
-                // item not found in backend --> use POST to create it
-                saveSmobProductViaApi(dbProduct)
-            } else {
-                // item already exists in backend DB --> use PUT to update it
-                smobProductApi.updateSmobProductById(dbProduct.id, dbProduct.asNetworkModel())
-            }
+//            // then push to backend DB
+//            // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
+//            val testRead = getSmobProductViaApi(dbProduct.id)
+//            if (testRead.data?.id != dbProduct.id) {
+//                // item not found in backend --> use POST to create it
+//                saveSmobProductViaApi(dbProduct)
+//            } else {
+//                // item already exists in backend DB --> use PUT to update it
+//                smobProductApi.updateSmobProductById(dbProduct.id, dbProduct.asNetworkModel())
+//            }
 
         }  // idlingResource (testing)
 
@@ -178,12 +177,12 @@ class SmobProductRepository(
                 val dbProduct = smobProductATO.asDatabaseModel()
                 smobProductDao.updateSmobProduct(dbProduct)
 
-                // then push to backend DB
-                // ... use 'update', as product may already exist (equivalent of REPLACE w/h local DB)
-                //
-                // ... could do a read back first, if we're anxious...
-                //smobProductDao.getSmobProductById(dbProduct.id)?.let { smobProductApi.updateSmobProduct(it.id, it.asNetworkModel()) }
-                smobProductApi.updateSmobProductById(dbProduct.id, dbProduct.asNetworkModel())
+//                // then push to backend DB
+//                // ... use 'update', as product may already exist (equivalent of REPLACE w/h local DB)
+//                //
+//                // ... could do a read back first, if we're anxious...
+//                //smobProductDao.getSmobProductById(dbProduct.id)?.let { smobProductApi.updateSmobProduct(it.id, it.asNetworkModel()) }
+//                smobProductApi.updateSmobProductById(dbProduct.id, dbProduct.asNetworkModel())
 
             }
         }
@@ -208,7 +207,7 @@ class SmobProductRepository(
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
                 smobProductDao.deleteSmobProductById(id)
-                smobProductApi.deleteSmobProductById(id)
+//                smobProductApi.deleteSmobProductById(id)
             }
         }
     }
@@ -224,14 +223,14 @@ class SmobProductRepository(
                 // first delete all products from local DB
                 smobProductDao.deleteAllSmobProducts()
 
-                // then delete all products from backend DB
-                getSmobProductsViaApi().let {
-                    if (it.status == Status.SUCCESS) {
-                        it.data?.map { smobProductApi.deleteSmobProductById(it.id) }
-                    } else {
-                        Timber.w("Unable to get SmobProduct IDs from backend DB (via API) - not deleting anything.")
-                    }
-                }
+//                // then delete all products from backend DB
+//                getSmobProductsViaApi().let {
+//                    if (it.status == Status.SUCCESS) {
+//                        it.data?.map { smobProductApi.deleteSmobProductById(it.id) }
+//                    } else {
+//                        Timber.w("Unable to get SmobProduct IDs from backend DB (via API) - not deleting anything.")
+//                    }
+//                }
             }
 
         }  // context: ioDispatcher
@@ -365,7 +364,7 @@ class SmobProductRepository(
             0,
             ShopCategory.OTHER,
             "dummy shop",
-            ShopLocation(NaN, NaN),
+            ShopLocation(0.0, 0.0),
         )
         var result = Resource.loading(dummySmobProductDTO)
 

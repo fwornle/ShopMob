@@ -77,7 +77,7 @@ class PlanningListsAdapter(rootView: View, callBack: (selectedSmobATO: SmobListA
 
             // store updated smobList in local DB
             // ... this also triggers an immediate push to the backend (once stored locally)
-            _viewModel.repoFlow.updateSmobList(updatedList)
+            _viewModel.listsDataSource.updateSmobList(updatedList)
 
         }  // coroutine scope (lifecycleScope)
 

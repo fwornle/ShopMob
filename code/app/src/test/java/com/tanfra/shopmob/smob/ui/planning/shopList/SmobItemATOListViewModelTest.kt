@@ -22,6 +22,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
 import org.robolectric.Shadows.shadowOf
 import java.util.*
 
@@ -30,7 +31,7 @@ import java.util.*
 class SmobUserATOListViewModelTest: AutoCloseKoinTest() {
 
     // viewModel
-    private lateinit var _viewModel: PlanningProductListViewModel by inject()
+    private var _viewModel: PlanningProductListViewModel by inject()
 
 
     // smob item repository and fake data
@@ -106,7 +107,7 @@ class SmobUserATOListViewModelTest: AutoCloseKoinTest() {
         _viewModel.loadSmobUsers()
 
         // THEN the smob item is verified and stored in the repository
-        assertThat(_viewModel.smobList.getOrAwaitValue(), equalTo(smobUserATOList))
+        assertThat(_viewModel._smobList.getOrAwaitValue(), equalTo(smobUserATOList))
 
     }
 

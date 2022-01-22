@@ -37,7 +37,6 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
-import java.lang.Double.NaN
 import java.util.*
 
 
@@ -176,7 +175,7 @@ class PlanningShopEditFragment : BaseFragment(), AdapterView.OnItemSelectedListe
                 _viewModel.locatedShop.value?.name ?: "mystery shop",
                 _viewModel.locatedShop.value?.description ?: "something strange",
                 _viewModel.locatedShop.value?.imageUrl ?: "some mystery picture",
-                _viewModel.locatedShop.value?.location ?: ShopLocation(NaN, NaN),
+                _viewModel.locatedShop.value?.location ?: ShopLocation(0.0, 0.0),
                 _viewModel.locatedShop.value?.type ?: ShopType.INDIVIDUAL,
                 _viewModel.locatedShop.value?.category ?: ShopCategory.OTHER,
                 _viewModel.locatedShop.value?.business ?: listOf(

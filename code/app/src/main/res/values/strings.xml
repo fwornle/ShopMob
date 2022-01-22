@@ -93,6 +93,7 @@
     <string name="storeBusinessTable">Mon: %1$s // Tue: %2$s\nWed: %3$s // Thur: %4$s\nFri: %5$s // Sat: %6$s\nSun: %7$s</string>
     <string name="map_user_prompt">Select location of the ShopMob Store.</string>
     <string name="error_add_smob_items">Add some ShopMob items first…</string>
+    <string name="error_add_smob_lists">Add some ShopMob lists first…</string>
     <string name="location_accuracy_explanation"><![CDATA[ShopMob needs \'Improve Location Accuracy\' enabled. Go to settings \'Security & Location > Location > Mode\' to enable this.]]></string>
     <string name="static_shortcut_label_short">Active Shopping List</string>
     <string name="static_shortcut_label_long">This link takes you to the last active ShopMob shopping list.</string>

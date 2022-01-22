@@ -8,21 +8,21 @@ import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentPlanningListsEditBinding
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
-import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.local.utils.SmobListLifecycle
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
+import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsViewModel
 import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
 import java.util.*
 
 
 class PlanningListsEditFragment : BaseFragment(), KoinComponent {
 
-    // get the view model (from Koin) this time as a singleton to be shared with another fragment
-    override val _viewModel: PlanningListsEditViewModel by viewModel()
+    // get the view model (from Koin service locator) ... shared with PlanningListsFragment
+    override val _viewModel: PlanningListsViewModel by sharedViewModel()
 
     // data binding of underlying layout
     private lateinit var binding: FragmentPlanningListsEditBinding

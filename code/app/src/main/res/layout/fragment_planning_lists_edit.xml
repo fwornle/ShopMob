@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.tanfra.shopmob.smob.ui.planning.listsEdit.PlanningListsEditViewModel" />
+            type="com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsViewModel" />
     </data>
 
     <ScrollView

@@ -36,7 +36,6 @@ import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
-import java.lang.Double.NaN
 import java.util.*
 
 // sharing the viewModel with PlanningShopEditFragment
@@ -86,8 +85,8 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
         lastMarkerLocation = String.format(
             Locale.getDefault(),
             getString(R.string.lat_long_snippet),
-            _viewModel.locatedShop.value?.location?.latitude ?: NaN,
-            _viewModel.locatedShop.value?.location?.longitude ?: NaN,
+            _viewModel.locatedShop.value?.location?.latitude ?: 0.0,
+            _viewModel.locatedShop.value?.location?.longitude ?: 0.0,
         )
 
         setHasOptionsMenu(true)
@@ -195,8 +194,8 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
         // store latitude / longitude in viewModel
         _viewModel.locatedShop.value?.location =
             ShopLocation(
-            lastMarker?.position?.latitude ?: NaN,
-            lastMarker?.position?.longitude ?: NaN
+            lastMarker?.position?.latitude ?: 0.0,
+            lastMarker?.position?.longitude ?: 0.0
             )
 
         // use the navigationCommand live data to navigate between the fragments
@@ -312,7 +311,7 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
     // remove latest set marker and clear associated viewModel variables (coords only - keep name)
     private fun deleteLastMarker() {
         lastMarker?.remove()
-        _viewModel.locatedShop.value?.location = ShopLocation(NaN, NaN)
+        _viewModel.locatedShop.value?.location = ShopLocation(0.0, 0.0)
     }
 
     // request access to user location and, if granted, fly to current location

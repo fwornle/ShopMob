@@ -1,26 +1,13 @@
 package com.tanfra.shopmob.smob.geofence
 
 import android.content.Context
-import android.text.TextUtils
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.findViewTreeLifecycleOwner
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.work.*
-import com.google.android.gms.location.Geofence
-import com.google.android.gms.location.GeofencingEvent
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
-import com.tanfra.shopmob.smob.data.repo.utils.Resource
-import com.tanfra.shopmob.smob.data.repo.utils.Status
-import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
+import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsViewModel
 import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.utils.sendNotification
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import retrofit2.Response
 import timber.log.Timber
 
 class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerParameters):
@@ -38,7 +25,7 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
     }
 
     // get repository instance for shop
-    val smobShopDataSource: SmobShopDataSource by inject()
+    val _viewModel: PlanningListsViewModel by inject()
     val smobAppWork: SmobAppWork by inject()
 
     // this will be triggered, as soon as the user enters the geoFence perimeter
@@ -54,9 +41,15 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
             val transitionDir = geofenceTransitionDetails.substringBefore(':')
             val geoFenceIdList = geofenceTransitionDetails.substringAfter(':').split(',')
 
+            _viewModel.fetchSmobLists()
+            _viewModel.getSmobLists().value.data?.map {
+                Timber.i("Got list ${it?.id ?: "VOID"}")
+            }
+
+
             when(transitionDir) {
 
-                ENTRY_STRING -> {
+                ENTRY_STRING, "geoFenceTransitionDetails" -> {
                     Timber.i("Received geoFence entry transition")
 
                     // sanity check
@@ -68,19 +61,24 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
                         else -> {
 
                             // loop over all geoFence IDs (= SmobShop IDs)
+                            // update StateFlow value from local DB
+                            _viewModel.fetchSmobLists()
+
                             for (geoFenceItem in geoFenceIdList) {
 
-                                // get the SmobShop with id from geoFence
-                                val daFlow = smobShopDataSource.getSmobShop(geoFenceItem)
-                                    daFlow.collect {
-                                        Timber.i("Received shop: ${it.data?.name}")
+                                Timber.i("Got GeoFence ID: $geoFenceItem")
 
-                                        // send notification with the triggering geoFences
-                                        // note: polymorphism
-                                        //       --> call-up parameter is a list of geoFence IDs (= SmobShop IDs)
-                                        //       --> local implementation of sendNotificatino is used (see below)
-                                        sendNotification(it.data)
-                                    }
+                                // now check, if any of the triggered geoFences relates to any of
+                                // our shopping lists
+                                _viewModel.getSmobLists().value.data?.map {
+                                    Timber.i("Got list ${it?.id ?: "VOID"}")
+
+                                    // send notification with the triggering geoFences
+                                    // note: polymorphism
+                                    //       --> call-up parameter is a list of geoFence IDs (= SmobShop IDs)
+                                    //       --> local implementation of sendNotificatino is used (see below)
+//                                    sendNotification(it)
+                                }
 
                             }
                         }
