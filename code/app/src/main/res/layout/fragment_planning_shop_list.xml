@@ -50,7 +50,7 @@
                 android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:fadeVisibleOnLoading="@{viewModel.getSmobList}"
+                app:fadeVisibleOnLoading="@{viewModel.smobList}"
                 android:gravity="center"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

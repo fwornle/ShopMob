@@ -36,10 +36,10 @@ class PlanningProductListViewModel(
     // combination of both flows (SmobList & product items on that list)
     private val _smobListItemsWithStatus = MutableStateFlow<List<SmobProductOnListATO>?>(listOf())
 
-    // public getters
-    fun getSmobList(): StateFlow<Resource<SmobListATO?>> = _smobList
-    fun getSmobListItems(): StateFlow<Resource<List<SmobProductATO>?>> = _smobListItems
-    fun getSmobListItemsWithStatus(): StateFlow<List<SmobProductOnListATO>?> = _smobListItemsWithStatus
+    // public facing read-only StateFlows
+    val smobList = _smobList.asStateFlow()
+    val smobListItems = _smobListItems.asStateFlow()
+    val smobListItemsWithStatus = _smobListItemsWithStatus.asStateFlow()
 
 
     /**
@@ -62,7 +62,7 @@ class PlanningProductListViewModel(
                         _smobList.value = Resource.error(e.toString(), null)
                         showSnackBar.value = _smobList.value.message
                     }
-                    .collect {
+                    .collectLatest {
                         // no exception during flow collection
                         when(it.status) {
                             Status.SUCCESS -> {
@@ -107,7 +107,7 @@ class PlanningProductListViewModel(
                         _smobListItems.value = Resource.error(e.toString(), null)
                         showSnackBar.value = _smobListItems.value.message
                     }
-                    .collect {
+                    .collectLatest {
                         // no exception during flow collection
                         when(it.status) {
                             Status.SUCCESS -> {
@@ -200,7 +200,7 @@ class PlanningProductListViewModel(
                         // previously unhandled exception (= not handled at Room level) --> console
                         Timber.e(e.toString())
                     }
-                    .collect {
+                    .collectLatest {
                         // store collected flow data in StateFlow value
                         _smobListItemsWithStatus.value = it
                     }

@@ -92,7 +92,7 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
             // fetch items on current shopping list
             // ... needed to append new item 'at the bottom' of the list and update the completion
             //     rate (percent - decreases with every new item)
-            val currList = _viewModel.getSmobList().value
+            val currList = _viewModel.smobList.value
 
             // valid data? (making sure...)
             if(currList.status == Status.SUCCESS) {
