@@ -59,6 +59,7 @@
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
+        <!--
         <activity
             android:exported="true"
             android:name=".smob.ui.authentication.SmobAuthenticationActivity">
@@ -67,11 +68,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        -->
 
         <activity
             android:exported="true"
             android:name=".smob.ui.planning.SmobPlanningActivity">
             <nav-graph android:value="@navigation/nav_graph_planning" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
