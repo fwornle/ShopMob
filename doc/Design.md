@@ -313,9 +313,9 @@ The _smobList_ entries of the _smobLists_ table adheres to the following schema:
   "name": "smob list name",
   "description": "our daily groceries",
   "items": [
-    { "id": "productId1", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 1 },
-    { "id": "productId2", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 2 },
-    { "id": "productId3", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 3 },
+    { "id": "productId1", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 1, "mainCategory":  "SUPERMARKET" },
+    { "id": "productId2", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 2, "mainCategory":  "HARDWARE" },
+    { "id": "productId3", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 3, "mainCategory":  "CLOTHING" },
     { }
   ],
   "members": [
@@ -538,7 +538,7 @@ At the writing of this document (21.12.21), this submission is expected for
         - [x] Refactoring (app): Adjust permission handling to use ShopMob (smob) nomenclature, instead of "reminders" - logic still as in C4
         - [x] Refactoring (test): Adjust all integrated instrumented geoFencing tests (from C4)
         - [x] Refactoring (app): Make notification support an extension function of the Context (as proposed by the reviewers)
-        - [ ] Refactoring (app): Replace deprecated _JobIntentService_ by recommended _WorkManager_ approach (notification when triggering a geoFence)
+        - [x] Refactoring (app): Replace deprecated _JobIntentService_ by recommended _WorkManager_ approach (notification when triggering a geoFence)
     - [x] IMPL-2.5.4: Integrate authentication support (based on building block from location reminders)
       - [x] Integrate user authentication from C4 (location reminder)
       - [x] Refactoring (app): Adapt authentication support to use ShopMob (smob) nomenclature, instead of "reminders" - logic still as in C4
@@ -555,7 +555,7 @@ At the writing of this document (21.12.21), this submission is expected for
         - [x] Integrate major building blocks for UI layer (from C4)
         - [x] Refactoring (app): Adapt UI to use ShopMob (smob) nomenclature, instead of "reminders" - content still as in C4
         - [x] Refactoring (test): Adjust all integrated UI unit test as well as the instrumented UI tests (from C4)
-        - [ ] Introduce all activities and fragments as needed by the app - content: dummy placeholders
+        - [x] Introduce all activities and fragments as needed by the app - content: dummy placeholders
         - [x] Adjust Activity navigation - all intent based transitions work w/h bundled data
         - [x] Adjust Fragment navigation - all fragment based transitions work w/h bundled data
     - [ ] IMPL-2.5.8: Develop floor plan UI elements (canvas)
@@ -577,12 +577,12 @@ At the writing of this document (21.12.21), this submission is expected for
         - [ ] Implement displaying of "best route through shop", e.g.: zone level --> zone-1 (+ product stats) --> zone-4 (+ stats) --> checkout
         - [ ] Implement displaying of zone plans including more detailed _sections_ (aisles/shelves) and products per zone
         - [ ] Implement displaying of _shelf_ view (image from DB)
-  - [ ] IMPL-2.6: App development against local DB
-    - [ ] Complete activities and fragments (incl. navigation) as required by the app architecture
+  - [x] IMPL-2.6: App development against local DB
+    - [x] Complete activities and fragments (incl. navigation) as required by the app architecture
     - [x] Seed local DB with test data for UI design
-    - [ ] Complete UI layout of each activity / fragment
-    - [ ] Extend UI elements to animate them using MotionLayout
-    - [ ] Complete all view models with required business logic
+    - [x] Complete UI layout of each activity / fragment
+    - [x] Extend UI elements to animate them using MotionLayout
+    - [x] Complete all view models with required business logic
 - [ ] IMPL-3: App development against backend DB
   - [x] Set-up development backend DB (json-server)
   - [x] Seed backend DB with test data (same as in IMPL-2.6)
@@ -608,7 +608,7 @@ by one month).
 | CW-21/51 | CW-21/52 | CW-22/01 | CW-22/02 | CW-22/03 | CW-22/04 |
 |:---------|:---------|:---------|:---------|:---------|:---------|
 | DSGN-1 .. DSGN-3, IMPL-1 .. IMPL-2.5.7 | IMPL-2.8 | IMPL-2.5.8 | IMPL-2.5.9 | IMPL-2.6 | IMPL-3 |
-| done | done | in progress | open | open | open |
+| done | done | done | done | done | open |
 
 ### Project Rubrics
 
@@ -645,8 +645,6 @@ The following specification items need to be included in the app:
 | Store data locally on the device for use between application sessions and/or offline use | Utilizes storage mechanisms that best fit the data stored to store data locally on the device (Room) | IMPL-3: Room, SQL DB |
 | Store data locally on the device for use between application sessions and/or offline use | Data stored is accessible across user sessions | IMPL-3: Room, persistent storage |
 | Store data locally on the device for use between application sessions and/or offline use | Data is structured with appropriate data types and scope as required by application functionality | IMPL-3: DTO, NTO, ATO - plus conversions |
-
-
 
 #### Android System and Hardware Integration
 

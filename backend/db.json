@@ -530,7 +530,7 @@
     },
     {
       "id": "e60a29b1-109d-4f0a-88e9-5bc940cec731",
-      "itemStatus": "NEW",
+      "itemStatus": "DELETED",
       "itemPosition": -1,
       "name": "Lidl",
       "description": "",
@@ -541,11 +541,13 @@
       },
       "type": "INDIVIDUAL",
       "category": "SUPERMARKET",
-      "business": []
+      "business": [
+        ""
+      ]
     },
     {
       "id": "554fa00d-a444-49e2-a68c-3e4ae2ccf730",
-      "itemStatus": "NEW",
+      "itemStatus": "DELETED",
       "itemPosition": -1,
       "name": "Lidl",
       "description": "",
@@ -556,11 +558,13 @@
       },
       "type": "INDIVIDUAL",
       "category": "OTHER",
-      "business": []
+      "business": [
+        ""
+      ]
     },
     {
       "id": "0a1b416b-ba28-4707-b222-f33e6c88db85",
-      "itemStatus": "NEW",
+      "itemStatus": "DELETED",
       "itemPosition": -1,
       "name": "Lidl",
       "description": "",
@@ -571,7 +575,9 @@
       },
       "type": "INDIVIDUAL",
       "category": "DRUGSTORE",
-      "business": []
+      "business": [
+        ""
+      ]
     },
     {
       "id": "a0ad9ccb-f6b0-4a91-b66a-c2bc0a3c11a6",
@@ -635,7 +641,7 @@
     },
     {
       "id": "9f0a8966-735d-4b22-a0f2-b2bcf32dc5f3",
-      "itemStatus": "NEW",
+      "itemStatus": "DELETED",
       "itemPosition": -1,
       "name": "Sport Bittl",
       "description": "",
@@ -646,11 +652,13 @@
       },
       "type": "INDIVIDUAL",
       "category": "SUPERMARKET",
-      "business": []
+      "business": [
+        ""
+      ]
     },
     {
       "id": "a30d16ae-aa80-47ec-9293-b1a15bb40d89",
-      "itemStatus": "NEW",
+      "itemStatus": "DELETED",
       "itemPosition": -1,
       "name": "Lidl",
       "description": "",
@@ -661,11 +669,13 @@
       },
       "type": "INDIVIDUAL",
       "category": "SUPERMARKET",
-      "business": []
+      "business": [
+        ""
+      ]
     },
     {
       "id": "39dbb7b0-d985-4552-8e9a-0bc8d0652f21",
-      "itemStatus": "NEW",
+      "itemStatus": "DELETED",
       "itemPosition": -1,
       "name": "Sport Bittl",
       "description": "",
@@ -676,7 +686,9 @@
       },
       "type": "INDIVIDUAL",
       "category": "SUPERMARKET",
-      "business": []
+      "business": [
+        ""
+      ]
     },
     {
       "id": "15a6e50e-55b6-4d50-864a-e61533345b2c",
