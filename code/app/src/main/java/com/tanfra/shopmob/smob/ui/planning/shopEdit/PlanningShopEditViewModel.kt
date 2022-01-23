@@ -84,13 +84,15 @@ class PlanningShopEditViewModel(
             return false
         }
 
-        if (
-            shopData.location.latitude == 0.0 ||
-            shopData.location.longitude == 0.0
-        ) {
-            showSnackBarInt.value = R.string.err_select_location
-            return false
-        }
+//        if (
+//            shopData.location.latitude == 0.0 ||
+//            shopData.location.longitude == 0.0
+//        ) {
+//            showSnackBarInt.value = R.string.err_select_location
+//            return false
+//        }
+
+        // done validating
         return true
     }
 }

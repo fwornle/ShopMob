@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -34,9 +35,12 @@ import com.google.android.gms.location.LocationServices
 import com.tanfra.shopmob.databinding.FragmentPlanningShopEditBinding
 import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
+import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsViewModel
 import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
+import com.tanfra.shopmob.smob.work.SmobAppWork
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.*
 
 
@@ -147,12 +151,14 @@ class PlanningShopEditFragment : BaseFragment(), AdapterView.OnItemSelectedListe
         // ... by means of the observer function of MutableLiveData element 'navigationCommand'
         //     --> see BaseFragment.kt... where the observer (lambda) is installed
         binding.defineLocation.setOnClickListener {
-            //            Navigate to another fragment to get the user location
-            _viewModel.navigationCommand.postValue(
-                NavigationCommand.To(
-                    PlanningShopEditFragmentDirections.actionPlanningShopEditFragmentToPlanningShopMapFragment()
-                )
-            )
+
+
+//            // Navigate to another fragment to get the user location
+//            _viewModel.navigationCommand.postValue(
+//                NavigationCommand.To(
+//                    PlanningShopEditFragmentDirections.actionPlanningShopEditFragmentToPlanningShopMapFragment()
+//                )
+//            )
         }
 
         // configure spinner (shop category)
@@ -176,8 +182,8 @@ class PlanningShopEditFragment : BaseFragment(), AdapterView.OnItemSelectedListe
                 _viewModel.locatedShop.value?.description ?: "something strange",
                 _viewModel.locatedShop.value?.imageUrl ?: "some mystery picture",
                 _viewModel.locatedShop.value?.location ?: ShopLocation(0.0, 0.0),
-                _viewModel.locatedShop.value?.type ?: ShopType.INDIVIDUAL,
-                _viewModel.locatedShop.value?.category ?: ShopCategory.OTHER,
+                _viewModel.locatedShop.value?.type ?: ShopType.CHAIN,
+                _viewModel.locatedShop.value?.category ?: ShopCategory.SUPERMARKET,
                 _viewModel.locatedShop.value?.business ?: listOf(
                     "Monday: closed",
                     "Tuesday: closed",
@@ -188,6 +194,9 @@ class PlanningShopEditFragment : BaseFragment(), AdapterView.OnItemSelectedListe
                     "Sunday: closed",
                 ),
             )
+
+            // enforce "permissions" (all simulated anyway) --> just save
+            _viewModel.geoFencingOn.value = false
 
             // check if required permissions have already been granted to this app (required for
             // geoFencing: access to location information, even when the app is in the background)
@@ -342,6 +351,22 @@ class PlanningShopEditFragment : BaseFragment(), AdapterView.OnItemSelectedListe
             // user doesn't wanna share necessary location info --> by-pass geoFencing
             _viewModel.showToast.value =
                 "Not GeoFencing ShopMob item ${daSmobShopATO.name} at ${daSmobShopATO.location}"
+
+            // fetch WorkManager instance from Koin service locator
+            val workManager: SmobAppWork by inject()
+            // extract SmobShop IDs and turn into a JSON string (ready for transmission to
+            // the WorkManager "doWork" job via (string) parameter
+            val geofenceTransitionDetails = "transition - enter: ${daSmobShopATO.id}"
+
+            // schedule background work (WorkManager), handling potential geofencing entry
+            // transition events
+            val geoFenceWorkRequest = workManager
+                .setupOnTimeJobForGeoFenceNotification(geofenceTransitionDetails)
+
+            // schedule background job
+            workManager.scheduleUniqueWorkForGeoFenceNotification(geoFenceWorkRequest)
+
+            Toast.makeText(activity, "for udacity: simulated geoFence triggered workManager", Toast.LENGTH_SHORT).show()
 
             // store smob item in DB
             // ... this also takes the user back to the SmobItemListFragment

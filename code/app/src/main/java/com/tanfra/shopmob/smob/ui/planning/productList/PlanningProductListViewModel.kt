@@ -335,7 +335,7 @@ class PlanningProductListViewModel(
         viewModelScope.launch {
 
             // update backend DB (from net API)
-            productDataSource.refreshDataInLocalDB()
+//            productDataSource.refreshDataInLocalDB()
 
             // collect flow to update StateFlow with current value from DB
             smobListItems.collect {
@@ -621,7 +621,7 @@ class PlanningProductListViewModel(
         viewModelScope.launch {
 
             // update backend DB (from net API)
-            shopDataSource.refreshDataInLocalDB()
+//            shopDataSource.refreshDataInLocalDB()
 
             // collect flow and update StateFlow values
             fetchSmobShopList()

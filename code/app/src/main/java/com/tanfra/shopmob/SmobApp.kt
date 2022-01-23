@@ -43,12 +43,12 @@ class SmobApp : Application(), KoinComponent {
 
         }
 
-        // fetch worker class form service locator
-        val wManager: SmobAppWork by inject()
-
-        // initialize WorkManager jobs (slow and fast polling)... and start them both
-        wManager.delayedInitRecurringWorkSlow()
-        wManager.delayedInitRecurringWorkFast()
+//        // fetch worker class form service locator
+//        val wManager: SmobAppWork by inject()
+//
+//        // initialize WorkManager jobs (slow and fast polling)... and start them both
+//        wManager.delayedInitRecurringWorkSlow()
+//        wManager.delayedInitRecurringWorkFast()
 
     }  // onCreate
 
@@ -57,12 +57,12 @@ class SmobApp : Application(), KoinComponent {
     override fun onTerminate() {
         super.onTerminate()
 
-        // fetch worker class form service locator
-        val wManager: SmobAppWork by inject()
-
-        // initialize WorkManager jobs (slow and fast polling)... and start them both
-        wManager.cancelRecurringWorkFast()
-        wManager.cancelRecurringWorkSlow()
+//        // fetch worker class form service locator
+//        val wManager: SmobAppWork by inject()
+//
+//        // initialize WorkManager jobs (slow and fast polling)... and start them both
+//        wManager.cancelRecurringWorkFast()
+//        wManager.cancelRecurringWorkSlow()
 
     }
 

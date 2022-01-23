@@ -10,6 +10,7 @@ import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
+import android.text.TextUtils
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -19,9 +20,11 @@ import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.ui.administration.SmobAdminTask
 import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
+import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 
 class PlanningListsFragment : BaseFragment(), KoinComponent {
