@@ -12,6 +12,17 @@
             tools:context=".smob.ui.planning.SmobPlanningActivity"
             >
 
+                <!-- note: the fragment container has to be the FIRST CHILD,
+                     or the drawer won't react to clicks on the menu items.
+                  -->
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/nav_host_fragment_planning"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:defaultNavHost="true"
+                    app:navGraph="@navigation/nav_graph_planning" />
+
                 <com.google.android.material.navigation.NavigationView
                     android:id="@+id/navView"
                     android:layout_width="wrap_content"
@@ -21,14 +32,6 @@
                     app:menu="@menu/navdrawer_menu"
                     app:headerLayout="@layout/nav_header"
                     />
-
-                <androidx.fragment.app.FragmentContainerView
-                    android:id="@+id/nav_host_fragment_planning"
-                    android:name="androidx.navigation.fragment.NavHostFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:defaultNavHost="true"
-                    app:navGraph="@navigation/nav_graph_planning" />
 
         </androidx.drawerlayout.widget.DrawerLayout>
 
