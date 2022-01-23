@@ -2,10 +2,14 @@ package com.tanfra.shopmob.smob.geofence
 
 import android.content.Context
 import androidx.work.*
+import com.tanfra.shopmob.smob.data.local.utils.ProductMainCategory
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
+import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsViewModel
+import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
 import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.utils.sendNotification
+import kotlinx.coroutines.flow.collect
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -25,8 +29,9 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
     }
 
     // get repository instance for shop
-    val _viewModel: PlanningListsViewModel by inject()
-    val smobAppWork: SmobAppWork by inject()
+    private val _planningListsViewModel: PlanningListsViewModel by inject()
+    private val _planningProductListViewModel: PlanningProductListViewModel by inject()
+    private val smobAppWork: SmobAppWork by inject()
 
     // this will be triggered, as soon as the user enters the geoFence perimeter
     override suspend fun doWork(): Result {
@@ -41,48 +46,127 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
             val transitionDir = geofenceTransitionDetails.substringBefore(':')
             val geoFenceIdList = geofenceTransitionDetails.substringAfter(':').split(',')
 
-            _viewModel.fetchSmobLists()
-            _viewModel.getSmobLists().value.data?.map {
-                Timber.i("Got list ${it?.id ?: "VOID"}")
-            }
-
-
             when(transitionDir) {
 
                 ENTRY_STRING -> {
                     Timber.i("Received geoFence entry transition")
 
-                    // sanity check
-                    when {
-                        geoFenceIdList.isEmpty() -> {
-                            Timber.e("Weird - received a geoFence event without triggerings --> not sending notification to user.")
-                            return Result.failure()
-                        }
-                        else -> {
+                    // near a shop --> fetch all SmobLists (of the user) and determine if there are items
+                    // which are of a category that matches any of the shops
+//                    _planningListsViewModel.fetchSmobLists()
 
-                            // loop over all geoFence IDs (= SmobShop IDs)
-                            // update StateFlow value from local DB
-                            _viewModel.fetchSmobLists()
+                    // collect list of all SmobLists
+                    _planningListsViewModel.listsDataSource
+                        .getAllSmobLists()
+                        .collect {
 
-                            for (geoFenceItem in geoFenceIdList) {
+                            // check Resource status
+                            when(it.status) {
 
-                                Timber.i("Got GeoFence ID: $geoFenceItem")
-
-                                // now check, if any of the triggered geoFences relates to any of
-                                // our shopping lists
-                                _viewModel.getSmobLists().value.data?.map {
-                                    Timber.i("Got list ${it?.id ?: "VOID"}")
-
-                                    // send notification with the triggering geoFences
-                                    // note: polymorphism
-                                    //       --> call-up parameter is a list of geoFence IDs (= SmobShop IDs)
-                                    //       --> local implementation of sendNotificatino is used (see below)
-//                                    sendNotification(it)
+                                Status.ERROR -> {
+                                    // these are errors handled at Room level --> display
+                                    Timber.e("Cannot fetch smobLists flow: ${it.message}")
                                 }
 
-                            }
-                        }
-                    }
+                                Status.LOADING -> {
+                                    // could control visibility of progress bar here
+                                    Timber.i("SmobLists... still loading.")
+                                }
+
+                                Status.SUCCESS -> {
+                                    // --> store successfully received data in StateFlow value
+                                    val smobLists = it.data
+
+                                    // make list of products (= product IDs) we're after
+                                    val smobProductIds = mutableListOf<String>()
+
+                                    // loop over all smobLists
+                                    smobLists?.map {
+                                        it.items
+                                            .map { item -> item.id }
+                                            .forEach { smobProductIds.add(it) }
+                                    }
+
+                                    // uniquify products
+                                    val uniqueProductIds = smobProductIds.distinct()
+                                    Timber.i("Items found (on all lists): $uniqueProductIds")
+
+                                    // make list of main categories of our products (= what shop?)
+                                    val productMainCategories = mutableListOf<ProductMainCategory>()
+
+                                    // loop over all smobLists
+                                    smobLists?.map {
+                                        it.items
+                                            .map { item -> item.mainCategory }
+                                            .forEach { productMainCategories.add(it) }
+                                    }
+
+                                    // uniquify product main categories
+                                    val uniqueMainCategories = productMainCategories.distinct()
+                                    Timber.i("Items found (on all lists): $uniqueMainCategories")
+
+                                    // now check, if we are near a shop that sells our stuff
+                                    when {
+                                        // sanity check
+                                        geoFenceIdList.isEmpty() -> {
+                                            Timber.e("Weird - received a geoFence event without triggerings --> not sending notification to user.")
+//                                            return@collect Result.failure()
+                                        }
+                                        else -> {
+
+                                            // loop over all geoFence IDs (= SmobShop IDs)
+                                            for (geoFenceItem in geoFenceIdList) {
+
+                                                // fetch shop details
+                                                _planningProductListViewModel.shopDataSource.getSmobShop(geoFenceItem)
+                                                    .collect {
+
+                                                        // check Resource status
+                                                        when(it.status) {
+
+                                                            Status.ERROR -> {
+                                                                // these are errors handled at Room level --> display
+                                                                Timber.e("Cannot fetch smobLists flow: ${it.message}")
+                                                            }
+
+                                                            Status.LOADING -> {
+                                                                // could control visibility of progress bar here
+                                                                Timber.i("SmobLists... still loading.")
+                                                            }
+
+                                                            Status.SUCCESS -> {
+                                                                // --> store successfully received data in StateFlow value
+                                                                val smobShop = it.data
+                                                                Timber.i("Near shop ${smobShop?.name}")
+
+                                                                // now check, if this shop relates to any of our shopping lists
+//                                                                thisShop?.let{
+//                                                                    it.
+//                                                                }
+//                                                                map {
+//                                                                    it.items
+//                                                                        .map { item -> item.mainCategory }
+//                                                                        .forEach { productMainCategories.add(it) }
+//                                                                }
+
+                                                            } // Status.SUCCESS (SmobShop)
+
+                                                        }  // when (Resource status, SmobShop)
+
+                                                    }  // collect flow (SmobShop)
+
+                                            }  // loop over all geoFenceIds
+
+                                        }  // some valid geoFenceIds
+
+                                    }  // when geoFenceId
+
+                                }  // Status.SUCCESS (SmobLists)
+
+                            }  // when (Resource status, SmobLists)
+
+                        }  // collect flow (SmobLists)
+
                 }
 
                 EXIT_STRING -> {

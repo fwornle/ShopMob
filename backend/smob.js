@@ -270,6 +270,7 @@ function smob () {
                 "id": prodId, 
                 "status": faker.helpers.randomize(itemStatus), 
                 "listPosition": idx,
+                "mainCategory": daProducts.find(prod => prod.id == prodId).catMain,
             } 
         }
         )

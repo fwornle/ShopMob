@@ -28,7 +28,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:stateFlowResource="@{viewModel.getSmobLists}" />
+                app:stateFlowResource="@{viewModel.smobLists}" />
 
             <TextView
                 android:id="@+id/noDataTextView"
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                app:fadeVisibleOnLoading="@{viewModel.getSmobLists}"
+                app:fadeVisibleOnLoading="@{viewModel.smobLists}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

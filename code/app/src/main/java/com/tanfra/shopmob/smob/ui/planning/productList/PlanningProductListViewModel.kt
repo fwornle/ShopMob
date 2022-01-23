@@ -13,12 +13,10 @@ import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import kotlin.coroutines.coroutineContext
+
 
 class PlanningProductListViewModel(
     val app: Application,
@@ -29,7 +27,6 @@ class PlanningProductListViewModel(
 
     // current list ID and list position (in the list of SmobLists)
     var currListId: String? = null
-    var currListPosition: Long? = null
 
     // collect the upstream selected smobList as well as the list of SmobProductATO items
     // ... lateinit, as this can only be done once the fragment is created (and the id's are here)

@@ -91,6 +91,7 @@ data class SmobListItem(
     val id: String,
     var status: SmobItemStatus,
     val listPosition: Long,
+    val mainCategory: ProductMainCategory,
 ) : java.io.Serializable
 
 @Serializable

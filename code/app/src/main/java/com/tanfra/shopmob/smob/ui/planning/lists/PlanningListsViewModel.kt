@@ -27,9 +27,19 @@ class PlanningListsViewModel(
     // ... flow, converted to StateFlow --> data changes in the backend are observed
     // ... ref: https://medium.com/androiddevelopers/migrating-from-livedata-to-kotlins-flow-379292f419fb
     private val _smobLists = MutableStateFlow<Resource<List<SmobListATO?>>>(Resource.loading(null))
+    val smobLists = _smobLists.asStateFlow()
 
-    // public getter for SmobLists
-    fun getSmobLists(): StateFlow<Resource<List<SmobListATO?>>> = _smobLists
+    // Detailed investigation of Flow vs. LiveData: LD seems the better fit for UI layer
+    // see: https://bladecoder.medium.com/kotlins-flow-in-viewmodels-it-s-complicated-556b472e281a
+    //
+    // --> reverting back to LiveData at ViewModel layer (collection point) and profiting of the
+    //     much less cumbersome handling of the data incl. the better "lifecycle optimized" behavior
+    //
+    // --> using ".asLiveData()", as the incoming flow is not based on "suspendable" operations
+    //     (already handled internally at Room level --> no "suspend fun" for read operations, see
+    //     DAO)
+    // --> alternative (with Coroutine scope would be to use ... = liveData { ... suspend fun ... })
+//    val smobLists = listsDataSource.getAllSmobLists().asLiveData()
 
 
     /**
@@ -72,18 +82,6 @@ class PlanningListsViewModel(
 
     }  // fetchSmobLists
 
-
-    // Detailed investigation of Flow vs. LiveData: LD seems the better fit for UI layer
-    // see: https://bladecoder.medium.com/kotlins-flow-in-viewmodels-it-s-complicated-556b472e281a
-    //
-    // --> reverting back to LiveData at ViewModel layer (collection point) and profiting of the
-    //     much less cumbersome handling of the data incl. the better "lifecycle optimized" behavior
-    //
-    // --> using ".asLiveData()", as the incoming flow is not based on "suspendable" operations
-    //     (already handled internally at Room level --> no "suspend fun" for read operations, see
-    //     DAO)
-    // --> alternative (with Coroutine scope would be to use ... = liveData { ... suspend fun ... })
-//    val smobLists = listsDataSource.getAllSmobLists().asLiveData()
 
     /**
      * update all items in the local DB by querying the backend - triggered on "swipe down"

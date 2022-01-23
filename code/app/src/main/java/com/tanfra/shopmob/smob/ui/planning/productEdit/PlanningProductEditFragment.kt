@@ -148,6 +148,7 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
                         daSmobProductATO.id,
                         daSmobProductATO.itemStatus,
                         daSmobProductATO.itemPosition,
+                        daSmobProductATO.category.main,
                     )
                 )
 

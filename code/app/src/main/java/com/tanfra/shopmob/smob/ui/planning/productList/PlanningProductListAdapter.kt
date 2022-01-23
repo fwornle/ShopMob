@@ -56,9 +56,14 @@ class PlanningProductListAdapter(rootView: View, callBack: (selectedSmobATO: Smo
                 item.listItems.map { product ->
                     if(product.id == item.id) {
                         // set new status (list property)
-                        SmobListItem(product.id, item.itemStatus, product.listPosition)
+                        SmobListItem(
+                            product.id,
+                            item.itemStatus,  // update list item status (from status set by user)
+                            product.listPosition,
+                            product.mainCategory,
+                        )
                     } else {
-                        product
+                        product  // not the manipulated product --> keep as is
                     }
                                    },
                 item.listMembers,

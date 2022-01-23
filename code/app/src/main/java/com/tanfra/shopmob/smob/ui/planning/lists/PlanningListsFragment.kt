@@ -92,7 +92,7 @@ class PlanningListsFragment : BaseFragment(), KoinComponent {
     private fun navigateToAddSmobList() {
 
         // determine hightest index in all smobLists
-        val highPos = _viewModel.getSmobLists().value.let {
+        val highPos = _viewModel.smobLists.value.let {
             if (it.status == Status.SUCCESS) {
                 // return  highest index
                 it.data?.fold(0L) { max, list -> if (list?.itemPosition!! > max) list.itemPosition else max } ?: 0L
