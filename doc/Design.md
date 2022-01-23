@@ -616,47 +616,47 @@ The following specification items need to be included in the app:
 
 #### Android UI/UX
 
-| Category | Specification Item | Milestone Mapping |
-| ---------------|----------------|----------------------|
-| Multi-screen UI | At least three screens with distinct features | IMPL-2.6 |
-| Navigable UI | Navigation via NavController (fragments) or Intents (activities) | IMPL-2.6 |
-| Navigable UI | Passing of data during navigation via bundles | IMPL-2.6 |
-| UI design/display | UI adheres to Android standards (material theme) | IMPL-2.6 |
-| UI design/display | UI displays data in an easily consumable way | IMPL-2.6 |
-| UI design/display | UI displays data using string values, drawables, colors, dimensions | IMPL-2.6 |
-| UI design/display | UI uses _Constraint Layouts_ with flat UI structure | IMPL-2.6 |
-| UI design/display | Constraint Layouts have IDs and use (at least one) vertical constraint(s) | IMPL-2.6 |
-| UI design/display | UI display appropriately on screens of different size and resolution| IMPL-2.6 |
-| UI design/display | UI display uses ViewHolder pattern to load data into the visual areas | IMPL-2.6 |
-| UI animation/transitions | UI uses MotionLayout to adapt UI elements to a given function | IMPL-2.6 |
-| UI animation/transitions | UI defines MotionLayout in a _MotionScene_ using one or more _Transition nodes_ and a _ConstraintSet block_| IMPL-2.6 |
-| UI animation/transitions | UI uses (custom) parameters to configure the animations | IMPL-2.6 |
+| Category | Specification Item | Milestone Mapping | Code Link / Evidence |
+| ---------------|----------------|----------------------|-----------------|
+| Multi-screen UI | At least three screens with distinct features | IMPL-2.6 | RecyclerView lists (several), Edit screens (data entry), Map (location selection), "coming soon" screen (motionLayout) |
+| Navigable UI | Navigation via NavController (fragments) or Intents (activities) | IMPL-2.6 | NavController: navigation across all Planning screens, incl. navDrawer; Intent-based navigation between Activities, incl. parameters (bundle), e.g. to detail screens, Administration activity & "coming soon" Shopping activity |
+| Navigable UI | Passing of data during navigation via bundles | IMPL-2.6 | Introduced 'NavigationCommand.ToWithBundle' for inter-fragment navigation w/h parameters; Intent-based navigation with bundles, e.g. to the detail screens, etc. |
+| UI design/display | UI adheres to Android standards (material theme) | IMPL-2.6 | Themes inherit from standard Material themes (Dark.ActionBar), see Manifest & values/styles.xml |
+| UI design/display | UI displays data in an easily consumable way | IMPL-2.6 | Simple, intuitive UI (no frills, just essential functionality) |
+| UI design/display | UI displays data using string values, drawables, colors, dimensions | IMPL-2.6 | all over the place - all Strings are pulled out into values/strings.xml; same for dimensions & colors - reconfiguring the look of the app is straight forward |
+| UI design/display | UI uses _Constraint Layouts_ with flat UI structure | IMPL-2.6 | Constraint Layout used extensively (all fragments, most activities) |
+| UI design/display | Constraint Layouts have IDs and use (at least one) vertical constraint(s) | IMPL-2.6 | Constraints are established in a lean and logical way using the IDs of adjacent views |
+| UI design/display | UI display appropriately on screens of different size and resolution| IMPL-2.6 | Tested on Pixel 3 phone, incl. screen rotations, Pixel C tablet |
+| UI design/display | UI display uses ViewHolder pattern to load data into the visual areas | IMPL-2.6 | all RecyclerView views use adapters with ViewHolders to load the data - all adapters share a common base adapter with shared list handling functionality. The data sources are Kotlin (State)Flows which are collected in the Binding Adapter. This makes the lists responsive. |
+| UI animation/transitions | UI uses MotionLayout to adapt UI elements to a given function | IMPL-2.6 | MotionLayout used on the Shopping "coming soon" screen to advertise the shopfloor experience |
+| UI animation/transitions | UI defines MotionLayout in a _MotionScene_ using one or more _Transition nodes_ and a _ConstraintSet block_| IMPL-2.6 | MotionLayout using MotionScene, and Transition nodes & ConstraintSet |
+| UI animation/transitions | UI uses (custom) parameters to configure the animations | IMPL-2.6 | |
 
 #### Local and Network Data
 
-| Category | Specification Item | Milestone Mapping |
-| ---------------|----------------|----------------------|
-| RESTful API to connect/consume network data | Read access to at least one external resource using retrofit | IMPL-3|
-| RESTful API to connect/consume network data | Local models & data types, with conversions via Moshi & similar libraries | IMPL-3 |
-| RESTful API to connect/consume network data | Network requests are handled off the UI thread to avoid stalling the UI/app | IMPL-3 |
-| Load network resources, such as Bitmap Images, dynamically and on-demand | Loads remote resources asynchronously using Glide or similar (Coil) | IMPL-3 |
-| Load network resources, such as Bitmap Images, dynamically and on-demand | Placeholder images while for loading and failed state | IMPL-3 |
-| Load network resources, such as Bitmap Images, dynamically and on-demand | All requests are performed asynchronously and handled on the appropriate threads (Coil) | IMPL-3 |
-| Store data locally on the device for use between application sessions and/or offline use | Utilizes storage mechanisms that best fit the data stored to store data locally on the device (Room) | IMPL-3: Room, SQL DB |
-| Store data locally on the device for use between application sessions and/or offline use | Data stored is accessible across user sessions | IMPL-3: Room, persistent storage |
-| Store data locally on the device for use between application sessions and/or offline use | Data is structured with appropriate data types and scope as required by application functionality | IMPL-3: DTO, NTO, ATO - plus conversions |
+| Category | Specification Item | Milestone Mapping | Code Link / Evidence |
+| ---------------|----------------|----------------------|-----------------|
+| RESTful API to connect/consume network data | Read access to at least one external resource using retrofit | IMPL-3| full CRUD functionality implemented in (both local DB and) network modules; access to backend to retrieve and write ShopMob (shared) data: shopping lists, products, shops, ... |
+| RESTful API to connect/consume network data | Local models & data types, with conversions via Moshi & similar libraries | IMPL-3 | domain specific data types (local DB: DTO, net: NTO, application domain: ATO); Moshi used to serialize/deserialize data |
+| RESTful API to connect/consume network data | Network requests are handled off the UI thread to avoid stalling the UI/app | IMPL-3 | Retrofit used, with Coroutines to offload slow network access to the IO thread and keep the UI thread unblocked |
+| Load network resources, such as Bitmap Images, dynamically and on-demand | Loads remote resources asynchronously using Glide or similar (Coil) | IMPL-3 | Coil used to load images on detail screens from URLs |
+| Load network resources, such as Bitmap Images, dynamically and on-demand | Placeholder images while for loading and failed state | IMPL-3 | Placeholder images used while the image is not yet fully loaded (or unavailable) |
+| Load network resources, such as Bitmap Images, dynamically and on-demand | All requests are performed asynchronously and handled on the appropriate threads (Coil) | IMPL-3 | Coil offloads the loading of images to the IO thread (off the UI thread) |
+| Store data locally on the device for use between application sessions and/or offline use | Utilizes storage mechanisms that best fit the data stored to store data locally on the device (Room) | IMPL-3 | Room DB used to store local data as well as data retrieved from the backend - SQL table structure possibly not the best choice, as backend uses noSQL, but with data type translations, it can be made work. |
+| Store data locally on the device for use between application sessions and/or offline use | Data stored is accessible across user sessions | IMPL-3 | Persistent storage, both on the device (Room DB) as well as sync'ed to the backend |
+| Store data locally on the device for use between application sessions and/or offline use | Data is structured with appropriate data types and scope as required by application functionality | IMPL-3 | DTO, NTO and ATO used as domain specific data types, with extension functions for conversion (asDomain, asDatabase, as...) |
 
 #### Android System and Hardware Integration
 
-| Category | Specification Item | Milestone Mapping |
-| ---------------|----------------|----------------------|
-| MVVM architecture | Separation of responsibilities amongst classes and structures using the MVVM Pattern | Views via Fragments/Activities, ViewModel: business logic | IMPL-2 |
-| MVVM architecture | Observer pattern, Activity Contexts, and efficiently utilization of system resources | LifeData, StateFlow, LifeCycle awareness, IMPL-2 |
-| Handle and respond to hardware and system events | Use of at least one HW component | IMPL-2: Location (map, geofence), Notifications |
-| Lifecycle events | Storage/retrieval of data upon LC events | IMPL-2: (Bundles) **TBD**|
-| Lifecycle events | Handling interactions from/to the app with Intents | IMPL-2: Activities & return values |
-| Access to system hardware to provide advanced functionality and features | Location (GPS, fused location) | IMPL-2: Map & GeoFencing |
-| Access to system hardware to provide advanced functionality and features | Permission handling | IMPL-2: Staged permissions, least required principle |
+| Category | Specification Item | Milestone Mapping | Code Link / Evidence |
+| ---------|--------------------|-------------------|----------------------|
+| MVVM architecture | Separation of responsibilities amongst classes and structures using the MVVM Pattern | IMPL-2 | Views via Fragments/Activities, ViewModel: business logic |
+| MVVM architecture | Observer pattern, Activity Contexts, and efficiently utilization of system resources | IMPL-2 | LifeData, StateFlow, LifeCycle awareness: LifeData used in ViewModels & DataBinding to update UI upon data changes; (State)Flows extended to UI level to update (observe) changes at (local) DB level - in combination with the background sync with the backend, the UI layer "observes" the centralized shared data (backend DB); the background sync is stopped when the app is closed or when not in the foreground |
+| Handle and respond to hardware and system events | Use of at least one HW component | IMPL-2 | Location (map, geofence), Notifications |
+| Lifecycle events | Storage/retrieval of data upon LC events | IMPL-2 | Data stored in shared ViewModels (to survive the LC events) | 
+| Lifecycle events | Handling interactions from/to the app with Intents | IMPL-2 | Activities & return values |
+| Access to system hardware to provide advanced functionality and features | Location (GPS, fused location) | IMPL-2 | Map & GeoFencing |
+| Access to system hardware to provide advanced functionality and features | Permission handling | IMPL-2 | Staged permissions, least required principle |
 
 ---
 
