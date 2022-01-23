@@ -557,6 +557,141 @@
       "type": "INDIVIDUAL",
       "category": "OTHER",
       "business": []
+    },
+    {
+      "id": "0a1b416b-ba28-4707-b222-f33e6c88db85",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Lidl",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19446661077098,
+        "longitude": 11.465429663658142
+      },
+      "type": "INDIVIDUAL",
+      "category": "DRUGSTORE",
+      "business": []
+    },
+    {
+      "id": "a0ad9ccb-f6b0-4a91-b66a-c2bc0a3c11a6",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Lidl",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19446661077098,
+        "longitude": 11.465429663658142
+      },
+      "type": "INDIVIDUAL",
+      "category": "DRUGSTORE",
+      "business": []
+    },
+    {
+      "id": "dffccba4-5eed-4319-b91b-ed4d65f84175",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Lidl",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19446661077098,
+        "longitude": 11.465429663658142
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPERMARKET",
+      "business": []
+    },
+    {
+      "id": "c9b67318-3b50-4da2-808e-f19c93babb9f",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Sport Bittl",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19143948391694,
+        "longitude": 11.466687619686128
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPERMARKET",
+      "business": []
+    },
+    {
+      "id": "f443df2c-580c-4c34-817e-490f89ae1a2c",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Sport Bittl",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19143948391694,
+        "longitude": 11.466687619686128
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPERMARKET",
+      "business": []
+    },
+    {
+      "id": "9f0a8966-735d-4b22-a0f2-b2bcf32dc5f3",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Sport Bittl",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19143948391694,
+        "longitude": 11.466687619686128
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPERMARKET",
+      "business": []
+    },
+    {
+      "id": "a30d16ae-aa80-47ec-9293-b1a15bb40d89",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Lidl",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19446661077098,
+        "longitude": 11.465429663658142
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPERMARKET",
+      "business": []
+    },
+    {
+      "id": "39dbb7b0-d985-4552-8e9a-0bc8d0652f21",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Sport Bittl",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19143948391694,
+        "longitude": 11.466687619686128
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPERMARKET",
+      "business": []
+    },
+    {
+      "id": "15a6e50e-55b6-4d50-864a-e61533345b2c",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Sport Bittl",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19143948391694,
+        "longitude": 11.466687619686128
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPERMARKET",
+      "business": []
     }
   ],
   "products": [
