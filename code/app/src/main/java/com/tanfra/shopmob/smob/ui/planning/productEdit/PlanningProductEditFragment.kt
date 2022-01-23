@@ -60,9 +60,6 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
         return binding.root
     }
 
-    // fetch WorkManager instance from Koin service locator
-    private val workManager: SmobAppWork by inject()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
@@ -78,7 +75,6 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
 
         // set-up spinners
         setupSpinners()
-
 
         // handler for 'SAVE' FAB clicks...
         binding.saveSmobItem.setOnClickListener {
@@ -232,7 +228,6 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
 
         // hook up onItemSelected listener (to this fragment)
         binding.smobItemMainCategory.onItemSelectedListener = this
-
 
         // ProductSubCategory
         // create an ArrayAdapter using the enum and a default spinner layout

@@ -25,8 +25,8 @@ val netServices = module {
         // add auth first
         val client = OkHttpClient().newBuilder()
             .addInterceptor(authInterceptor)
-//            .readTimeout(5, TimeUnit.SECONDS)
-//            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(3, TimeUnit.SECONDS)
+            .connectTimeout(3, TimeUnit.SECONDS)
 
         // add logging (in debug mode only)
         // ... even during debug mode: disable when working (by adding hardcoded 'false &&')
