@@ -13,6 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 import okhttp3.logging.HttpLoggingInterceptor
+import java.util.concurrent.TimeUnit
 
 
 // Koin module for network services
@@ -22,7 +23,10 @@ val netServices = module {
     fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
 
         // add auth first
-        val client = OkHttpClient().newBuilder().addInterceptor(authInterceptor)
+        val client = OkHttpClient().newBuilder()
+            .addInterceptor(authInterceptor)
+//            .readTimeout(5, TimeUnit.SECONDS)
+//            .connectTimeout(10, TimeUnit.SECONDS)
 
         // add logging (in debug mode only)
         // ... even during debug mode: disable when working (by adding hardcoded 'false &&')

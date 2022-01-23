@@ -407,22 +407,28 @@ class PlanningProductListViewModel(
     // ... it remains active until a new shop is chosen
     var selectedShop = MutableLiveData<SmobShopATO>()
 
-    // default values
+    // default
+    // ... using 'postValue' as the VM is instantiated from within a coroutine, when the WorkManager
+    //     scheduled geoFence is triggered (and "doWork" is called)
     init {
-        selectedShop.value = SmobShopATO(
-            "no product selected yet (id)",
-            SmobItemStatus.NEW,
-            -1L,
-            "",
-            "",
-            "",
-            ShopLocation(0.0, 0.0),
-            ShopType.INDIVIDUAL,
-            ShopCategory.OTHER,
-            listOf(),
+        selectedShop.postValue(
+            SmobShopATO(
+                "no product selected yet (id)",
+                SmobItemStatus.NEW,
+                -1L,
+                "",
+                "",
+                "",
+                ShopLocation(0.0, 0.0),
+                ShopType.INDIVIDUAL,
+                ShopCategory.OTHER,
+                listOf(),
+            )
         )
 
-        smobProductCategory.value = ProductCategory(ProductMainCategory.OTHER, ProductSubCategory.OTHER)
+        smobProductCategory.postValue(
+            ProductCategory(ProductMainCategory.OTHER, ProductSubCategory.OTHER)
+        )
     }
 
     /**
@@ -513,13 +519,96 @@ class PlanningProductListViewModel(
     // (ex) ShopListViewModel contents ------------------------------------------------
     // (ex) ShopListViewModel contents ------------------------------------------------
 
-    // list that holds the SmobShop data items to be displayed on the UI
-    // ... flow, converted to StateFlow --> data changes in the backend are observed
-    val smobShopList = shopDataSource.getAllSmobShops().stateIn(
-        scope = viewModelScope,
-        started = WhileSubscribed(5000),
-        initialValue = Resource.loading(null)
-    )
+    // fetch list of smobShops (flow --> StateFlow)
+    private val _smobShopList = MutableStateFlow<Resource<List<SmobShopATO?>>>(Resource.loading(null))
+    val smobShopList = _smobShopList.asStateFlow()
+//    val smobShopList = shopDataSource.getAllSmobShops().asLiveData()
+
+
+    /**
+     * collect the flow of the list of SmobShops
+     */
+    @ExperimentalCoroutinesApi
+    fun fetchSmobShopList() {
+
+        // collect flow
+        viewModelScope.launch {
+
+            // flow terminator
+            shopDataSource.getAllSmobShops()
+                .catch { e ->
+                    // previously unhandled exception (= not handled at Room level)
+                    // --> catch it here and represent in Resource status
+                    _smobShopList.value = Resource.error(e.toString(), null)
+                    showSnackBar.value = _smobShopList.value.message
+                }
+                .collect {
+                    // no exception during flow collection
+                    when(it.status) {
+                        Status.SUCCESS -> {
+                            // --> store successfully received data in StateFlow value
+                            _smobShopList.value = it
+                            updateShowNoData(it)
+                        }
+                        Status.ERROR -> {
+                            // these are errors handled at Room level --> display
+                            showSnackBar.value = it.message
+                            _smobShopList.value = it  // still return Resource value (w/h error)
+                        }
+                        Status.LOADING -> {
+                            // could control visibility of progress bar here
+                        }
+                    }
+                }
+
+        }  // coroutine
+
+    }  // fetchSmobShopList
+
+
+
+    // fetch an individual smobShop (flow --> StateFlow)
+    private val _smobShop = MutableStateFlow<Resource<SmobShopATO?>>(Resource.loading(null))
+    val smobShop = _smobShop.asStateFlow()
+
+    /**
+     * collect the flow of an individual SmobShop
+     */
+    @ExperimentalCoroutinesApi
+    fun fetchSmobShop(id: String) {
+
+        // collect flow
+        viewModelScope.launch {
+
+            // flow terminator
+            shopDataSource.getSmobShop(id)
+                .catch { e ->
+                    // previously unhandled exception (= not handled at Room level)
+                    // --> catch it here and represent in Resource status
+                    _smobShop.value = Resource.error(e.toString(), null)
+                    showSnackBar.value = _smobShop.value.message
+                }
+                .collect {
+                    // no exception during flow collection
+                    when(it.status) {
+                        Status.SUCCESS -> {
+                            // --> store successfully received data in StateFlow value
+                            _smobShop.value = it
+                        }
+                        Status.ERROR -> {
+                            // these are errors handled at Room level --> display
+                            showSnackBar.value = it.message
+                            _smobShop.value = it  // still return Resource value (w/h error)
+                        }
+                        Status.LOADING -> {
+                            // could control visibility of progress bar here
+                        }
+                    }
+                }
+
+        }  // coroutine
+
+    }  // fetchSmobShop
 
 
     /**
@@ -534,19 +623,51 @@ class PlanningProductListViewModel(
             // update backend DB (from net API)
             shopDataSource.refreshDataInLocalDB()
 
-            smobShopList.collectLatest {
+            // collect flow and update StateFlow values
+            fetchSmobShopList()
 
-                if(it.status == Status.ERROR) {
-                    showSnackBar.value = it.message!!
-                }
-
-                // check if the "no data" symbol has to be shown (empty list)
-                updateShowNoData(it)
-            }
+            // check if the "no data" symbol has to be shown (empty list)
+            updateShowNoData(_smobShopList.value)
 
         }
 
     }  // swipeRefreshShopDataInLocalDB
+
+
+//    // list that holds the SmobShop data items to be displayed on the UI
+//    // ... flow, converted to StateFlow --> data changes in the backend are observed
+//    val smobShopList = shopDataSource.getAllSmobShops().stateIn(
+//        scope = viewModelScope,
+//        started = WhileSubscribed(5000),
+//        initialValue = Resource.loading(null)
+//    )
+//
+//
+//    /**
+//     * update all items in the local DB by querying the backend - triggered on "swipe down"
+//     */
+//    @ExperimentalCoroutinesApi
+//    fun swipeRefreshShopDataInLocalDB() {
+//
+//        // user is impatient - trigger update of local DB from net
+//        viewModelScope.launch {
+//
+//            // update backend DB (from net API)
+//            shopDataSource.refreshDataInLocalDB()
+//
+//            smobShopList.collectLatest {
+//
+//                if(it.status == Status.ERROR) {
+//                    showSnackBar.value = it.message!!
+//                }
+//
+//                // check if the "no data" symbol has to be shown (empty list)
+//                updateShowNoData(it)
+//            }
+//
+//        }
+//
+//    }  // swipeRefreshShopDataInLocalDB
 
     /**
      * Save the smob product to the data source

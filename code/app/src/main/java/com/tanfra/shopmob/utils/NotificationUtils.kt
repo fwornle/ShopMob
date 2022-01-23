@@ -9,6 +9,7 @@ import androidx.core.app.TaskStackBuilder
 import androidx.core.content.getSystemService
 import com.tanfra.shopmob.BuildConfig
 import com.tanfra.shopmob.R
+import com.tanfra.shopmob.smob.data.local.utils.ProductMainCategory
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsSources
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
@@ -19,7 +20,7 @@ private const val NOTIFICATION_CHANNEL_ID = BuildConfig.APPLICATION_ID + ".chann
 val Context.notificationManager: NotificationManager?
     get() = getSystemService<NotificationManager>()
 
-fun sendNotification(context: Context, dataItem: SmobShopATO) {
+fun sendNotification(context: Context, daShop: SmobShopATO) {
 
     // old way...
     //
@@ -52,7 +53,7 @@ fun sendNotification(context: Context, dataItem: SmobShopATO) {
     val intent = SmobDetailsActivity.newIntent(
         context.applicationContext,
         SmobDetailsSources.GEOFENCE,
-        dataItem
+        daShop
     )
 
     // create a pending intent that opens SmobDetailsActivity when the user clicks on the notification
@@ -65,8 +66,8 @@ fun sendNotification(context: Context, dataItem: SmobShopATO) {
     // build the notification object with the data to be shown
     val notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
         .setSmallIcon(R.mipmap.ic_launcher)
-        .setContentTitle(dataItem.name)
-        .setContentText(dataItem.description)
+        .setContentTitle(daShop.name)
+        .setContentText(daShop.description)
         .setContentIntent(notificationPendingIntent)
         .setAutoCancel(true)
         //.setPriority(NotificationCompat.PRIORITY_HIGH)

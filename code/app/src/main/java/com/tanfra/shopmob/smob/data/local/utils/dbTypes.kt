@@ -61,6 +61,7 @@ enum class SmobItemStatus {
     DONE,
     DELETED,
 }
+
 @Serializable
 data class InShop(
     val category: ShopCategory,

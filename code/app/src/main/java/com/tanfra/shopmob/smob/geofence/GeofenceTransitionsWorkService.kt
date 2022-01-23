@@ -8,8 +8,10 @@ import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsViewModel
 import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
 import com.tanfra.shopmob.smob.work.SmobAppWork
+import com.tanfra.shopmob.utils.hasProduct
 import com.tanfra.shopmob.utils.sendNotification
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -58,14 +60,14 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
                     // collect list of all SmobLists
                     _planningListsViewModel.listsDataSource
                         .getAllSmobLists()
-                        .collect {
+                        .collectLatest { listOfSmobLists ->
 
                             // check Resource status
-                            when(it.status) {
+                            when(listOfSmobLists.status) {
 
                                 Status.ERROR -> {
                                     // these are errors handled at Room level --> display
-                                    Timber.e("Cannot fetch smobLists flow: ${it.message}")
+                                    Timber.e("Cannot fetch smobLists flow: ${listOfSmobLists.message}")
                                 }
 
                                 Status.LOADING -> {
@@ -74,8 +76,8 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
                                 }
 
                                 Status.SUCCESS -> {
-                                    // --> store successfully received data in StateFlow value
-                                    val smobLists = it.data
+                                    // process successfully received data
+                                    val smobLists = listOfSmobLists.data
 
                                     // make list of products (= product IDs) we're after
                                     val smobProductIds = mutableListOf<String>()
@@ -114,48 +116,48 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
                                         }
                                         else -> {
 
-                                            // loop over all geoFence IDs (= SmobShop IDs)
-                                            for (geoFenceItem in geoFenceIdList) {
+                                            // valid (non-empty) geoFenceIdList received --> process
 
-                                                // fetch shop details
-                                                _planningProductListViewModel.shopDataSource.getSmobShop(geoFenceItem)
-                                                    .collect {
+                                            // fetch shop details - collect SmobShopList flow
+                                            _planningProductListViewModel.fetchSmobShopList()
 
-                                                        // check Resource status
-                                                        when(it.status) {
+                                            // process successfully received data
+                                            val smobShopListRes = _planningProductListViewModel.smobShopList.value
+                                            when(smobShopListRes.status) {
 
-                                                            Status.ERROR -> {
-                                                                // these are errors handled at Room level --> display
-                                                                Timber.e("Cannot fetch smobLists flow: ${it.message}")
+                                                Status.ERROR -> {
+                                                    // these are errors handled at Room level --> display
+                                                    Timber.e("Cannot fetch smobShops flow: ${listOfSmobLists.message}")
+                                                }
+
+                                                Status.LOADING -> {
+                                                    // could control visibility of progress bar here
+                                                    Timber.i("SmobShops... still loading.")
+                                                }
+
+                                                Status.SUCCESS -> {
+                                                    // process successfully received data
+                                                    val smobShopList = smobShopListRes.data
+
+                                                    // loop over all geoFence IDs (= SmobShop IDs)
+                                                    geoFenceIdList.map { geoFenceItem ->
+
+                                                        // fetch shop details
+                                                        val smobShoppe = smobShopList?.find { it?.id == geoFenceItem }
+                                                        smobShoppe?.let { daShop ->
+
+                                                            if(uniqueMainCategories.any { daShop.hasProduct(it) }) {
+                                                                // they seem to do --> notify user
+                                                                sendNotification(appContext, daShop)
                                                             }
 
-                                                            Status.LOADING -> {
-                                                                // could control visibility of progress bar here
-                                                                Timber.i("SmobLists... still loading.")
-                                                            }
+                                                        }
 
-                                                            Status.SUCCESS -> {
-                                                                // --> store successfully received data in StateFlow value
-                                                                val smobShop = it.data
-                                                                Timber.i("Near shop ${smobShop?.name}")
+                                                    }  // loop over all geoFenceIds
 
-                                                                // now check, if this shop relates to any of our shopping lists
-//                                                                thisShop?.let{
-//                                                                    it.
-//                                                                }
-//                                                                map {
-//                                                                    it.items
-//                                                                        .map { item -> item.mainCategory }
-//                                                                        .forEach { productMainCategories.add(it) }
-//                                                                }
+                                                }  // Status.SUCCESS (SmobShops)
 
-                                                            } // Status.SUCCESS (SmobShop)
-
-                                                        }  // when (Resource status, SmobShop)
-
-                                                    }  // collect flow (SmobShop)
-
-                                            }  // loop over all geoFenceIds
+                                            } // when (smobShopsRes.status)
 
                                         }  // some valid geoFenceIds
 
@@ -189,17 +191,5 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
         return Result.success()
 
     }
-
-
-    // fetch ID associated with triggering geoFence (coincides with SmobShop ID in DB)
-    private fun sendNotification(smobShopId: SmobShopATO?) {
-
-        // send a notification to the user with the smob item details
-        // note: polymorphism
-        //       --> call-up parameter is a SmobItem
-        //       --> implementation of sendNotification from NotificationUtils.kt is used
-        smobShopId?.let { sendNotification(appContext, it) }
-
-    }  // sendNotification
 
 }  // class GeofenceTransitionsJobIntentService
