@@ -3,14 +3,12 @@ package com.tanfra.shopmob.smob.geofence
 import android.content.Context
 import androidx.work.*
 import com.tanfra.shopmob.smob.data.local.utils.ProductMainCategory
-import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsViewModel
 import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
 import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.utils.hasProduct
 import com.tanfra.shopmob.utils.sendNotification
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

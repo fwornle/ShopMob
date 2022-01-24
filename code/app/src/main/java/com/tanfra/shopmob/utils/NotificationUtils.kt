@@ -9,9 +9,6 @@ import androidx.core.app.TaskStackBuilder
 import androidx.core.content.getSystemService
 import com.tanfra.shopmob.BuildConfig
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.data.local.utils.ProductMainCategory
-import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
-import com.tanfra.shopmob.smob.ui.details.SmobDetailsSources
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 
 private const val NOTIFICATION_CHANNEL_ID = BuildConfig.APPLICATION_ID + ".channel"
@@ -49,31 +46,6 @@ fun sendNotification(context: Context, daShop: SmobShopATO) {
         }
     }
 
-    // create intent to start activity SmobDetailsActivity
-    val intent = SmobDetailsActivity.newIntent(
-        context.applicationContext,
-        SmobDetailsSources.GEOFENCE,
-        daShop
-    )
-
-    // create a pending intent that opens SmobDetailsActivity when the user clicks on the notification
-    val stackBuilder = TaskStackBuilder.create(context)
-        .addParentStack(SmobDetailsActivity::class.java)
-        .addNextIntent(intent)
-    val notificationPendingIntent = stackBuilder
-        .getPendingIntent(getUniqueId(), PendingIntent.FLAG_UPDATE_CURRENT)
-
-    // build the notification object with the data to be shown
-    val notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
-        .setSmallIcon(R.mipmap.ic_launcher)
-        .setContentTitle(daShop.name)
-        .setContentText(daShop.description)
-        .setContentIntent(notificationPendingIntent)
-        .setAutoCancel(true)
-        //.setPriority(NotificationCompat.PRIORITY_HIGH)
-        .build()
-
-    context.notificationManager?.notify(getUniqueId(), notification)
 }
 
 private fun getUniqueId() = ((System.currentTimeMillis() % 10000).toInt())

@@ -117,9 +117,6 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
         _items.removeAt(position)
         notifyItemRemoved(position)
 
-        // snackbar w/h undo button
-        showUndoSnackbar(textResId)
-
     }
 
     // restore RV item view (at the end of a 'right' swipe or after 'undo')
@@ -142,46 +139,6 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
         mSnapshotItemPosition = -1
 
     }
-
-    private fun showUndoSnackbar(textResId: Int) {
-        val view: View = rootView.findViewById(R.id.smobItemsRecyclerView)
-
-        Snackbar
-            .make(
-                view, textResId,
-                Snackbar.LENGTH_LONG
-            )
-            .apply {
-                setAction(R.string.undo) { _ -> undoDelete() }
-                addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                    override fun onShown(transientBottomBar: Snackbar?) {
-                        super.onShown(transientBottomBar)
-                    }
-
-                    // detect an "expiring" UNDO query
-                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                        super.onDismissed(transientBottomBar, event)
-
-                        // anything but clicking "UNDO" (= DISMISS_EVENT_ACTION) means that the
-                        // item shall be deleted from the list in the database / server
-                        if(event != DISMISS_EVENT_ACTION) {
-
-                            // snackbar "expired" wht. the user clicking on UNDO
-                            // call associated left-swipe action (to be overridden in parent class)
-                            mSnapshotItem?. let { uiActionConfirmed(it, rootView) }
-
-                            // reset temporary undo memory
-                            mSnapshotItem = null
-                            mSnapshotItemPosition = -1
-
-                        }
-                    } // onDismissed
-
-                })
-                show()
-            }
-
-    }  // showUndoSnackbar
 
     // revert the removal of the last item
     private fun undoDelete() {

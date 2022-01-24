@@ -4,101 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_planning"
-    app:startDestination="@id/smobPlanningListsFragment">
-
-    <activity
-        android:id="@+id/smobActivityPlanning"
-        android:name="com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity"
-        android:label="Planning"
-        tools:layout="@layout/activity_planning"
-        />
-
-    <!-- cross activity navigation made easy... -->
-    <fragment
-        android:id="@+id/smobAdminSelectFragment"
-        android:name="com.tanfra.shopmob.smob.ui.administration.AdminSelectFragment"
-        android:label="Administration Selector"
-        tools:layout="@layout/fragment_administration_select"
-        >
-    </fragment>
-
-    <!-- cross activity navigation made easy...
-         https://stackoverflow.com/questions/62214514/navigate-from-one-activity-to-another-with-navigation-component
-    <activity
-        android:id="@+id/smobDetailsActivity"
-        android:name="com.tanfra.shopmob.smob.activities.details.SmobDetailsActivity"
-        android:label="Smob Details Activity" />
-    -->
-
-    <fragment
-        android:id="@+id/smobPlanningListsFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsFragment"
-        android:label="Planning Lists"
-        tools:layout="@layout/fragment_planning_lists"
-        >
-        <action
-            android:id="@+id/action_planningListsFragment_to_planningProductListFragment"
-            app:destination="@id/smobPlanningProductListFragment" />
-        <action
-            android:id="@+id/action_planningListsFragment_to_planningListsEditFragment"
-            app:destination="@id/smobPlanningListsEditFragment" />
-        <action
-            android:id="@+id/action_planningListsFragment_to_planningShopEditFragment"
-            app:destination="@id/smobPlanningShopEditFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/smobPlanningListsEditFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.listsEdit.PlanningListsEditFragment"
-        android:label="Planning Lists Edit"
-        tools:layout="@layout/fragment_planning_lists_edit"
-        >
-        <action
-            android:id="@+id/action_planningListsEditFragment_to_planningProductListsFragment"
-            app:destination="@id/smobPlanningProductListFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/smobPlanningProductListFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListFragment"
-        android:label="Planning Product List"
-        tools:layout="@layout/fragment_planning_product_list"
-        >
-        <action
-            android:id="@+id/action_planningProductListFragment_to_planningProductEditFragment"
-            app:destination="@id/smobPlanningProductEditFragment" />
-        <action
-            android:id="@+id/action_planningProductListFragment_to_planningListsFragment"
-            app:destination="@id/smobPlanningListsFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/smobPlanningProductEditFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.productEdit.PlanningProductEditFragment"
-        android:label="Planning Product Edit"
-        tools:layout="@layout/fragment_planning_product_edit"
-        >
-        <action
-            android:id="@+id/action_planningProductEditFragment_to_planningShopListFragment"
-            app:destination="@id/smobPlanningShopListFragment" />
-        <action
-            android:id="@+id/action_planningProductEditFragment_to_planningProductListFragment"
-            app:destination="@id/smobPlanningProductListFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/smobPlanningShopListFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.shopList.PlanningShopListFragment"
-        android:label="Planning Shop List"
-        tools:layout="@layout/fragment_planning_shop_list"
-        >
-        <action
-            android:id="@+id/action_planningShopListFragment_to_planningProductEditFragment"
-            app:destination="@id/smobPlanningProductEditFragment" />
-        <action
-            android:id="@+id/action_smobPlanningShopListFragment_to_smobPlanningShopEditFragment"
-            app:destination="@id/smobPlanningShopEditFragment" />
-    </fragment>
+    app:startDestination="@id/smobPlanningShopEditFragment">
 
     <fragment
         android:id="@+id/smobPlanningShopEditFragment"
@@ -106,19 +12,6 @@
         android:label="Planning Shop Edit"
         tools:layout="@layout/fragment_planning_shop_edit"
         >
-        <action
-            android:id="@+id/action_planningShopEditFragment_to_planningShopMapFragment"
-            app:destination="@id/smobPlanningShopMapFragment" />
-        <action
-            android:id="@+id/action_planningShopEditFragment_to_planningShopListFragment"
-            app:destination="@id/smobPlanningShopListFragment" />
     </fragment>
-
-    <fragment
-        android:id="@+id/smobPlanningShopMapFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopMapFragment"
-        android:label="Select Store Location"
-        tools:layout="@layout/fragment_planning_shop_map"
-        />
 
 </navigation>

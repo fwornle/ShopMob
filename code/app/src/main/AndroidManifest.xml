@@ -4,30 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.tanfra.shopmob">
 
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality.
-    -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-    <!-- BACKGROUND_LOCATION permission is required for geofencing functionality to work on Q+ -->
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE"/>
 
-
-
-    <!-- note: adding network security config to instruct the android firewall to pass through
-         traffic from/to 10.0.2.2 (= localhost on the host running the emulator). This is needed
-         to work with the fake backend, which is used during development.
-         https://stackoverflow.com/questions/6760585/accessing-localhostport-from-android-emulator/56769746#56769746
-         https://medium.com/livefront/how-to-connect-your-android-emulator-to-a-local-web-service-47c380bff350
-         TODO: This can/should be removed in production.
-     -->
     <application
         android:name=".SmobApp"
         android:allowBackup="false"
@@ -38,38 +16,6 @@
         android:theme="@style/AppTheme"
         android:networkSecurityConfig="@xml/network_security_config">
 
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is
-             used to sign the APK for publishing.
-             see the debug and release targets in src/debug/ and src/release/
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-        -->
-
-        <receiver
-            android:name=".smob.geofence.GeofenceBroadcastReceiver"
-            android:enabled="true"
-            android:exported="false" />
-        <service
-            android:name=".smob.geofence.GeofenceTransitionsWorkService"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-
-        <!--
-        <activity
-            android:exported="true"
-            android:name=".smob.ui.authentication.SmobAuthenticationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        -->
-
         <activity
             android:exported="true"
             android:name=".smob.ui.planning.SmobPlanningActivity">
@@ -78,36 +24,6 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <meta-data
-                android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts" />
-        </activity>
-
-        <!-- prevent config changes from restarting the activity - needed, as we get here
-             via an Intent (from planning) and the config change would call "finish"... which
-             would take us back to planning
-         -->
-        <activity
-            android:exported="true"
-            android:name=".smob.ui.shopping.SmobShoppingActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            >
-        </activity>
-
-        <activity
-            android:exported="true"
-            android:name=".smob.ui.administration.SmobAdministrationActivity" >
-        </activity>
-
-        <!-- prevent config changes from restarting the activity - needed, as we get here
-             via an Intent (from planning) and the config change would call "finish"... which
-             would take us back to planning
-         -->
-        <activity
-            android:exported="true"
-            android:name=".smob.ui.details.SmobDetailsActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            >
         </activity>
 
         <!-- WorkManager >= 2.6 needs to remove the androidx-startup code / the WorkManager
