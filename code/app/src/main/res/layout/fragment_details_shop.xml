@@ -445,26 +445,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 />
 
-            <!--
-            <Button
-                android:id="@+id/btFloorPlan"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/horizontal_margin_small"
-                android:layout_marginBottom="@dimen/vertical_margin_small"
-                android:paddingStart="@dimen/button_padding"
-                android:paddingEnd="@dimen/button_padding"
-                android:text="@string/floor_plan"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/button_text_size"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/clBusinessHours"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                />
-                -->
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
