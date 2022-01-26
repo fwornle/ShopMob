@@ -46,7 +46,6 @@ frame "activity_planning" #Lightcyan/Darkcyan {
     component fragment_planning_shop_edit
     component fragment_planning_shop_map
     
-    component fragment_planning_lists_viewModel #lightblue
     component fragment_planning_product_list_viewModel #lightblue
     component fragment_planning_shop_edit_viewModel #lightblue
 
@@ -74,17 +73,14 @@ frame "activity_planning" #Lightcyan/Darkcyan {
     fragment_planning_shop_map -down-> fragment_planning_shop_edit #green;text:green : Ok >
     fragment_planning_shop_map -down-> fragment_planning_shop_edit #red;text:red : Cancel > 
 
-    fragment_planning_lists_viewModel <-left-> fragment_planning_lists #black : shared
-    fragment_planning_lists_viewModel <-left-> fragment_planning_lists_edit #black : shared
+    fragment_planning_product_list_viewModel <-left-> fragment_planning_lists #black : shared
+    fragment_planning_product_list_viewModel <-left-> fragment_planning_lists_edit #black : shared
     fragment_planning_product_list_viewModel <-left-> fragment_planning_product_list #black : shared
     fragment_planning_product_list_viewModel <-left-> fragment_planning_product_edit #black : shared
     fragment_planning_product_list_viewModel <-left-> fragment_planning_shop_list #black : shared
     fragment_planning_shop_edit_viewModel <-left-> fragment_planning_shop_edit #black : shared
     fragment_planning_shop_edit_viewModel <-left-> fragment_planning_shop_map #black : shared
 
-    fragment_planning_lists_viewModel *-down- shared_base_viewModel #DarkSlateGray;text:DarkSlateGray : implements >
-    fragment_planning_product_list_viewModel *-down- shared_base_viewModel #DarkSlateGray;text:DarkSlateGray : implements >
-    fragment_planning_product_list_viewModel *-down- shared_base_viewModel #DarkSlateGray;text:DarkSlateGray : implements >
     fragment_planning_product_list_viewModel *-down- shared_base_viewModel #DarkSlateGray;text:DarkSlateGray : implements >
     fragment_planning_shop_edit_viewModel *-down- shared_base_viewModel #DarkSlateGray;text:DarkSlateGray : implements >
 

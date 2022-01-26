@@ -39,12 +39,10 @@ package "startKoin lambda" #Lightgray {
 
    package "Koin module: vmServices" #Lightblue {
         together {
-            [viewModel { PlanningListsViewModel(context, SmobListDataSource) }]                        -right->  [single<SmobListDataSource> { SmobListRepository(get(), get()) }]
-            [viewModel { PlanningListsEditViewModel(context, SmobListDataSource) }]                    -right->  [single<SmobListDataSource> { SmobListRepository(get(), get()) }]
             [viewModel { PlanningProductListViewModel(context, SmobListDataSource, SmobProductDataSource, SmobShopDataSource) }]  -right->    [single<SmobShopDataSource> { SmobShopRepository(get(), get()) }]
             [viewModel { PlanningProductListViewModel(context, SmobListDataSource, SmobProductDataSource, SmobShopDataSource) }]  -right->    [single<SmobProductDataSource> { SmobProductRepository(get(), get()) }]
             [viewModel { PlanningProductListViewModel(context, SmobListDataSource, SmobProductDataSource, SmobShopDataSource) }]  -right->    [single<SmobListDataSource> { SmobListRepository(get(), get()) }]
-            [viewModel { PlanningShopListViewModel(context, SmobShopDataSource) }]                     -right->  [single<SmobShopDataSource> { SmobShopRepository(get(), get()) }]
+            [viewModel { PlanningShopEditViewModel(context, SmobShopDataSource) }]                     -right->  [single<SmobShopDataSource> { SmobShopRepository(get(), get()) }]
             [viewModel { AdminViewModel(context, SmobListDataSource) }]                                -right->  [single<SmobListDataSource> { SmobListRepository(get(), get()) }]
             [viewModel { DetailsViewModel(context, SmobProductDataSource, SmobShopDataSource) }]       -right->  [single<SmobShopDataSource> { SmobShopRepository(get(), get()) }]
             [viewModel { DetailsViewModel(context, SmobProductDataSource, SmobShopDataSource) }]       -right->  [single<SmobProductDataSource> { SmobProductRepository(get(), get()) }]
