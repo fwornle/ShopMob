@@ -18,16 +18,18 @@ import com.tanfra.shopmob.databinding.FragmentPlanningListsBinding
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.ui.administration.SmobAdminTask
 import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
+import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
 import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
 
 
 class PlanningListsFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance(s)
-    override val _viewModel: PlanningListsViewModel by viewModel()
+    override val _viewModel: PlanningProductListViewModel by sharedViewModel()
 
     // data binding for fragment_planning_lists.xml
     private lateinit var binding: FragmentPlanningListsBinding
