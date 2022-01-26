@@ -593,7 +593,7 @@ At the writing of this document (21.12.21), this submission is expected for
     - [x] In-principle implementation (one table)
     - [x] Full implementation as needed by the app
   - [ ] Push notifications when data has changed at backend level
-  - [ ] Set-up actual backend DB (firebase document DB / AWS Document DB)
+  - [x] Set-up actual backend DB (firebase document DB / AWS Document DB)
 - [ ] IMPL-4: Add camera access to take pictures of products and their shelf location
   - [ ] Permissions
   - [ ] Access and storage in the repository
@@ -630,7 +630,7 @@ The following specification items need to be included in the app:
 | UI design/display | UI display uses ViewHolder pattern to load data into the visual areas | IMPL-2.6 | all RecyclerView views use adapters with ViewHolders to load the data - all adapters share a common base adapter with shared list handling functionality. The data sources are Kotlin (State)Flows which are collected in the Binding Adapter. This makes the lists responsive. |
 | UI animation/transitions | UI uses MotionLayout to adapt UI elements to a given function | IMPL-2.6 | MotionLayout used on the Shopping "coming soon" screen to advertise the shopfloor experience |
 | UI animation/transitions | UI defines MotionLayout in a _MotionScene_ using one or more _Transition nodes_ and a _ConstraintSet block_| IMPL-2.6 | MotionLayout using MotionScene, and Transition nodes & ConstraintSet |
-| UI animation/transitions | UI uses (custom) parameters to configure the animations | IMPL-2.6 | |
+| UI animation/transitions | UI uses (custom) parameters to configure the animations | IMPL-2.6 | Custom animated button on ShopMob shop detail screen |
 
 #### Local and Network Data
 
