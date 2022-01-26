@@ -171,28 +171,17 @@ class FloorPlanButton @JvmOverloads constructor(
         val heightButton = heightSize.toFloat()
         val widthButton = widthSize.toFloat()
         val widthFloorPlanBar = percFloorPlanBar * widthButton
+        val widthFloorPlanBarInv = (1.0f - percFloorPlanBar) * widthButton
 
         // draw 'FloorPlan' rectangle
         paint.color = btnAlternativeColor
+        canvas?.drawRect(0.0f, 0.0f, widthFloorPlanBarInv, heightButton, paint)
         canvas?.drawRect(0.0f, 0.0f, widthFloorPlanBar, heightButton, paint)
 
         // draw rectangle with full width of the button and primary color
         paint.color = btnDefaultColor
-        canvas?.drawRect(widthFloorPlanBar, 0.0f, widthButton, heightButton, paint)
-
-//        // FloorPlan "progress circle"
-//        paint.color = btnProgressCircleColor
-//        val angle = (((widthFloorPlanBar.roundToInt() % widthSize).toFloat() / widthSize) * 360)
-//        canvas?.drawArc(
-//            widthButton * 0.75f,
-//            heightButton/2 - 35,
-//            widthButton * 0.75f + 70,
-//            heightButton/2 + 35,
-//            -90f,
-//            angle,
-//            true,
-//            paint
-//        )
+        canvas?.drawRect(widthFloorPlanBar, 0.0f, widthFloorPlanBarInv, heightButton, paint)
+        canvas?.drawRect(widthFloorPlanBar, 0.0f, widthFloorPlanBar, heightButton, paint)
 
         // display title (as per layout xml - custom attribute 'defaultTitle')
         paint.color = Color.WHITE

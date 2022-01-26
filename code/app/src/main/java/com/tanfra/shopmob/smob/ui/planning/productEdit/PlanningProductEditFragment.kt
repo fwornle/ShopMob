@@ -67,6 +67,10 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
         // clicking on the 'selectLocation' textView takes you to the fragment "PlanningShopList"
         // for shop selection
         binding.selectShop.setOnClickListener {
+
+            // set navigation source
+            _viewModel.navSource = "planningProductEditFragment"
+
             _viewModel.navigationCommand.value =
                 NavigationCommand.To(
                     PlanningProductEditFragmentDirections.actionPlanningProductEditFragmentToPlanningShopListFragment()

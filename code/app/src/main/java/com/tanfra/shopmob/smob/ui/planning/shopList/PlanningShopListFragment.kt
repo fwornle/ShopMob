@@ -10,11 +10,14 @@ import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentPlanningShopListBinding
 import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
+import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
+import com.tanfra.shopmob.smob.ui.details.SmobDetailsSources
 import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
 import com.tanfra.shopmob.utils.setup
 import kotlinx.coroutines.flow.last
@@ -103,19 +106,48 @@ class PlanningShopListFragment : BaseFragment(), KoinComponent {
 
             // this lambda is the 'callback' function which gets called when clicking an item in the
             // RecyclerView - it gets the data behind the clicked item as parameter
-            val daFlow = _viewModel.shopDataSource.getSmobShop(it.id)
-            viewLifecycleOwner.lifecycleScope.launch {
-                daFlow.collect {
-                    Timber.i("Received shop: ${it.data?.name}")
-                }
-            }
 
-            // navigate back to smobPlanningProductEditFragment
-            // ... communicate the selected SmobShop via shared ViewModel
-            _viewModel.selectedShop.postValue(it)
+            // click listener with "modal" reaction
+            when(_viewModel.navSource) {
 
-            // use the navigationCommand live data to navigate between the fragments
-            _viewModel.navigationCommand.postValue(NavigationCommand.Back)
+                // entered here from the "navDrawer"
+                "navDrawer" -> {
+
+                    // clicks should take us through to the SmobShop details screen
+                    val context = requireContext()
+                    val intent = SmobDetailsActivity.newIntent(
+                        context,
+                        SmobDetailsSources.PLANNING_SHOP_LIST,
+                        it
+                    )
+                    ContextCompat.startActivity(context, intent, null)
+
+                }  // navDrawer
+
+                // entered here from "edit product" screen
+                else -> {
+
+                    // reset navigation source to default
+                    _viewModel.navSource = "navDrawer"
+
+                    // clicks should select the shop and return to the product edit screen
+                    val daFlow = _viewModel.shopDataSource.getSmobShop(it.id)
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        daFlow.collect {
+                            Timber.i("Received shop: ${it.data?.name}")
+                        }
+                    }
+
+                    // navigate back to smobPlanningProductEditFragment
+                    // ... communicate the selected SmobShop via shared ViewModel
+                    _viewModel.selectedShop.postValue(it)
+
+                    // use the navigationCommand live data to navigate between the fragments
+                    _viewModel.navigationCommand.postValue(NavigationCommand.Back)
+
+                }  // product definition --> shop selection
+
+            }  // when (modal response of list item click listener)
 
         }  // "on-item-click" lambda
 

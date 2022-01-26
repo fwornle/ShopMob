@@ -25,6 +25,10 @@ class PlanningProductListViewModel(
     val shopDataSource: SmobShopDataSource,
     ) : BaseViewModel(app) {
 
+    // navigation source - used to be able to have a "modal" list item click handler
+    // ... depending on how we got to the list (and, as such, on how we want to use it)
+    var navSource = "navDrawer"  // default
+
     // current list ID and list position (in the list of SmobLists)
     var currListId: String? = null
 

@@ -437,7 +437,7 @@
                 app:defaultTitle="@string/floor_plan"
                 app:alternativeTitle="@string/floor_plan"
                 app:defaultColor="@color/secondaryLightColor"
-                app:alternativeColor="@color/primaryDarkColor"
+                app:alternativeColor="@color/secondaryDarkColor"
                 app:progressCircleColor="@color/colorAccent"
                 app:layout_constraintTop_toBottomOf="@id/clBusinessHours"
                 app:layout_constraintBottom_toBottomOf="parent"
