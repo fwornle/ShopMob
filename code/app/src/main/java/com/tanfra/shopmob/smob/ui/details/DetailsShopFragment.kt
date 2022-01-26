@@ -14,7 +14,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentDetailsShopBinding
 import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
+import com.tanfra.shopmob.smob.ui.details.utils.ButtonState
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
+import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
@@ -72,12 +74,17 @@ class DetailsShopFragment : BaseFragment(), KoinComponent {
 
         binding.lifecycleOwner = viewLifecycleOwner
 
+        // activate animation on FloorPlanButton
+        binding.btFloorPlan.setState(ButtonState.Active)
+        binding.btFloorPlan.setActive(true)
+
+
         // set onClick handler for FLOOR PLAN button
         // ... navigate back to the main app
         binding.btFloorPlan.setOnClickListener {
 
             // ... go shopping
-            val intent = Intent(this.context, SmobPlanningActivity::class.java)
+            val intent = Intent(this.context, SmobShoppingActivity::class.java)
             startForResult.launch(intent)
 
         }
@@ -104,14 +111,11 @@ class DetailsShopFragment : BaseFragment(), KoinComponent {
                 Timber.i("Back pressed from details fragment.")
 
                 // closing this activity brings us back to where we came from (with intact
-                // backstack history
+                // backstack history)
                 this.activity?.finish()
             }
 
         }  // when(item...)
-
-//        // travel back to where we came from...
-//        navigateBackToPlanningList()
 
         return super.onOptionsItemSelected(item)
     }
@@ -121,9 +125,5 @@ class DetailsShopFragment : BaseFragment(), KoinComponent {
         // display logout as menu item
         inflater.inflate(R.menu.main_menu, menu)
     }
-
-//    private fun navigateBackToPlanningList() {
-//        findNavController().navigate(R.id.smobPlanningListsFragment)
-//    }
 
 }

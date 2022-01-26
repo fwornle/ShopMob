@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FloorPlanButton">
+        <attr name="defaultTitle" format="string" />
+        <attr name="alternativeTitle" format="string" />
+        <attr name="defaultColor" format="color" />
+        <attr name="alternativeColor" format="color" />
+        <attr name="progressCircleColor" format="color" />
+    </declare-styleable>
+</resources>

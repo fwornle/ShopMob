@@ -73,6 +73,7 @@
     <string name="undo_delete">Undo "Delete"?</string>
     <string name="undo_purchase">Undo "Purchased"?</string>
     <string name="undo">UNDO</string>
+    <string name="smob_floorplan">Shop Floor Plan</string>
 
     <string name="anchor_char">x</string>
     <string name="title_product">Product</string>

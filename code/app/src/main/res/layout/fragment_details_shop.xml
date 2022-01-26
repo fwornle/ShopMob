@@ -428,6 +428,24 @@
 
 
             <!-- Button to open floor plan of shop -->
+            <com.tanfra.shopmob.smob.ui.details.utils.FloorPlanButton
+                android:id="@+id/btFloorPlan"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height"
+                android:layout_margin="@dimen/margin_normal"
+                tools:background="@color/primaryColor"
+                app:defaultTitle="@string/floor_plan"
+                app:alternativeTitle="@string/floor_plan"
+                app:defaultColor="@color/secondaryLightColor"
+                app:alternativeColor="@color/primaryDarkColor"
+                app:progressCircleColor="@color/colorAccent"
+                app:layout_constraintTop_toBottomOf="@id/clBusinessHours"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <!--
             <Button
                 android:id="@+id/btFloorPlan"
                 android:layout_width="@dimen/button_width"
@@ -445,6 +463,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 />
+                -->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
