@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentPlanningProductEditBinding
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
@@ -21,6 +22,9 @@ import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
 import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
 import com.tanfra.shopmob.smob.work.SmobAppWork
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -92,57 +96,79 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
             // fetch items on current shopping list
             // ... needed to append new item 'at the bottom' of the list and update the completion
             //     rate (percent - decreases with every new item)
-            val currList = _viewModel.smobList.value
+//            val currList = _viewModel.smobList.value
 
-            // valid data? (making sure...)
-            if(currList.status == Status.SUCCESS) {
+            // collect flow associated with StateFlow element smobList2
+            var currList: SmobListATO? = null
+            var valItems: List<SmobListItem>? = null
+            var nValItems = 0
+            var itemMaxPosition = 0L
 
-                val valItems =
-                    currList.data?.items?.filter { itm -> itm.status != SmobItemStatus.DELETED }
-                val nValItems = valItems?.size ?: 0
-                val itemMaxPosition = currList.data?.items?.fold(0L) { max, item ->
-                    if (item.listPosition > max) {
-                        item.listPosition
-                    } else {
-                        max
+            _viewModel.viewModelScope.launch {
+                _viewModel.smobList2.collect {
+
+                    // valid data? (making sure...)
+                    if (it.status == Status.SUCCESS) {
+
+                        // store current SmobList
+                        currList = it.data
+
+                        valItems =
+                            it.data?.items?.filter { itm -> itm.status != SmobItemStatus.DELETED }
+                        nValItems = valItems?.size ?: 0
+                        itemMaxPosition = currList?.items?.fold(0L) { max, item ->
+                            if (item.listPosition > max) {
+                                item.listPosition
+                            } else {
+                                max
+                            }
+                        } ?: 0L
+
                     }
-                } ?: 0L
 
-                // initialize data record to be written to DB
-                // ... if no better values have been provided by the user (taken from viewModel), this
-                //     is going to be the data record written to the DB
-                daSmobProductATO = SmobProductATO(
-                    UUID.randomUUID().toString(),
-                    SmobItemStatus.OPEN,
-                    itemMaxPosition + 1,
-                    _viewModel.smobProductName.value ?: "",
-                    _viewModel.smobProductDescription.value ?: "",
-                    _viewModel.smobProductImageUrl.value ?: "",
-                    _viewModel.smobProductCategory.value
-                        ?: ProductCategory(
-                            ProductMainCategory.OTHER,
-                            ProductSubCategory.OTHER
-                        ),
-                    ActivityStatus(currentDate, 0),
-                    _viewModel.selectedShop.value?.let { it1 ->
-                        InShop(
-                            it1.category,
-                            _viewModel.selectedShop.value!!.name,
-                            _viewModel.selectedShop.value!!.location,
-                        )
-                    } ?: InShop(
-                        ShopCategory.OTHER,
-                        "mystery shop",
-                        ShopLocation(0.0, 0.0)
+                }  // collect
+            }  // coroutine
+
+
+            // initialize data record to be written to DB
+            // ... if no better values have been provided by the user (taken from viewModel), this
+            //     is going to be the data record written to the DB
+            daSmobProductATO = SmobProductATO(
+                UUID.randomUUID().toString(),
+                SmobItemStatus.OPEN,
+                itemMaxPosition + 1,
+                _viewModel.smobProductName.value ?: "",
+                _viewModel.smobProductDescription.value ?: "",
+                _viewModel.smobProductImageUrl.value ?: "",
+                _viewModel.smobProductCategory.value
+                    ?: ProductCategory(
+                        ProductMainCategory.OTHER,
+                        ProductSubCategory.OTHER
                     ),
-                )
+                ActivityStatus(currentDate, 0),
+                _viewModel.selectedShop.value?.let { it1 ->
+                    InShop(
+                        it1.category,
+                        _viewModel.selectedShop.value!!.name,
+                        _viewModel.selectedShop.value!!.location,
+                    )
+                } ?: InShop(
+                    ShopCategory.OTHER,
+                    "mystery shop",
+                    ShopLocation(0.0, 0.0)
+                ),
+            )
 
-                // store smob product in DB
-                // ... this also takes the user back to the SmobProductListFragment
-                _viewModel.validateAndSaveSmobItem(daSmobProductATO)
+            // store smob product in DB
+            // ... this also takes the user back to the SmobProductListFragment
+            _viewModel.validateAndSaveSmobItem(daSmobProductATO)
+
+
+            // update statistics on shopping list
+            currList?.let {
 
                 // add smob item to the currently open shopping list
-                val newItems = currList.data?.items?.toMutableList() ?: mutableListOf()
+                val newItems = it.items.toMutableList()
                 newItems.add(
                     SmobListItem(
                         daSmobProductATO.id,
@@ -153,10 +179,7 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
                 )
 
                 // create updated smobList (to be sent to the DB/backend)
-                val newList = currList.data?.let {
-
-                    // list wasn't empty to begin with --> compute new completion rate
-                    SmobListATO(
+                val newList = SmobListATO(
                         it.id,
                         it.itemStatus,
                         it.itemPosition,
@@ -173,38 +196,20 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
                             when (nValItems) {
                                 0 -> 0.0
                                 else -> {
-                                    val doneItems =
-                                        valItems!!.filter { daItem -> daItem.status == SmobItemStatus.DONE }.size
+                                    val doneItems = valItems
+                                        ?.filter { daItem -> daItem.status == SmobItemStatus.DONE }?.size
+                                        ?: 0
                                     (100.0 * doneItems / nValItems).roundToInt().toDouble()
                                 }
                             }
                         ),
                     )
 
-                } ?: SmobListATO(
-                    UUID.randomUUID().toString(),
-                    SmobItemStatus.NEW,
-                    0L,
-                    "magic list",
-                    "PlanningProductEditFragment: stateFlow not collected prior to using it",
-                    newItems,
-                    listOf(),
-                    SmobListLifecycle(
-                        SmobItemStatus.OPEN,
-                        0.0,
-                    ),
-                )
-
                 // store new List in DB - no need to trigger back navigation (already triggered
                 // when saving the product in the local DB
                 _viewModel.saveSmobListItem(newList, false)
 
-            } else {
-
-                // something must have gone wrong during flow collection
-                Timber.w("Could not store newly added product, as (parent) list flow collection failed.")
-
-            }  // check if smobList has been retrieved successfully
+            }  // smobList == null?
 
         }  // onClickListener (FAB - save)
 

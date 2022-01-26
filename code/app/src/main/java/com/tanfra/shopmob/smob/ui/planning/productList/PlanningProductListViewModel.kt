@@ -35,9 +35,14 @@ class PlanningProductListViewModel(
     // collect the upstream selected smobList as well as the list of SmobProductATO items
     // ... lateinit, as this can only be done once the fragment is created (and the id's are here)
     lateinit var _smobList: Flow<Resource<SmobListATO?>>
-    lateinit var _smobListItems: Flow<Resource<List<SmobProductATO>?>>
     lateinit var smobList: StateFlow<Resource<SmobListATO?>>
+
+    val _smobList2 = MutableStateFlow<Resource<SmobListATO?>>(Resource.loading(null))
+    val smobList2 = _smobList2.asStateFlow()
+
+    lateinit var _smobListItems: Flow<Resource<List<SmobProductATO>?>>
     lateinit var smobListItems: StateFlow<Resource<List<SmobProductATO>?>>
+
     lateinit var smobListItemsWithStatus: StateFlow<List<SmobProductOnListATO>?>
 
 
@@ -157,53 +162,53 @@ class PlanningProductListViewModel(
 //    val smobList = _smobList.asStateFlow()
 //    val smobListItems = _smobListItems.asStateFlow()
 //    val smobListItemsWithStatus = _smobListItemsWithStatus.asStateFlow()
-//
-//
-//    /**
-//     * collect the flow of the upstream list the user just selected
-//     */
-//    @ExperimentalCoroutinesApi
-//    fun fetchSmobList() {
-//
-//        // list ID set yet?
-//        currListId?.let { id ->
-//
-//            // collect flow
-//            viewModelScope.launch {
-//
-//                // flow terminator
-//                listDataSource.getSmobList(id)
-//                    .catch { e ->
-//                        // previously unhandled exception (= not handled at Room level)
-//                        // --> catch it here and represent in Resource status
-//                        _smobList.value = Resource.error(e.toString(), null)
-//                        showSnackBar.value = _smobList.value.message
-//                    }
-//                    .collectLatest {
-//                        // no exception during flow collection
-//                        when(it.status) {
-//                            Status.SUCCESS -> {
-//                                // --> store successfully received data in StateFlow value
-//                                _smobList.value = it
-//                            }
-//                            Status.ERROR -> {
-//                                // these are errors handled at Room level --> display
-//                                showSnackBar.value = it.message
-//                                _smobList.value = it  // still return Resource value (w/h error)
-//                            }
-//                            Status.LOADING -> {
-//                                // could control visibility of progress bar here
-//                            }
-//                        }
-//                    }
-//
-//            }  // coroutine
-//
-//        } // listId set
-//
-//    }  // fetchSmobList
-//
-//
+
+
+    /**
+     * collect the flow of the upstream list the user just selected
+     */
+    @ExperimentalCoroutinesApi
+    fun fetchSmobList() {
+
+        // list ID set yet?
+        currListId?.let { id ->
+
+            // collect flow
+            viewModelScope.launch {
+
+                // flow terminator
+                listDataSource.getSmobList(id)
+                    .catch { e ->
+                        // previously unhandled exception (= not handled at Room level)
+                        // --> catch it here and represent in Resource status
+                        _smobList2.value = Resource.error(e.toString(), null)
+                        showSnackBar.value = _smobList2.value.message
+                    }
+                    .collectLatest {
+                        // no exception during flow collection
+                        when(it.status) {
+                            Status.SUCCESS -> {
+                                // --> store successfully received data in StateFlow value
+                                _smobList2.value = it
+                            }
+                            Status.ERROR -> {
+                                // these are errors handled at Room level --> display
+                                showSnackBar.value = it.message
+                                _smobList2.value = it  // still return Resource value (w/h error)
+                            }
+                            Status.LOADING -> {
+                                // could control visibility of progress bar here
+                            }
+                        }
+                    }
+
+            }  // coroutine
+
+        } // listId set
+
+    }  // fetchSmobList
+
+
 //    /**
 //     * collect the flow of the list of items for the upstream list the user just selected
 //     */

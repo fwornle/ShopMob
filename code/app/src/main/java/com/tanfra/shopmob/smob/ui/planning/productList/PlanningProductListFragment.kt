@@ -59,6 +59,10 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
             // set current list ID and listPosition in viewModel
             _viewModel.currListId = it
 
+            // fetch flow into new (alternative) StateFlow variable smobList2
+            // ... this just hooks up the (cold) Room flow to the StateFlow variable - no collection
+            _viewModel.fetchSmobList()
+
             // register flows in viewModel
             _viewModel._smobList = _viewModel.fetchSmobListFlow(it)  // holds the item 'status'
             _viewModel._smobListItems = _viewModel.fetchSmobListItemsFlow(it)
