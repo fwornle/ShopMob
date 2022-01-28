@@ -3,7 +3,6 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'  // .kotlin --> KTX: nav.action accepts param. ("it")
-    id 'com.google.gms.google-services'
     id 'kotlinx-serialization'
 }
 
