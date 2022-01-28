@@ -18,7 +18,6 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
     CoroutineWorker(appContext, params), KoinComponent {
 
     companion object {
-
         const val GEOFENCE_WORK_NAME = "SMOB_GEOFENCE_WORK"
         const val GEOFENCE_EVENT_PARAM = "GEOFENCE_EVENT_PARAM"
 
