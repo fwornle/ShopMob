@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
+import timber.log.Timber.Forest.log
 
 class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerParameters):
     CoroutineWorker(appContext, params), KoinComponent {
