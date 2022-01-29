@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.flowOf
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -374,24 +373,51 @@ class SmobShopRepository(
     }  // getSmobShopFromApi
 
 
-    // net-facing setter: save a specific (new) shop
+    // net-facing setter: save a specific (new) group
     private suspend fun saveSmobShopViaApi(smobShopDTO: SmobShopDTO) = withContext(ioDispatcher) {
-        smobShopApi.saveSmobShop(smobShopDTO.asNetworkModel())
+        // network access - could fail --> handle consistently via ResponseHandler class
+        try {
+            // return successfully received data object (from Moshi --> PoJo)
+            smobShopApi.saveSmobShop(smobShopDTO.asNetworkModel())
+        } catch (ex: Exception) {
+            // return with exception --> handle it...
+            val daException = responseHandler.handleException<SmobShopDTO>(ex)
+            // local logging
+            Timber.e(daException.message)
+        }
     }
 
 
-    // net-facing setter: update a specific (existing) shop
+    // net-facing setter: update a specific (existing) group
     private suspend fun updateSmobShopViaApi(
         id: String,
         smobShopDTO: SmobShopDTO,
     ) = withContext(ioDispatcher) {
-        smobShopApi.updateSmobShopById(id, smobShopDTO.asNetworkModel())
+        // network access - could fail --> handle consistently via ResponseHandler class
+        try {
+            // return successfully received data object (from Moshi --> PoJo)
+            smobShopApi.updateSmobShopById(id, smobShopDTO.asNetworkModel())
+        } catch (ex: Exception) {
+            // return with exception --> handle it...
+            val daException = responseHandler.handleException<SmobShopDTO>(ex)
+            // local logging
+            Timber.e(daException.message)
+        }
     }
 
 
-    // net-facing setter: delete a specific (existing) shop
+    // net-facing setter: delete a specific (existing) group
     private suspend fun deleteSmobShopViaApi(id: String) = withContext(ioDispatcher) {
-        smobShopApi.deleteSmobShopById(id)
+        // network access - could fail --> handle consistently via ResponseHandler class
+        try {
+            // return successfully received data object (from Moshi --> PoJo)
+            smobShopApi.deleteSmobShopById(id)
+        } catch (ex: Exception) {
+            // return with exception --> handle it...
+            val daException = responseHandler.handleException<SmobShopDTO>(ex)
+            // local logging
+            Timber.e(daException.message)
+        }
     }
 
 }

@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.flowOf
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -369,24 +368,51 @@ class SmobUserRepository(
     }  // getSmobUserFromApi
 
 
-    // net-facing setter: save a specific (new) shop
+    // net-facing setter: save a specific (new) group
     private suspend fun saveSmobUserViaApi(smobUserDTO: SmobUserDTO) = withContext(ioDispatcher) {
+        // network access - could fail --> handle consistently via ResponseHandler class
+        try {
+            // return successfully received data object (from Moshi --> PoJo)
             smobUserApi.saveSmobUser(smobUserDTO.asNetworkModel())
+        } catch (ex: Exception) {
+            // return with exception --> handle it...
+            val daException = responseHandler.handleException<SmobUserDTO>(ex)
+            // local logging
+            Timber.e(daException.message)
+        }
     }
 
 
-    // net-facing setter: update a specific (existing) shop
+    // net-facing setter: update a specific (existing) group
     private suspend fun updateSmobUserViaApi(
         id: String,
         smobUserDTO: SmobUserDTO,
     ) = withContext(ioDispatcher) {
+        // network access - could fail --> handle consistently via ResponseHandler class
+        try {
+            // return successfully received data object (from Moshi --> PoJo)
             smobUserApi.updateSmobUserById(id, smobUserDTO.asNetworkModel())
+        } catch (ex: Exception) {
+            // return with exception --> handle it...
+            val daException = responseHandler.handleException<SmobUserDTO>(ex)
+            // local logging
+            Timber.e(daException.message)
+        }
     }
 
 
-    // net-facing setter: delete a specific (existing) shop
+    // net-facing setter: delete a specific (existing) group
     private suspend fun deleteSmobUserViaApi(id: String) = withContext(ioDispatcher) {
-        smobUserApi.deleteSmobUserById(id)
+        // network access - could fail --> handle consistently via ResponseHandler class
+        try {
+            // return successfully received data object (from Moshi --> PoJo)
+            smobUserApi.deleteSmobUserById(id)
+        } catch (ex: Exception) {
+            // return with exception --> handle it...
+            val daException = responseHandler.handleException<SmobUserDTO>(ex)
+            // local logging
+            Timber.e(daException.message)
+        }
     }
 
 }

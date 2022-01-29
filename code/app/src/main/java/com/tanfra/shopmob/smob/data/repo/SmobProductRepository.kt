@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.flowOf
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -402,24 +401,51 @@ class SmobProductRepository(
     }  // getSmobProductFromApi
 
 
-    // net-facing setter: save a specific (new) product
+    // net-facing setter: save a specific (new) group
     private suspend fun saveSmobProductViaApi(smobProductDTO: SmobProductDTO) = withContext(ioDispatcher) {
-        smobProductApi.saveSmobProduct(smobProductDTO.asNetworkModel())
+        // network access - could fail --> handle consistently via ResponseHandler class
+        try {
+            // return successfully received data object (from Moshi --> PoJo)
+            smobProductApi.saveSmobProduct(smobProductDTO.asNetworkModel())
+        } catch (ex: Exception) {
+            // return with exception --> handle it...
+            val daException = responseHandler.handleException<SmobProductDTO>(ex)
+            // local logging
+            Timber.e(daException.message)
+        }
     }
 
 
-    // net-facing setter: update a specific (existing) product
+    // net-facing setter: update a specific (existing) group
     private suspend fun updateSmobProductViaApi(
         id: String,
         smobProductDTO: SmobProductDTO,
     ) = withContext(ioDispatcher) {
-        smobProductApi.updateSmobProductById(id, smobProductDTO.asNetworkModel())
+        // network access - could fail --> handle consistently via ResponseHandler class
+        try {
+            // return successfully received data object (from Moshi --> PoJo)
+            smobProductApi.updateSmobProductById(id, smobProductDTO.asNetworkModel())
+        } catch (ex: Exception) {
+            // return with exception --> handle it...
+            val daException = responseHandler.handleException<SmobProductDTO>(ex)
+            // local logging
+            Timber.e(daException.message)
+        }
     }
 
 
-    // net-facing setter: delete a specific (existing) product
+    // net-facing setter: delete a specific (existing) group
     private suspend fun deleteSmobProductViaApi(id: String) = withContext(ioDispatcher) {
-        smobProductApi.deleteSmobProductById(id)
+        // network access - could fail --> handle consistently via ResponseHandler class
+        try {
+            // return successfully received data object (from Moshi --> PoJo)
+            smobProductApi.deleteSmobProductById(id)
+        } catch (ex: Exception) {
+            // return with exception --> handle it...
+            val daException = responseHandler.handleException<SmobProductDTO>(ex)
+            // local logging
+            Timber.e(daException.message)
+        }
     }
 
 }
