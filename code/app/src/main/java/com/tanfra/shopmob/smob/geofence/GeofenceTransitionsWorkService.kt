@@ -23,6 +23,7 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
 
         const val ENTRY_STRING = "transition - enter"
         const val EXIT_STRING = "transition - exit"
+        const val INVALID_STRING = "invalid transition"
     }
 
     // get repository instance for shop
@@ -73,7 +74,8 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
 
             // extract entry/exit direction and SmobShop IDs
             val transitionDir = geofenceTransitionDetails.substringBefore(':')
-            val geoFenceIdList = geofenceTransitionDetails.substringAfter(':').split(',')
+            val geoFenceIdList = geofenceTransitionDetails.substringAfter(':')
+                .replace(" ", "").split(',')
 
             when(transitionDir) {
 
