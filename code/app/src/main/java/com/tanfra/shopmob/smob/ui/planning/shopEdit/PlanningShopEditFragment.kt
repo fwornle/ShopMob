@@ -147,7 +147,7 @@ class PlanningShopEditFragment : BaseFragment(), AdapterView.OnItemSelectedListe
         // ... by means of the observer function of MutableLiveData element 'navigationCommand'
         //     --> see BaseFragment.kt... where the observer (lambda) is installed
         binding.defineLocation.setOnClickListener {
-            //            Navigate to another fragment to get the user location
+            // Navigate to another fragment to get the user location
             _viewModel.navigationCommand.postValue(
                 NavigationCommand.To(
                     PlanningShopEditFragmentDirections.actionPlanningShopEditFragmentToPlanningShopMapFragment()

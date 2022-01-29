@@ -83,7 +83,7 @@
     <string name="floor_plan">Floor Plan</string>
     <string name="description">Description</string>
     <string name="location">Location</string>
-    <string name="location_latlong">%1$.4f / %2$.4f</string>
+    <string name="location_latlong">%1$.6f,%2$.6f</string>
     <string name="catMain">Category</string>
     <string name="catSub">Kind</string>
     <string name="actDate">Purchased</string>
@@ -103,5 +103,6 @@
     <string name="open">open</string>
     <string name="close">close</string>
     <string name="coming_soon">… coming soon.</string>
+    <string name="deepLinkMap">android-app://com.tanfra.shopmob.smob.ui.planning.shopEdit/map</string>
 
 </resources>

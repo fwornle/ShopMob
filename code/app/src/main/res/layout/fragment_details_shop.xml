@@ -238,6 +238,8 @@
                     android:layout_marginEnd="@dimen/horizontal_margin_huge"
                     android:layout_marginBottom="@dimen/vertical_margin_large"
                     android:text="@{@string/location_latlong(viewModel.smobShopDetailsItem.location.latitude, viewModel.smobShopDetailsItem.location.longitude)}"
+                    android:textColor="@color/blue"
+                    android:textStyle="bold"
                     tools:text="Shop location (lat./long.)"
                     android:textSize="@dimen/label_text_size"
                     app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorLoc"

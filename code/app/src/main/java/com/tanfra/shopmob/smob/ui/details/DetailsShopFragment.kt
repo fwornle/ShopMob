@@ -1,22 +1,25 @@
 package com.tanfra.shopmob.smob.ui.details
 
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
-import androidx.databinding.DataBindingUtil
-import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.ui.base.BaseFragment
-import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
-import com.tanfra.shopmob.utils.setTitle
-import android.content.Intent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import com.firebase.ui.auth.AuthUI
+import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentDetailsShopBinding
 import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
+import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.smob.ui.details.utils.ButtonState
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
+import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
+import com.tanfra.shopmob.utils.setTitle
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
@@ -91,6 +94,39 @@ class DetailsShopFragment : BaseFragment(), KoinComponent {
             // ... go shopping
             val intent = Intent(this.context, SmobShoppingActivity::class.java)
             startForResult.launch(intent)
+
+        }
+
+        // set onClick handler for location link
+        // ... navigate to the map
+        binding.tvLocText.setOnClickListener {
+
+            // create a Uri from an intent string. Use the result to create an Intent.
+            val gmmIntentUri = Uri.parse("google.streetview:cbll=" +
+                    "${_viewModel.smobShopDetailsItem.value?.location?.latitude}," +
+                    "${_viewModel.smobShopDetailsItem.value?.location?.longitude}")
+
+            // create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+
+            // make the Intent explicit by setting the Google Maps package
+            mapIntent.setPackage("com.google.android.apps.maps")
+
+            // attempt to start an activity that can handle the Intent
+            startActivity(mapIntent)
+
+//            // open map using a "deep link"
+//            // ... see: https://stackoverflow.com/questions/59985632/navigate-to-a-fragment-from-another-graph-without-it-being-the-start-destination
+//            val uri = Uri.parse(getString(R.string.deepLinkMap))
+//            findNavController().navigate(
+//                uri,
+//                navOptions { // Use the Kotlin DSL for building NavOptions
+//                    anim {
+//                        enter = android.R.animator.fade_in
+//                        exit = android.R.animator.fade_out
+//                    }
+//                }
+//            )
 
         }
 

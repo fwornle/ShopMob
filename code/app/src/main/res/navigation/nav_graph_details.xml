@@ -2,6 +2,7 @@
 <navigation
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_details"
     app:startDestination="@id/smobDetailsShopFragment">
 
@@ -22,6 +23,16 @@
         <action
             android:id="@+id/action_smobDetailsShopFragment_to_smobDetailsProductFragment"
             app:destination="@id/smobDetailsProductFragment" />
+    </fragment>
+
+    <!-- cross activity navigation made easy... -->
+    <fragment
+        android:id="@+id/smobPlanningShopMapFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopMapFragment"
+        android:label="Select Store Location"
+        tools:layout="@layout/fragment_planning_shop_map"
+        >
+        <deepLink app:uri="android-app://com.tanfra.shopmob.smob.ui.planning.shopEdit/map" />
     </fragment>
 
 </navigation>

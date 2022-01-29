@@ -3,8 +3,10 @@ package com.tanfra.shopmob.smob.ui.details
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.databinding.ActivityDetailsBinding

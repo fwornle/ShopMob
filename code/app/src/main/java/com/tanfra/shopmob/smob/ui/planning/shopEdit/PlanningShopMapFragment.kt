@@ -202,6 +202,7 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
         _viewModel.navigationCommand.value = NavigationCommand.Back
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.normal_map -> {
             map.mapType = GoogleMap.MAP_TYPE_NORMAL

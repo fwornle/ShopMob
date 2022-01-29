@@ -20,6 +20,7 @@
         android:label="Administration Selector"
         tools:layout="@layout/fragment_administration_select"
         >
+        <deepLink app:uri="android-app://com.tanfra.shopmob.smob.ui.planning.shopEdit/map" />
     </fragment>
 
     <!-- cross activity navigation made easy...

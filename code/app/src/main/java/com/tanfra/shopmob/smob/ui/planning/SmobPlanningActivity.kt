@@ -98,18 +98,6 @@ class SmobPlanningActivity : AppCompatActivity() {
         }
     }
 
-//    override fun onSupportNavigateUp(): Boolean {
-//        return navController.navigateUp(drawerLayout) || super.onSupportNavigateUp()
-//    }
-//
-//    override fun onBackPressed() {
-//        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-//            binding.drawerLayout.closeDrawer(GravityCompat.START)
-//        } else {
-//            super.onBackPressed()
-//        }
-//    }
-
 
     // fetch worker class form service locator
     private val wManager: SmobAppWork by inject()
