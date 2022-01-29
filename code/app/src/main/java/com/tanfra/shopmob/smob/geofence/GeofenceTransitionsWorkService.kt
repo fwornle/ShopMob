@@ -74,7 +74,8 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
 
             // extract entry/exit direction and SmobShop IDs
             val transitionDir = geofenceTransitionDetails.substringBefore(':')
-            val geoFenceIdList = geofenceTransitionDetails.substringAfter(':').split(',')
+            val geoFenceIdList = geofenceTransitionDetails.substringAfter(':')
+                .replace(" ", "").split(',')
 
             when(transitionDir) {
 
@@ -175,10 +176,20 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
 
 
                                 // loop over all geoFence IDs (= SmobShop IDs)
-                                geoFenceIdList.map { geoFenceItem ->
+                                geoFenceIdList.map {
+
+                                    val geoFenceItem = it
+
+
 
                                     // fetch shop details
-                                    val smobShoppe = smobShops?.find { it.id == geoFenceItem }
+                                    var smobShoppe: SmobShopATO? = null
+                                    smobShops?.forEach {
+                                        if(it.id == geoFenceItem) {
+                                            smobShoppe = it
+                                        }
+                                    }
+
                                     smobShoppe?.let { daShop ->
 
                                         if(uniqueMainCategories.any { daShop.hasProduct(it) }) {

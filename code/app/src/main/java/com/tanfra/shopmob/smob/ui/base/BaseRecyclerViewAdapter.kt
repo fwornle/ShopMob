@@ -111,7 +111,7 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
     var mSnapshotItemPosition: Int = -1
 
     // swipe left on an OPEN item --> delete item (w/h possibility of undo)
-    fun deleteItem(position: Int, textResId: Int) {
+    fun deleteItem(position: Int) {
 
         // delete item from list
         _items.removeAt(position)
