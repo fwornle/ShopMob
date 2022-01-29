@@ -1,5 +1,6 @@
 package com.tanfra.shopmob.smob.data.net
 
+import android.app.Application
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tanfra.shopmob.BuildConfig
@@ -7,28 +8,31 @@ import com.tanfra.shopmob.smob.data.net.api.*
 import com.tanfra.shopmob.smob.data.net.nto.*
 import com.tanfra.shopmob.smob.data.net.utils.ArrayListAdapter
 import com.tanfra.shopmob.smob.data.net.utils.AuthInterceptor
+import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionInterceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-
-import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 
 
 // Koin module for network services
 val netServices = module {
 
-    // helper function to provide a configured OkHttpClient
-    fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
 
-        // add auth first
+    // helper function to provide a configured OkHttpClient
+    fun provideOkHttpClient(app: Application, authInterceptor: AuthInterceptor): OkHttpClient {
+
+        // add connection first, then auth
         val client = OkHttpClient().newBuilder()
+            .addInterceptor(NetworkConnectionInterceptor( app.applicationContext ))
             .addInterceptor(authInterceptor)
             .readTimeout(3, TimeUnit.SECONDS)
             .connectTimeout(6, TimeUnit.SECONDS)
 
-        // add logging (in debug mode only)
+
+        // add eventually logging (in debug mode only)
         // ... even during debug mode: disable when working (by adding hardcoded 'false &&')
         if (
             false &&
@@ -89,7 +93,7 @@ val netServices = module {
     single { AuthInterceptor() }
 
     // HTTP client - allows injection of logger (for debugging... see there)
-    single { provideOkHttpClient(authInterceptor = get()) }
+    single { provideOkHttpClient(app = get(), authInterceptor = get()) }
 
     // retrofit object
     // ... incl. Moshi JSON adapters for all our data sources (generalized)
