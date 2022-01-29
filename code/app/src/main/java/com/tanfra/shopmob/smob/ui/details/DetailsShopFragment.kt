@@ -63,8 +63,13 @@ class DetailsShopFragment : BaseFragment(), KoinComponent {
         binding.viewModel = _viewModel
 
         setHasOptionsMenu(true)
-        setDisplayHomeAsUpEnabled(true)
         setTitle(getString(R.string.app_name_details_shop))
+
+        // no up button when navigating to here from "void" (Android -> GeoFence)
+        when(_viewModel.navSource) {
+            SmobDetailsSources.GEOFENCE -> setDisplayHomeAsUpEnabled(false)
+            else -> setDisplayHomeAsUpEnabled(true)
+        }
 
         return binding.root
     }
@@ -92,38 +97,72 @@ class DetailsShopFragment : BaseFragment(), KoinComponent {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
 
-            R.id.logout -> {
-                // logout authenticated user
-                AuthUI.getInstance()
-                    .signOut(this.requireContext())
-                    .addOnCompleteListener {
-                        // user is now signed out -> redirect to login screen
-                        startActivity(Intent(this.context, SmobAuthenticationActivity::class.java))
+        // display menu item depending on where we came from...
+        when(_viewModel.navSource) {
+
+            // entered from a geofence trigger (special)
+            SmobDetailsSources.GEOFENCE -> {
+
+                when (item.itemId) {
+
+                    R.id.smobPlanningListsFragment -> {
+                        // start the app
+                        startActivity(Intent(this.context, SmobPlanningActivity::class.java))
                         // and we're done here
                         this.activity?.finish()
                     }
+
+                }  // when(item...)
+
             }
 
-            // note: must use 'android' to catch the back button...
-            android.R.id.home -> {
-                Timber.i("Back pressed from details fragment.")
+            // entered from within the app (normal)
+            else -> {
 
-                // closing this activity brings us back to where we came from (with intact
-                // backstack history)
-                this.activity?.finish()
+                when (item.itemId) {
+
+                    R.id.logout -> {
+                        // logout authenticated user
+                        AuthUI.getInstance()
+                            .signOut(this.requireContext())
+                            .addOnCompleteListener {
+                                // user is now signed out -> redirect to login screen
+                                startActivity(Intent(this.context, SmobAuthenticationActivity::class.java))
+                                // and we're done here
+                                this.activity?.finish()
+                            }
+                    }
+
+                    // note: must use 'android' to catch the back button...
+                    android.R.id.home -> {
+                        Timber.i("Back pressed from details fragment.")
+
+                        // closing this activity brings us back to where we came from (with intact
+                        // backstack history)
+                        this.activity?.finish()
+                    }
+
+                }  // when(item...)
+
             }
 
-        }  // when(item...)
+        }
+
+
 
         return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        // display logout as menu item
-        inflater.inflate(R.menu.main_menu, menu)
+
+        // display menu item depending on where we came from...
+        when(_viewModel.navSource) {
+            SmobDetailsSources.GEOFENCE -> inflater.inflate(R.menu.geofence_shop_menu, menu)
+            else -> inflater.inflate(R.menu.main_menu, menu)
+        }
+
     }
 
 }

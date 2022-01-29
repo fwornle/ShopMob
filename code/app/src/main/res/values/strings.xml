@@ -35,6 +35,7 @@
 
 
     <string name="logout">Logout</string>
+    <string name="launch">Launch</string>
     <string name="welcome_message">Welcome to\nShopMob</string>
     <string name="login">Login</string>
     <string name="normal_map">Normal Map</string>

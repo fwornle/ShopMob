@@ -54,24 +54,24 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
             R.layout.activity_details
         )
 
-        // try to fetch data provided by intent source
-        var intentSource = SmobDetailsSources.UNKNOWN
 
         // attempt to read extra data from incoming intent
         val extras: Bundle? = intent.extras
         extras?.let {
+            // fetch incoming parameters (common: EXTRA_Source)
             if (it.containsKey(EXTRA_Source)) {
                 // extract the extra-data in the intent
-                intentSource = it.get("EXTRA_Source") as SmobDetailsSources
+                _viewModel.navSource = it.get("EXTRA_Source") as SmobDetailsSources
             }
         }
 
-
         // navigate to the requested fragment
-        when(intentSource) {
+        when(_viewModel.navSource) {
 
-            // home fragment
-            SmobDetailsSources.PLANNING_SHOP_LIST -> {
+            // home fragment or geofence
+            SmobDetailsSources.PLANNING_SHOP_LIST,
+            SmobDetailsSources.GEOFENCE,
+            -> {
 
                 // navigate to Shop Details fragment
                 Timber.i("Display details of the selected shop.")
@@ -120,19 +120,6 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
         }  // when(intentSource)
 
     }  // onCreate
-
-
-//    // change configuration from portrait to landscape
-//    override fun onConfigurationChanged(newConfig: Configuration) {
-//        super.onConfigurationChanged(newConfig)
-//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//            //Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show()
-//            setContentView(R.layout.fragment_details_product)
-//        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-//            //Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
-//            setContentView(R.layout.fragment_details_product)
-//        }
-//    }
 
 
     // fetch worker class form service locator

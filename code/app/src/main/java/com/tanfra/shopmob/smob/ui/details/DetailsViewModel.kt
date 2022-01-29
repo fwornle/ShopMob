@@ -15,6 +15,9 @@ class DetailsViewModel(
     private val smobShopDataSource: SmobShopDataSource,
 ) : BaseViewModel(app) {
 
+    // navigation source
+    var navSource = SmobDetailsSources.UNKNOWN
+
     // item to be displayed on the UI
     val smobShopDetailsItem = MutableLiveData<SmobShopATO?>()
     val smobProductDetailsItem = MutableLiveData<SmobProductOnListATO?>()
