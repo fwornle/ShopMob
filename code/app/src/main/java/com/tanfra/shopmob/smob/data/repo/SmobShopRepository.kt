@@ -16,6 +16,7 @@ import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.asResource
+import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -41,6 +42,8 @@ class SmobShopRepository(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : SmobShopDataSource, KoinComponent {
 
+    // fetch worker class form service locator
+    private val wManager: SmobAppWork by inject()
 
     // --- impl. of public, app facing data interface 'SmobShopDataSource': CRUD, local DB data ---
     // --- impl. of public, app facing data interface 'SmobShopDataSource': CRUD, local DB data ---
@@ -108,13 +111,15 @@ class SmobShopRepository(
 
             // then push to backend DB
             // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
-            val testRead = getSmobShopViaApi(dbShop.id)
-            if (testRead.data?.id != dbShop.id) {
-                // item not found in backend --> use POST to create it
-                saveSmobShopViaApi(dbShop)
-            } else {
-                // item already exists in backend DB --> use PUT to update it
-                smobShopApi.updateSmobShopById(dbShop.id, dbShop.asNetworkModel())
+            if(wManager.netActive) {
+                val testRead = getSmobShopViaApi(dbShop.id)
+                if (testRead.data?.id != dbShop.id) {
+                    // item not found in backend --> use POST to create it
+                    saveSmobShopViaApi(dbShop)
+                } else {
+                    // item already exists in backend DB --> use PUT to update it
+                    smobShopApi.updateSmobShopById(dbShop.id, dbShop.asNetworkModel())
+                }
             }
 
         }  // idlingResource (testing)
@@ -148,13 +153,15 @@ class SmobShopRepository(
 
                 // then push to backend DB
                 // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
-                val testRead = getSmobShopViaApi(dbShop.id)
-                if (testRead.data?.id != dbShop.id) {
-                    // item not found in backend --> use POST to create it
-                    saveSmobShopViaApi(dbShop)
-                } else {
-                    // item already exists in backend DB --> use PUT to update it
-                    smobShopApi.updateSmobShopById(dbShop.id, dbShop.asNetworkModel())
+                if(wManager.netActive) {
+                    val testRead = getSmobShopViaApi(dbShop.id)
+                    if (testRead.data?.id != dbShop.id) {
+                        // item not found in backend --> use POST to create it
+                        saveSmobShopViaApi(dbShop)
+                    } else {
+                        // item already exists in backend DB --> use PUT to update it
+                        smobShopApi.updateSmobShopById(dbShop.id, dbShop.asNetworkModel())
+                    }
                 }
 
             }
@@ -180,7 +187,9 @@ class SmobShopRepository(
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
                 smobShopDao.deleteSmobShopById(id)
-                smobShopApi.deleteSmobShopById(id)
+                if(wManager.netActive) {
+                    smobShopApi.deleteSmobShopById(id)
+                }
             }
         }
     }
@@ -197,11 +206,13 @@ class SmobShopRepository(
                 smobShopDao.deleteAllSmobShops()
 
                 // then delete all shops from backend DB
-                getSmobShopsViaApi().let {
-                    if (it.status == Status.SUCCESS) {
-                        it.data?.map { smobShopApi.deleteSmobShopById(it.id) }
-                    } else {
-                        Timber.w("Unable to get SmobShop IDs from backend DB (via API) - not deleting anything.")
+                if(wManager.netActive) {
+                    getSmobShopsViaApi().let {
+                        if (it.status == Status.SUCCESS) {
+                            it.data?.map { smobShopApi.deleteSmobShopById(it.id) }
+                        } else {
+                            Timber.w("Unable to get SmobShop IDs from backend DB (via API) - not deleting anything.")
+                        }
                     }
                 }
             }

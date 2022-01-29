@@ -47,19 +47,26 @@ class RefreshSmobStaticDataWorkerFast(appContext: Context, params: WorkerParamet
             Timber.i("Running scheduled work ($WORK_NAME_FAST) ---------------------------")
             Timber.i("Work ID:  ${getId()}")
 
-            // update users in local DB from backend DB
-            smobUserDataSource.refreshDataInLocalDB()
-            smobGroupDataSource.refreshDataInLocalDB()
-            smobProductDataSource.refreshDataInLocalDB()
-            smobShopDataSource.refreshDataInLocalDB()
-            smobListDataSource.refreshDataInLocalDB()
+            // avoid series of timeouts, if network has already been found to be inactive
+            // ... see: ResponseHandler
+            if(wManager.netActive) {
 
-            // re-schedule
+                // update users in local DB from backend DB
+                smobUserDataSource.refreshDataInLocalDB()
+                smobGroupDataSource.refreshDataInLocalDB()
+                smobProductDataSource.refreshDataInLocalDB()
+                smobShopDataSource.refreshDataInLocalDB()
+                smobListDataSource.refreshDataInLocalDB()
+
+            }
+
+            // re-schedule fast background job
             wManager.scheduleRecurringWorkFast(nextRequest)
+            Timber.i("Re-scheduling work ($WORK_NAME_FAST)")
+            Timber.i("Work ID:  ${nextRequest.getId()}")
 
             // return 'success' - done
             Timber.i("Scheduled work ($WORK_NAME_FAST) completed successfully")
-            Timber.i("Work ID:  ${nextRequest.getId()}")
             Result.success()
 
         } catch (e: HttpException) {

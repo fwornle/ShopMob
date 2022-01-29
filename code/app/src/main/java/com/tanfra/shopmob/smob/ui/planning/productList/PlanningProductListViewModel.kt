@@ -356,34 +356,6 @@ class PlanningProductListViewModel(
                 // check if the "no data" symbol has to be shown (empty list)
                 updateShowNoData(it)
             }
-//                    .collectLatest {
-//                        // no exception during flow collection
-//                        when(it.status) {
-//                            Status.SUCCESS -> {
-//                                // --> store successfully received data in StateFlow value
-//                                _smobListItems.value = it
-//                                updateShowNoData(it)
-//                            }
-//                            Status.ERROR -> {
-//                                // these are errors handled at Room level --> display
-//                                showSnackBar.value = it.message
-//                                _smobListItems.value = it  // still return Resource value (w/h error)
-//                            }
-//                            Status.LOADING -> {
-//                                // could control visibility of progress bar here
-//                            }
-//                        }
-//                    }
-
-
-
-//            // collect flow to update StateFlow with current value from DB
-//            fetchSmobList()
-//            fetchSmobListItems()
-//            fetchCombinedFlows()
-//
-//            // check if the "no data" symbol has to be shown (empty list)
-//            updateShowNoData(_smobListItems.value)
 
         }
 

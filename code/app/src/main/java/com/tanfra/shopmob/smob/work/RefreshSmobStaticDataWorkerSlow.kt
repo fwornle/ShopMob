@@ -20,6 +20,9 @@ class RefreshSmobStaticDataWorkerSlow(appContext: Context, params: WorkerParamet
         const val WORK_NAME_SLOW = "SmobStaticDataWorkerSlow"
     }
 
+    // fetch worker class form service locator
+    private val wManager: SmobAppWork by inject()
+
     // fetch repositories from Koin service locator
     private val smobUserDataSource: SmobUserDataSource by inject()
     private val smobGroupDataSource: SmobGroupDataSource by inject()
@@ -37,12 +40,23 @@ class RefreshSmobStaticDataWorkerSlow(appContext: Context, params: WorkerParamet
             // ... received data is used to update the DB
             Timber.i("Running scheduled work ($WORK_NAME_SLOW) ---------------------------")
 
-            // update users in local DB from backend DB
-            smobUserDataSource.refreshDataInLocalDB()
-            smobGroupDataSource.refreshDataInLocalDB()
-            smobProductDataSource.refreshDataInLocalDB()
-            smobShopDataSource.refreshDataInLocalDB()
-            smobListDataSource.refreshDataInLocalDB()
+            // only sync - if the network is up
+            if (wManager.netActive) {
+
+                // update users in local DB from backend DB
+                smobUserDataSource.refreshDataInLocalDB()
+                smobGroupDataSource.refreshDataInLocalDB()
+                smobProductDataSource.refreshDataInLocalDB()
+                smobShopDataSource.refreshDataInLocalDB()
+                smobListDataSource.refreshDataInLocalDB()
+
+            } else {
+
+                // tentatively re-activate network services
+                Timber.i("Tentatively re-activating network services.")
+                wManager.netActive = true
+
+            }
 
             // return 'success' - done
             Timber.i("Scheduled work ($WORK_NAME_SLOW) completed successfully")

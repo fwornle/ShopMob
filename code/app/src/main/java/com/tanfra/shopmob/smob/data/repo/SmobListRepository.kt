@@ -14,6 +14,7 @@ import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.asResource
+import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -39,6 +40,8 @@ class SmobListRepository(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : SmobListDataSource, KoinComponent {
 
+    // fetch worker class form service locator
+    private val wManager: SmobAppWork by inject()
 
     // --- impl. of public, app facing data interface 'SmobListDataSource': CRUD, local DB data ---
     // --- impl. of public, app facing data interface 'SmobListDataSource': CRUD, local DB data ---
@@ -110,13 +113,15 @@ class SmobListRepository(
 
         // then push to backend DB
         // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
-        val testRead = getSmobListViaApi(dbList.id)
-        if (testRead.data?.id != dbList.id) {
-            // item not found in backend --> use POST to create it
-            saveSmobListViaApi(dbList)
-        } else {
-            // item already exists in backend DB --> use PUT to update it
-            smobListApi.updateSmobListById(dbList.id, dbList.asNetworkModel())
+        if(wManager.netActive) {
+            val testRead = getSmobListViaApi(dbList.id)
+            if (testRead.data?.id != dbList.id) {
+                // item not found in backend --> use POST to create it
+                saveSmobListViaApi(dbList)
+            } else {
+                // item already exists in backend DB --> use PUT to update it
+                smobListApi.updateSmobListById(dbList.id, dbList.asNetworkModel())
+            }
         }
 
     }
@@ -148,10 +153,9 @@ class SmobListRepository(
 
                 // then push to backend DB
                 // ... use 'update', as list may already exist (equivalent of REPLACE w/h local DB)
-                //
-                // ... could do a read back first, if we're anxious...
-                //smobListDao.getSmobListById(dbList.id)?.let { smobListApi.updateSmobList(it.id, it.asNetworkModel()) }
-                smobListApi.updateSmobListById(dbList.id, dbList.asNetworkModel())
+                if(wManager.netActive) {
+                    smobListApi.updateSmobListById(dbList.id, dbList.asNetworkModel())
+                }
 
             }
         }
@@ -176,7 +180,9 @@ class SmobListRepository(
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
                 smobListDao.deleteSmobListById(id)
-                smobListApi.deleteSmobListById(id)
+                if(wManager.netActive) {
+                    smobListApi.deleteSmobListById(id)
+                }
             }
         }
     }
@@ -193,11 +199,13 @@ class SmobListRepository(
                 smobListDao.deleteAllSmobLists()
 
                 // then delete all lists from backend DB
-                getSmobListsViaApi().let {
-                    if (it.status.equals(Status.SUCCESS)) {
-                        it.data?.map { smobListApi.deleteSmobListById(it.id) }
-                    } else {
-                        Timber.w("Unable to get SmobList IDs from backend DB (via API) - not deleting anything.")
+                if(wManager.netActive) {
+                    getSmobListsViaApi().let {
+                        if (it.status.equals(Status.SUCCESS)) {
+                            it.data?.map { smobListApi.deleteSmobListById(it.id) }
+                        } else {
+                            Timber.w("Unable to get SmobList IDs from backend DB (via API) - not deleting anything.")
+                        }
                     }
                 }
             }
