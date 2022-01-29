@@ -10,8 +10,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.NavigationUI.*
+import androidx.navigation.ui.NavigationUI.navigateUp
+import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.ActivityPlanningBinding
@@ -67,7 +67,7 @@ class SmobPlanningActivity : AppCompatActivity() {
                 nd: NavDestination,
                 _: Bundle?
             ->
-            if (nd.id == nc.graph.startDestination) {
+            if (nd.id == nc.graph.startDestinationId) {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             } else {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
@@ -87,7 +87,7 @@ class SmobPlanningActivity : AppCompatActivity() {
 
     // handle home button
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (navController.currentDestination?.id == navController.graph.startDestination) {
+        return if (navController.currentDestination?.id == navController.graph.startDestinationId) {
             if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
                 true
             } else {
