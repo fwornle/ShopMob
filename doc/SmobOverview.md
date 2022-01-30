@@ -200,6 +200,20 @@ bridge will be provided to Alexa's Skills system.
   <img alt="SmobProduct background sync" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_backend_local.PNG" title="SmobShop Background Sync"/>
 </div>
 
+**Note:**
+
+The app currently uses rather short timeouts (6 seconds to establish a connection and 3 seconds for read / write access). This
+proved a useful compromise between long periods of the "progress bar spinner" and stable operations of the app. However, as the backend
+first needs to spin up a container for the lambda function of our backend, this timeout may have to be increased in the future, should
+longer routes from remote locations need more time. Once a timeout condition has been detected, the app ceases to sync with the backend
+to provide a smooth user experience. In this condition, data is merely stored in the local DB and not synchronized with the server.
+The app regularly attempts to re-connect with the server. For example, pulling down on a list screen triggers a backend sync
+refresh which - if successful - re-activates the periodic background sync.
+
+In addition, a slowly running background job attempts to reactivate this "polling" mechanism every 30 minutes. Fast polling is only activated when the app is in the foreground.
+Altogether, this synchronization will have to be extended in the future, as a re-connecting app will currently simply overwrite some of the
+local changes with the status values found in the backend DB. Here, a proper synchronization strategy is needed, similarly
+to what git offers. Maybe Room can be replaced by a git repository altogether...
 Using this local backend, the development of the synchronizing mechanisms was greatly accelerated. The script provides immediate
 feedback on the CRUD commands exchanged with the express server. Running the app on two emulators, the exchange of data can be 
 observed and verified / debugged: 
@@ -210,7 +224,7 @@ observed and verified / debugged:
 
 The local backend can be found in folder /backend. It can be launched by running node script "backend" (>> node backend) and it
 responds with a list of the principal routes which are available. To experiment with the local backend, two small changes 
-need to be made. First, the AWS server needs replaced by _localhost:3000_ which, on the qEMU emulator is mirrored at 10.0.2.2:3000.
+need to be made. First, the AWS server needs to be replaced by _localhost:3000_ which, on the qEMU emulator is mirrored at 10.0.2.2:3000.
 
 This is done in the project gradle build file (app), where simply commenting out the current BASE_URL definition commenting in the 
 one of the local backend does the trick: 
@@ -231,16 +245,14 @@ work on AWS yet... this difference will disappear in the future):
 Simply use whichever line is appropriate for whichever use case, i.e. local backend vs. real backend on 
 [AWS](https://eu-central-1.console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/stackinfo?filteringStatus=active&filteringText=&viewNested=true&hideStacks=false&stackId=arn%3Aaws%3Acloudformation%3Aeu-central-1%3A930500114053%3Astack%2Fshopmob%2F759c6370-7dc7-11ec-b7e9-060181288dce)
 
-In addition, the cryptic domain name will be replaced by something more human-readable in forthcoming extensions of the app as well.
-
 Once running, go to localhost:3000 or the above (cryptic) AWS URL to find the endpoints where the backend exposes
 the REST API routes needed by ShopMob.
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
-  <img alt="SmobProduct background sync" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_backend_aws.PNG" title="SmobShop REST API"/>
+  <img alt="SmobProduct REST API" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_backend_aws.PNG" title="SmobShop REST API"/>
 </div>
 
-
+The cryptic domain name will be replaced by something more human-readable in forthcoming extensions of the app as well.
 
 ---
 
@@ -319,10 +331,58 @@ classes for the conversion from DTO data (local DB) to ATO data (application). I
 but some nested structures are resolved when turning application data types (ATO) into local DB types (DTO) to better match the
 table structure of an SQL database.
 
-Kotlin file utils/dbTypes.kt includes a variety of data type definitions which are fundamental to the application: Enums for 
+Kotlin file _utils/dbTypes.kt_ includes a variety of data type definitions which are fundamental to the application: Enums for 
 ShopItemStatus, ProductCategory (main, sub), etc.
 
 ##### Network access to the Backend
+
+The RESTful API exposed by the AWS cloud based backend is used by the network layer of the app. Package 
+_api_ plays the role of the _dao_ in accessing the local DB: the interface defined in package api is implemented
+by the generated Retrofit2 code, similarly to what is being done with Room. Annotations are used to define 
+all CRUD routes using the HTTP standard commands GET, POST, PUT, DELETE. The network data type NTO can be 
+converted from/to DTO. There is no direct conversion between NTO and ATO, as the application layer will only 
+access the local DB, with the above described underlying synchronization mechanism to the backend (via the REST API).
+
+All network services are collected in a Koin service locator module (Kotlin file _netServices.kt_) from where
+they get made available for dependency "injection". The network services include an OkHttp3 client which are 
+integrated in the Retrofit2 builder. This service modules include some form of middleware in the form of interceptors 
+(AuthInterceptor, LoggingInterceptor, NetworkConnectionInterceptor). These modules are used to provide supporting 
+middleware functionality along all routes serviced by retrofit. Network logging can be activated by simply commenting 
+out the masking "false" condition in the following code section of _netServices.kt_:
+
+```kotlin
+    // helper function to provide a configured OkHttpClient
+    fun provideOkHttpClient(app: Application, authInterceptor: AuthInterceptor): OkHttpClient {
+
+        // add connection first, then auth
+        val client = OkHttpClient().newBuilder()
+            .addInterceptor(NetworkConnectionInterceptor( app.applicationContext ))
+            .addInterceptor(authInterceptor)
+            .readTimeout(3, TimeUnit.SECONDS)
+            .connectTimeout(6, TimeUnit.SECONDS)
+
+
+        // add eventually logging (in debug mode only)
+        // ... even during debug mode: disable when working (by adding hardcoded 'false &&')
+        if (
+            false &&
+            BuildConfig.DEBUG
+        ) {
+
+            // create and configure logging interceptor
+            val interceptor = HttpLoggingInterceptor()
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+
+            // add to the HTTP client - this should always go last
+            client.addInterceptor(interceptor)
+
+        }
+
+        // done - build client and return it
+        return client.build()
+
+    }
+```
 
 
 
