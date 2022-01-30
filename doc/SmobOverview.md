@@ -29,16 +29,57 @@ _ShopMob_ thus facilitates group shopping and helps to reduce the time wasted in
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
   <img alt="ShopMob Login Screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_login_0.PNG" title="Login Screen"/>
-  <div style="width: 30px"> </div>
   <img alt="ShopMob Login Screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_login.PNG" title="Login Screen"/>
-  <div style="width: 30px"> </div>
   <img alt="ShopMob Login Screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_login_2fa.PNG" title="Login Screen"/>
 </div>
 
+The app launches with an authentication screen. Using the _firebaseUI_ authentication flow, login can be achieved 
+by entering a user email and password, or via federated identity authentication using a google account. The flow
+has been set up to use 2-factor authentication.
 
 #### Planning
 
+##### SmobList - the ShopMob shopping lists
+
+Once logged on, the user arrives at the planning screen of the app. Upon the first time the app is used, the local 
+database is still empty. When there is no connection to the backend, the app has no data. This is indicated to the user
+as shown below.
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="SmobLists screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_lists.PNG" title="SmobLists"/>
+  <img alt="SmobLists screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_backend_missing_1.PNG" title="SmobLists, no data"/>
+</div>
+
+When the connection to the backend is established, the app downloads all shopping lists the user has subscribed to. Note that, 
+at the writing of this document (Jan 2022), user groups have yet to be established - at present, all shopping lists are 
+presented to all users on all devices.
+
+##### SmobShop - the stores defined in ShopMob 
+
+Clicking on the home menu button opens a drawer menu with two options:
+
+- Smob Shops
+- Administration
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="SmobLists screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_drawer.PNG" title="Drawer Menu"/>
+  <img alt="SmobLists screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shops.PNG" title="Administration"/>
+  <img alt="SmobLists screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shops_details_2.PNG" title="SmobShops"/>
+  <img alt="SmobLists screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_geofence_check_2.PNG" title="SmobShops"/>
+</div>
+
+While the administration screen is presently still empty - this it will be possible to define users, user groups, etc. -
+the SmobShop list shows all shops currently defined in ShopMob. Clicking on a SmobShop item takes the user to a
+details screen on which they can see the details of a particular shop, eg. where to find it, opening hours, etc.
+Clicking on the highlighted coordinates of the shop opens google maps in streetview (if available) at the selected location. 
+The shop image is loaded from a URL, should one be provided. If not, a ShopMob placeholder image is shown instead.
+
+
+
+
 #### Detail Screens
+
+
 
 #### Shopping
 
