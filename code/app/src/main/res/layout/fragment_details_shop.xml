@@ -435,6 +435,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/button_height"
                 android:layout_margin="@dimen/margin_normal"
+                android:layout_marginBottom="@dimen/vertical_margin_small"
                 tools:background="@color/primaryColor"
                 app:defaultTitle="@string/floor_plan"
                 app:alternativeTitle="@string/floor_plan"
