@@ -48,8 +48,8 @@ folders of the app:
   - ShopMob/code/app/src/**release**/res/values
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
-  <img alt="Google Services" width="200" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/google_services.PNG" title="Google Services"/>
-  <img alt="Google Maps API Key" width="200" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/gms_api_key.PNG" title="Google Maps API Key"/>
+  <img alt="Google Services" width="400" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/google_services.PNG" title="Google Services"/>
+  <img alt="Google Maps API Key" width="400" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/gms_api_key.PNG" title="Google Maps API Key"/>
 </div>
 
 Retrieval of these files is described in many posts on the "international network".
