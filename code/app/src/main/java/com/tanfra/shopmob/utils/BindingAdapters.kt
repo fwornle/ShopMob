@@ -14,6 +14,7 @@ import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 
 
@@ -33,7 +34,7 @@ object BindingAdapters {
         recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
 
             // collect flow items
-            items.collect { itemList ->
+            items.take(1).collect { itemList ->
                 (recyclerView.adapter as? BaseRecyclerViewAdapter<T>)?.apply {
                     clear()
                     addData(itemList)
@@ -59,7 +60,7 @@ object BindingAdapters {
         recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
 
             // collect flow items
-            items.collect { itemList ->
+            items.take(1).collect { itemList ->
                 (recyclerView.adapter as? BaseRecyclerViewAdapter<T>)?.apply {
                     clear()
                     itemList.data?.let { addData(it) }

@@ -347,7 +347,7 @@ class PlanningProductListViewModel(
             productDataSource.refreshDataInLocalDB()
 
             // collect flow to update StateFlow with current value from DB
-            smobListItems.collect {
+            smobListItems.take(1).collect {
 
                 if(it.status == Status.ERROR) {
                     showSnackBar.value = it.message!!
@@ -448,7 +448,7 @@ class PlanningProductListViewModel(
 //            fetchCombinedFlows()
 
             // update StateFlow values by re-fetching flows from local DB
-            smobListItems.collect {
+            smobListItems.take(1).collect {
 
                 if(it.status == Status.ERROR) {
                     showSnackBar.value = it.message!!
@@ -523,6 +523,7 @@ class PlanningProductListViewModel(
                     _smobShopList.value = Resource.error(e.toString(), null)
                     showSnackBar.value = _smobShopList.value.message
                 }
+                .take(1)
                 .collect {
                     // no exception during flow collection
                     when(it.status) {
@@ -569,6 +570,7 @@ class PlanningProductListViewModel(
                     _smobShop.value = Resource.error(e.toString(), null)
                     showSnackBar.value = _smobShop.value.message
                 }
+                .take(1)
                 .collect {
                     // no exception during flow collection
                     when(it.status) {
@@ -708,6 +710,7 @@ class PlanningProductListViewModel(
                     _smobLists.value = Resource.error(e.toString(), null)
                     showSnackBar.value = _smobLists.value.message
                 }
+                .take(1)
                 .collect {
                     // no exception during flow collection
                     when(it.status) {

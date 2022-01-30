@@ -21,6 +21,7 @@ import com.tanfra.shopmob.smob.ui.details.SmobDetailsSources
 import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
 import com.tanfra.shopmob.utils.setup
 import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import org.koin.androidx.scope.scope
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -133,7 +134,7 @@ class PlanningShopListFragment : BaseFragment(), KoinComponent {
                     // clicks should select the shop and return to the product edit screen
                     val daFlow = _viewModel.shopDataSource.getSmobShop(it.id)
                     viewLifecycleOwner.lifecycleScope.launch {
-                        daFlow.collect {
+                        daFlow.take(1).collect {
                             Timber.i("Received shop: ${it.data?.name}")
                         }
                     }

@@ -23,6 +23,7 @@ import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewMo
 import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
 import com.tanfra.shopmob.smob.work.SmobAppWork
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -105,7 +106,7 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
             var itemMaxPosition = 0L
 
             _viewModel.viewModelScope.launch {
-                _viewModel.smobList2.collect {
+                _viewModel.smobList2.take(1).collect {
 
                     // valid data? (making sure...)
                     if (it.status == Status.SUCCESS) {
