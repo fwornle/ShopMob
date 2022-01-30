@@ -20,7 +20,7 @@ notified and see their lists updated accordingly.
 
 _ShopMob_ thus facilitates group shopping and helps to reduce the time wasted in day-to-day shopping.
 
-See the illustrated [Overview] (#SmobOverview.md) for a gallery of screenshots of the app UI screens as well as an overview of the project structure (source code). 
+See the illustrated [Overview](./SmobOverview.md) for a gallery of screenshots of the app UI screens as well as an overview of the project structure (source code). 
 
 ---
 
