@@ -209,7 +209,37 @@ observed and verified / debugged:
 </div>
 
 The local backend can be found in folder /backend. It can be launched by running node script "backend" (>> node backend) and it
-responds with a list of the principal routes which are available.
+responds with a list of the principal routes which are available. To experiment with the local backend, two small changes 
+need to be made. First, the AWS server needs replaced by _localhost:3000_ which, on the qEMU emulator is mirrored at 10.0.2.2:3000.
+
+This is done in the project gradle build file (app), where simply commenting out the current BASE_URL definition commenting in the 
+one of the local backend does the trick: 
+
+```groovy
+//    buildConfigField "String", "BASE_URL", "\"http://10.0.2.2:3000\""
+    buildConfigField "String", "BASE_URL", "\"https://jp8rx9tjtg.execute-api.eu-central-1.amazonaws.com/dev/\""
+```
+
+In addition, the local backend uses a slightly different API_URL (a version specifier "1" is used - couldn't get this to 
+work on AWS yet... this difference will disappear in the future): 
+
+```kotlin
+//    const val SMOB_API_URL = "api/1"  // simulated (local) backend
+    const val SMOB_API_URL = "api/"     // actual backend (AWS)
+```
+
+Simply use whichever line is appropriate for whichever use case, i.e. local backend vs. real backend on 
+[AWS](https://eu-central-1.console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/stackinfo?filteringStatus=active&filteringText=&viewNested=true&hideStacks=false&stackId=arn%3Aaws%3Acloudformation%3Aeu-central-1%3A930500114053%3Astack%2Fshopmob%2F759c6370-7dc7-11ec-b7e9-060181288dce)
+
+In addition, the cryptic domain name will be replaced by something more human-readable in forthcoming extensions of the app as well.
+
+Once running, go to localhost:3000 or the above (cryptic) AWS URL to find the endpoints where the backend exposes
+the REST API routes needed by ShopMob.
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="SmobProduct background sync" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_backend_aws.PNG" title="SmobShop REST API"/>
+</div>
+
 
 
 ---
@@ -218,13 +248,21 @@ responds with a list of the principal routes which are available.
 
 #### General Overview
 
-At top level, the app's code base is 
+At top level, the app's code base includes three distinct areas:
+
+1. backend
+2. code
+3. doc
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
   <img alt="Workspace" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_0.PNG" title="ShopMob Top Level"/>
 </div>
 
-The workspace of the app's main code base is organized in the following main sections:
+Folder **backend** includes a local [backend](#synchronization-with-the-backend) which has been created for and used during development of this app.
+Folder **code** includes the main code base of the app. Folder **doc** includes the documentation of the app as well as of
+the udacity nano-degree capstone project which lead to its creation. This document is part of folder doc. 
+
+The main main code base of the app can be found in workspace **code**. It is organized in the following principal sections:
 
 1. data
 2. geofence
