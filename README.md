@@ -24,7 +24,7 @@ having to eat spinach for weeks after the panicky last-minute Xmas shopping trip
 
 ## Design
 
-The design of the app can be found [here](doc/Design.md).
+The design of the app can be found **[here](doc/Design.md)**.
 
 ## Getting Started
 
@@ -37,6 +37,22 @@ The design of the app can be found [here](doc/Design.md).
 1. A created project on Firebase console.
 2. A create a project on Google console.
 ```
+
+Note that the API keys associated with these two dependencies have to be obtained separately and placed in the following
+folders of the app:
+
+- google-services.json
+  - ShopMob/code/app
+- google_maps_api.xml
+  - ShopMob/code/app/src/**debug**/res/values
+  - ShopMob/code/app/src/**release**/res/values
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="Google Services" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/google_services.PNG" title="Google Services"/>
+  <img alt="Google Maps API Key" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/gms_api_key.PNG" title="Google Maps API Key"/>
+</div>
+
+Retrieval of these files is described in many posts on the "international network".
 
 ### Installation
 
@@ -56,31 +72,15 @@ Step by step explanation of how to get a dev environment running.
 3. Run the app on your mobile phone or emulator with Google Play Services in it.
 ```
 
-## Testing
-
-Right click on the `test` or `androidTest` packages and select Run Tests
-
-### Break Down Tests
-
-Explain what each test does and why
-
-```
-1.androidTest
-        Instrumented tests for DAO, repository, fragment navigation and general end-2-end UI tests
-2. test
-        Unit tests for the data source (repository) using a fake data source
-```
-
 ## Project Instructions
 
-...
-later
-...
+For further details, please refer to the **[Design document](./doc/Design.md)** as well as the **[App Overview](./doc/SmobOverview.md)**
+document included in this repository.
 
 ## Built With
 
 * [Koin](https://github.com/InsertKoinIO/koin) - A pragmatic lightweight dependency injection framework for Kotlin.
 * [FirebaseUI Authentication](https://github.com/firebase/FirebaseUI-Android/blob/master/auth/README.md) - FirebaseUI provides a drop-in auth solution that handles the UI flows for signing
-* [JobIntentService](https://developer.android.com/reference/androidx/core/app/JobIntentService) - Run background service from the background application, Compatible with >= Android O.
+* lots other packages... see the above-mentioned [App Overview](./doc/SmobOverview.md) document.
 
 ## License

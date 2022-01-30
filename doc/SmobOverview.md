@@ -533,6 +533,10 @@ manage the background sync with the backend:
 1. RefreshSmobStaticDataWorkerFast
 2. RefreshSmobStaticDataWorkerSlow
 
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="Workspace - WorkManager Services" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_work.PNG" title="ShopMob Workspace - WorkManager Services"/>
+</div>
+
 The former is actually a one-time background job which fetches all tables from the backend and stores them in the local DB
 of the device. It is called "fast", as it re-triggers itself using a delay of 6 seconds. This means that the "fast" background
 polling job retrieves information from the backend every 6 seconds:
@@ -574,3 +578,24 @@ product-to-shop mapping _hasProduct_ - an extension function to data class _Smob
 
 For further details about aspects of the app, please refer to the source code directly. References are given in the comments
 of the functions where they apply.
+
+
+### Resources
+
+The app uses a number of resources to provide the desired user experience.
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="Workspace - resources" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_res_1.PNG" title="ShopMob Workspace - resources"/>
+  <img alt="Workspace - resources" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_res_2.PNG" title="ShopMob Workspace - resources"/>
+</div>
+
+Animations are used to slide in and out fragments (e.g. on the details screens). Their behavior is defined in package _anim_.
+Icons and other image content can be found in the _drawable_ package. The layout files for all activities, fragments and 
+the RecyclerView items can be found in _layouts_. Package _menu_ includes the overlay menu(s) as well as the navigation drawer
+menu of the app. The _navigation_ package includes the navigation specification for the navController. An XML resource 
+has been added in package _raw_ to provide a custom look when rendering "google maps" screens.
+In package _values_ all used strings, dimensions style and color definitions, as well as custom element attribute definitions
+are defined. This package also includes file **_google_maps_api.xml_** which includes the API key that allows the app to 
+use "google maps services" (gms). Note that this file is not checked in with the app and has to be retrieved and added separately.
+MotionLayout elements are shaped by the definitions which can be found in package _xml_. Finally, the app used to make use 
+of a deep link to the location selection screen. The definition of the associated URI is stored in _shortcuts_. 
