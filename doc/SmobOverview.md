@@ -513,14 +513,64 @@ for further details.
 
 #### GeoFencing
 
+The receiving end of the GeoFencing activities are handled by the modules in this package. The _BroadCast Receiver_ installs
+an onReceive lambda function. This code listens to system "broadcast" events and - when an **entry** condition of a triggered geofence
+event has been detected - it initiates a one-time WorkManager background service which, in turn, is used to service the 
+incoming intent. This two-stage event handling is done so that the app does not have to be active to service a triggered geofence
+event. The app is only started, once the background job ("doWork") has determined that the triggering ShopMob shop is of a type (SUPERMARKET, 
+HARDWARE store, ...) which corresponds to at least one item on at least one of the shopping lists.
 
+The background service collects the flows from the local DB (Room) in order to establish whether it should notify the user
+or not. Once all necessary conditions have been met, a notification is sent using an Intent with the SmobShop data record 
+of the geoFence triggering shop. This notification is of low priority as not to disturb the user, who might be busy using 
+their phone for a more important activity.
 
 #### Background Work
 
+In addition to the above described WorkManager background job for geoFencing, the app also uses two _recurring_ jobs to 
+manage the background sync with the backend:
+
+1. RefreshSmobStaticDataWorkerFast
+2. RefreshSmobStaticDataWorkerSlow
+
+The former is actually a one-time background job which fetches all tables from the backend and stores them in the local DB
+of the device. It is called "fast", as it re-triggers itself using a delay of 6 seconds. This means that the "fast" background
+polling job retrieves information from the backend every 6 seconds:
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="Workspace - background job" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_system_jobs_fast.PNG" title="ShopMob Workspace - background job"/>
+</div>
+
+This mechanism has been chosen to "undercut" Android's lower limit for WorkManager (15 minutes). The lifecycle methods
+onStart, onResume, onPause, etc. are used to stop this cascade of one-shot jobs as soon as the app is sent to the background,
+thereby avoiding battery resource draining waste. A future revision of the app might replace this job by a simple timer, which
+is only active when the app is in the foreground, or - more likely - by an event-based communication pattern in which the 
+backend sends out notifications to all subscribers when new data is available.
+
+The working of the fast background job can be observed in the Logcat of Android Studio: 
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="Workspace - background job" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_system_jobs_fast_polling.PNG" title="ShopMob Workspace - background job"/>
+</div>
+
+Note that retrieval of backend information is further masked via Koin service locator provided global property **netActive**:
+In timeout conditions, neither the fast nor the slow background job do any work. They simply "say hello" (Logcat) and go back
+to sleep.
+
+The slow background job (every 30 minutes) is used to improve actuality of the data in the app over longer periods of time
+during which the app may not be used. This way, data will at most be 30 minutes old. The slow background job is also 
+responsible for tentatively re-activating the network services, which may have been switched off due to timeouts when
+accessing the backend (netActive = false).
+
 #### Utilities
 
+Package _utils_ includes a variety of utility functions and classes used in different parts of the app: The BindingAdapters
+of the data binding mechanisms in the UI layer can be found here, as can a number of Kotlin extension functions, e.g. the 
+product-to-shop mapping _hasProduct_ - an extension function to data class _SmobShopATO_.
 
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="Workspace - utils" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_utils.PNG" title="ShopMob Workspace - utils"/>
+</div>
 
-
-
-
+For further details about aspects of the app, please refer to the source code directly. References are given in the comments
+of the functions where they apply.
