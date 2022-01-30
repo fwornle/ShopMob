@@ -22,6 +22,12 @@ _ShopMob_ thus facilitates group shopping and helps to reduce the time wasted in
 
 See the illustrated [Overview](./SmobOverview.md) for a gallery of screenshots of the app UI screens as well as an overview of the project structure (source code). 
 
+See the documented [Rubrics](#project-rubrics) for an overview which design criteria have been met and where.
+
+See section [Milestone Plan](#milestone-plan) for a detailed list of milestones to be achieved in this project, as well as section [Project Plan](#project-plan) for details on what was implemented in which phase, spanning the time from Christmas 2021 until today (30.01.2022).
+
+See section [Database Schemata](#database-schemata) for an overview of how data is organized at database level, both on the local device - mySQL - as well as in the backend (noSQL).
+
 ---
 
 ## Use Cases
@@ -204,7 +210,7 @@ redundant information). This may be optimized for scalability at a later stage.
       2. Level of completion of the list (0% ... 100%)
 
 
-##### Data Schemata of Backend stored Data Items
+##### Database Schemata
 
 The backend offers persistent data storage using noSQL databases. Used correctly, this promises fast queries even at 
 scale (incl. distributed storage). The following independent data sets have been defined as backend storage items:
@@ -454,7 +460,7 @@ project needs to be submitted by the end of the course. Deliverables are a
 
 - production ready app
 - design document (this document)
-- evidence of coverage of required design criteria ([rubric](https://review.udacity.com/#!/rubrics/2848/view)))
+- evidence of coverage of required design criteria ([rubric](https://review.udacity.com/#!/rubrics/2848/view))
 
 ### Milestone Plan
 
