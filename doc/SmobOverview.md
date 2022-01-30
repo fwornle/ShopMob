@@ -182,11 +182,47 @@ A future extension of the app will provide an Alexa Skill to be able to "speak t
 on which list (in the backend). Editing a shopping list via the app is therefore thought as a secondary use case, as it is much 
 more tedious to do so via the app as it will be using Alexa's ability to make sense of the user's utterances.
 
+##### Synchronization with the Backend
+
+Throughout the development of this app a simple local backend has been used. The _express_ framework (JavaScript) based 
+[Json-Server](https://www.npmjs.com/package/json-server) running on **node.js** provides a simple REST API from a JSON file
+based "database". The database file "db.json" is generated using a small JavaScript function. Content is created from custom
+tables (where it mattered) and [faker](https://www.npmjs.com/package/faker), a flexible JavaScript package for node.js which 
+supports creation of user data, URLs, UUIDs, dates, random text, etc. Using this approach, the backend was developed in parallel
+to the actual app development. Once mature (= two days ago... ;) ), the local backend has been transferred to an AWS cloud
+instance using SST, the [Serverless Stack](https://serverless-stack.com/chapters/serverless-nodejs-starter.html) framework for
+infrastructure as code. The resulting backend runs as AWS lambda functions, i.e. they are spun up on demand, when the app
+establishes a connection via the Application Server exposed REST API. The (still file based) backend DB is in an S3 bucket 
+and can easily be replaced (drag'n'drop) should this be necessary. In the future, a proper backend DB will be used and a
+bridge will be provided to Alexa's Skills system.
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="SmobProduct background sync" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_backend_local.PNG" title="SmobShop Background Sync"/>
+</div>
+
+Using this local backend, the development of the synchronizing mechanisms was greatly accelerated. The script provides immediate
+feedback on the CRUD commands exchanged with the express server. Running the app on two emulators, the exchange of data can be 
+observed and verified / debugged: 
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="SmobProduct background sync" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_backend_local2.PNG" title="SmobShop Background Sync"/>
+</div>
+
+The local backend can be found in folder /backend. It can be launched by running node script "backend" (>> node backend) and it
+responds with a list of the principal routes which are available.
+
+
 ---
 
 ### Project Workspace
 
 #### General Overview
+
+At top level, the app's code base is 
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="Workspace" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_0.PNG" title="ShopMob Top Level"/>
+</div>
 
 The workspace of the app's main code base is organized in the following main sections:
 
@@ -228,6 +264,32 @@ The **data layer** of the app follows the recommended repository architecture, t
   <img alt="Workspace - Data Layer" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_data_net.PNG" title="ShopMob Data Layer - Network"/>
   <img alt="Workspace - Data Layer" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_data_repo.PNG" title="ShopMob Data Layer - Repository"/>
 </div>
+
+##### Persistent storage in a Local DB
+
+Persistent on-device storage is provided using a Room mySQL database. Access to this DB is through the data layer abstacting 
+repository (see below). The repository implements the Data Access Object interface (DAO). During the SW build, gradle plugins
+generate the needed access code to the Room DB data tables. The format of the latter is governed by annotated data classes
+defining "Data Transfer Objects" (DTO). The (Room) annotations provides the code generator with the necessary information to 
+derive matching SQL tables (with column names as per annotation in the data class). In addition, these 
+annotations also link each data class to a matching type conversion class which provides the necessary serialization /
+deserialization methods for complex data types. The _Kotlinx Serializer_ is used for this.
+
+As each domain (local DB, network, application) defines their own data types (DTO - local DB, NTO - network, ATO - application),
+extension classes have been defined to convert between these distinct data types: package _dto2ato_ includes the extension 
+classes for the conversion from DTO data (local DB) to ATO data (application). In many cases, a 1:1 property equality is used, 
+but some nested structures are resolved when turning application data types (ATO) into local DB types (DTO) to better match the
+table structure of an SQL database.
+
+Kotlin file utils/dbTypes.kt includes a variety of data type definitions which are fundamental to the application: Enums for 
+ShopItemStatus, ProductCategory (main, sub), etc.
+
+##### Network access to the Backend
+
+
+
+
+##### Abstraction through Repositories
 
 
 #### User Interface
