@@ -197,7 +197,7 @@ and can easily be replaced (drag'n'drop) should this be necessary. In the future
 bridge will be provided to Alexa's Skills system.
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
-  <img alt="SmobProduct background sync" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_backend_local.PNG" title="SmobShop Background Sync"/>
+  <img alt="SmobProduct background sync" height="500" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_backend_local.PNG" title="SmobShop Background Sync"/>
 </div>
 
 **Note:**
@@ -218,9 +218,8 @@ Using this local backend, the development of the synchronizing mechanisms was gr
 feedback on the CRUD commands exchanged with the express server. Running the app on two emulators, the exchange of data can be 
 observed and verified / debugged: 
 
-<div style="display: flex; align-items: center; justify-content: space-around;">
-  <img alt="SmobProduct background sync" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_backend_local2.PNG" title="SmobShop Background Sync"/>
-</div>
+[![Animation](https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_backend_local2.PNG)](https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/smob_backend_sync.asf)
+(click me for an animation)
 
 The local backend can be found in folder /backend. It can be launched by running node script "backend" (>> node backend) and it
 responds with a list of the principal routes which are available. To experiment with the local backend, two small changes 
@@ -249,7 +248,7 @@ Once running, go to localhost:3000 or the above (cryptic) AWS URL to find the en
 the REST API routes needed by ShopMob.
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
-  <img alt="SmobProduct REST API" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_backend_aws.PNG" title="SmobShop REST API"/>
+  <img alt="SmobProduct REST API" height="600" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_backend_aws.PNG" title="SmobShop REST API"/>
 </div>
 
 The cryptic domain name will be replaced by something more human-readable in forthcoming extensions of the app as well.
@@ -267,7 +266,7 @@ At top level, the app's code base includes three distinct areas:
 3. doc
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
-  <img alt="Workspace" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_0.PNG" title="ShopMob Top Level"/>
+  <img alt="Workspace" height="150" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_0.PNG" title="ShopMob Top Level"/>
 </div>
 
 Folder **backend** includes a local [backend](#synchronization-with-the-backend) which has been created for and used during development of this app.
@@ -283,7 +282,7 @@ The main main code base of the app can be found in workspace **code**. It is org
 5. utils
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
-  <img alt="Workspace" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_1.PNG" title="ShopMob Workspace"/>
+  <img alt="Workspace" height="400" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_1.PNG" title="ShopMob Workspace"/>
 </div>
 
 The **data** layer includes the repository through which access is provided to both the local DB and the backend DB (via a RESTful API).
@@ -426,8 +425,8 @@ sub-sections:
 In its present form, sub-section **planning** forms the central part of the app. 
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
-  <img alt="Workspace - UI" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_ui_1.PNG" title="ShopMob Workspace - UI"/>
-  <img alt="Workspace - UI" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_planning.PNG" title="ShopMob Workspace - UI"/>
+  <img alt="Workspace - UI" height="400" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_ui_1.PNG" title="ShopMob Workspace - UI"/>
+  <img alt="Workspace - UI" height="400" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_planning.PNG" title="ShopMob Workspace - UI"/>
 </div>
 
 ##### Administration
@@ -498,7 +497,7 @@ The planning packages can be summarized as follows:
 Navigation within the _planning_ activity of the app can be visualized as shown below:
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
-  <img alt="Workspace - UI - planning" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_nav_planning.PNG" title="ShopMob Workspace - UI - planning"/>
+  <img alt="Workspace - UI - planning" height="400" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_nav_planning.PNG" title="ShopMob Workspace - UI - planning"/>
 </div>
 
 ##### Shopping
@@ -534,7 +533,7 @@ manage the background sync with the backend:
 2. RefreshSmobStaticDataWorkerSlow
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
-  <img alt="Workspace - WorkManager Services" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_work.PNG" title="ShopMob Workspace - WorkManager Services"/>
+  <img alt="Workspace - WorkManager Services" height="60" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_work.PNG" title="ShopMob Workspace - WorkManager Services"/>
 </div>
 
 The former is actually a one-time background job which fetches all tables from the backend and stores them in the local DB
@@ -542,7 +541,7 @@ of the device. It is called "fast", as it re-triggers itself using a delay of 6 
 polling job retrieves information from the backend every 6 seconds:
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
-  <img alt="Workspace - background job" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_system_jobs_fast.PNG" title="ShopMob Workspace - background job"/>
+  <img alt="Workspace - background job" height="400" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_system_jobs_fast.PNG" title="ShopMob Workspace - background job"/>
 </div>
 
 This mechanism has been chosen to "undercut" Android's lower limit for WorkManager (15 minutes). The lifecycle methods
@@ -554,7 +553,7 @@ backend sends out notifications to all subscribers when new data is available.
 The working of the fast background job can be observed in the Logcat of Android Studio: 
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
-  <img alt="Workspace - background job" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_system_jobs_fast_polling.PNG" title="ShopMob Workspace - background job"/>
+  <img alt="Workspace - background job" height="400" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_system_jobs_fast_polling.PNG" title="ShopMob Workspace - background job"/>
 </div>
 
 Note that retrieval of backend information is further masked via Koin service locator provided global property **netActive**:
@@ -573,7 +572,7 @@ of the data binding mechanisms in the UI layer can be found here, as can a numbe
 product-to-shop mapping _hasProduct_ - an extension function to data class _SmobShopATO_.
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
-  <img alt="Workspace - utils" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_utils.PNG" title="ShopMob Workspace - utils"/>
+  <img alt="Workspace - utils" height="100" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_utils.PNG" title="ShopMob Workspace - utils"/>
 </div>
 
 For further details about aspects of the app, please refer to the source code directly. References are given in the comments
@@ -585,8 +584,8 @@ of the functions where they apply.
 The app uses a number of resources to provide the desired user experience.
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
-  <img alt="Workspace - resources" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_res_1.PNG" title="ShopMob Workspace - resources"/>
-  <img alt="Workspace - resources" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_res_2.PNG" title="ShopMob Workspace - resources"/>
+  <img alt="Workspace - resources" height="400" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_res_1.PNG" title="ShopMob Workspace - resources"/>
+  <img alt="Workspace - resources" height="400" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_res_2.PNG" title="ShopMob Workspace - resources"/>
 </div>
 
 Animations are used to slide in and out fragments (e.g. on the details screens). Their behavior is defined in package _anim_.
