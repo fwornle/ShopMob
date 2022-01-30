@@ -53,7 +53,7 @@ Clicking on the home menu button opens a drawer menu with two options:
   <img alt="SmobShops screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_drawer.PNG" title="Drawer Menu"/>
   <img alt="SmobShops screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shops.PNG" title="Administration"/>
   <img alt="SmobShops screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shops_details_2.PNG" title="SmobShops"/>
-  <img alt="SmobShops screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_geofence_check_2.PNG" title="SmobShops"/>
+  <img alt="SmobShops screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_geofence_check_9.PNG" title="SmobShops"/>
 </div>
 
 While the administration screen is presently still empty - this it will be possible to define users, user groups, etc. -
