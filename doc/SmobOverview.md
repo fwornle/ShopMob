@@ -24,6 +24,21 @@ _ShopMob_ thus facilitates group shopping and helps to reduce the time wasted in
 
 ### Overview
 
+#### Authentication
+
+![authentication_1](https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_login_0.PNG)
+
+
+#### Planning
+
+#### Detail Screens
+
+#### Shopping
+
+
+
+
+
 The following five activities make up the principal screens of the app. Within each activity, fragments are used to 
 provide sub-views.
 
@@ -62,7 +77,7 @@ At _activity_ and _fragment_ level, the following navigation transitions are pos
 
 ### Flow of information
 
-![workflow test](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/master/doc/puml/workflow.md)
+![workflow](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/master/doc/puml/workflow.md)
 
 
 ### Architecture of the SmobUserRepository
