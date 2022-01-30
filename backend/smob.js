@@ -169,17 +169,17 @@ function smob () {
 
     // define some local shops
     const daShops = [
-        { id: faker.datatype.uuid(), name: 'Lidl', category: 'SUPERMARKET', latitude: faker.address.latitude(), longitude: faker.address.longitude(), type: 'CHAIN' },
-        { id: faker.datatype.uuid(), name: 'Aldi', category: 'SUPERMARKET', latitude: faker.address.latitude(), longitude: faker.address.longitude(), type: 'CHAIN' },
-        { id: faker.datatype.uuid(), name: 'Rewe', category: 'SUPERMARKET', latitude: faker.address.latitude(), longitude: faker.address.longitude(), type: 'CHAIN' },
-        { id: faker.datatype.uuid(), name: 'Edeka', category: 'SUPERMARKET', latitude: faker.address.latitude(), longitude: faker.address.longitude(), type: 'CHAIN' },
-        { id: faker.datatype.uuid(), name: 'Obi', category: 'HARDWARE', latitude: faker.address.latitude(), longitude: faker.address.longitude(), type: 'CHAIN' },
-        { id: faker.datatype.uuid(), name: 'Bauhaus', category: 'HARDWARE', latitude: faker.address.latitude(), longitude: faker.address.longitude(), type: 'CHAIN' },
-        { id: faker.datatype.uuid(), name: 'Hornbach', category: 'HARDWARE', latitude: faker.address.latitude(), longitude: faker.address.longitude(), type: 'CHAIN' },
-        { id: faker.datatype.uuid(), name: 'Höffner', category: 'FURNITURE', latitude: faker.address.latitude(), longitude: faker.address.longitude(), type: 'CHAIN' },
-        { id: faker.datatype.uuid(), name: 'Segmüller', category: 'FURNITURE', latitude: faker.address.latitude(), longitude: faker.address.longitude(), type: 'CHAIN' },
-        { id: faker.datatype.uuid(), name: 'XXX Lutz', category: 'FURNITURE', latitude: faker.address.latitude(), longitude: faker.address.longitude(), type: 'CHAIN' },
-        { id: faker.datatype.uuid(), name: 'Wimmer', category: 'BAKERY', latitude: faker.address.latitude(), longitude: faker.address.longitude(), type: 'CHAIN' },
+        { id: faker.datatype.uuid(), name: 'Lidl', category: 'SUPERMARKET', latitude: 48.19446661077098, longitude: 11.465429663658142, type: 'CHAIN' },
+        { id: faker.datatype.uuid(), name: 'Aldi', category: 'SUPERMARKET', latitude: 48.19283416587666, longitude: 11.466210186481476, type: 'CHAIN' },
+        { id: faker.datatype.uuid(), name: 'Rewe', category: 'SUPERMARKET', latitude: 48.19143948391694, longitude: 11.466687619686128, type: 'CHAIN' },
+        { id: faker.datatype.uuid(), name: 'Edeka', category: 'SUPERMARKET', latitude: 48.181761491349825, longitude: 11.476078033447266, type: 'CHAIN' },
+        { id: faker.datatype.uuid(), name: 'Obi', category: 'HARDWARE', latitude: 48.18904340320997, longitude: 11.467192545533182, type: 'CHAIN' },
+        { id: faker.datatype.uuid(), name: 'Bauhaus', category: 'HARDWARE', latitude: 48.17845639240512, longitude: 11.505287289619448, type: 'CHAIN' },
+        { id: faker.datatype.uuid(), name: 'Hornbach', category: 'HARDWARE', latitude: 48.181761491349825, longitude: 11.476078033447266, type: 'CHAIN' },
+        { id: faker.datatype.uuid(), name: 'Höffner', category: 'FURNITURE', latitude: 48.19143948391694, longitude: 11.466687619686128, type: 'CHAIN' },
+        { id: faker.datatype.uuid(), name: 'Segmüller', category: 'FURNITURE', latitude: 48.19283416587666, longitude: 11.466210186481476, type: 'CHAIN' },
+        { id: faker.datatype.uuid(), name: 'XXX Lutz', category: 'FURNITURE', latitude: 48.19446661077098, longitude: 11.465429663658142, type: 'CHAIN' },
+        { id: faker.datatype.uuid(), name: 'Wimmer', category: 'BAKERY', latitude: 48.17845639240512, longitude: 11.505287289619448, type: 'CHAIN' },
     ]
 
 
@@ -264,7 +264,7 @@ function smob () {
         var listItemPosition = id
         var name = daLists[id].name
         var description = faker.lorem.words()
-        var itemsOnList = [...Array(rand(20)).keys()].map(_ => faker.helpers.randomize(productIds)).sort()
+        var itemsOnList = [...Array(2 + rand(20)).keys()].map(_ => faker.helpers.randomize(productIds)).sort()
         var items = itemsOnList.map(
             (prodId, idx) => { return { 
                 "id": prodId, 
