@@ -26,11 +26,7 @@ _ShopMob_ thus facilitates group shopping and helps to reduce the time wasted in
 
 #### Authentication
 
-![authentication_1](https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_login_0.PNG){
-width:150px;
-height:100px;
-}
-
+<img alt="ShopMob Login Screen" height="180" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_login_0.PNG" title="Login Screen" width="70"/>
 
 #### Planning
 
