@@ -334,6 +334,15 @@ table structure of an SQL database.
 Kotlin file _utils/dbTypes.kt_ includes a variety of data type definitions which are fundamental to the application: Enums for 
 ShopItemStatus, ProductCategory (main, sub), etc.
 
+**Note:**
+
+Kotlin flow types are exposed on all reading interfaces to make the app responsive in the light of incoming data changes
+when (background) synchronizing with the backend. The flows are collected in the UI layer (BindingAdapter), thereby providing
+an elegant way of connecting the RecyclerView data list elements to the underlying database tables.
+
+Writing interfaces are implemented as suspending functions, making use of Room's Coroutine capabilities to offload these
+slow operations to the IO dispatcher (away from the "main/UI" thread). 
+
 ##### Network access to the Backend
 
 The RESTful API exposed by the AWS cloud based backend is used by the network layer of the app. Package 
@@ -385,14 +394,126 @@ out the masking "false" condition in the following code section of _netServices.
 ```
 
 
-
-
 ##### Abstraction through Repositories
 
+Finally, the repository layer provides the desired abstraction of the data sources towards the application. As such, there are
+ATO data type definitions, conversions to DTOs, and a "Data Source" interface which exposes the public data methods
+to the app. A data wrapping _Resource_ data class is used to adjoin the actual data structures with status information, 
+thus allowing the progress bars of the UI layer to be controlled directly by the status of the underlying data (loading).
+In addition, exceptions encountered during the retrieval of information from the Room DB (or while writing to it) are handled by
+the **ResponseHandler** class of the repository and the resulting error messages are stored in the Response type.
+
+This is used, for example, to control the behavior of the app in the light of problems encountered during the synchronizing
+with the backend: as a central element of all data connections, the ResponseHandler provides an elegant way to disable and 
+re-enable network access, thereby keeping the app operational, even during timeout conditions when accessing the backend.
+
+The 5 repositories (one per type of data source: Users, Groups, Shops, Products, Lists) resemble each other - in fact, they
+only differ in the data type of the underlying asset. In forthcoming extensions of the app, _generics_ will be used
+to further simplify the code base and reduce the five repository code files to a single (generic) one. There was not enough
+time to do so during the limited development time of the udacity nano-degree which prompted this project.
 
 #### User Interface
 
+The workspace section associated with the view layer (UI) of the app is shown below. It can be divided in the following
+sub-sections:
+
+1. Administration
+2. Authentication
+3. Details
+4. Planning
+5. Shopping
+
+In its present form, sub-section **planning** forms the central part of the app. 
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="Workspace - UI" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_ui_1.PNG" title="ShopMob Workspace - UI"/>
+  <img alt="Workspace - UI" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_planning.PNG" title="ShopMob Workspace - UI"/>
+</div>
+
+##### Administration
+
+Package _administration_ includes the activity, viewModel and fragments of the screens associated with administrative tasks,
+e.g. management of user profiles, adding users to SmobGroups, adding URLs to shops, restoring accidentally deleted lists, 
+etc. At the writing of this document, the administration of the app is but a mere container. Navigation to and from it works
+but there is no content yet.
+
+##### Authentication
+
+This package includes the activity which is used to provide login functionality via a firebaseUI authentication flow.
+Once authenticated, the user is transferred to the main screen of the app with the SmobList shopping lists.
+At present, no user details are being used to control and filter available content in the app. Future extensions
+will plug in the user credentials and authentication status in the Kotlin flow transformations which are used to 
+access the Room database layer (as well as in the suspending functions behind the writing interface members). Access
+tokens will thus be considered prior to providing information. This way, only content will be shown for which the user
+has sufficient access rights.
+
+##### Details Screen
+
+This package includes the activities and fragments of the screens for shop and product details. See the UI section (above) 
+for a detailed description. Note that the content is "modal" in nature: depending on where the user navigated from, menu
+items are shown as "LOGOUT" or "LAUNCH" and the home button is available or not. This is necessary, as the shop details
+activity can be launched from within the planning section of the app, or by Android upon a triggered geofence. In the 
+latter case, the home (= back) button is not displayed, as there is no well-defined "backstack".
+
+Navigation within the _details_ activity of the app can be visualized as shown below:
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="Workspace - UI - planning" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_nav_details.PNG" title="ShopMob Workspace - UI - details"/>
+</div>
+
+##### Planning
+
+Section _planning_ is the central part of the app in its current state. This section can be further clustered in the following
+parts:
+
+1. Lists
+2. ListEdit
+3. ProductEdit
+4. ProductList
+5. ShopEdit
+6. ShopList
+7. Utils
+
+Most planning fragments share a common viewModel, as they are tightly coupled (in terms of the data which they visualize and
+manipulate). These viewModels are provided by a Koin service locator module _vmServices_. Initially, the app design aimed
+at a high degree of separation of concerns and each of the above sections came with their own viewModel.
+However, it quickly became apparent that many of the fragments are used to manipulate a part of the underlying data and
+these manipulations caused side effects in other viewModels. Over time, it seemed more and more appropriate to collect
+many of these smaller viewModels in a larger shared viewModel. A future redesign of app might revisit the architecture of the
+viewModels and provide a slightly cleaner design. For now, it works and serves all needed purposes.
+
+In addition, most ViewModels share a common code base (which can be found in package /base). Motivated by the udacity course 
+work, this includes common navigation commands, SingleEvent data elements (used for the one-time display of SnackBars and Toasts), etc.
+
+The planning packages can be summarized as follows:
+
+- Package _lists_ includes the Fragment, RecyclerView Adapter and SwipeActionHandler of the SmobList shopping lists screen.
+- Package _listsEdit_ includes the Fragment with edit masks, allowing the user to create new shopping lists.
+- Package _productList_ includes the Fragment, RecyclerView Adapter and SwipeActionHandler of the SmobProduct screen of the selected shopping list.
+- Package _productEdit_ includes the Fragment with edit masks, allowing the user to add items onto the selected shopping list.
+- Package _shopList_ includes the Fragment, RecyclerView Adapter and SwipeActionHandler of the list of SmobShop entries.
+- Package _shopEdit_ includes the Fragment with edit masks, allowing the user to define new SmobShop entries.
+- Package _utils_ includes communal functionality of the RecyclerView list adapters and the SwipeHandlers, as well as auxiliary classes for phone vibration signals and the handling of the soft keyboard.     
+
+Navigation within the _planning_ activity of the app can be visualized as shown below:
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="Workspace - UI - planning" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_nav_planning.PNG" title="ShopMob Workspace - UI - planning"/>
+</div>
+
+##### Shopping
+
+Section _shopping_ is currently but a mere fragment of what is to come. A landing page has been installed (fragment within
+the shopping activity) to alert the user to the upcoming "shop floor" experience - it is planned to provide a shop floor plan
+allowing in-store navigation to the product on the shopping list. However, time constraints made it impossible to include this
+as part of the udacity nano-degree capstone project.
+
+A MotionLayout view animation has been installed as "coming soon" screen in this section of the app. See the above UI section
+for further details.
+
 #### GeoFencing
+
+
 
 #### Background Work
 
