@@ -62,19 +62,56 @@ Clicking on the home menu button opens a drawer menu with two options:
 - Administration
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
-  <img alt="SmobLists screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_drawer.PNG" title="Drawer Menu"/>
-  <img alt="SmobLists screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shops.PNG" title="Administration"/>
-  <img alt="SmobLists screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shops_details_2.PNG" title="SmobShops"/>
-  <img alt="SmobLists screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_geofence_check_2.PNG" title="SmobShops"/>
+  <img alt="SmobShops screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_drawer.PNG" title="Drawer Menu"/>
+  <img alt="SmobShops screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shops.PNG" title="Administration"/>
+  <img alt="SmobShops screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shops_details_2.PNG" title="SmobShops"/>
+  <img alt="SmobShops screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_geofence_check_2.PNG" title="SmobShops"/>
 </div>
 
 While the administration screen is presently still empty - this it will be possible to define users, user groups, etc. -
 the SmobShop list shows all shops currently defined in ShopMob. Clicking on a SmobShop item takes the user to a
 details screen on which they can see the details of a particular shop, eg. where to find it, opening hours, etc.
+
 Clicking on the highlighted coordinates of the shop opens google maps in streetview (if available) at the selected location. 
 The shop image is loaded from a URL, should one be provided. If not, a ShopMob placeholder image is shown instead.
 
+The Floating Action Button ("+") can be used to define a new SmobShop. An edit screen is shown
 
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="SmobShops screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shop_edit.PNG" title="ShopMop definition"/>
+  <img alt="SmobShops screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shop_edit_type.PNG" title="ShopMop definition"/>
+  <img alt="SmobShops screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shop_edit_type_done.PNG" title="ShopMop definition"/>
+</div>
+
+A shop name has to be specified, as well as the general shop type (eg. Supermarket, Drugstore, ...). In addition, the location
+of the shop has to be defined.
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="Location screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shop_map_perm.PNG" title="Location selection"/>
+  <img alt="Location screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shop_map_select.PNG" title="Location selection"/>
+  <img alt="Location screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shop_map_select_2.PNG" title="Location selection"/>
+</div>
+
+The style of the map can be altered via the overlay menu:
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="Location screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shop_map_menu.PNG" title="Location selection"/>
+  <img alt="Location screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shop_map_hybrid.PNG" title="Location selection"/>
+</div>
+
+##### SmobShop - the shop floor area
+
+Clicking on the animated "Shop Floor" button takes the user to the Shopping area of the app. At present, this area still not available.
+Forthcoming updates of the app will extend the functionality by a floor plan of the shop, guiding the user to the desired
+products inside the shop (zone, aisle, shelf). An animated "coming soon" screen is shown instead (MotionLayout).
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="SmobShopping screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shop_1.PNG" title="ShopMop shopping"/>
+  <img alt="SmobShopping screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shop_2.PNG" title="ShopMop shopping"/>
+  <img alt="SmobShopping screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_shop_3.PNG" title="ShopMop shopping"/>
+</div>
+
+##### SmobShop - the product list area
 
 
 #### Detail Screens
