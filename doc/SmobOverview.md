@@ -1,3 +1,4 @@
+<link href="design.css" rel="stylesheet" />
 # ShopMob Overview
 
 Shopping list management for collaborative shopping trips
