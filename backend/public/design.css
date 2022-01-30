@@ -1,0 +1,10 @@
+img[src*="#thumbnail"] {
+    width:150px;
+    height:100px;
+ }
+ 
+.box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
