@@ -4,14 +4,14 @@ Shopping list management for collaborative shopping trips.
 
 ---
 
-This document describes the [User Interface](#user-interface) as well as the technical [Project Structure](#project-structure)
+This document describes the [User Interface](#user-interface-ui) as well as the [Project Workspace](#project-workspace)
 of ShopMob.
 
 See [Design](./Design.md) for more details about the design aspects of the app.
 
 ---
 
-### User Interface
+### User Interface (UI)
 
 #### Authentication
 
@@ -29,7 +29,7 @@ has been set up to use 2-factor authentication.
 
 ##### SmobList - the ShopMob shopping lists
 
-Once logged on, the user arrives at the planning screen of the app. Upon the first time the app is used, the local 
+Once logged on, the user arrives at the planning screen of the app. The first time the app is used, the local 
 database is still empty. When there is no connection to the backend, the app has no data. This is indicated to the user
 as shown below.
 
@@ -162,9 +162,9 @@ to collect a list of products and product details which are relevant to this par
 provided to demonstrate the mechanism (same as all other product details - lore ipsum...).
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
-  <img alt="SmobProduct list, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_product_details.PNG" title="SmobProduct list"/>
-  <img alt="SmobProduct list, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_product_swipe_right.PNG" title="SmobProduct list"/>
-  <img alt="SmobProduct list, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_product_swipe_left.PNG" title="SmobProduct list"/>
+  <img alt="SmobProduct list" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_product_details.PNG" title="SmobProduct list"/>
+  <img alt="SmobProduct list" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_product_swipe_right.PNG" title="SmobProduct list"/>
+  <img alt="SmobProduct list" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_product_swipe_left.PNG" title="SmobProduct list"/>
   <img alt="SmobProduct list" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_product_swipe_undo.PNG" title="SmobProduct list"/>
 </div>
 
@@ -184,7 +184,61 @@ more tedious to do so via the app as it will be using Alexa's ability to make se
 
 ---
 
-### Project Structure
+### Project Workspace
+
+#### General Overview
+
+The workspace of the app's main code base is organized in the following main sections:
+
+1. data
+2. geofence
+3. ui
+4. work
+5. utils
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="Workspace" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_1.PNG" title="ShopMob Workspace"/>
+</div>
+
+The **data** layer includes the repository through which access is provided to both the local DB and the backend DB (via a RESTful API).
+Section **geofence**  includes the handling of geofence events via a _BroadCast Receiver_ as well as _Geofence Service Handler_ which is
+triggered by a WorkManager background job. Section **ui** includes all activities, fragments as well as the viewModels which are used to 
+hold the date vor the UI layer. Section **work** includes the WorkManager background services used for periodic synchronization of the 
+device with the backend. Package **utils** includes a number of helper classes and extension functions which are shared by the other
+sections.
+
+In addition to the app's code base, two test projects have been defined, providing regression testing of several aspects of the app. Initially, 
+both unit tests and instrumented test had been defined. However, given the lack of time, the test projects have not been maintained
+for some time and, as such, need to be altered to reflect the many substantial changes in the app's main code base. Prior to extending
+this app any further, both test projects will be fixed and completed - this is necessary, as the number of features of the app will grow 
+over time, and it will become essential to perform continuous testing to avoid breaking changes from being merged to the main branch of the app.
+
+#### Data Layer
+
+The **data layer** of the app follows the recommended repository architecture, thereby abstracting the individual data sources
+(local DB, Network) from the app's core logic. The data layer is structured as follows:
+
+1. local
+2. net
+3. repo
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="Workspace - Data Layer" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_data.PNG" title="ShopMob Data Layer"/>
+  <img alt="Workspace - Data Layer" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_data_local.PNG" title="ShopMob Data Layer - Local"/>
+  <img alt="Workspace - Data Layer" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_data_net.PNG" title="ShopMob Data Layer - Network"/>
+  <img alt="Workspace - Data Layer" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_data_repo.PNG" title="ShopMob Data Layer - Repository"/>
+</div>
+
+
+#### User Interface
+
+#### GeoFencing
+
+#### Background Work
+
+#### Utilities
+
+
 
 
 
