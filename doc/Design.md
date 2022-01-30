@@ -20,6 +20,8 @@ notified and see their lists updated accordingly.
 
 _ShopMob_ thus facilitates group shopping and helps to reduce the time wasted in day-to-day shopping.
 
+See the illustrated [Overview] (#SmobOverview.md) for a gallery of screenshots of the app UI screens as well as an overview of the project structure (source code). 
+
 ---
 
 ## Use Cases
@@ -406,6 +408,23 @@ provide sub-views.
    3. Section details (image of shelf with location of selected shopping item on shelf)
 
 
+### Activity Level Architecture
+
+At _activity_ level, ShopMob has the following fundamental architecture:
+
+![main architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/puml/architecture_main.md)
+
+### Navigation
+
+At _activity_ and _fragment_ level, the following navigation transitions are possible:
+
+![main architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/puml/navigation.md)
+
+### Flow of information
+
+![workflow test](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/master/doc/puml/workflow.md)
+
+
 ### Architecture of the SmobUserRepository
 
 The SmobUserRepository has the following architecture:
@@ -426,23 +445,6 @@ The Koin service locator modules have the following architecture:
 ![main architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/puml/modulesKoin.md)
 
 
-### Activity Level Architecture
-
-At _activity_ level, ShopMob has the following fundamental architecture:
-
-![main architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/puml/architecture_main.md)
-
-### Navigation
-
-At _activity_ and _fragment_ level, the following navigation transitions are possible:
-
-![main architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/puml/navigation.md)
-
-
-### Detailed Flow
-
-![workflow test](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fwornle/ShopMob/master/doc/puml/workflow.md)
-
 ---
 
 ## Project Planning
@@ -457,8 +459,7 @@ project needs to be submitted by the end of the course. Deliverables are a
 ### Milestone Plan
 
 As such, the following milestones need to have been reached by the submission date of the project.
-At the writing of this document (21.12.21), this submission is expected for 
-31.01.2022.
+At the writing of this document (21.12.21), this submission is expected for 31.01.2022.
 
 #### Design
 
@@ -488,17 +489,17 @@ At the writing of this document (21.12.21), this submission is expected for
     - [x] Model View / View Model (MVVM)
       - [x] move all LiveData to VM (from Repo - replace loading status by Resource wrappers)
       - [x] Migrate from _LiveData_ to _Flow_
-  - [ ] DSNG-3.5: Architecture: Data flow modelling (optional)
+  - [x] DSNG-3.5: Architecture: Data flow modelling (optional)
     - [x] UML diagram of Repository Architecture
     - [x] UML diagram of Koin Service Locator mmodules
     - [x] UML diagram of local DB
     - [x] Sample sequence diagram integrated in design document (puml)
-    - [ ] Real sequence diagrams
+    - [x] Real sequence diagrams
   - [x] DSNG-3.7: Project Milestone planning (this section)
     - [x] Major milestones defined and filled with content
     - [x] Project planning - milestones vs. time
-  - [ ] [Project rubic](https://review.udacity.com/#!/rubrics/2848/view) coverage evidence
-    - [ ] Rubic mapping to project milestones (to be sure, all nano degree requirements are covered)
+  - [x] [Project rubic](https://review.udacity.com/#!/rubrics/2848/view) coverage evidence
+    - [x] Rubic mapping to project milestones (to be sure, all nano degree requirements are covered)
 
 #### Implementation
 
@@ -550,7 +551,7 @@ At the writing of this document (21.12.21), this submission is expected for
     - [ ] IMPL-2.5.6: Set-up network access modules and integrate them into the repository
         - [x] Integrate major building blocks of the network layer (from C2, Asteroids), e.g. retrofit, moshi converters
         - [x] Refactoring (app): Adapt network modules to use ShopMob (smob) nomenclature, instead of "asteroids" - content still as in C2
-        - [ ] Refactoring (test): Add unit test and instrumented tests for the network layer
+        - [ ] ~~Refactoring (test): Add unit test and instrumented tests for the network layer~~
     - [x] IMPL-2.5.7: Set-up UI - view models, fragments, RecyclerView handling, LifeData observer, bi-directional data binding
         - [x] Integrate major building blocks for UI layer (from C4)
         - [x] Refactoring (app): Adapt UI to use ShopMob (smob) nomenclature, instead of "reminders" - content still as in C4
@@ -558,32 +559,32 @@ At the writing of this document (21.12.21), this submission is expected for
         - [x] Introduce all activities and fragments as needed by the app - content: dummy placeholders
         - [x] Adjust Activity navigation - all intent based transitions work w/h bundled data
         - [x] Adjust Fragment navigation - all fragment based transitions work w/h bundled data
-    - [ ] IMPL-2.5.8: Develop floor plan UI elements (canvas)
-      - [ ] Design layout view for shop floor plans 
-      - [ ] Design data model for storing parameterized shop floor plans (JSON)
-      - [ ] Integrate shop floor plans in the local DB and the backend DB
-      - [ ] Integrate major building blocks for advanced UI elements (Canvas based elements, MotionLayout) (from C3, Advanced Android App)
-      - [ ] Refactoring (app): Adapt advanced UI elements to use ShopMob (smob) nomenclature - content still as in C3
-      - [ ] Refactoring (test): Add instrumented tests for the advanced UI elements
-      - [ ] Implement displaying of floor plans including _zones_ with product stats (zone level "overview" display)
-      - [ ] Implement displaying of "best route through shop", e.g.: zone level --> zone-1 (+ product stats) --> zone-4 (+ stats) --> checkout 
-      - [ ] Implement displaying of zone plans including more detailed _sections_ (aisles/shelves) and products per zone
-      - [ ] Implement displaying of _shelf_ view (image from DB) 
-    - [ ] IMPL-2.5.9: Develop floor plan UI elements (canvas)
-        - [ ] Design layout view for shop floor plans
-        - [ ] Design data model for storing parameterized shop floor plans (JSON)
-        - [ ] Integrate shop floor plans in the local DB and the backend DB
-        - [ ] Implement displaying of floor plans including _zones_ with product stats (zone level "overview" display)
-        - [ ] Implement displaying of "best route through shop", e.g.: zone level --> zone-1 (+ product stats) --> zone-4 (+ stats) --> checkout
-        - [ ] Implement displaying of zone plans including more detailed _sections_ (aisles/shelves) and products per zone
-        - [ ] Implement displaying of _shelf_ view (image from DB)
+    - [ ] ~~IMPL-2.5.8: Develop floor plan UI elements (canvas)~~
+      - [ ] ~~Design layout view for shop floor plans~~ 
+      - [ ] ~~Design data model for storing parameterized shop floor plans (JSON)~~
+      - [ ] ~~Integrate shop floor plans in the local DB and the backend DB~~
+      - [ ] ~~Integrate major building blocks for advanced UI elements (Canvas based elements, MotionLayout) (from C3, Advanced Android App)~~
+      - [ ] ~~Refactoring (app): Adapt advanced UI elements to use ShopMob (smob) nomenclature - content still as in C3~~
+      - [ ] ~~Refactoring (test): Add instrumented tests for the advanced UI elements~~
+      - [ ] ~~Implement displaying of floor plans including _zones_ with product stats (zone level "overview" display)~~
+      - [ ] ~~Implement displaying of "best route through shop", e.g.: zone level --> zone-1 (+ product stats) --> zone-4 (+ stats) --> checkout~~ 
+      - [ ] ~~Implement displaying of zone plans including more detailed _sections_ (aisles/shelves) and products per zone~~
+      - [ ] ~~Implement displaying of _shelf_ view (image from DB)~~ 
+    - [ ] ~~IMPL-2.5.9: Develop floor plan UI elements (canvas)~~
+        - [ ] ~~Design layout view for shop floor plans~~
+        - [ ] ~~Design data model for storing parameterized shop floor plans (JSON)~~
+        - [ ] ~~Integrate shop floor plans in the local DB and the backend DB~~
+        - [ ] ~~Implement displaying of floor plans including _zones_ with product stats (zone level "overview" display)~~
+        - [ ] ~~Implement displaying of "best route through shop", e.g.: zone level --> zone-1 (+ product stats) --> zone-4 (+ stats) --> checkout~~
+        - [ ] ~~Implement displaying of zone plans including more detailed _sections_ (aisles/shelves) and products per zone~~
+        - [ ] ~~Implement displaying of _shelf_ view (image from DB)~~
   - [x] IMPL-2.6: App development against local DB
     - [x] Complete activities and fragments (incl. navigation) as required by the app architecture
     - [x] Seed local DB with test data for UI design
     - [x] Complete UI layout of each activity / fragment
     - [x] Extend UI elements to animate them using MotionLayout
     - [x] Complete all view models with required business logic
-- [ ] IMPL-3: App development against backend DB
+- [x] IMPL-3: App development against backend DB
   - [x] Set-up development backend DB (json-server)
   - [x] Seed backend DB with test data (same as in IMPL-2.6)
   - [x] Implement CRUD functionality for the backend DB
@@ -592,13 +593,13 @@ At the writing of this document (21.12.21), this submission is expected for
   - [x] Implement synchronization between backend and app (WorkManager)
     - [x] In-principle implementation (one table)
     - [x] Full implementation as needed by the app
-  - [ ] Push notifications when data has changed at backend level
+  - [ ] ~~Push notifications when data has changed at backend level~~
   - [x] Set-up actual backend DB (firebase document DB / AWS Document DB)
-- [ ] IMPL-4: Add camera access to take pictures of products and their shelf location
-  - [ ] Permissions
-  - [ ] Access and storage in the repository
-  - [ ] Storage in the local DB
-  - [ ] Upload to the backend (and reduction in size)
+- [ ] ~~IMPL-4: Add camera access to take pictures of products and their shelf location~~
+  - [ ] ~~Permissions~~
+  - [ ] ~~Access and storage in the repository~~
+  - [ ] ~~Storage in the local DB~~
+  - [ ] ~~Upload to the backend (and reduction in size)~~
 
 ### Project Plan
 
@@ -608,7 +609,7 @@ by one month).
 | CW-21/51 | CW-21/52 | CW-22/01 | CW-22/02 | CW-22/03 | CW-22/04 |
 |:---------|:---------|:---------|:---------|:---------|:---------|
 | DSGN-1 .. DSGN-3, IMPL-1 .. IMPL-2.5.7 | IMPL-2.8 | IMPL-2.5.8 | IMPL-2.5.9 | IMPL-2.6 | IMPL-3 |
-| done | done | done | done | done | open |
+| done | done | done | done | done | partially done |
 
 ### Project Rubrics
 
@@ -628,9 +629,9 @@ The following specification items need to be included in the app:
 | UI design/display | Constraint Layouts have IDs and use (at least one) vertical constraint(s) | IMPL-2.6 | Constraints are established in a lean and logical way using the IDs of adjacent views |
 | UI design/display | UI display appropriately on screens of different size and resolution| IMPL-2.6 | Tested on Pixel 3 phone, incl. screen rotations, Pixel C tablet |
 | UI design/display | UI display uses ViewHolder pattern to load data into the visual areas | IMPL-2.6 | all RecyclerView views use adapters with ViewHolders to load the data - all adapters share a common base adapter with shared list handling functionality. The data sources are Kotlin (State)Flows which are collected in the Binding Adapter. This makes the lists responsive. |
-| UI animation/transitions | UI uses MotionLayout to adapt UI elements to a given function | IMPL-2.6 | MotionLayout used on the Shopping "coming soon" screen to advertise the shopfloor experience |
+| UI animation/transitions | UI uses MotionLayout to adapt UI elements to a given function | IMPL-2.6 | MotionLayout used on the Shopping "coming soon" screen to advertise the shop floor experience |
 | UI animation/transitions | UI defines MotionLayout in a _MotionScene_ using one or more _Transition nodes_ and a _ConstraintSet block_| IMPL-2.6 | MotionLayout using MotionScene, and Transition nodes & ConstraintSet |
-| UI animation/transitions | UI uses (custom) parameters to configure the animations | IMPL-2.6 | Custom animated button on ShopMob shop detail screen |
+| UI animation/transitions | UI uses (custom) parameters to configure the animations | IMPL-2.6 | Custom animated button on ShopMob shop detail screen (leading to shop floor plan) |
 
 #### Local and Network Data
 
@@ -650,13 +651,13 @@ The following specification items need to be included in the app:
 
 | Category | Specification Item | Milestone Mapping | Code Link / Evidence |
 | ---------|--------------------|-------------------|----------------------|
-| MVVM architecture | Separation of responsibilities amongst classes and structures using the MVVM Pattern | IMPL-2 | Views via Fragments/Activities, ViewModel: business logic |
-| MVVM architecture | Observer pattern, Activity Contexts, and efficiently utilization of system resources | IMPL-2 | LifeData, StateFlow, LifeCycle awareness: LifeData used in ViewModels & DataBinding to update UI upon data changes; (State)Flows extended to UI level to update (observe) changes at (local) DB level - in combination with the background sync with the backend, the UI layer "observes" the centralized shared data (backend DB); the background sync is stopped when the app is closed or when not in the foreground |
-| Handle and respond to hardware and system events | Use of at least one HW component | IMPL-2 | Location (map, geofence), Notifications |
-| Lifecycle events | Storage/retrieval of data upon LC events | IMPL-2 | Data stored in shared ViewModels (to survive the LC events) | 
-| Lifecycle events | Handling interactions from/to the app with Intents | IMPL-2 | Activities & return values |
-| Access to system hardware to provide advanced functionality and features | Location (GPS, fused location) | IMPL-2 | Map & GeoFencing |
-| Access to system hardware to provide advanced functionality and features | Permission handling | IMPL-2 | Staged permissions, least required principle |
+| MVVM architecture | Separation of responsibilities amongst classes and structures using the MVVM Pattern | IMPL-2 | Views created in Fragments/Activities, ViewModel (VM) includes the business logic - some fragments share a VM to exchange data |
+| MVVM architecture | Observer pattern, Activity Contexts, and efficiently utilization of system resources | IMPL-2 | LiveData with 2-way data binding as well as Flow & StateFlow used to observe data changes in the UI layer as well as at local DB level (Room). Lifecycle awareness: ViewModels preserve data in the light of lifecycle changes (eg. navigation to another activity/fragment). Background jobs started/stopped in lifecycle callbacks to stop/reduce network syncs when the app is in the background. |
+| Handle and respond to hardware and system events | Use of at least one HW component | IMPL-2 | Location used (map) to set GeoFences, allowing the user to be notified (Notifications) when they are near a shop that sells goods on any of their shopping lists |
+| Lifecycle events | Storage/retrieval of data upon LC events | IMPL-2 | Data stored in (and retrieved from) shared ViewModels, to make the data "survive" LC events | 
+| Lifecycle events | Handling interactions from/to the app with Intents | IMPL-2 | Notification uses PendingIntend to open the shop details screen (using an intend) from where the user can get to the shop floor as well as launch the app. Intents are also used in the handling of permissions. Finally, bundles/data objects are used to communicate information to activities (intent), fragments (navigate) as well as background jobs (parameters) - wherever there is no shared VM or the LC of the VM is not aligned with the action. |
+| Access to system hardware to provide advanced functionality and features | Location (GPS, fused location) | IMPL-2 | Map & GeoFencing are used is used to facilitate the definition of shop entries as well as remind the user about pending shopping activities |
+| Access to system hardware to provide advanced functionality and features | Permission handling | IMPL-2 | Permissions are granted in a staged way, honoring the least required permission principle. Permissions are always checked prior to accessing a system resource (stateless). |
 
 ---
 

@@ -12,8 +12,6 @@ frame "activity_shopping" #LightGoldenRodYellow/GreenYellow {
     component fragment_shopping_shelf
     component fragment_shopping_product
 
-    geoFenceTrigger -right-> fragment_shopping_shop : Android System call >
-
     fragment_shopping_shop -down-> fragment_shopping_zone #blue;text:blue : click zone > 
     fragment_shopping_zone -down-> fragment_shopping_aisle #blue;text:blue : click aisle > 
     fragment_shopping_aisle -down-> fragment_shopping_shelf #blue;text:blue : click shelf >
@@ -93,12 +91,14 @@ frame "activity_details" #aquamarine/cornflowerblue {
     
     component shared_details_viewModel #lightblue
 
+    geoFenceTrigger -up-> fragment_details_shop : Android System call >
 
-    fragment_planning_product_list -down-> fragment_details_product #indigo;text:indigo : click item 
-    fragment_details_product -up-> fragment_planning_product_list #indigo;text:indigo : click Dismiss
 
-    fragment_planning_shop_list -> fragment_details_shop #indigo;text:indigo : click item
-    fragment_details_shop -> fragment_planning_shop_list #indigo;text:indigo : click Dismiss
+    fragment_planning_product_list -down-> fragment_details_product #indigo;text:indigo : click item > 
+    fragment_details_product -up-> fragment_planning_product_list #indigo;text:indigo : back >
+
+    fragment_planning_shop_list -> fragment_details_shop #indigo;text:indigo : click item >
+    fragment_details_shop -> fragment_planning_shop_list #indigo;text:indigo : back >
 
     fragment_details_product --[hidden]- fragment_details_shop
 
