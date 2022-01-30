@@ -218,7 +218,7 @@ Using this local backend, the development of the synchronizing mechanisms was gr
 feedback on the CRUD commands exchanged with the express server. Running the app on two emulators, the exchange of data can be 
 observed and verified / debugged: 
 
-[![Animation](https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_backend_local2.PNG)](https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/smob_backend_sync.asf)
+[![Animation](https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_backend_local2.PNG)](https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/smob_backend_sync_red.gif)
 (click me for an animation)
 
 The local backend can be found in folder /backend. It can be launched by running node script "backend" (>> node backend) and it

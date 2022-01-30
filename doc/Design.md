@@ -20,13 +20,15 @@ notified and see their lists updated accordingly.
 
 _ShopMob_ thus facilitates group shopping and helps to reduce the time wasted in day-to-day shopping.
 
-See the illustrated [Overview](./SmobOverview.md) for a gallery of screenshots of the app UI screens as well as an overview of the project structure (source code). 
+See the illustrated **[Overview](./SmobOverview.md)** for a gallery of screenshots of the app UI screens as well as an overview of the project structure (source code). 
 
-See the documented [Rubrics](#project-rubrics) for an overview which design criteria have been met and where.
+See the documented **[Rubrics](#project-rubrics)** for an overview which design criteria have been met and where.
 
-See section [Milestone Plan](#milestone-plan) for a detailed list of milestones to be achieved in this project, as well as section [Project Plan](#project-plan) for details on what was implemented in which phase, spanning the time from Christmas 2021 until today (30.01.2022).
+See section **[Milestone Plan](#milestone-plan)** for a detailed list of milestones to be achieved in this project, as well as section **[Project Plan](#project-plan)** for details on what was implemented in which phase, spanning the time from Christmas 2021 until today (30.01.2022).
 
-See section [Database Schemata](#database-schemata) for an overview of how data is organized at database level, both on the local device - mySQL - as well as in the backend (noSQL).
+See section **[Database Schemata](#database-schemata)** for an overview of how data is organized at database level, both on the local device - mySQL - as well as in the backend (noSQL).
+
+See section **[Architecture](#architecture)** for an overview of the principal architecture of the app and its central repository classes.
 
 ---
 
