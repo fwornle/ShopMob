@@ -97,7 +97,7 @@ class PlanningShopListFragment : BaseFragment(), KoinComponent {
         // use the navigationCommand live data to navigate between the fragments
         _viewModel.navigationCommand.postValue(
             NavigationCommand.To(
-                PlanningShopListFragmentDirections.actionPlanningShopListFragmentToPlanningProductEditFragment()
+                PlanningShopListFragmentDirections.actionSmobPlanningShopListFragmentToSmobPlanningShopEditFragment()
             )
         )
     }
