@@ -17,4 +17,4 @@ data class SmobGroupATO(
     var members: List<String>,
     // serialization strategy decided at run-time (@Contextual)
     var activity: @Contextual ActivityStatus,
-) : Ato(), java.io.Serializable
+) : Ato, java.io.Serializable

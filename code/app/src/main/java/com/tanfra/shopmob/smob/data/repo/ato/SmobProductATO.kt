@@ -16,4 +16,4 @@ data class SmobProductATO(
     var category: @Contextual ProductCategory,
     var activity: @Contextual ActivityStatus,
     var inShop: @Contextual InShop,
-) : Ato(), java.io.Serializable
+) : Ato, java.io.Serializable

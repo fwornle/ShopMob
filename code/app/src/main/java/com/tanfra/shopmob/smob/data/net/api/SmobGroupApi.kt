@@ -12,14 +12,14 @@ interface SmobGroupApi {
 
         // HTTP GET (fetch a specific group)
         @GET("${Constants.SMOB_API_URL}/groups/{id}")
-        suspend fun getSmobGroupById(
+        suspend fun getSmobItemById(
                 @Path(value = "id", encoded = true) id: String
                 // @Query("q") searchText: String,
         ): Response<SmobGroupNTO>
 
         // HTTP GET (fetch all groups)
         @GET("${Constants.SMOB_API_URL}/groups")
-        suspend fun getSmobGroups(
+        suspend fun getSmobItems(
                 // --> @Query annotation can be used to provide additional query parameters
                 // @Query("q") searchText: String,
         ): Response<ArrayList<SmobGroupNTO>>
@@ -27,22 +27,22 @@ interface SmobGroupApi {
         // HTTP POST (insert a new group)
         @Headers("Content-Type: application/json")
         @POST("${Constants.SMOB_API_URL}/groups")
-        suspend fun saveSmobGroup(
-                @Body newGroup: SmobGroupNTO
+        suspend fun saveSmobItem(
+                @Body newItem: SmobGroupNTO?
         ): Response<Void>
 
         // HTTP PUT (update a specific group)
         @Headers("Content-Type: application/json")
         @PUT("${Constants.SMOB_API_URL}/groups/{id}")
-        suspend fun updateSmobGroupById(
+        suspend fun updateSmobItemById(
                 @Path(value = "id", encoded = true) id: String,
-                @Body newGroup: SmobGroupNTO
+                @Body newItem: SmobGroupNTO?
         ): Response<Void>
 
         // HTTP DELETE (delete a specific group)
         @Headers("Content-Type: application/json")
         @DELETE("${Constants.SMOB_API_URL}/groups/{id}")
-        suspend fun deleteSmobGroupById(
+        suspend fun deleteSmobItemById(
                 @Path(value = "id", encoded = true) id: String,
         ): Response<Void>
 

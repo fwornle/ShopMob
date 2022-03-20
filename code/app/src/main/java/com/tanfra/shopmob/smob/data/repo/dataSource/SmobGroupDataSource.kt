@@ -9,20 +9,20 @@ import kotlinx.coroutines.flow.Flow
  * ... using domain data types (to abstract details of the underlying persistent storage)
  * ... wrapping results in Resource type (w/h state SUCCESS, ERROR, LOADING)
  */
-interface SmobGroupDataSource {
+interface SmobGroupDataSource: SmobItemDataSource<SmobGroupATO> {
 
     // Room executes all queries on a separate thread.
     // Observed Flow will notify the observer when the data has changed.
-    fun getSmobGroup(id: String): Flow<Resource<SmobGroupATO?>>
-    fun getAllSmobGroups(): Flow<Resource<List<SmobGroupATO>>>
+    override fun getSmobItem(id: String): Flow<Resource<SmobGroupATO?>>
+    override fun getAllSmobItems(): Flow<Resource<List<SmobGroupATO>>>
 
     // By default Room runs suspend queries off the main thread
-    suspend fun saveSmobGroup(smobGroupATO: SmobGroupATO)
-    suspend fun saveSmobGroups(smobGroupsATO: List<SmobGroupATO>)
-    suspend fun updateSmobGroup(smobGroupATO: SmobGroupATO)
-    suspend fun updateSmobGroups(smobGroupsATO: List<SmobGroupATO>)
-    suspend fun deleteSmobGroup(id: String)
-    suspend fun deleteAllSmobGroups()
-    suspend fun refreshDataInLocalDB()
+    override suspend fun saveSmobItem(smobItemATO: SmobGroupATO)
+    override suspend fun saveSmobItems(smobItemsATO: List<SmobGroupATO>)
+    override suspend fun updateSmobItem(smobItemATO: SmobGroupATO)
+    override suspend fun updateSmobItems(smobItemsATO: List<SmobGroupATO>)
+    override suspend fun deleteSmobItem(id: String)
+    override suspend fun deleteAllSmobItems()
+    override suspend fun refreshDataInLocalDB()
 
 }

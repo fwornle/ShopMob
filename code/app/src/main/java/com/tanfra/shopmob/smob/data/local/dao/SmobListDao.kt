@@ -1,6 +1,7 @@
 package com.tanfra.shopmob.smob.data.local.dao
 
 import androidx.room.*
+import com.tanfra.shopmob.smob.data.local.dto.SmobGroupDTO
 import com.tanfra.shopmob.smob.data.local.dto.SmobListDTO
 import kotlinx.coroutines.flow.Flow
 
@@ -8,17 +9,17 @@ import kotlinx.coroutines.flow.Flow
  * Data Access Object for the smobLists table.
  */
 @Dao
-interface SmobListDao {
+interface SmobListDao: SmobItemDao<SmobListDTO> {
 
     /**
-     * @param smobListId the ID of the smob list
-     * @return the smob list object with the smobListId
+     * @param smobItemId the ID of the smob list
+     * @return the smob list object with the smobItemId
      */
     //
     // note: Flow types must not be declared as "suspend"able functions, see the third answer in:
     //       https://stackoverflow.com/questions/46445964/room-not-sure-how-to-convert-a-cursor-to-this-methods-return-type-which-meth
-    @Query("SELECT * FROM smobLists WHERE listId = :smobListId")
-    fun getSmobListById(smobListId: String): Flow<SmobListDTO?>
+    @Query("SELECT * FROM smobLists WHERE listId = :smobItemId")
+    override fun getSmobItemById(smobItemId: String): Flow<SmobListDTO?>
 
     /**
      * @return all smobLists.
@@ -27,35 +28,35 @@ interface SmobListDao {
     // note: Flow types must not be declared as "suspend"able functions, see the third answer in:
     //       https://stackoverflow.com/questions/46445964/room-not-sure-how-to-convert-a-cursor-to-this-methods-return-type-which-meth
     @Query("SELECT * FROM smobLists")
-    fun getSmobLists(): Flow<List<SmobListDTO>>
+    override fun getSmobItems(): Flow<List<SmobListDTO>>
 
     /**
      * Insert a smob list in the database. If the smob list already exists, replace it.
      *
-     * @param smobList the smob list to be inserted
+     * @param smobItem the smob list to be inserted
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveSmobList(smobList: SmobListDTO)
+    override suspend fun saveSmobItem(smobItem: SmobListDTO)
 
     /**
      * Update an existing smob list in the database. If the smob list already exists, replace it.
      * If not, do nothing.
      *
-     * @param smobList the smob list to be updated
+     * @param smobItem the smob list to be updated
      */
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateSmobList(smobList: SmobListDTO)
+    override suspend fun updateSmobItem(smobItem: SmobListDTO)
 
     /**
      * Delete a smob list in the database.
      *
-     * @param smobListId the ID of the smob list
+     * @param smobItemId the ID of the smob list
      */
-    @Query("DELETE FROM smobLists WHERE listId = :smobListId")
-    suspend fun deleteSmobListById(smobListId: String)
+    @Query("DELETE FROM smobLists WHERE listId = :smobItemId")
+    override suspend fun deleteSmobItemById(smobItemId: String)
 
     // Delete all smobLists.
     @Query("DELETE FROM smobLists")
-    suspend fun deleteAllSmobLists()
+    override suspend fun deleteAllSmobItems()
 
 }

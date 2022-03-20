@@ -7,9 +7,9 @@ import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 
 // network data type
 data class SmobShopNTO(
-    val id: String,
-    var itemStatus: SmobItemStatus,
-    var itemPosition: Long,
+    override val id: String,
+    override var itemStatus: SmobItemStatus,
+    override var itemPosition: Long,
     var name: String,
     var description: String?,
     var imageUrl: String?,
@@ -17,5 +17,4 @@ data class SmobShopNTO(
     var type: ShopType,
     var category: ShopCategory,
     var business: List<String>,
-)
-
+): Nto

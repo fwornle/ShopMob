@@ -132,7 +132,7 @@ class PlanningShopListFragment : BaseFragment(), KoinComponent {
                     _viewModel.navSource = "navDrawer"
 
                     // clicks should select the shop and return to the product edit screen
-                    val daFlow = _viewModel.shopDataSource.getSmobShop(it.id)
+                    val daFlow = _viewModel.shopDataSource.getSmobItem(it.id)
                     viewLifecycleOwner.lifecycleScope.launch {
                         daFlow.take(1).collect {
                             Timber.i("Received shop: ${it.data?.name}")

@@ -12,14 +12,14 @@ interface SmobUserApi {
 
         // HTTP GET (fetch a specific user)
         @GET("${Constants.SMOB_API_URL}/users/{id}")
-        suspend fun getSmobUserById(
+        suspend fun getSmobItemById(
                 @Path(value = "id", encoded = true) id: String
                 // @Query("q") searchText: String,
         ): Response<SmobUserNTO>
 
         // HTTP GET (fetch all users)
         @GET("${Constants.SMOB_API_URL}/users")
-        suspend fun getSmobUsers(
+        suspend fun getSmobItems(
                 // --> @Query annotation can be used to provide additional query parameters
                 // @Query("q") searchText: String,
         ): Response<ArrayList<SmobUserNTO>>
@@ -27,22 +27,22 @@ interface SmobUserApi {
         // HTTP POST (insert a new user)
         @Headers("Content-Type: application/json")
         @POST("${Constants.SMOB_API_URL}/users")
-        suspend fun saveSmobUser(
-                @Body newUser: SmobUserNTO
+        suspend fun saveSmobItem(
+                @Body newItem: SmobUserNTO?
         ): Response<Void>
 
         // HTTP PUT (update a specific user)
         @Headers("Content-Type: application/json")
         @PUT("${Constants.SMOB_API_URL}/users/{id}")
-        suspend fun updateSmobUserById(
+        suspend fun updateSmobItemById(
                 @Path(value = "id", encoded = true) id: String,
-                @Body newUser: SmobUserNTO
+                @Body newItem: SmobUserNTO?
         ): Response<Void>
 
         // HTTP DELETE (delete a specific user)
         @Headers("Content-Type: application/json")
         @DELETE("${Constants.SMOB_API_URL}/users/{id}")
-        suspend fun deleteSmobUserById(
+        suspend fun deleteSmobItemById(
                 @Path(value = "id", encoded = true) id: String,
         ): Response<Void>
 

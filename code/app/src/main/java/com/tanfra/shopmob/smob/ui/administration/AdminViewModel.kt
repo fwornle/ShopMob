@@ -17,7 +17,7 @@ class AdminViewModel(
 
     // list that holds the smob data items to be displayed on the UI
     // ... flow, converted to LiveData --> data changes in the backend are observed
-    var smobList = repoFlow.getAllSmobLists().asLiveData()
+    var smobList = repoFlow.getAllSmobItems().asLiveData()
 
 
     /**
@@ -34,7 +34,7 @@ class AdminViewModel(
 
         // (re-)fetch all shopping lists
         // ... also sets the Resource.status to SUCCESS/ERROR --> deactivates loading spinner
-        smobList = repoFlow.getAllSmobLists().asLiveData()
+        smobList = repoFlow.getAllSmobItems().asLiveData()
 
         // handle potential errors
         smobList.value?.let {

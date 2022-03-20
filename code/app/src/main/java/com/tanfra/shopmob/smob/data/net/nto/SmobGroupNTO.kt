@@ -6,12 +6,12 @@ import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 
 // network data type
 data class SmobGroupNTO(
-    val id: String,
-    var itemStatus: SmobItemStatus,
-    var itemPosition: Long,
+    override val id: String,
+    override var itemStatus: SmobItemStatus,
+    override var itemPosition: Long,
     var name: String,
     var description: String?,
     var type: GroupType,
     var members: List<String>,
     val activity: ActivityStatus,
-)
+): Nto

@@ -20,4 +20,4 @@ data class SmobShopATO(
     var type: ShopType,
     var category: ShopCategory,
     var business: List<String>,
-) : Ato(), java.io.Serializable
+) : Ato, java.io.Serializable

@@ -8,18 +8,18 @@ import retrofit2.http.*
 /**
  * Service interface (exposed by retrofit library) for "SmobLists".
  */
-interface SmobListApi {
+interface SmobListApi  {
 
         // HTTP GET (fetch a specific list)
         @GET("${Constants.SMOB_API_URL}/lists/{id}")
-        suspend fun getSmobListById(
+        suspend fun getSmobItemById(
                 @Path(value = "id", encoded = true) id: String
                 // @Query("q") searchText: String,
         ): Response<SmobListNTO>
 
         // HTTP GET (fetch all lists)
         @GET("${Constants.SMOB_API_URL}/lists")
-        suspend fun getSmobLists(
+        suspend fun getSmobItems(
                 // --> @Query annotation can be used to provide additional query parameters
                 // @Query("q") searchText: String,
         ): Response<ArrayList<SmobListNTO>>
@@ -27,22 +27,22 @@ interface SmobListApi {
         // HTTP POST (insert a new list)
         @Headers("Content-Type: application/json")
         @POST("${Constants.SMOB_API_URL}/lists")
-        suspend fun saveSmobList(
-                @Body newList: SmobListNTO
+        suspend fun saveSmobItem(
+                @Body newItem: SmobListNTO?
         ): Response<Void>
 
         // HTTP PUT (update a specific list)
         @Headers("Content-Type: application/json")
         @PUT("${Constants.SMOB_API_URL}/lists/{id}")
-        suspend fun updateSmobListById(
+        suspend fun updateSmobItemById(
                 @Path(value = "id", encoded = true) id: String,
-                @Body newList: SmobListNTO
+                @Body newItem: SmobListNTO?
         ): Response<Void>
 
         // HTTP DELETE (delete a specific list)
         @Headers("Content-Type: application/json")
         @DELETE("${Constants.SMOB_API_URL}/lists/{id}")
-        suspend fun deleteSmobListById(
+        suspend fun deleteSmobItemById(
                 @Path(value = "id", encoded = true) id: String,
         ): Response<Void>
 

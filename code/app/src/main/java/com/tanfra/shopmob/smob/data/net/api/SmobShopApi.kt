@@ -12,14 +12,14 @@ interface SmobShopApi {
 
         // HTTP GET (fetch a specific shop)
         @GET("${Constants.SMOB_API_URL}/shops/{id}")
-        suspend fun getSmobShopById(
+        suspend fun getSmobItemById(
                 @Path(value = "id", encoded = true) id: String
                 // @Query("q") searchText: String,
         ): Response<SmobShopNTO>
 
         // HTTP GET (fetch all shops)
         @GET("${Constants.SMOB_API_URL}/shops")
-        suspend fun getSmobShops(
+        suspend fun getSmobItems(
                 // --> @Query annotation can be used to provide additional query parameters
                 // @Query("q") searchText: String,
         ): Response<ArrayList<SmobShopNTO>>
@@ -27,22 +27,22 @@ interface SmobShopApi {
         // HTTP POST (insert a new shop)
         @Headers("Content-Type: application/json")
         @POST("${Constants.SMOB_API_URL}/shops")
-        suspend fun saveSmobShop(
-                @Body newShop: SmobShopNTO
+        suspend fun saveSmobItem(
+                @Body newItem: SmobShopNTO?
         ): Response<Void>
 
         // HTTP PUT (update a specific shop)
         @Headers("Content-Type: application/json")
         @PUT("${Constants.SMOB_API_URL}/shops/{id}")
-        suspend fun updateSmobShopById(
+        suspend fun updateSmobItemById(
                 @Path(value = "id", encoded = true) id: String,
-                @Body newShop: SmobShopNTO
+                @Body newItem: SmobShopNTO?
         ): Response<Void>
 
         // HTTP DELETE (delete a specific shop)
         @Headers("Content-Type: application/json")
         @DELETE("${Constants.SMOB_API_URL}/shops/{id}")
-        suspend fun deleteSmobShopById(
+        suspend fun deleteSmobItemById(
                 @Path(value = "id", encoded = true) id: String,
         ): Response<Void>
 

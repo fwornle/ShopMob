@@ -23,17 +23,17 @@ import com.tanfra.shopmob.smob.data.local.utils.*
 @Entity(tableName = "smobProducts")
 @RewriteQueriesToDropUnusedColumns
 data class SmobProductDTO(
-    @PrimaryKey @ColumnInfo(name = "productId") var id: String,
-    @ColumnInfo(name = "productItemStatus") var itemStatus: SmobItemStatus,
-    @ColumnInfo(name = "productItemPosition") var itemPosition: Long,
-    @ColumnInfo(name = "productName") var name: String,
-    @ColumnInfo(name = "productDescription") var description: String?,
-    @ColumnInfo(name = "productImageUrl") var imageUrl: String?,
-    @ColumnInfo(name = "productCategoryMain") var categoryMain: ProductMainCategory,
-    @ColumnInfo(name = "productCategorySub") var categorySub: ProductSubCategory,
-    @ColumnInfo(name = "productActivityDate") var activityDate: String,
-    @ColumnInfo(name = "productActivityReps") var activityReps: Long,
-    @ColumnInfo(name = "productInShopCategory") var inShopCategory: ShopCategory,
-    @ColumnInfo(name = "productInShopName") var inShopName: String,
-    @ColumnInfo(name = "productInShopLocation") var inShopLocation: ShopLocation,
-)
+    @PrimaryKey @ColumnInfo(name = "productId") override val id: String = "invalid smob product id",
+    @ColumnInfo(name = "productItemStatus") override var itemStatus: SmobItemStatus = SmobItemStatus.NEW,
+    @ColumnInfo(name = "productItemPosition") override var itemPosition: Long = -1L,
+    @ColumnInfo(name = "productName") var name: String = "",
+    @ColumnInfo(name = "productDescription") var description: String? = "",
+    @ColumnInfo(name = "productImageUrl") var imageUrl: String? = "",
+    @ColumnInfo(name = "productCategoryMain") var categoryMain: ProductMainCategory = ProductMainCategory.OTHER,
+    @ColumnInfo(name = "productCategorySub") var categorySub: ProductSubCategory = ProductSubCategory.OTHER,
+    @ColumnInfo(name = "productActivityDate") var activityDate: String = "",
+    @ColumnInfo(name = "productActivityReps") var activityReps: Long = 0L,
+    @ColumnInfo(name = "productInShopCategory") var inShopCategory: ShopCategory = ShopCategory.OTHER,
+    @ColumnInfo(name = "productInShopName") var inShopName: String = "dummy shop",
+    @ColumnInfo(name = "productInShopLocation") var inShopLocation: ShopLocation = ShopLocation(0.0, 0.0),
+) : Dto()

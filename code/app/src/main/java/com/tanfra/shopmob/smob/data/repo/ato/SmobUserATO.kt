@@ -13,4 +13,4 @@ data class SmobUserATO(
     var name: String,
     var email: String,
     var imageUrl: String?,
-) : Ato(), java.io.Serializable
+) : Ato, java.io.Serializable

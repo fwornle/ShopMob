@@ -4,7 +4,6 @@ import androidx.room.*
 import com.tanfra.shopmob.smob.data.local.utils.ShopCategory
 import com.tanfra.shopmob.smob.data.local.utils.ShopType
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
-import java.util.*
 
 /**
  * Immutable model class for a SmobShop. In order to compile with Room
@@ -24,15 +23,15 @@ import java.util.*
 @Entity(tableName = "smobShops")
 @RewriteQueriesToDropUnusedColumns
 data class SmobShopDTO(
-    @PrimaryKey @ColumnInfo(name = "shopId") var id: String,
-    @ColumnInfo(name = "shopItemStatus") var itemStatus: SmobItemStatus,
-    @ColumnInfo(name = "shopItemPosition") var itemPosition: Long,
-    @ColumnInfo(name = "shopName") var name: String,
-    @ColumnInfo(name = "shopDescription") var description: String?,
-    @ColumnInfo(name = "shopImageUrl") var imageUrl: String?,
-    @ColumnInfo(name = "shopLocationLatitude") var locLat: Double,
-    @ColumnInfo(name = "shopLocationLongitude") var locLong: Double,
-    @ColumnInfo(name = "shopType") var type: ShopType,
-    @ColumnInfo(name = "shopCategory") var category: ShopCategory,
-    @ColumnInfo(name = "shopBusiness") var business: List<String>
-)
+    @PrimaryKey @ColumnInfo(name = "shopId") override val id: String = "invalid smob shop id",
+    @ColumnInfo(name = "shopItemStatus") override var itemStatus: SmobItemStatus = SmobItemStatus.NEW,
+    @ColumnInfo(name = "shopItemPosition") override var itemPosition: Long = -1L,
+    @ColumnInfo(name = "shopName") var name: String = "",
+    @ColumnInfo(name = "shopDescription") var description: String? = "",
+    @ColumnInfo(name = "shopImageUrl") var imageUrl: String? = "",
+    @ColumnInfo(name = "shopLocationLatitude") var locLat: Double = 0.0,
+    @ColumnInfo(name = "shopLocationLongitude") var locLong: Double = 0.0,
+    @ColumnInfo(name = "shopType") var type: ShopType = ShopType.INDIVIDUAL,
+    @ColumnInfo(name = "shopCategory") var category: ShopCategory = ShopCategory.OTHER,
+    @ColumnInfo(name = "shopBusiness") var business: List<String> = listOf()
+) : Dto()

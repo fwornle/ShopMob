@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.transform
  * @param <T: Ato>        ATO type of the inline function
  * @param msgOnFailure    Resource.error message (if flow member is null)
 </T> */
-inline fun <reified T: Ato> Flow<T?>.asResource(msgOnFailure: String?): Flow<Resource<T>> =
+fun <T: Ato?> Flow<T?>.asResource(msgOnFailure: String?): Flow<Resource<T>> =
     transform { value ->
         if (value != null) return@transform emit(Resource.success(value))
         else return@transform emit(Resource.error(msgOnFailure, value))
@@ -27,7 +27,7 @@ inline fun <reified T: Ato> Flow<T?>.asResource(msgOnFailure: String?): Flow<Res
 //
 // ... need to add an annotation to avoid a clash at byte-code level (same signature as scalar case)
 @JvmName("asResourceOfListOfAto")
-inline fun <reified T: List<Ato>> Flow<T>.asResource(msgOnFailure: String?): Flow<Resource<T>> =
+fun <T: Ato?> Flow<List<T>>.asResource(msgOnFailure: String?): Flow<Resource<List<T>>> =
     transform { value ->
         if (msgOnFailure == null) return@transform emit(Resource.success(value))
         else return@transform emit(Resource.error(msgOnFailure, value))

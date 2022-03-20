@@ -67,7 +67,7 @@ class PlanningShopEditViewModel(
     private fun saveSmobItem(shopData: SmobShopATO) {
         showLoading.value = true
         viewModelScope.launch {
-            shopDataSource.saveSmobShop(shopData)
+            shopDataSource.saveSmobItem(shopData)
             showLoading.value = false
 
             showToast.value = app.getString(R.string.smob_shop_saved)

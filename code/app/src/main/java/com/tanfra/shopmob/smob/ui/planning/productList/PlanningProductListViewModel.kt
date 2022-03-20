@@ -51,7 +51,7 @@ class PlanningProductListViewModel(
      */
     @ExperimentalCoroutinesApi
     fun fetchSmobListFlow(id: String): Flow<Resource<SmobListATO?>> {
-        val fetchFlow = listDataSource.getSmobList(id)
+        val fetchFlow = listDataSource.getSmobItem(id)
         return fetchFlow
     }
 
@@ -177,7 +177,7 @@ class PlanningProductListViewModel(
             viewModelScope.launch {
 
                 // flow terminator
-                listDataSource.getSmobList(id)
+                listDataSource.getSmobItem(id)
                     .catch { e ->
                         // previously unhandled exception (= not handled at Room level)
                         // --> catch it here and represent in Resource status
@@ -436,7 +436,7 @@ class PlanningProductListViewModel(
     private fun saveSmobProductItem(smobProductData: SmobProductATO, navBack: Boolean) {
         showLoading.value = true
         viewModelScope.launch {
-            productDataSource.saveSmobProduct(smobProductData)
+            productDataSource.saveSmobItem(smobProductData)
             showLoading.value = false
 
             // only travel back, if requested
@@ -516,7 +516,7 @@ class PlanningProductListViewModel(
         viewModelScope.launch {
 
             // flow terminator
-            shopDataSource.getAllSmobShops()
+            shopDataSource.getAllSmobItems()
                 .catch { e ->
                     // previously unhandled exception (= not handled at Room level)
                     // --> catch it here and represent in Resource status
@@ -563,7 +563,7 @@ class PlanningProductListViewModel(
         viewModelScope.launch {
 
             // flow terminator
-            shopDataSource.getSmobShop(id)
+            shopDataSource.getSmobItem(id)
                 .catch { e ->
                     // previously unhandled exception (= not handled at Room level)
                     // --> catch it here and represent in Resource status
@@ -658,7 +658,7 @@ class PlanningProductListViewModel(
     fun saveSmobListItem(smobListData: SmobListATO, goBack: Boolean) {
         showLoading.value = true
         viewModelScope.launch {
-            listDataSource.saveSmobList(smobListData)
+            listDataSource.saveSmobItem(smobListData)
             showLoading.value = false
 
             showToast.value = app.getString(R.string.smob_list_saved)
@@ -703,7 +703,7 @@ class PlanningProductListViewModel(
         viewModelScope.launch {
 
             // flow terminator
-            listDataSource.getAllSmobLists()
+            listDataSource.getAllSmobItems()
                 .catch { e ->
                     // previously unhandled exception (= not handled at Room level)
                     // --> catch it here and represent in Resource status
@@ -798,7 +798,7 @@ class PlanningProductListViewModel(
         showLoading.value = true
         viewModelScope.launch {
             // store in local DB (and sync to server)
-            listDataSource.saveSmobList(smobListData)
+            listDataSource.saveSmobItem(smobListData)
         }
         showLoading.value = false
 
