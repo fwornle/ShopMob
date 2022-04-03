@@ -62,7 +62,7 @@ ext {
     coroutinesVersion = '1.6.0-native-mt'
     dexMakerVersion = '2.28.1'
     espressoVersion = '3.4.0'
-    firebaseBomVersion = '29.0.3'
+    firebaseBomVersion = '29.3.0'
     firebaseUiVersion = '8.0.1'
     fragmentVersion = '1.4.1'
     gsonVersion = '2.9.0'
