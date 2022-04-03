@@ -3,9 +3,9 @@
 buildscript {
 
     // forward declarations (needed in the buildscript dependencies)
-    ext.gradlePluginVersion = '7.0.4'
-    ext.kotlinVersion = "1.6.10"
-    ext.navigationVersion = "2.4.0"
+    ext.gradlePluginVersion = '7.1.0'
+    ext.kotlinVersion = '1.6.20'
+    ext.navigationVersion = '2.4.1'
     ext.googleServicesVersion = "4.3.10"
 
     repositories {
@@ -53,36 +53,36 @@ ext {
     androidXAnnotations = '1.3.0'
     androidXLegacySupport = '1.0.0'
     appCompatVersion = '1.4.1'
-    archLifecycleVersion = '2.4.0'
+    archLifecycleVersion = '2.4.1'
     archLifecycleOldVersion = '2.2.0'
     archTestingVersion = '2.1.0'
     cardVersion = '1.0.0'
     constraintVersion = '2.1.3'
-    coilVersion = '2.0.0-alpha06'
-    coroutinesVersion = '1.5.2-native-mt'
+    coilVersion = '2.0.0-rc02'
+    coroutinesVersion = '1.6.0-native-mt'
     dexMakerVersion = '2.28.1'
     espressoVersion = '3.4.0'
     firebaseBomVersion = '29.0.3'
-    firebaseUiVersion = '8.0.0'
+    firebaseUiVersion = '8.0.1'
     fragmentVersion = '1.4.1'
-    gsonVersion = '2.8.6'
+    gsonVersion = '2.9.0'
     hamcrestVersion = '1.3'
     junitVersion = '4.13.2'
     koinVersion = '3.1.4'
     materialVersion = '1.5.0'
-    mockitoVersion = '3.4.6'
-    moshiVersion = '1.9.3'
-    playServicesLocationVersion = '18.0.0'
-    playServicesMapsVersion = '18.0.0'
+    mockitoVersion = '4.4.0'
+    moshiVersion = '1.13.0'
+    playServicesLocationVersion = '19.0.1'
+    playServicesMapsVersion = '18.0.2'
     recyclerViewVersion = '1.3.0-alpha01'
     retrofitVersion = '2.9.0'
-    retrofitLoggingVersion = '5.0.0-alpha.3'
+    retrofitLoggingVersion = '5.0.0-alpha.6'
     robolectricVersion = '4.7.2'
-    roomVersion = '2.4.1'
+    roomVersion = '2.4.2'
     workVersion = '2.7.1'
-    serializationVersion = '1.3.1'
+    serializationVersion = '1.3.2'
     timberVersion = '5.0.1'
-    truthVersion = '0.44'
+    truthVersion = '1.1.3'
     uiAutomatorVersion = '2.2.0'
 }
 
