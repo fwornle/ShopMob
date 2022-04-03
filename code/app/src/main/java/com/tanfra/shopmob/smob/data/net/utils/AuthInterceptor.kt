@@ -11,8 +11,8 @@ import okhttp3.Response
 // ... see: https://medium.com/@harmittaa/retrofit-2-6-0-with-koin-and-coroutines-4ff45a4792fc
 class AuthInterceptor() : Interceptor {
 
-    // fetch API key from build config parameter SMOD_NET_API_KEY, see: build.gradle (:app)
-    private val API_KEY = BuildConfig.SMOD_NET_API_KEY
+    // fetch API key from build config parameter SMOB_NET_API_KEY, see: build.gradle (:app)
+    private val API_KEY = BuildConfig.SMOB_NET_API_KEY
 
     override fun intercept(chain: Interceptor.Chain): Response {
 
