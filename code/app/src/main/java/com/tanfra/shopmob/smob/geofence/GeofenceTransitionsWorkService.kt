@@ -8,7 +8,7 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
 import com.tanfra.shopmob.utils.hasProduct
-import com.tanfra.shopmob.utils.sendNotification
+import com.tanfra.shopmob.utils.sendNotificationOnGeofenceHit
 import kotlinx.coroutines.flow.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -184,7 +184,7 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
 
                                         if(uniqueMainCategories.any { daShop.hasProduct(it) }) {
                                             // they seem to do --> notify user
-                                            sendNotification(appContext, daShop)
+                                            sendNotificationOnGeofenceHit(appContext, daShop)
                                         }
 
                                     }

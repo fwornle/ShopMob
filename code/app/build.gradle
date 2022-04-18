@@ -13,6 +13,7 @@ android {
     defaultConfig {
         testInstrumentationRunnerArguments
         testInstrumentationRunnerArguments
+        testInstrumentationRunnerArguments
         applicationId "com.tanfra.shopmob"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
