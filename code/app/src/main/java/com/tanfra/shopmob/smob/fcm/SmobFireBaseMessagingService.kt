@@ -3,7 +3,7 @@ package com.tanfra.shopmob.smob.fcm
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.tanfra.shopmob.smob.work.SmobAppWork
-import com.tanfra.shopmob.utils.sendNotificationOnFcm
+import com.tanfra.shopmob.utils.sendNotificationOnFcmUpdate
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -31,7 +31,7 @@ class SmobFireBaseMessagingService : FirebaseMessagingService(), KoinComponent {
         // Check if message contains a notification payload.
         remoteMessage.notification?.let {
             Timber.i("Message Notification Body: ${it.body}")
-            sendNotificationOnFcm(wManager.smobAppContext, it.body!!)
+            sendNotificationOnFcmUpdate(wManager.smobAppContext, it.body!!)
         }
     }
     // [END receive_message]

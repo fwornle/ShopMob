@@ -16,20 +16,46 @@ import com.tanfra.shopmob.smob.ui.details.SmobDetailsSources
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 
-// fixed ID for notification channels
+// use app dependent, but otherwise fixed ID for notification channels
 private const val NOTIFICATION_GEOFENCE_CHANNEL_ID = BuildConfig.APPLICATION_ID + ".channel.geofence"
-private const val NOTIFICATION_FCM_CHANNEL_ID = BuildConfig.APPLICATION_ID + ".channel.fcm"
+private const val NOTIFICATION_FCM_UPDATE_CHANNEL_ID = BuildConfig.APPLICATION_ID + ".channel.fcmUpdate"
 
-// unique ID for PendingIntent(s) and notification channel(s)
+// generate unique ID for PendingIntent(s) and notification channel(s)
 private fun getUniqueId() = ((System.currentTimeMillis() % 10000).toInt())
 
-// append notification manager as service to Context
+// extend class Context by a property 'notificationManager' (read only --> only getter defined)
 val Context.notificationManager: NotificationManager?
-    get() = getSystemService<NotificationManager>()
+    get() = getSystemService()
 
 
-// send notifications to SmobShop upon receiving a geofence hit (= we are near a SmobShop)
+/**
+ * Create and show a simple notification indicating which Smobshop triggered the geofence.
+ *
+ * @param context Application context of ShopMob.
+ * @param daShop Details of Smobshop that triggered the geofence
+ */
 fun sendNotificationOnGeofenceHit(context: Context, daShop: SmobShopATO) {
+    context.notificationManager?.sendNotificationOnGeofenceHit(context, daShop)
+}
+
+/**
+ * Create and show a simple notification containing the received FCM message.
+ *
+ * @param context Application context of ShopMob.
+ * @param messageBody FCM message body received.
+ */
+fun sendNotificationOnFcmUpdate(context: Context, messageBody: String) {
+    context.notificationManager?.sendNotificationOnFcmUpdate(context, messageBody)
+}
+
+
+/**
+ * Builds and delivers the notification upon the hitting of an active geofence.
+ *
+ * @param context, activity context.
+ * @param daShop, SmobShop details.
+ */
+fun NotificationManager.sendNotificationOnGeofenceHit(context: Context, daShop: SmobShopATO) {
 
     // old way...
     //
@@ -42,92 +68,112 @@ fun sendNotificationOnGeofenceHit(context: Context, daShop: SmobShopATO) {
     // even better (and that's used here now): append the NotificationManager service to a newly
     // defined Context property 'notificationManager' (see above defined KTX 'extension property')
 
-
     // create notification channel for geofence hits (= whenever we are near a SmobShop)
     ifSupportsOreo {
 
-        // first time --> create notification channel for (the buffering of) geofence hits
-        if (
-            context.notificationManager
-                ?.getNotificationChannel(NOTIFICATION_GEOFENCE_CHANNEL_ID) == null
-        ) {
-            val name = context.getString(R.string.app_name) + ".geofence"
-            val channel = NotificationChannel(
+        // channel already created?
+        if (getNotificationChannel(NOTIFICATION_GEOFENCE_CHANNEL_ID) == null) {
+            // nope --> create notification channel for (the buffering of) geofence hits
+            NotificationChannel(
                 NOTIFICATION_GEOFENCE_CHANNEL_ID,
-                name,
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            context.notificationManager?.createNotificationChannel(channel)
+                context.getString(R.string.app_name) + ".geofence",
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                createNotificationChannel(this)
+            }
         }
 
     }  // OREO and above
 
 
-    // create intent to start activity SmobDetailsActivity
-    val intent = SmobDetailsActivity.newIntent(
+    // create intent to start activity SmobDetailsActivity (via 'newIntent' factory)
+    val gotoDaShopDetailsIntent = SmobDetailsActivity.newIntent(
         context.applicationContext,
         SmobDetailsSources.GEOFENCE,
         daShop
     )
 
-    // create a pending intent that opens SmobDetailsActivity when the user clicks on the notification
+    // create a pending intent that opens SmobDetailsActivity when user clicks on notification
     val stackBuilder = TaskStackBuilder.create(context)
         .addParentStack(SmobDetailsActivity::class.java)
-        .addNextIntent(intent)
+        .addNextIntent(gotoDaShopDetailsIntent)
     val notificationGeofenceHitPendingIntent = stackBuilder
         .getPendingIntent(getUniqueId(), PendingIntent.FLAG_UPDATE_CURRENT)
 
     // prettify notifications (with the SmobShop logo)
     val smobLogo = BitmapFactory.decodeResource(
         context.applicationContext.resources,
-        R.drawable.smob_1,
+        R.drawable.smob_2,
     )
     val bigPicStyle = NotificationCompat.BigPictureStyle()
         .bigPicture(smobLogo)
         .bigLargeIcon(null)
 
+    // add action intent to directly go to "Planning" view
+    val planningViewIntent = Intent(context, SmobPlanningActivity::class.java)
+    val planningViewPendingIntent: PendingIntent =
+        PendingIntent.getBroadcast(
+            context,
+            getUniqueId(),
+            planningViewIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT + PendingIntent.FLAG_IMMUTABLE
+        )
+
     // build the notification object for geofence hit notifications, with the data to be shown
     val notification = NotificationCompat.Builder(context, NOTIFICATION_GEOFENCE_CHANNEL_ID)
-        .setSmallIcon(R.drawable.smob_1)
+        .setSmallIcon(R.drawable.smob_2)
         .setContentTitle(daShop.name)
         .setContentText(daShop.description)
         .setContentIntent(notificationGeofenceHitPendingIntent)
         .setStyle(bigPicStyle)
         .setLargeIcon(smobLogo)
+        .addAction(
+            R.drawable.smob_2,
+            context.getString(R.string.smob_lists_name),
+            planningViewPendingIntent
+        )
         .setAutoCancel(true)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
         .build()
 
     // deliver the notification
-    context.notificationManager?.notify(getUniqueId(), notification)
-}
+    notify(getUniqueId(), notification)
 
-
-
-/**
- * Create and show a simple notification containing the received FCM message.
- *
- * @param messageBody FCM message body received.
- */
-fun sendNotificationOnFcm(context: Context, messageBody: String) {
-    context.notificationManager?.sendNotification(messageBody, context)
 }
 
 
 /**
- * Builds and delivers the notification upon the receipt of an FCM message.
+ * Builds and delivers the notification upon the receipt of an FCM update message.
  *
- * @param messageBody, notification text.
  * @param context, activity context.
+ * @param messageBody, notification text.
  */
-fun NotificationManager.sendNotification(messageBody: String, context: Context) {
+fun NotificationManager.sendNotificationOnFcmUpdate(context: Context, messageBody: String) {
 
-    val contentIntent = Intent(context, SmobPlanningActivity::class.java)
+    // initialize notification channel for FCM update messages
+    ifSupportsOreo {
+        // channel already created?
+        if (getNotificationChannel(NOTIFICATION_FCM_UPDATE_CHANNEL_ID) == null) {
+            // nope --> create notification channel for (the buffering of) FCM update messages
+            NotificationChannel(
+                NOTIFICATION_FCM_UPDATE_CHANNEL_ID,
+                context.getString(R.string.app_name) + ".fcmUpdate",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+                .apply {
+                    createNotificationChannel(this)
+                }
+        }
+
+    }  // OREO and above
+
+    // create intent to go to SmobPlanning
+    val smobPlanningIntent = Intent(context, SmobPlanningActivity::class.java)
     val contentPendingIntent = PendingIntent.getActivity(
         context,
         getUniqueId(),
-        contentIntent,
-        PendingIntent.FLAG_UPDATE_CURRENT
+        smobPlanningIntent,
+        PendingIntent.FLAG_UPDATE_CURRENT + PendingIntent.FLAG_IMMUTABLE,
     )
 
     // prettify notifications (with the SmobShop logo)
@@ -142,7 +188,7 @@ fun NotificationManager.sendNotification(messageBody: String, context: Context) 
     // build the notification
     val builder = NotificationCompat.Builder(
         context,
-        context.getString(R.string.smob_list_desc)
+        context.getString(R.string.smob_update_notification_channel_id)
     )
         .setSmallIcon(R.drawable.smob_2)
         .setContentTitle(context.getString(R.string.smob_list_name))
@@ -150,11 +196,6 @@ fun NotificationManager.sendNotification(messageBody: String, context: Context) 
         .setContentIntent(contentPendingIntent)
         .setStyle(bigPicStyle)
         .setLargeIcon(smobLogo)
-//        .addAction(
-//            R.drawable.smob_2,
-//            applicationContext.getString(R.string.snooze),
-//            snoozePendingIntent
-//        )
         .setPriority(NotificationCompat.PRIORITY_HIGH)
         .setAutoCancel(true)
 
@@ -162,6 +203,7 @@ fun NotificationManager.sendNotification(messageBody: String, context: Context) 
     notify(getUniqueId(), builder.build())
 
 }
+
 
 /**
  * Cancels all notifications.

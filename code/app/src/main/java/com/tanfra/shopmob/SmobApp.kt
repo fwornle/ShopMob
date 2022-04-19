@@ -1,12 +1,16 @@
 package com.tanfra.shopmob
 
 import android.app.Application
+import android.content.Context
+import android.widget.Toast
 import com.tanfra.shopmob.smob.work.wmServices
 import com.tanfra.shopmob.smob.ui.vmServices
 import com.tanfra.shopmob.smob.data.local.dbServices
 import com.tanfra.shopmob.smob.data.net.netServices
 import com.tanfra.shopmob.smob.data.repo.repoServices
 import androidx.work.*
+import com.google.firebase.messaging.FirebaseMessaging
+import com.tanfra.shopmob.Constants.FCM_TOPIC
 import com.tanfra.shopmob.smob.data.*
 import com.tanfra.shopmob.smob.data.repo.*
 import com.tanfra.shopmob.smob.data.repo.dataSource.*
@@ -17,7 +21,6 @@ import org.koin.core.component.inject
 import org.koin.core.context.startKoin
 import timber.log.Timber
 import java.util.*
-
 
 
 class SmobApp : Application(), KoinComponent {
@@ -50,6 +53,9 @@ class SmobApp : Application(), KoinComponent {
         wManager.delayedInitRecurringWorkSlow()
         wManager.delayedInitRecurringWorkFast()
 
+        // subscribe to topic for FCM update messages
+        subscribeTopic(wManager.smobAppContext)
+
     }  // onCreate
 
 
@@ -63,6 +69,25 @@ class SmobApp : Application(), KoinComponent {
         // initialize WorkManager jobs (slow and fast polling)... and start them both
         wManager.cancelRecurringWorkFast()
         wManager.cancelRecurringWorkSlow()
+
+        // unsubscribe from topic used for FCM update messages
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(FCM_TOPIC)
+
+    }
+
+
+    // FCM: subscribe to topic
+    private fun subscribeTopic(context: Context) {
+
+        // subscribe to topic (for update messaging)
+        FirebaseMessaging.getInstance().subscribeToTopic(FCM_TOPIC)
+            .addOnCompleteListener { task ->
+                var message = getString(R.string.message_subscribed)
+                if (!task.isSuccessful) {
+                    message = getString(R.string.message_subscribe_failed)
+                }
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            }
 
     }
 

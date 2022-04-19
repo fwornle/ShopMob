@@ -6,7 +6,8 @@ enum class SmobDetailsSources {
     PLANNING_PRODUCT_LIST,
     PLANNING_SHOP_LIST,
     GEOFENCE,
+    FCMUPDATE,
     SHOPPING,
     ADMINISTRATION,
-    DETAILS
+    DETAILS,
 }
