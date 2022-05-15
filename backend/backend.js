@@ -5,6 +5,17 @@ const middlewares = jsonServer.defaults()
 const path = require('path');
 const fs = require('fs');
 
+// firebase admin SDK
+const firebase = require("firebase-admin");
+const serviceAccount = require(path.join(__dirname, 'shopmob_serviceAccountKey.json'));
+const firebaseApp = firebase.initializeApp({
+    credential: firebase.credential.cert(serviceAccount)
+});
+
+// retrieve handle for messaging
+const { getMessaging } = require('firebase/messaging');
+const messaging = getMessaging(firebaseApp);
+
 // serve local images
 var dir = path.join(__dirname, 'public');
 
@@ -66,6 +77,46 @@ server.use(jsonServer.bodyParser)
 //   // Continue to JSON Server router
 //   next()
 // })
+
+// intercept returned resources before it goes out --> send FCM update message to topic
+router.render = (req, res) => {
+    switch(req.method) {
+        case 'GET':
+            // render content (unmodified)
+            res.jsonp(res.locals.data)
+            break
+
+        case 'POST':
+        case 'PUT':
+            res.jsonp(res.locals.data)
+
+            console.log("sending FCM update message")
+
+            // The topic name can be optionally prefixed with "/topics/".
+            const topic = 'shopmob';
+
+            const message = {
+            data: {
+                score: '850',
+                time: '2:45',
+            },
+            topic: topic
+            };
+
+            // Send a message to devices subscribed to the provided topic.
+            messaging.send(message)
+            .then((response) => {
+                // Response is a message ID string.
+                console.log('Successfully sent message:', response);
+            })
+            .catch((error) => {
+                console.log('Error sending message:', error);
+            });
+
+            break
+
+    }
+}
 
 // Use default router
 server.use(router)

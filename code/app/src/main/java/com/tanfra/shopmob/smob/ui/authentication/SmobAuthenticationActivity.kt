@@ -12,9 +12,14 @@ import com.tanfra.shopmob.databinding.ActivityAuthenticationBinding
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import timber.log.Timber
 import com.google.firebase.auth.FirebaseAuth
+import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.repo.SmobUserRepository
+import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import java.util.*
 
 
 /**
@@ -79,24 +84,35 @@ class SmobAuthenticationActivity : AppCompatActivity() {
 
     // redirect successfully authenticated users to the main app
     private fun sendAuthUserToMainApp(auth: FirebaseAuth) {
+
         val user = auth.currentUser
-        var isNewUser: Boolean? = null
+        var isNewUser: Boolean?
 
         // user object returned?
         user?.let {
-            // yup - extract meta information
+
+            // yup - extract meta information and send to starting the activity of the app
             isNewUser = it.metadata?.creationTimestamp == it.metadata?.lastSignInTimestamp
+
+            // send authenticated user to "SmobItemsActivity"
+            val intent = Intent(applicationContext, SmobPlanningActivity::class.java)
+            wrapEspressoIdlingResource {
+                startActivity(
+                    intent
+                        .putExtra("userId", it.uid)
+                        .putExtra("userName", it.displayName)
+                        .putExtra("userEmail", it.email)
+                        .putExtra("userProfileUrl", it.photoUrl.toString())
+                        .putExtra("isNewUser", isNewUser)
+                )
+            }
+
+            // we will never get to here
+
         }
 
-        // send user to "SmobItemsActivity"
-        val intent = Intent(applicationContext, SmobPlanningActivity::class.java)
-        wrapEspressoIdlingResource {
-            startActivity(
-                intent
-                    .putExtra("userName", user?.displayName)
-                    .putExtra("isNewUser", isNewUser)
-            )
-        }
+        // if we are here, the authentication failed
+        Timber.i("Authentication via firebase failed.")
 
     }
 

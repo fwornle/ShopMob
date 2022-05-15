@@ -14,6 +14,7 @@ android {
         testInstrumentationRunnerArguments
         testInstrumentationRunnerArguments
         testInstrumentationRunnerArguments
+        testInstrumentationRunnerArguments
         applicationId "com.tanfra.shopmob"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
@@ -75,6 +76,7 @@ android {
             excludes += ['**/attach_hotspot_windows.dll', 'META-INF/licenses/**', 'META-INF/AL2.0', 'META-INF/LGPL2.1']
         }
     }
+    namespace 'com.tanfra.shopmob'
 
     // workaround to avoid build errors when running fragment-test dependent tests
     // https://www.codegrepper.com/code-examples/java/More+than+one+file+was+found+with+OS+independent+path+%27META-INF%2FAL2.0%27.+when+running+android+test
@@ -150,7 +152,7 @@ dependencies {
     // Room dependencies
     implementation "androidx.room:room-ktx:$roomVersion"
     implementation "androidx.room:room-runtime:$roomVersion"
-    implementation 'com.google.firebase:firebase-auth-ktx:21.0.3'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.0.4'
     kapt "androidx.room:room-compiler:2.4.2"
 
     // Coroutines Dependencies

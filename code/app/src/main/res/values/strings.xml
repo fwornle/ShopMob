@@ -39,6 +39,7 @@
     <string name="logout">Logout</string>
     <string name="launch">Launch</string>
     <string name="welcome_message">Welcome to\nShopMob</string>
+    <string name="welcome_user">Welcome to\nShopMob, %1s</string>
     <string name="login">Login</string>
     <string name="normal_map">Normal Map</string>
     <string name="hybrid_map">Hybrid Map</string>
