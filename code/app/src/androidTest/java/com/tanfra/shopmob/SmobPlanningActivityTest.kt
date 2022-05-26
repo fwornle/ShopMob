@@ -20,9 +20,10 @@ import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.*
-import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
+import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import com.tanfra.shopmob.smob.data.local.LocalDB
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditViewModel
 import com.tanfra.shopmob.util.DataBindingIdlingResource
@@ -462,7 +463,7 @@ class SmobPlanningActivityTest: AutoCloseKoinTest() {
         repository.saveSmobItem(testSmobItemATO)
 
         // open new activity container w/h class "AuthenticationActivity"
-        val authenticationActivityScenario = ActivityScenario.launch(SmobAuthenticationActivity::class.java)
+        val authenticationActivityScenario = ActivityScenario.launch(SmobAuthActivity::class.java)
 
         // monitor authenticationActivityScenario for "idling" (used to flow control the espresso tests)
         dataBindingIdlingResource.monitorActivity(authenticationActivityScenario)

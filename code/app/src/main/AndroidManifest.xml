@@ -63,7 +63,7 @@
 
         <activity
             android:exported="true"
-            android:name=".smob.ui.authentication.SmobAuthenticationActivity">
+            android:name=".smob.ui.auth.SmobAuthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -92,7 +92,7 @@
 
         <activity
             android:exported="true"
-            android:name=".smob.ui.administration.SmobAdministrationActivity" >
+            android:name=".smob.ui.admin.SmobAdminActivity" >
         </activity>
 
         <!-- prevent config changes from restarting the activity - needed, as we get here

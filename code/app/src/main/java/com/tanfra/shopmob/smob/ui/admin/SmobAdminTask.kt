@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.administration
+package com.tanfra.shopmob.smob.ui.admin
 
 // this is what an outside caller can communicate via an intent when launching the admin activity
 enum class SmobAdminTask {

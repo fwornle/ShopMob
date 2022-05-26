@@ -15,15 +15,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentPlanningShopListBinding
-import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
+import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsSources
 import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
 import com.tanfra.shopmob.utils.setup
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
-import org.koin.androidx.scope.scope
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
@@ -169,7 +167,7 @@ class PlanningShopListFragment : BaseFragment(), KoinComponent {
                     .signOut(this.requireContext())
                     .addOnCompleteListener {
                         // user is now signed out -> redirect to login screen
-                        startActivity(Intent(this.context, SmobAuthenticationActivity::class.java))
+                        startActivity(Intent(this.context, SmobAuthActivity::class.java))
                         // and we're done here
                         this.activity?.finish()
                     }

@@ -8,7 +8,6 @@ import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -16,8 +15,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentPlanningListsBinding
 import com.tanfra.shopmob.smob.data.repo.utils.Status
-import com.tanfra.shopmob.smob.ui.administration.SmobAdminTask
-import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
+import com.tanfra.shopmob.smob.ui.admin.SmobAdminTask
+import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
 import com.tanfra.shopmob.utils.setup
@@ -175,7 +174,7 @@ class PlanningListsFragment : BaseFragment(), KoinComponent {
                     .signOut(this.requireContext())
                     .addOnCompleteListener {
                         // user is now signed out -> redirect to login screen
-                        startActivity(Intent(this.context, SmobAuthenticationActivity::class.java))
+                        startActivity(Intent(this.context, SmobAuthActivity::class.java))
                         // and we're done here
                         this.activity?.finish()
                     }

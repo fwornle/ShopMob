@@ -8,12 +8,10 @@ import android.view.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentDetailsShopBinding
-import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
+import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.smob.ui.details.utils.ButtonState
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
@@ -164,7 +162,7 @@ class DetailsShopFragment : BaseFragment(), KoinComponent {
                             .signOut(this.requireContext())
                             .addOnCompleteListener {
                                 // user is now signed out -> redirect to login screen
-                                startActivity(Intent(this.context, SmobAuthenticationActivity::class.java))
+                                startActivity(Intent(this.context, SmobAuthActivity::class.java))
                                 // and we're done here
                                 this.activity?.finish()
                             }

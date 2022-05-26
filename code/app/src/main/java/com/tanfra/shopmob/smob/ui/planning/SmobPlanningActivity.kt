@@ -58,9 +58,6 @@ class SmobPlanningActivity : AppCompatActivity() {
         var userProfileUrl: String? = null
         var isNewUser = false
 
-        // reset ID of previously logged-in user
-        SmobApp.currUserId = ""
-
         val extras: Bundle? = intent.extras
         extras?.let {
             if (it.containsKey("userName")) {

@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.administration
+package com.tanfra.shopmob.smob.ui.admin
 
 import android.content.Context
 import android.content.Intent
@@ -15,7 +15,7 @@ import timber.log.Timber
 /**
  * Activity that collects administrative tasks (new/edit user, group, list)
  */
-class SmobAdministrationActivity : AppCompatActivity() {
+class SmobAdminActivity : AppCompatActivity() {
 
     // (singleton) object to facilitate navigation to this activity (and it's fragments)
     companion object {
@@ -25,7 +25,7 @@ class SmobAdministrationActivity : AppCompatActivity() {
 
         // caller (typically outside this activity) can create an intent with a SmobAdminTask
         fun newIntent(context: Context, smobTask: SmobAdminTask): Intent {
-            return context.createIntent<SmobAdministrationActivity>(EXTRA_SmobAdminTask to smobTask)
+            return context.createIntent<SmobAdminActivity>(EXTRA_SmobAdminTask to smobTask)
         }
 
     }

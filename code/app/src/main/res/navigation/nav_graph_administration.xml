@@ -7,12 +7,12 @@
 
     <activity
         android:id="@+id/smobAdministrationActivity"
-        android:name="com.tanfra.shopmob.smob.ui.administration.SmobAdministrationActivity"
+        android:name="com.tanfra.shopmob.smob.ui.admin.SmobAdminActivity"
         android:label="Smob Administration Activity" />
 
     <fragment
         android:id="@+id/smobAdminSelectFragment"
-        android:name="com.tanfra.shopmob.smob.ui.administration.AdminSelectFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.AdminSelectFragment"
         android:label="Administration Selector">
     </fragment>
 

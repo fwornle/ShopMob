@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.administration
+package com.tanfra.shopmob.smob.ui.admin
 
 import android.app.Application
 import androidx.lifecycle.asLiveData

@@ -11,7 +11,7 @@ import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
 import android.widget.Toast
 import com.firebase.ui.auth.AuthUI
-import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
+import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsSources
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
@@ -172,7 +172,7 @@ class PlanningProductListFragment : BaseFragment(), KoinComponent {
                     .signOut(this.requireContext())
                     .addOnCompleteListener {
                         // user is now signed out -> redirect to login screen
-                        startActivity(Intent(this.context, SmobAuthenticationActivity::class.java))
+                        startActivity(Intent(this.context, SmobAuthActivity::class.java))
                         // and we're done here
                         this.activity?.finish()
                     }

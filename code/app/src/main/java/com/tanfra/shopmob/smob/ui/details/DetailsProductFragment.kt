@@ -10,7 +10,7 @@ import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentDetailsProductBinding
-import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
+import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
@@ -63,7 +63,7 @@ class DetailsProductFragment : BaseFragment(), KoinComponent {
                     .signOut(this.requireContext())
                     .addOnCompleteListener {
                         // user is now signed out -> redirect to login screen
-                        startActivity(Intent(this.context, SmobAuthenticationActivity::class.java))
+                        startActivity(Intent(this.context, SmobAuthActivity::class.java))
                         // and we're done here
                         this.activity?.finish()
                     }

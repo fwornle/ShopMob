@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.administration
+package com.tanfra.shopmob.smob.ui.admin
 
 import android.os.Bundle
 import android.view.*
@@ -12,7 +12,7 @@ import android.content.Intent
 
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentAdminSelectBinding
-import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
+import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import org.koin.core.component.KoinComponent
 
@@ -69,7 +69,7 @@ class AdminSelectFragment : BaseFragment(), KoinComponent {
                     .signOut(this.requireContext())
                     .addOnCompleteListener {
                         // user is now signed out -> redirect to login screen
-                        startActivity(Intent(this.context, SmobAuthenticationActivity::class.java))
+                        startActivity(Intent(this.context, SmobAuthActivity::class.java))
                         // and we're done here
                         this.activity?.finish()
                     }

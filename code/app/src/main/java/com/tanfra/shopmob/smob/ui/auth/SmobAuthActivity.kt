@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.authentication
+package com.tanfra.shopmob.smob.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,35 +8,30 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.databinding.ActivityAuthenticationBinding
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import timber.log.Timber
 import com.google.firebase.auth.FirebaseAuth
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
-import com.tanfra.shopmob.smob.data.repo.SmobUserRepository
-import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
+import com.tanfra.shopmob.databinding.ActivityAuthBinding
 import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import java.util.*
 
 
 /**
  * This class should be the starting point of the app, It asks the users to sign in / register, and
  * redirects the signed in users to the SmobActivity.
  */
-class SmobAuthenticationActivity : AppCompatActivity() {
+class SmobAuthActivity : AppCompatActivity() {
 
     // bind views
-    private lateinit var binding: ActivityAuthenticationBinding
+    private lateinit var binding: ActivityAuthBinding
 
     // initialize activity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Inflate the layout
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_authentication)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_auth)
         setContentView(binding.root)
 
         // use FirebaseUI auth flow to sign in users
