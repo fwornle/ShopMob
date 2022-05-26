@@ -21,8 +21,6 @@ import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.work.SmobAppWork
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectIndexed
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
@@ -80,8 +78,8 @@ class SmobPlanningActivity : AppCompatActivity() {
             val userRepo: SmobUserDataSource by inject()
 
             // determine highest item position
-            userRepo.getAllSmobItems().take(1).collectLatest {
-                it.data.let { allUsers ->
+            userRepo.getAllSmobItems().take(1).collectLatest { daResList ->
+                daResList.data.let { allUsers ->
 
                     val userItemPos: Long
                     val daUser: SmobUserATO? = allUsers?.find { it.id == userId }
