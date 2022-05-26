@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.tanfra.shopmob.databinding.ActivityAdministrationBinding
+import com.tanfra.shopmob.databinding.ActivityAdminBinding
 import com.tanfra.shopmob.smob.ui.details.createIntent
 import com.tanfra.shopmob.smob.work.SmobAppWork
 import org.koin.android.ext.android.inject
@@ -31,7 +31,7 @@ class SmobAdministrationActivity : AppCompatActivity() {
     }
 
     // data binding
-    private lateinit var binding: ActivityAdministrationBinding
+    private lateinit var binding: ActivityAdminBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +39,7 @@ class SmobAdministrationActivity : AppCompatActivity() {
         // inflate layout
         binding = DataBindingUtil.setContentView(
             this,
-            com.tanfra.shopmob.R.layout.activity_administration
+            com.tanfra.shopmob.R.layout.activity_admin
         )
 
         // fetch data from intent provided by triggering notification
@@ -58,10 +58,10 @@ class SmobAdministrationActivity : AppCompatActivity() {
         when(intentTask) {
             SmobAdminTask.NEW_LIST -> Timber.i("Create a new Smob list (one day).")
             SmobAdminTask.EDIT_LIST -> Timber.i("Edit an existing Smob list (one day).")
-            SmobAdminTask.NEW_USER -> Timber.i("Create a new Smob list (one day).")
-            SmobAdminTask.EDIT_USER -> Timber.i("Edit an existing Smob list (one day).")
-            SmobAdminTask.NEW_GROUP -> Timber.i("Create a new Smob list (one day).")
-            SmobAdminTask.EDIT_GROUP -> Timber.i("Edit an existing Smob list (one day).")
+            SmobAdminTask.NEW_USER -> Timber.i("Create a new Smob user (one day).")
+            SmobAdminTask.EDIT_USER -> Timber.i("Edit an existing Smob user (one day).")
+            SmobAdminTask.NEW_GROUP -> Timber.i("Create a new Smob group (one day).")
+            SmobAdminTask.EDIT_GROUP -> Timber.i("Edit an existing Smob group (one day).")
             else -> Timber.i("Show the Administration selection screen (one day).")
         }
 

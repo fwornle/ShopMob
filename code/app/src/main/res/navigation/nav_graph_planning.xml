@@ -18,7 +18,7 @@
         android:id="@+id/smobAdminSelectFragment"
         android:name="com.tanfra.shopmob.smob.ui.administration.AdminSelectFragment"
         android:label="Administration Selector"
-        tools:layout="@layout/fragment_administration_select"
+        tools:layout="@layout/fragment_admin_select"
         >
         <deepLink app:uri="android-app://com.tanfra.shopmob.smob.ui.planning.shopEdit/map" />
     </fragment>

@@ -15,6 +15,7 @@ import androidx.navigation.ui.NavigationUI.navigateUp
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.tanfra.shopmob.R
+import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.databinding.ActivityPlanningBinding
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
@@ -57,6 +58,9 @@ class SmobPlanningActivity : AppCompatActivity() {
         var userProfileUrl: String? = null
         var isNewUser = false
 
+        // reset ID of previously logged-in user
+        SmobApp.currUserId = ""
+
         val extras: Bundle? = intent.extras
         extras?.let {
             if (it.containsKey("userName")) {
@@ -66,6 +70,9 @@ class SmobPlanningActivity : AppCompatActivity() {
                 userEmail = it.get("userEmail") as String
                 userProfileUrl = it.get("userProfileUrl") as String
                 isNewUser = it.get("isNewUser") as Boolean
+
+                // store ID of currently logged-in user
+                SmobApp.currUserId = userId
             }
         }
 
@@ -82,21 +89,25 @@ class SmobPlanningActivity : AppCompatActivity() {
                     val userItemPos: Long
                     val daUser: SmobUserATO? = allUsers?.find { it.id == userId }
 
-                    // user already in local DB?
-                    if(daUser == null) {
-                        // user not found in local DB
-                        // determine maximum user item position
-                        userItemPos = allUsers?.maxOf { it -> it.itemPosition + 1 } ?: -1
+                    // determine position of user item in DB
+                    userItemPos = if(daUser == null) {
+                        // user new to ShopMob app --> append at the end
+                        // indicate that this is a new user (new to ShopMob)
+                        isNewUser = true
+
+                        // determine highest user position (plus one)
+                        allUsers?.maxOf { it -> it.itemPosition + 1 } ?: -1
+
                     } else {
-                        // user already in local DB --> use current position
-                        userItemPos = daUser.itemPosition
+                        // user already in ShopMob DB --> use current position
+                        daUser.itemPosition
                     }
 
 
                     // define user object
                     val currUser = SmobUserATO(
                         userId,
-                        SmobItemStatus.OPEN,
+                        if(isNewUser) SmobItemStatus.NEW else SmobItemStatus.OPEN,
                         userItemPos,
                         userName.trim().replace(" ", "."),
                         userName,
@@ -106,6 +117,7 @@ class SmobPlanningActivity : AppCompatActivity() {
 
                     // attempt to update user data in local/backend DB (or store, if new)
                     userRepo.saveSmobItem(currUser)
+
                 }
 
             }

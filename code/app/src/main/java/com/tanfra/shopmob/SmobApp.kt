@@ -25,6 +25,11 @@ import java.util.*
 
 class SmobApp : Application(), KoinComponent {
 
+    companion object{
+        // globally store ID of currently logged-in user
+        var currUserId: String = ""
+    }
+
     override fun onCreate() {
         super.onCreate()
 

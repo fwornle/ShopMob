@@ -11,7 +11,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
 
 import com.firebase.ui.auth.AuthUI
-import com.tanfra.shopmob.databinding.FragmentAdministrationSelectBinding
+import com.tanfra.shopmob.databinding.FragmentAdminSelectBinding
 import com.tanfra.shopmob.smob.ui.authentication.SmobAuthenticationActivity
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import org.koin.core.component.KoinComponent
@@ -22,7 +22,7 @@ class AdminSelectFragment : BaseFragment(), KoinComponent {
     override val _viewModel: AdminViewModel by viewModel()
 
     // data binding for fragment_planning_lists.xml
-    private lateinit var binding: FragmentAdministrationSelectBinding
+    private lateinit var binding: FragmentAdminSelectBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +33,7 @@ class AdminSelectFragment : BaseFragment(), KoinComponent {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_administration_select, container, false
+                R.layout.fragment_admin_select, container, false
             )
 
         // set injected viewModel (from KOIN service locator)
