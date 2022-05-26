@@ -86,8 +86,12 @@
     <string name="title_product">Product</string>
     <string name="title_shop">Store</string>
     <string name="dismiss">Dismiss</string>
+    <string name="groups">Groups</string>
+    <string name="lists">Lists</string>
+    <string name="profile">Profile</string>
     <string name="floor_plan">Floor Plan</string>
     <string name="description">Description</string>
+    <string name="adminDescription">ShopMob Administration</string>
     <string name="location">Location</string>
     <string name="location_latlong">%1$.6f,%2$.6f</string>
     <string name="catMain">Category</string>
