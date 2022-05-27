@@ -6,30 +6,15 @@
     android:id="@+id/nav_graph_planning"
     app:startDestination="@id/smobPlanningListsFragment">
 
-    <activity
-        android:id="@+id/smobActivityPlanning"
-        android:name="com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity"
-        android:label="Planning"
-        tools:layout="@layout/activity_planning"
-        />
-
-    <!-- cross activity navigation made easy... -->
-    <fragment
-        android:id="@+id/smobAdminSelectFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.AdminSelectFragment"
-        android:label="Administration Selector"
-        tools:layout="@layout/fragment_admin_select"
-        >
-        <deepLink app:uri="android-app://com.tanfra.shopmob.smob.ui.planning.shopEdit/map" />
-    </fragment>
-
     <!-- cross activity navigation made easy...
          https://stackoverflow.com/questions/62214514/navigate-from-one-activity-to-another-with-navigation-component
-    <activity
-        android:id="@+id/smobDetailsActivity"
-        android:name="com.tanfra.shopmob.smob.activities.details.SmobDetailsActivity"
-        android:label="Smob Details Activity" />
     -->
+    <activity
+        android:id="@id/smobAdminActivity"
+        android:name="com.tanfra.shopmob.smob.ui.admin.SmobAdminActivity"
+        android:label="Smob Administration Activity"
+        tools:layout="@layout/activity_admin"
+        />
 
     <fragment
         android:id="@+id/smobPlanningListsFragment"

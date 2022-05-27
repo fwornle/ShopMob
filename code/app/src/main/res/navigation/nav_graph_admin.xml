@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_administration"
+    app:startDestination="@id/smobAdminSelectFragment">
+
+    <fragment
+        android:id="@+id/smobAdminSelectFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.AdminSelectFragment"
+        android:label="Administration Selector"
+        tools:layout="@layout/fragment_admin_select"
+        >
+        <action
+            android:id="@+id/action_smobAdminSelectFragment_to_smobAdminProfileFragment"
+            app:destination="@id/smobAdminProfileFragment" />
+        <action
+            android:id="@+id/action_smobAdminSelectFragment_to_smobAdminGroupsFragment"
+            app:destination="@id/smobAdminGroupsFragment" />
+        <action
+            android:id="@+id/action_smobAdminSelectFragment_to_smobAdminListsFragment"
+            app:destination="@id/smobAdminListsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/smobAdminProfileFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.AdminProfileFragment"
+        android:label="Administer User Profile"
+        tools:layout="@layout/fragment_admin_profile"
+        >
+        <action
+            android:id="@+id/action_smobAdminProfileFragment_to_smobAdminSelectFragment"
+            app:destination="@id/smobAdminSelectFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/smobAdminGroupsFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.AdminGroupsFragment"
+        android:label="Administer Groups"
+        tools:layout="@layout/fragment_admin_groups"
+        >
+        <action
+            android:id="@+id/action_smobAdminGroupsFragment_to_smobAdminSelectFragment"
+            app:destination="@id/smobAdminSelectFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/smobAdminListsFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.AdminListsFragment"
+        android:label="Administer Lists"
+        tools:layout="@layout/fragment_admin_lists"
+        >
+        <action
+            android:id="@+id/action_smobAdminListsFragment_to_smobAdminSelectFragment"
+            app:destination="@id/smobAdminSelectFragment" />
+    </fragment>
+
+</navigation>

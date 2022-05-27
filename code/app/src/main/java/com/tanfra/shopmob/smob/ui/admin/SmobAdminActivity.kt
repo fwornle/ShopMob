@@ -5,6 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
+import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.ActivityAdminBinding
 import com.tanfra.shopmob.smob.ui.details.createIntent
 import com.tanfra.shopmob.smob.work.SmobAppWork
@@ -33,13 +39,17 @@ class SmobAdminActivity : AppCompatActivity() {
     // data binding
     private lateinit var binding: ActivityAdminBinding
 
+    // use navController activity wide
+    private lateinit var navController: NavController
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // inflate layout
         binding = DataBindingUtil.setContentView(
             this,
-            com.tanfra.shopmob.R.layout.activity_admin
+            R.layout.activity_admin
         )
 
         // fetch data from intent provided by triggering notification
@@ -64,6 +74,13 @@ class SmobAdminActivity : AppCompatActivity() {
             SmobAdminTask.EDIT_GROUP -> Timber.i("Edit an existing Smob group (one day).")
             else -> Timber.i("Show the Administration selection screen (one day).")
         }
+
+
+        // set-up navController
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_admin) as NavHostFragment
+
+        navController = navHostFragment.navController
 
     }
 

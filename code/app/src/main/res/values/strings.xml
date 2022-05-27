@@ -6,6 +6,9 @@
     <string name="app_name_planning">Shop for: %1$s</string>
     <string name="app_name_planning_shop">ShopMob: %1$s</string>
     <string name="app_name_admin">ShopMob Administration</string>
+    <string name="app_name_admin_profile">ShopMob User Profile</string>
+    <string name="app_name_admin_groups">ShopMob Groups</string>
+    <string name="app_name_admin_lists">ShopMob Lists</string>
     <string name="admin">Administration</string>
     <string name="app_name_details_product">ShopMob Product Details</string>
     <string name="app_name_details_shop">ShopMob Shop Details</string>
@@ -91,7 +94,10 @@
     <string name="profile">Profile</string>
     <string name="floor_plan">Floor Plan</string>
     <string name="description">Description</string>
-    <string name="adminDescription">ShopMob Administration</string>
+    <string name="adminDescription">ShopMob administration</string>
+    <string name="adminGroupDescription">ShopMob group administration</string>
+    <string name="adminListDescription">ShopMob shopping list administration</string>
+    <string name="adminProfileDescription">ShopMob user profile administration</string>
     <string name="location">Location</string>
     <string name="location_latlong">%1$.6f,%2$.6f</string>
     <string name="catMain">Category</string>
