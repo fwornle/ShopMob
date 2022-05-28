@@ -7,6 +7,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.tanfra.shopmob.Constants.FCM_TOPIC
 import com.tanfra.shopmob.smob.data.local.dbServices
 import com.tanfra.shopmob.smob.data.net.netServices
+import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.repo.repoServices
 import com.tanfra.shopmob.smob.ui.vmServices
 import com.tanfra.shopmob.smob.work.SmobAppWork
@@ -21,8 +22,8 @@ import timber.log.Timber
 class SmobApp : Application(), KoinComponent {
 
     companion object{
-        // globally store ID of currently logged-in user
-        var currUserId: String = ""
+        // details of currently logged-in user
+        var currUser: SmobUserATO? = null
     }
 
     override fun onCreate() {

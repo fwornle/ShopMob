@@ -11,6 +11,7 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import timber.log.Timber
 import com.google.firebase.auth.FirebaseAuth
+import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.databinding.ActivityAuthBinding
 import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
@@ -33,6 +34,9 @@ class SmobAuthActivity : AppCompatActivity() {
         // Inflate the layout
         binding = DataBindingUtil.setContentView(this, R.layout.activity_auth)
         setContentView(binding.root)
+
+        // we're here first time or after having been logged out
+        SmobApp.currUser = null
 
         // use FirebaseUI auth flow to sign in users
         val auth = FirebaseAuth.getInstance()

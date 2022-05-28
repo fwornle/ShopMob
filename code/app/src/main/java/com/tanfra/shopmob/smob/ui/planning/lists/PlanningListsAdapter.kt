@@ -28,7 +28,7 @@ class PlanningListsAdapter(rootView: View, callBack: (selectedSmobATO: SmobListA
 
         // take out all items which have been deleted by swiping
         return items
-            .filter { item -> item.members.contains(SmobApp.currUserId)  }
+            .filter { item -> item.members.contains(SmobApp.currUser?.id)  }
             .filter { item -> item.itemStatus != SmobItemStatus.DELETED  }
             .map { item -> consolidateListItem(item) }
             .sortedWith(

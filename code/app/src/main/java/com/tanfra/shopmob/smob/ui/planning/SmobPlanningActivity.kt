@@ -2,7 +2,6 @@ package com.tanfra.shopmob.smob.ui.planning
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -49,75 +48,80 @@ class SmobPlanningActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_planning)
         setContentView(binding.root)
 
-        // attempt to read extra data from incoming intent (auth)
-        var userName = "user-without-username"
-        var userId = "user-without-firebase-id"
-        var userEmail = "user-without-email"
-        var userProfileUrl: String? = null
-        var isNewUser = false
 
-        val extras: Bundle? = intent.extras
-        extras?.let {
-            if (it.containsKey("userName")) {
-                // extract the extra-data in the intent
-                userId = it.get("userId") as String
-                userName = it.get("userName") as String
-                userEmail = it.get("userEmail") as String
-                userProfileUrl = it.get("userProfileUrl") as String
-                isNewUser = it.get("isNewUser") as Boolean
+        // newly logged in?
+        if(SmobApp.currUser == null) {
 
-                // store ID of currently logged-in user
-                SmobApp.currUserId = userId
+            // auth sent us here...
+            // attempt to read extra data from incoming intent (auth)
+            var userName = "user-without-username"
+            var userId = "user-without-firebase-id"
+            var userEmail = "user-without-email"
+            var userProfileUrl: String? = null
+            var isNewUser = false
+
+            val extras: Bundle? = intent.extras
+            extras?.let {
+                if (it.containsKey("userName")) {
+                    // extract the extra-data in the intent
+                    userId = it.get("userId") as String
+                    userName = it.get("userName") as String
+                    userEmail = it.get("userEmail") as String
+                    userProfileUrl = it.get("userProfileUrl") as String
+                    isNewUser = it.get("isNewUser") as Boolean
+                }
             }
-        }
 
-        // update/store user in local DB of the app (as well as the backend)
-        wManager.applicationScope.launch {
+            // update/store user in local DB of the app (as well as the backend)
+            wManager.applicationScope.launch {
 
-            // fetch user repo to allow storing/updating of logged-in user
-            val userRepo: SmobUserDataSource by inject()
+                // fetch user repo to allow storing/updating of logged-in user
+                val userRepo: SmobUserDataSource by inject()
 
-            // determine highest item position
-            userRepo.getAllSmobItems().take(1).collectLatest { daResList ->
-                daResList.data.let { allUsers ->
+                // determine highest item position
+                userRepo.getAllSmobItems().take(1).collectLatest { daResList ->
+                    daResList.data.let { allUsers ->
 
-                    val userItemPos: Long
-                    val daUser: SmobUserATO? = allUsers?.find { it.id == userId }
+                        val userItemPos: Long
+                        val daUser: SmobUserATO? = allUsers?.find { it.id == userId }
 
-                    // determine position of user item in DB
-                    userItemPos = if(daUser == null) {
-                        // user new to ShopMob app --> append at the end
-                        // indicate that this is a new user (new to ShopMob)
-                        isNewUser = true
+                        // determine position of user item in DB
+                        userItemPos = if(daUser == null) {
+                            // user new to ShopMob app --> append at the end
+                            // indicate that this is a new user (new to ShopMob)
+                            isNewUser = true
 
-                        // determine highest user position (plus one)
-                        allUsers?.maxOf { it -> it.itemPosition + 1 } ?: -1
+                            // determine highest user position (plus one)
+                            allUsers?.maxOf { it -> it.itemPosition + 1 } ?: -1
 
-                    } else {
-                        // user already in ShopMob DB --> use current position
-                        daUser.itemPosition
+                        } else {
+                            // user already in ShopMob DB --> use current position
+                            daUser.itemPosition
+                        }
+
+
+                        // define user object
+                        SmobApp.currUser = SmobUserATO(
+                            userId,
+                            if(isNewUser) SmobItemStatus.NEW else SmobItemStatus.OPEN,
+                            userItemPos,
+                            userName.trim().replace(" ", "."),
+                            userName,
+                            userEmail,
+                            userProfileUrl.toString(),
+                        )
+
+                        // attempt to update user data in local/backend DB (or store, if new)
+                        userRepo.saveSmobItem(SmobApp.currUser!!)
+
                     }
-
-
-                    // define user object
-                    val currUser = SmobUserATO(
-                        userId,
-                        if(isNewUser) SmobItemStatus.NEW else SmobItemStatus.OPEN,
-                        userItemPos,
-                        userName.trim().replace(" ", "."),
-                        userName,
-                        userEmail,
-                        userProfileUrl.toString(),
-                    )
-
-                    // attempt to update user data in local/backend DB (or store, if new)
-                    userRepo.saveSmobItem(currUser)
 
                 }
 
-            }
+            }  //  applicationScope
 
-        }  //  applicationScope
+        }  // just logged-in
+
 
         // enable drawer (navbar)
         drawerLayout = binding.drawerLayout
@@ -156,10 +160,6 @@ class SmobPlanningActivity : AppCompatActivity() {
         binding.navView.setupWithNavController(navController)
         setupActionBarWithNavController(this, navController, drawerLayout)
 
-        // say hello to our newest users
-        if(isNewUser) {
-            Toast.makeText(this, getString(R.string.welcome_user, userName), Toast.LENGTH_SHORT).show()
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

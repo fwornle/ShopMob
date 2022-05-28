@@ -9,14 +9,11 @@ import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
-
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentAdminProfileBinding
-import com.tanfra.shopmob.databinding.FragmentAdminSelectBinding
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
-import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsFragmentDirections
 import org.koin.core.component.KoinComponent
 
 class AdminProfileFragment : BaseFragment(), KoinComponent {
@@ -36,14 +33,14 @@ class AdminProfileFragment : BaseFragment(), KoinComponent {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_admin_select, container, false
+                R.layout.fragment_admin_profile, container, false
             )
 
         // set injected viewModel (from KOIN service locator)
         binding.viewModel = _viewModel
 
-        setHasOptionsMenu(true)
-        setDisplayHomeAsUpEnabled(false)
+        setHasOptionsMenu(false)
+        setDisplayHomeAsUpEnabled(true)
         setTitle(getString(R.string.app_name_admin_profile))
 
         return binding.root

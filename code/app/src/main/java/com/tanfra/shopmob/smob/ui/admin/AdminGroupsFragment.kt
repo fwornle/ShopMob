@@ -9,14 +9,11 @@ import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
-
 import com.firebase.ui.auth.AuthUI
-import com.tanfra.shopmob.databinding.FragmentAdminProfileBinding
-import com.tanfra.shopmob.databinding.FragmentAdminSelectBinding
+import com.tanfra.shopmob.databinding.FragmentAdminGroupsBinding
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
-import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsFragmentDirections
 import org.koin.core.component.KoinComponent
 
 class AdminGroupsFragment : BaseFragment(), KoinComponent {
@@ -25,7 +22,7 @@ class AdminGroupsFragment : BaseFragment(), KoinComponent {
     override val _viewModel: AdminViewModel by viewModel()
 
     // data binding for fragment_planning_lists.xml
-    private lateinit var binding: FragmentAdminProfileBinding
+    private lateinit var binding: FragmentAdminGroupsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,14 +33,14 @@ class AdminGroupsFragment : BaseFragment(), KoinComponent {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_admin_select, container, false
+                R.layout.fragment_admin_groups, container, false
             )
 
         // set injected viewModel (from KOIN service locator)
         binding.viewModel = _viewModel
 
-        setHasOptionsMenu(true)
-        setDisplayHomeAsUpEnabled(false)
+        setHasOptionsMenu(false)
+        setDisplayHomeAsUpEnabled(true)
         setTitle(getString(R.string.app_name_admin_groups))
 
         return binding.root

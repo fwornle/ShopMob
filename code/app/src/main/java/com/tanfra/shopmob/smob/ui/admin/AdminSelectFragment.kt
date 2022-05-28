@@ -41,7 +41,7 @@ class AdminSelectFragment : BaseFragment(), KoinComponent {
         binding.viewModel = _viewModel
 
         setHasOptionsMenu(true)
-        setDisplayHomeAsUpEnabled(false)
+        setDisplayHomeAsUpEnabled(true)
         setTitle(getString(R.string.app_name_admin))
 
         return binding.root

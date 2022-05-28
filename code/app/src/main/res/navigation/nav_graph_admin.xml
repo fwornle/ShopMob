@@ -6,6 +6,24 @@
     android:id="@+id/nav_graph_administration"
     app:startDestination="@id/smobAdminSelectFragment">
 
+    <!-- cross activity navigation made easy...
+     https://stackoverflow.com/questions/62214514/navigate-from-one-activity-to-another-with-navigation-component
+    -->
+    <activity
+        android:id="@id/smobPlanningActivity"
+        android:name="com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity"
+        android:label="Smob Planning Activity"
+        tools:layout="@layout/activity_planning"
+        />
+
+    <fragment
+        android:id="@+id/smobPlanningShopListFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.shopList.PlanningShopListFragment"
+        android:label="Planning Shop List"
+        tools:layout="@layout/fragment_planning_shop_list"
+        >
+    </fragment>
+
     <fragment
         android:id="@+id/smobAdminSelectFragment"
         android:name="com.tanfra.shopmob.smob.ui.admin.AdminSelectFragment"

@@ -29,8 +29,8 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="start"
                     android:clipToPadding="false"
-                    app:menu="@menu/navdrawer_menu"
-                    app:headerLayout="@layout/nav_header"
+                    app:menu="@menu/navdrawer_planning_menu"
+                    app:headerLayout="@layout/nav_planning_header"
                     />
 
         </androidx.drawerlayout.widget.DrawerLayout>
