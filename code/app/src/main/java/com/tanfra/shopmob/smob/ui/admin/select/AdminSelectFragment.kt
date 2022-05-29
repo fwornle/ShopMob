@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.admin
+package com.tanfra.shopmob.smob.ui.admin.select
 
 import android.os.Bundle
 import android.view.*
@@ -9,20 +9,22 @@ import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
+
 import com.firebase.ui.auth.AuthUI
-import com.tanfra.shopmob.databinding.FragmentAdminProfileBinding
+import com.tanfra.shopmob.databinding.FragmentAdminSelectBinding
+import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import org.koin.core.component.KoinComponent
 
-class AdminProfileFragment : BaseFragment(), KoinComponent {
+class AdminSelectFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
     override val _viewModel: AdminViewModel by viewModel()
 
     // data binding for fragment_planning_lists.xml
-    private lateinit var binding: FragmentAdminProfileBinding
+    private lateinit var binding: FragmentAdminSelectBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,15 +35,15 @@ class AdminProfileFragment : BaseFragment(), KoinComponent {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_admin_profile, container, false
+                R.layout.fragment_admin_select, container, false
             )
 
         // set injected viewModel (from KOIN service locator)
         binding.viewModel = _viewModel
 
-        setHasOptionsMenu(false)
+        setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(true)
-        setTitle(getString(R.string.app_name_admin_profile))
+        setTitle(getString(R.string.app_name_admin))
 
         return binding.root
     }

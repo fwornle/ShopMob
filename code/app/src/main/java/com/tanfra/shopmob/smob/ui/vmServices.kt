@@ -2,7 +2,7 @@ package com.tanfra.shopmob.smob.ui
 
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.details.DetailsViewModel
-import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
+import com.tanfra.shopmob.smob.ui.planning.PlanningProductListViewModel
 import com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditViewModel
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource

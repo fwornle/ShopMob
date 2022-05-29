@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.planning.productList
+package com.tanfra.shopmob.smob.ui.planning.product
 
 import android.view.View
 import androidx.lifecycle.findViewTreeLifecycleOwner
@@ -9,6 +9,7 @@ import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.local.utils.SmobListItem
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductOnListATO
+import com.tanfra.shopmob.smob.ui.planning.PlanningProductListViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

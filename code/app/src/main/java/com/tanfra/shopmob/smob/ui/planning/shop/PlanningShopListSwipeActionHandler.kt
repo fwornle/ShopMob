@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.planning.shopList
+package com.tanfra.shopmob.smob.ui.planning.shop
 
 import android.os.Vibrator
 import androidx.core.content.ContextCompat.startActivity
@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
-import com.tanfra.shopmob.smob.ui.planning.utils.BaseSwipeActionHandler
+import com.tanfra.shopmob.utils.ui.BaseSwipeActionHandler
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity

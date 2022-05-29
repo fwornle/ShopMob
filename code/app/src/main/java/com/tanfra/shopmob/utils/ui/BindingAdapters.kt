@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.utils
+package com.tanfra.shopmob.utils.ui
 
 import android.view.View
 import android.widget.ImageView
@@ -13,6 +13,8 @@ import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
+import com.tanfra.shopmob.utils.fadeIn
+import com.tanfra.shopmob.utils.fadeOut
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch

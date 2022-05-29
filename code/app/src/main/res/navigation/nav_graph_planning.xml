@@ -46,7 +46,7 @@
 
     <fragment
         android:id="@+id/smobPlanningProductListFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.product.PlanningProductListFragment"
         android:label="Planning Product List"
         tools:layout="@layout/fragment_planning_product_list"
         >
@@ -74,7 +74,7 @@
 
     <fragment
         android:id="@+id/smobPlanningShopListFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.shopList.PlanningShopListFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.shop.PlanningShopListFragment"
         android:label="Planning Shop List"
         tools:layout="@layout/fragment_planning_shop_list"
         >

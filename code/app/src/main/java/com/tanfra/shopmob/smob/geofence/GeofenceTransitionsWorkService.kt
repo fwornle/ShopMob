@@ -6,7 +6,7 @@ import com.tanfra.shopmob.smob.data.local.utils.ProductMainCategory
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.repo.utils.Status
-import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
+import com.tanfra.shopmob.smob.ui.planning.PlanningProductListViewModel
 import com.tanfra.shopmob.utils.hasProduct
 import com.tanfra.shopmob.utils.sendNotificationOnGeofenceHit
 import kotlinx.coroutines.flow.*

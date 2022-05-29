@@ -1,15 +1,14 @@
-package com.tanfra.shopmob.smob.ui.planning.productList
+package com.tanfra.shopmob.smob.ui.planning.product
 
 import android.os.Vibrator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
-import com.tanfra.shopmob.smob.ui.planning.utils.BaseSwipeActionHandler
+import com.tanfra.shopmob.utils.ui.BaseSwipeActionHandler
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.ui.planning.utils.vibrateDevice
-import timber.log.Timber
 
 // swiping action on RV - concrete implementation for smobProduct list
 @Suppress("UNCHECKED_CAST")
