@@ -6,7 +6,7 @@ import com.tanfra.shopmob.smob.data.local.utils.ProductMainCategory
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.repo.utils.Status
-import com.tanfra.shopmob.smob.ui.planning.PlanningProductListViewModel
+import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.utils.hasProduct
 import com.tanfra.shopmob.utils.sendNotificationOnGeofenceHit
 import kotlinx.coroutines.flow.*
@@ -27,7 +27,7 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
     }
 
     // get repository instance for shop
-    private val _planningProductListViewModel: PlanningProductListViewModel by inject()
+    private val _planningViewModel: PlanningViewModel by inject()
 
     // this will be triggered, as soon as the user enters the geoFence perimeter
     override suspend fun doWork(): Result {
@@ -93,7 +93,7 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
                     var smobLists: List<SmobListATO>? = null
 
                     // collect flow (originating in the Room DB) of list of all SmobLists
-                    _planningProductListViewModel.listDataSource
+                    _planningViewModel.listDataSource
                         .getAllSmobItems()
                         .take(1)
                         .onEach { Timber.i("collecting SmobList resource with status: ${it.status}, fc: ${flowCollections++}") }
@@ -145,7 +145,7 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
 
                                 // fetch smobShops
                                 // collect flow (originating in the Room DB) of list of all SmobShops
-                                _planningProductListViewModel.shopDataSource
+                                _planningViewModel.shopDataSource
                                     .getAllSmobItems()
                                     .take(1)
                                     .onEach { Timber.i("collecting SmobShop resource with status: ${it.status}, fc: ${flowCollections++}") }

@@ -12,7 +12,7 @@ import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.local.utils.SmobListLifecycle
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
-import com.tanfra.shopmob.smob.ui.planning.PlanningProductListViewModel
+import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
@@ -22,7 +22,7 @@ import java.util.*
 class PlanningListsEditFragment : BaseFragment(), KoinComponent {
 
     // get the view model (from Koin service locator) ... shared with PlanningListsFragment
-    override val _viewModel: PlanningProductListViewModel by sharedViewModel()
+    override val _viewModel: PlanningViewModel by sharedViewModel()
 
     // data binding of underlying layout
     private lateinit var binding: FragmentPlanningListsEditBinding

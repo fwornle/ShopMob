@@ -19,7 +19,7 @@ import org.koin.core.component.KoinComponent
 import timber.log.Timber
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.databinding.FragmentPlanningProductListBinding
-import com.tanfra.shopmob.smob.ui.planning.PlanningProductListViewModel
+import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.utils.setup
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -27,7 +27,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class PlanningProductListFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
-    override val _viewModel: PlanningProductListViewModel by sharedViewModel()
+    override val _viewModel: PlanningViewModel by sharedViewModel()
 
     // data binding for fragment_smob_planning_lists.xml
     private lateinit var binding: FragmentPlanningProductListBinding

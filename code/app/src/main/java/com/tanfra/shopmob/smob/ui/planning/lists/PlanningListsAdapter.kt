@@ -9,7 +9,7 @@ import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.local.utils.SmobListItem
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
-import com.tanfra.shopmob.smob.ui.planning.PlanningProductListViewModel
+import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -21,7 +21,7 @@ class PlanningListsAdapter(rootView: View, callBack: (selectedSmobATO: SmobListA
     BaseRecyclerViewAdapter<SmobListATO>(rootView, callBack), KoinComponent {
 
     // inject _viewModel from Koin service locator
-    private val _viewModel: PlanningProductListViewModel by inject()
+    private val _viewModel: PlanningViewModel by inject()
 
     // filter (and sort) list - straight through, if not needed
     override fun listFilter(items: List<SmobListATO>): List<SmobListATO> {

@@ -18,7 +18,7 @@ import com.tanfra.shopmob.databinding.FragmentPlanningShopListBinding
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsSources
-import com.tanfra.shopmob.smob.ui.planning.PlanningProductListViewModel
+import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.utils.setup
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
@@ -30,7 +30,7 @@ import timber.log.Timber
 class PlanningShopListFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the (shared) ViewModel instance
-    override val _viewModel: PlanningProductListViewModel by sharedViewModel()
+    override val _viewModel: PlanningViewModel by sharedViewModel()
 
     // data binding for fragment_planning_shop_list.xml
     private lateinit var binding: FragmentPlanningShopListBinding

@@ -31,7 +31,7 @@ import com.tanfra.shopmob.util.monitorActivity
 import com.tanfra.shopmob.utils.EspressoIdlingResource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
-import com.tanfra.shopmob.smob.ui.planning.PlanningProductListViewModel
+import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matcher
@@ -124,7 +124,7 @@ class SmobPlanningActivityTest: AutoCloseKoinTest() {
 
         val myModule = module {
             viewModel {
-                PlanningProductListViewModel(
+                PlanningViewModel(
                     appContext,
                     get() as SmobListDataSource,
                     get() as SmobProductDataSource,

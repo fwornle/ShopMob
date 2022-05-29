@@ -19,7 +19,7 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
-import com.tanfra.shopmob.smob.ui.planning.PlanningProductListViewModel
+import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
@@ -34,7 +34,7 @@ import kotlin.math.roundToInt
 class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener, KoinComponent {
 
     // get the view model (from Koin) this time as a singleton to be shared with another fragment
-    override val _viewModel: PlanningProductListViewModel by sharedViewModel()
+    override val _viewModel: PlanningViewModel by sharedViewModel()
 
     // data binding of underlying layout
     private lateinit var binding: FragmentPlanningProductEditBinding

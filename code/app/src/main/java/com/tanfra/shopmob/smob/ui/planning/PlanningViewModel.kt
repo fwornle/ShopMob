@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.launch
 
 
-class PlanningProductListViewModel(
+class PlanningViewModel(
     val app: Application,
     val listDataSource: SmobListDataSource,  // public, as used (externally) to update the smobList
     private val productDataSource: SmobProductDataSource,

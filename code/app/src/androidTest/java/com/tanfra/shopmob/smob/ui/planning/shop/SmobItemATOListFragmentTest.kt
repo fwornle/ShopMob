@@ -29,7 +29,7 @@ import com.tanfra.shopmob.smob.data.local.FakeItemDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
-import com.tanfra.shopmob.smob.ui.planning.PlanningProductListViewModel
+import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditViewModel
 import com.tanfra.shopmob.util.DataBindingIdlingResource
 import com.tanfra.shopmob.util.monitorFragment
@@ -120,7 +120,7 @@ class SmobItemATOListFragmentTest: AutoCloseKoinTest() {
             // declare a ViewModel - to be injected into Fragment with dedicated injector using
             // "by viewModel()"
             viewModel {
-                PlanningProductListViewModel(
+                PlanningViewModel(
                     get(),  // app (context)
                     get() as SmobListDataSource,  // repo as data source
                     get() as SmobProductDataSource,  // repo as data source

@@ -11,6 +11,6 @@ import androidx.core.os.bundleOf
  */
 inline fun <reified T : Activity> Context.createIntent(vararg args: Pair<String, Any>) : Intent {
     val intent = Intent(this, T::class.java)
-    intent.putExtras(bundleOf(*args))
+    if(args.size > 0) intent.putExtras(bundleOf(*args))
     return intent
 }

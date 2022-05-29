@@ -1,7 +1,5 @@
 package com.tanfra.shopmob.smob.ui.admin
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -16,29 +14,14 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.ActivityAdminBinding
-import com.tanfra.shopmob.smob.ui.details.createIntent
 import com.tanfra.shopmob.smob.work.SmobAppWork
 import org.koin.android.ext.android.inject
-import timber.log.Timber
 
 
 /**
- * Activity that collects administrative tasks (new/edit user, group, list)
+ * Activity that collects administrative tasks (new/edit user, groups, lists)
  */
 class SmobAdminActivity : AppCompatActivity() {
-
-    // (singleton) object to facilitate navigation to this activity (and it's fragments)
-    companion object {
-
-        // intent 'extra' data specifier
-        private const val EXTRA_SmobAdminTask = "EXTRA_SmobAdminTask"
-
-        // caller (typically outside this activity) can create an intent with a SmobAdminTask
-        fun newIntent(context: Context, smobTask: SmobAdminTask): Intent {
-            return context.createIntent<SmobAdminActivity>(EXTRA_SmobAdminTask to smobTask)
-        }
-
-    }
 
     // data binding
     private lateinit var binding: ActivityAdminBinding
@@ -59,30 +42,6 @@ class SmobAdminActivity : AppCompatActivity() {
             this,
             R.layout.activity_admin
         )
-
-        // fetch data from intent provided by triggering notification
-        var intentTask = SmobAdminTask.UNKNOWN
-
-        // attempt to read extra data from incoming intent
-        val extras: Bundle? = intent.extras
-        extras?.let {
-            if (it.containsKey(EXTRA_SmobAdminTask)) {
-                // extract the extra-data in the intent
-                intentTask = it.get("EXTRA_SmobAdminTask") as SmobAdminTask
-            }
-        }
-
-        // navigate to the requested fragment
-        when(intentTask) {
-            SmobAdminTask.NEW_LIST -> Timber.i("Create a new Smob list (one day).")
-            SmobAdminTask.EDIT_LIST -> Timber.i("Edit an existing Smob list (one day).")
-            SmobAdminTask.NEW_USER -> Timber.i("Create a new Smob user (one day).")
-            SmobAdminTask.EDIT_USER -> Timber.i("Edit an existing Smob user (one day).")
-            SmobAdminTask.NEW_GROUP -> Timber.i("Create a new Smob group (one day).")
-            SmobAdminTask.EDIT_GROUP -> Timber.i("Edit an existing Smob group (one day).")
-            else -> Timber.i("Show the Administration selection screen (one day).")
-        }
-
 
         // enable drawer (navbar)
         drawerLayout = binding.drawerLayout

@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.ActivityShoppingBinding
-import com.tanfra.shopmob.smob.ui.admin.SmobAdminTask
 import com.tanfra.shopmob.smob.ui.details.createIntent
 import com.tanfra.shopmob.smob.work.SmobAppWork
 import org.koin.android.ext.android.inject
@@ -19,12 +18,9 @@ class SmobShoppingActivity : AppCompatActivity() {
 
     // Intent gateway for lists which want their content to be displayed (generic details screen)
     companion object{
-        // intent 'extra' data specifier
-        private const val EXTRA_SmobAdminTask = "EXTRA_SmobAdminTask"
-
-        // caller (typically outside this activity) can create an intent with a SmobAdminTask
-        fun newIntent(context: Context, smobTask: SmobAdminTask): Intent {
-            return context.createIntent<SmobShoppingActivity>(EXTRA_SmobAdminTask to smobTask)
+        // caller (typically outside this activity) can create an intent (no extra data)
+        fun newIntent(context: Context): Intent {
+            return context.createIntent<SmobShoppingActivity>()
         }
     }
 
