@@ -34,6 +34,9 @@ frame "activity_shopping" #LightGoldenRodYellow/GreenYellow {
 
 }
 
+
+component shared_base_viewModel #lightblue
+
 frame "activity_planning" #Lightcyan/Darkcyan {
     
     component fragment_planning_lists
@@ -44,10 +47,8 @@ frame "activity_planning" #Lightcyan/Darkcyan {
     component fragment_planning_shop_edit
     component fragment_planning_shop_map
     
-    component fragment_planning_product_list_viewModel #lightblue
+    component fragment_planning_viewModel #lightblue
     component fragment_planning_shop_edit_viewModel #lightblue
-
-    component shared_base_viewModel #lightblue
 
     
     fragment_planning_lists_edit -down-> fragment_planning_lists #red;text:red : back > 
@@ -71,15 +72,15 @@ frame "activity_planning" #Lightcyan/Darkcyan {
     fragment_planning_shop_map -down-> fragment_planning_shop_edit #green;text:green : Ok >
     fragment_planning_shop_map -down-> fragment_planning_shop_edit #red;text:red : Cancel > 
 
-    fragment_planning_product_list_viewModel <-left-> fragment_planning_lists #black : shared
-    fragment_planning_product_list_viewModel <-left-> fragment_planning_lists_edit #black : shared
-    fragment_planning_product_list_viewModel <-left-> fragment_planning_product_list #black : shared
-    fragment_planning_product_list_viewModel <-left-> fragment_planning_product_edit #black : shared
-    fragment_planning_product_list_viewModel <-left-> fragment_planning_shop_list #black : shared
+    fragment_planning_viewModel <-right-> fragment_planning_lists #black : shared
+    fragment_planning_viewModel <-left-> fragment_planning_lists_edit #black : shared
+    fragment_planning_viewModel <-left-> fragment_planning_product_list #black : shared
+    fragment_planning_viewModel <-left-> fragment_planning_product_edit #black : shared
+    fragment_planning_viewModel <-left-> fragment_planning_shop_list #black : shared
     fragment_planning_shop_edit_viewModel <-left-> fragment_planning_shop_edit #black : shared
-    fragment_planning_shop_edit_viewModel <-left-> fragment_planning_shop_map #black : shared
+    fragment_planning_shop_edit_viewModel <-right-> fragment_planning_shop_map #black : shared
 
-    fragment_planning_product_list_viewModel *-down- shared_base_viewModel #DarkSlateGray;text:DarkSlateGray : implements >
+    fragment_planning_viewModel *-left- shared_base_viewModel #DarkSlateGray;text:DarkSlateGray : implements >
     fragment_planning_shop_edit_viewModel *-down- shared_base_viewModel #DarkSlateGray;text:DarkSlateGray : implements >
 
 }
@@ -115,28 +116,30 @@ frame "activity_details" #aquamarine/cornflowerblue {
 frame "activity_admin" #Lightgrey/Darkgray {
     
     component fragment_admin_select
-    component fragment_admin_user_edit
-    component fragment_admin_group_edit
-    component fragment_admin_list_edit
+    component fragment_admin_profile
+    component fragment_admin_groups
+    component fragment_admin_lists
     
     component fragment_admin_viewModel #lightblue
 
 
-    fragment_planning_lists -right-> fragment_admin_select : menu >
+    fragment_planning_lists <-right-> fragment_admin_select : drawer menu
     
-    fragment_admin_select -down-> fragment_admin_user_edit #blue;text:blue : click user >
-    fragment_admin_user_edit -> fragment_admin_select #red;text:red : back >
+    fragment_admin_select -down-> fragment_admin_profile #blue;text:blue : click user >
+    fragment_admin_profile -> fragment_admin_select #red;text:red : back >
 
-    fragment_admin_select -down-> fragment_admin_group_edit #blue;text:blue : click user >
-    fragment_admin_group_edit -> fragment_admin_select #red;text:red : back >
+    fragment_admin_select -down-> fragment_admin_groups #blue;text:blue : click user >
+    fragment_admin_groups -> fragment_admin_select #red;text:red : back >
     
-    fragment_admin_select -down-> fragment_admin_list_edit #blue;text:blue : click user >
-    fragment_admin_list_edit -> fragment_admin_select #red;text:red : back >
+    fragment_admin_select -down-> fragment_admin_lists #blue;text:blue : click user >
+    fragment_admin_lists -> fragment_admin_select #red;text:red : back >
     
     fragment_admin_select <-right-> fragment_admin_viewModel #black : shared
-    fragment_admin_user_edit <-down-> fragment_admin_viewModel #black : shared
-    fragment_admin_group_edit <-down-> fragment_admin_viewModel #black : shared
-    fragment_admin_list_edit <-down-> fragment_admin_viewModel #black : shared
+    fragment_admin_profile <-down-> fragment_admin_viewModel #black : shared
+    fragment_admin_groups <-down-> fragment_admin_viewModel #black : shared
+    fragment_admin_lists <-down-> fragment_admin_viewModel #black : shared
+
+    fragment_admin_viewModel *-down- shared_base_viewModel #DarkSlateGray;text:DarkSlateGray : implements >
 
 }
 
@@ -150,7 +153,7 @@ frame "activity_authentification" #khaki/indianred {
     
     activity_auth -down-> activity_firebaseUI #blue;text:blue : Login >
     activity_firebaseUI -down-> activity_auth #brown;text:brown : Cancel >
-    activity_firebaseUI -down-> fragment_planning_lists #green;text:green : Success >
+    activity_firebaseUI -down-> fragment_planning_lists #green;text:green : Success (User) >
 
 }
 
