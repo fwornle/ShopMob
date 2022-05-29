@@ -19,16 +19,12 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
-import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
+import com.tanfra.shopmob.smob.ui.planning.PlanningProductListViewModel
 import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
-import com.tanfra.shopmob.smob.work.SmobAppWork
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import timber.log.Timber
 import java.util.*
 import kotlin.math.roundToInt

@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.planning.productList
+package com.tanfra.shopmob.smob.ui.planning
 
 import android.app.Application
 import androidx.lifecycle.*

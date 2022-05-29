@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.admin
+package com.tanfra.shopmob.smob.ui.admin.groups
 
 import android.os.Bundle
 import android.view.*
@@ -10,19 +10,20 @@ import com.tanfra.shopmob.utils.setTitle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
 import com.firebase.ui.auth.AuthUI
-import com.tanfra.shopmob.databinding.FragmentAdminListsBinding
+import com.tanfra.shopmob.databinding.FragmentAdminGroupsBinding
+import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import org.koin.core.component.KoinComponent
 
-class AdminListsFragment : BaseFragment(), KoinComponent {
+class AdminGroupsFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
     override val _viewModel: AdminViewModel by viewModel()
 
     // data binding for fragment_planning_lists.xml
-    private lateinit var binding: FragmentAdminListsBinding
+    private lateinit var binding: FragmentAdminGroupsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +34,7 @@ class AdminListsFragment : BaseFragment(), KoinComponent {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_admin_lists, container, false
+                R.layout.fragment_admin_groups, container, false
             )
 
         // set injected viewModel (from KOIN service locator)
@@ -41,7 +42,7 @@ class AdminListsFragment : BaseFragment(), KoinComponent {
 
         setHasOptionsMenu(false)
         setDisplayHomeAsUpEnabled(true)
-        setTitle(getString(R.string.app_name_admin_lists))
+        setTitle(getString(R.string.app_name_admin_groups))
 
         return binding.root
     }
@@ -51,10 +52,6 @@ class AdminListsFragment : BaseFragment(), KoinComponent {
 
         binding.lifecycleOwner = viewLifecycleOwner
 
-        // handle PROFILE, GROUPS, LISTS button
-        binding.btProfile.setOnClickListener { navigateToAdminProfileFragment() }
-        binding.btGroups.setOnClickListener { navigateToAdminGroupsFragment() }
-        binding.btLists.setOnClickListener { navigateToAdminListsFragment() }
 
         // set onClick handler for DISMISS button
         // ... navigate back to the main app
@@ -88,36 +85,6 @@ class AdminListsFragment : BaseFragment(), KoinComponent {
         super.onCreateOptionsMenu(menu, inflater)
         // display logout as menu item
         inflater.inflate(R.menu.main_menu, menu)
-    }
-
-    // navigate to AdminProfile fragment
-    private fun navigateToAdminProfileFragment() {
-        // use the navigationCommand live data to navigate between the fragments
-        _viewModel.navigationCommand.postValue(
-            NavigationCommand.To(
-                AdminSelectFragmentDirections.actionSmobAdminSelectFragmentToSmobAdminProfileFragment()
-            )
-        )
-    }
-
-    // navigate to AdminGroups fragment
-    private fun navigateToAdminGroupsFragment() {
-        // use the navigationCommand live data to navigate between the fragments
-        _viewModel.navigationCommand.postValue(
-            NavigationCommand.To(
-                AdminSelectFragmentDirections.actionSmobAdminSelectFragmentToSmobAdminGroupsFragment()
-            )
-        )
-    }
-
-    // navigate to AdminLists fragment
-    private fun navigateToAdminListsFragment() {
-        // use the navigationCommand live data to navigate between the fragments
-        _viewModel.navigationCommand.postValue(
-            NavigationCommand.To(
-                AdminSelectFragmentDirections.actionSmobAdminSelectFragmentToSmobAdminListsFragment()
-            )
-        )
     }
 
 }

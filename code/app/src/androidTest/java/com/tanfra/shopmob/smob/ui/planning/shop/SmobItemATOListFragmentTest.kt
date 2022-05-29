@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.planning.shopList
+package com.tanfra.shopmob.smob.ui.planning.shop
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -29,7 +29,7 @@ import com.tanfra.shopmob.smob.data.local.FakeItemDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
-import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
+import com.tanfra.shopmob.smob.ui.planning.PlanningProductListViewModel
 import com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditViewModel
 import com.tanfra.shopmob.util.DataBindingIdlingResource
 import com.tanfra.shopmob.util.monitorFragment

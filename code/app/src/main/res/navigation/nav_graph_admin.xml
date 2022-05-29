@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/smobPlanningShopListFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.shopList.PlanningShopListFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.shop.PlanningShopListFragment"
         android:label="Planning Shop List"
         tools:layout="@layout/fragment_planning_shop_list"
         >
@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/smobAdminSelectFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.AdminSelectFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.select.AdminSelectFragment"
         android:label="Administration Selector"
         tools:layout="@layout/fragment_admin_select"
         >
@@ -43,7 +43,7 @@
 
     <fragment
         android:id="@+id/smobAdminProfileFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.AdminProfileFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.profile.AdminProfileFragment"
         android:label="Administer User Profile"
         tools:layout="@layout/fragment_admin_profile"
         >
@@ -54,7 +54,7 @@
 
     <fragment
         android:id="@+id/smobAdminGroupsFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.AdminGroupsFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.groups.AdminGroupsFragment"
         android:label="Administer Groups"
         tools:layout="@layout/fragment_admin_groups"
         >
@@ -65,7 +65,7 @@
 
     <fragment
         android:id="@+id/smobAdminListsFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.AdminListsFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.lists.AdminListsFragment"
         android:label="Administer Lists"
         tools:layout="@layout/fragment_admin_lists"
         >

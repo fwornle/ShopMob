@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.planning.shopList
+package com.tanfra.shopmob.smob.ui.planning.shop
 
 import android.os.Looper
 import androidx.test.core.app.ApplicationProvider
@@ -10,7 +10,7 @@ import com.tanfra.shopmob.smob.testutils.MainCoroutineRule
 import com.tanfra.shopmob.smob.testutils.getOrAwaitValue
 
 import com.tanfra.shopmob.smob.data.repo.utils.Status
-import com.tanfra.shopmob.smob.ui.planning.productList.PlanningProductListViewModel
+import com.tanfra.shopmob.smob.ui.planning.PlanningProductListViewModel
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest

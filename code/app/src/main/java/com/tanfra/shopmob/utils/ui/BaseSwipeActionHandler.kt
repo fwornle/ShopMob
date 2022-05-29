@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.planning.utils
+package com.tanfra.shopmob.utils.ui
 
 import android.graphics.Canvas
 import android.graphics.Color
@@ -6,11 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import android.graphics.drawable.ColorDrawable
 import androidx.core.content.ContextCompat
 import android.graphics.drawable.Drawable
-import android.os.Vibrator
 import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 
