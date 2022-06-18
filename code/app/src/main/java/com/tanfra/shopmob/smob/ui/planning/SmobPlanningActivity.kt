@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import timber.log.Timber
 
 
 /**
@@ -78,9 +79,15 @@ class SmobPlanningActivity : AppCompatActivity() {
                 // fetch user repo to allow storing/updating of logged-in user
                 val userRepo: SmobUserDataSource by inject()
 
+                // fetch latest user collection from BE (to ensure the app starts up
+                // reliably, even after a fresh install - and, consequently, no local DB)
+                userRepo.refreshDataInLocalDB()
+
                 // determine highest item position
                 userRepo.getAllSmobItems().take(1).collectLatest { daResList ->
                     daResList.data.let { allUsers ->
+
+                        Timber.i("Number of users: ${allUsers?.size ?: -1}")
 
                         val userItemPos: Long
                         val daUser: SmobUserATO? = allUsers?.find { it.id == userId }
@@ -112,13 +119,19 @@ class SmobPlanningActivity : AppCompatActivity() {
                         )
 
                         // attempt to update user data in local/backend DB (or store, if new)
-                        userRepo.saveSmobItem(SmobApp.currUser!!)
+                        // --> create new co-routine (also in 'wManager.applicationScope')
+                        // --> forces the parent co-routine to await completion of the 'child' CR
+                        //     ... and, as such, ensures a reliable start-up of the app - as
+                        //     SmobApp.currUser is set before the fragment is initialized (thereby
+                        //     guaranteeing the correct display of the user's smobLists)
+                        launch { userRepo.saveSmobItem(SmobApp.currUser!!) }
 
                     }
 
                 }
 
             }  //  applicationScope
+
 
         }  // just logged-in
 

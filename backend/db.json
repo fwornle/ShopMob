@@ -1,7 +1,13 @@
 {
   "users": [
     {
-      "id": "bb463b8b-b76c-4f6a-9726-65ab5730b69b"
+      "id": "bb463b8b-b76c-4f6a-9726-65ab5730b69b",
+      "itemStatus": "OPEN",
+      "itemPosition": 0,
+      "username": "Enya.Erlei",
+      "name": "Brenner, Andrea",
+      "email": "Angela.Klauder@hotmail.com",
+      "imageUrl": "https://placeimg.com/200/150/people?0"
     },
     {
       "id": "d7bb95b6-5a55-4334-bac1-c606272614e6",
@@ -173,12 +179,21 @@
       "name": "Kuhlee, Ludwig",
       "email": "Sophie_Dietrich32@hotmail.com",
       "imageUrl": "https://placeimg.com/200/150/people?19"
+    },
+    {
+      "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
+      "itemStatus": "OPEN",
+      "itemPosition": 20,
+      "username": "Frank.Douvre",
+      "name": "Frank Douvre",
+      "email": "fradou7@gmail.com",
+      "imageUrl": "https://lh3.googleusercontent.com/a/AATXAJx9nYtfUiFXPg2JABf1OWUMGasy_szkM1PSvfiT=s96-c"
     }
   ],
   "groups": [
     {
       "id": "cfdf16aa-96a4-4016-8b42-6920f017ad7e",
-      "itemStatus": "OPEN",
+      "itemStatus": "IN_PROGRESS",
       "itemPosition": 0,
       "name": "nihil",
       "description": "ullam quis itaque accusamus",
@@ -190,7 +205,8 @@
         "bb463b8b-b76c-4f6a-9726-65ab5730b69b",
         "d7bb95b6-5a55-4334-bac1-c606272614e6",
         "d7bb95b6-5a55-4334-bac1-c606272614e6",
-        "f8a8c6b5-3876-4c0a-8011-a56f2754c5b3"
+        "f8a8c6b5-3876-4c0a-8011-a56f2754c5b3",
+        "BTwLBEmaoWfQKbooBguh0x84bV52"
       ],
       "activity": {
         "date": "2021-04-29T02:57:51.823Z",
@@ -205,6 +221,7 @@
       "description": "vero deleniti",
       "type": "FRIENDS",
       "members": [
+        "BTwLBEmaoWfQKbooBguh0x84bV52",
         "ddb56034-668b-48f0-9ac0-90be246c355d",
         "ddb56034-668b-48f0-9ac0-90be246c355d"
       ],
@@ -259,7 +276,9 @@
       "name": "dolorem",
       "description": "eius odit quia et",
       "type": "OTHER",
-      "members": [],
+      "members": [
+        "BTwLBEmaoWfQKbooBguh0x84bV52"
+      ],
       "activity": {
         "date": "2021-08-20T04:11:44.255Z",
         "reps": 8
@@ -519,6 +538,53 @@
         "09:00 - 12:00, 14:00 - 18:00",
         "closed"
       ]
+    },
+    {
+      "id": "47d00b00-d410-42a6-82c8-25364a3d97d8",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Bittl",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19143948391694,
+        "longitude": 11.466687619686128
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPERMARKET",
+      "business": []
+    },
+    {
+      "id": "05db0c4c-2ba2-445d-8b04-f0d23c4af848",
+      "itemStatus": "DELETED",
+      "itemPosition": -1,
+      "name": "Police Post\n           ",
+      "description": "Description",
+      "imageUrl": "",
+      "location": {
+        "latitude": 28.462171585165695,
+        "longitude": 77.30153739452362
+      },
+      "type": "INDIVIDUAL",
+      "category": "OTHER",
+      "business": [
+        ""
+      ]
+    },
+    {
+      "id": "210ab442-9f0d-44cd-b5b0-a31a5799c995",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Edeka E Center",
+      "description": "Super duper",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.187831015213895,
+        "longitude": 11.46811455488205
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPERMARKET",
+      "business": []
     }
   ],
   "products": [
@@ -1169,7 +1235,7 @@
         },
         {
           "id": "56de9acd-5d2f-4ab3-8cb7-9db0b0008bcb",
-          "status": "DONE",
+          "status": "IN_PROGRESS",
           "listPosition": 10,
           "mainCategory": "FOODS"
         },
@@ -1187,7 +1253,7 @@
         },
         {
           "id": "b98d9f94-eb40-45ea-9cb2-f58a3a9a93af",
-          "status": "IN_PROGRESS",
+          "status": "DONE",
           "listPosition": 13,
           "mainCategory": "HARDWARE"
         },
@@ -1199,12 +1265,14 @@
         },
         {
           "id": "ebf5fc7a-e038-4bd2-9924-8dc614de2585",
-          "status": "IN_PROGRESS",
+          "status": "DONE",
           "listPosition": 15,
           "mainCategory": "FOODS"
         }
       ],
-      "members": [],
+      "members": [
+        "BTwLBEmaoWfQKbooBguh0x84bV52"
+      ],
       "lifecycle": {
         "status": "IN_PROGRESS",
         "completion": 38
@@ -1249,7 +1317,7 @@
         },
         {
           "id": "658f5a53-213f-45f1-9e07-3cc7e3765e4f",
-          "status": "OPEN",
+          "status": "DONE",
           "listPosition": 5,
           "mainCategory": "FOODS"
         },
@@ -1260,7 +1328,9 @@
           "mainCategory": "SUPPLIES"
         }
       ],
-      "members": [],
+      "members": [
+        "BTwLBEmaoWfQKbooBguh0x84bV52"
+      ],
       "lifecycle": {
         "status": "IN_PROGRESS",
         "completion": 43
@@ -1287,12 +1357,14 @@
         },
         {
           "id": "3bf979ca-7696-49ef-ba33-b043f776bc3c",
-          "status": "DONE",
+          "status": "IN_PROGRESS",
           "listPosition": 2,
           "mainCategory": "CLOTHING"
         }
       ],
-      "members": [],
+      "members": [
+        ""
+      ],
       "lifecycle": {
         "status": "IN_PROGRESS",
         "completion": 67
@@ -1307,7 +1379,7 @@
       "items": [
         {
           "id": "2af7c356-c1aa-4839-b2fd-0e224cffef2c",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
           "listPosition": 0,
           "mainCategory": "FOODS"
         },
@@ -1324,7 +1396,9 @@
           "mainCategory": "CLOTHING"
         }
       ],
-      "members": [],
+      "members": [
+        ""
+      ],
       "lifecycle": {
         "status": "IN_PROGRESS",
         "completion": 33
@@ -1417,7 +1491,7 @@
         }
       ],
       "members": [
-        ""
+        "BTwLBEmaoWfQKbooBguh0x84bV52"
       ],
       "lifecycle": {
         "status": "IN_PROGRESS",

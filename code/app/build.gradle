@@ -40,8 +40,8 @@ android {
         // network base URL
         // ... fake backend (emulator maps this to localhost@host)
         // ... production: BASE_URL = "https://shopmob.tanfra.com"
-        //buildConfigField "String", "BASE_URL", "\"http://10.0.2.2:3000\""
-        buildConfigField "String", "BASE_URL", "\"https://jp8rx9tjtg.execute-api.eu-central-1.amazonaws.com/dev/\""
+        buildConfigField "String", "BASE_URL", "\"http://10.0.2.2:3000\""
+        //buildConfigField "String", "BASE_URL", "\"https://jp8rx9tjtg.execute-api.eu-central-1.amazonaws.com/dev/\""
     }
 
     testOptions {

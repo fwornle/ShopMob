@@ -72,15 +72,15 @@ class AdminListsFragment : BaseFragment(), AdapterView.OnItemSelectedListener, K
     // set-up spinners (categories)
     private fun setupSpinners() {
 
-        // populate 'smobList' (liveData)
-        _viewModel.loadListItems()
-
-        val myList = _viewModel.smobList.value
-        Timber.i(myList.toString())
-        // TODO
-        // TODO
-        // TODO
-        // TODO
+//        // populate 'smobList' (liveData)
+//        _viewModel.loadListItems()
+//
+//        val myList = _viewModel.smobList.value
+//        Timber.i(myList.toString())
+//        // TODO
+//        // TODO
+//        // TODO
+//        // TODO
 
 
         // ShopCategory

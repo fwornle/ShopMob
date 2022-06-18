@@ -31,6 +31,7 @@ class PlanningListsFragment : BaseFragment(), KoinComponent {
 
     // data binding for fragment_planning_lists.xml
     private lateinit var binding: FragmentPlanningListsBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

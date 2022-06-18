@@ -14,7 +14,7 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context="com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsEditFragment">
+        tools:context="com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
