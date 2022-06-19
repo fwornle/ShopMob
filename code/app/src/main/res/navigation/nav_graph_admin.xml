@@ -64,6 +64,43 @@
     </fragment>
 
     <fragment
+        android:id="@+id/smobAdminGroupsEditFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.groups.AdminGroupsEditFragment"
+        android:label="Add New Group"
+        tools:layout="@layout/fragment_admin_groups_edit"
+        >
+        <action
+            android:id="@+id/action_smobAdminGroupsEditFragment_to_smobAdminGroupsFragment"
+            app:destination="@id/smobAdminGroupsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/smobAdminGroupMembersListFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.groupMembers.AdminGroupMembersListFragment"
+        android:label="Show Group Members"
+        tools:layout="@layout/fragment_admin_group_members"
+        >
+        <action
+            android:id="@+id/action_smobAdminGroupMembersListFragment_to_smobAdminGroupsFragment"
+            app:destination="@id/smobAdminGroupsFragment" />
+        <action
+            android:id="@+id/action_smobAdminGroupMembersListFragment_to_smobAdminGroupMembersEditFragment"
+            app:destination="@id/smobAdminGroupMembersEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/smobAdminGroupMembersEditFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.groupMembers.AdminGroupMembersEditFragment"
+        android:label="Edit Group Members"
+        tools:layout="@layout/fragment_admin_group_members_edit"
+        >
+        <action
+            android:id="@+id/action_smobAdminGroupMembersEditFragment_to_smobAdminGroupMembersListFragment"
+            app:destination="@id/smobAdminGroupMembersListFragment" />
+    </fragment>
+
+
+    <fragment
         android:id="@+id/smobAdminListsFragment"
         android:name="com.tanfra.shopmob.smob.ui.admin.lists.AdminListsFragment"
         android:label="Administer Lists"

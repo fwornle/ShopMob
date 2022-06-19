@@ -14,12 +14,11 @@ import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentAdminGroupsBinding
+import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
-import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsAdapter
-import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsSwipeActionHandler
 import com.tanfra.shopmob.utils.setup
 import org.koin.core.component.KoinComponent
 
@@ -81,6 +80,10 @@ class AdminGroupsFragment : BaseFragment(), KoinComponent {
         // RV - incl. onClick listener for items
         setupRecyclerView()
 
+        // handlers for "+" FAB
+        binding.addSmobItemFab.setOnClickListener { navigateToAddGroup() }
+
+
         // set onClick handler for DISMISS button
         // ... navigate back to the main app
         binding.btDismiss.setOnClickListener {
@@ -98,16 +101,16 @@ class AdminGroupsFragment : BaseFragment(), KoinComponent {
             // this lambda is the 'callback' function which gets called when clicking an item in the
             // RecyclerView - it gets the data behind the clicked item as parameter
 
-            // communicate the ID and name of the selected item (= shopping list)
+            // communicate the ID and name of the selected item (= group)
             val bundle = bundleOf(
-                "listId" to it.id,
-                "listName" to it.name,
+                "groupId" to it.id,
+                "groupName" to it.name,
             )
 
             // use the navigationCommand live data to navigate between the fragments
             _viewModel.navigationCommand.postValue(
                 NavigationCommand.ToWithBundle(
-                    R.id.smobPlanningProductListFragment,
+                    R.id.smobAdminGroupMembersListFragment,
                     bundle
                 )
             )
@@ -120,6 +123,35 @@ class AdminGroupsFragment : BaseFragment(), KoinComponent {
         // enable swiping left/right
         val itemTouchHelper = ItemTouchHelper(AdminGroupsSwipeActionHandler(adapter))
         itemTouchHelper.attachToRecyclerView(binding.smobItemsRecyclerView)
+
+    }
+
+
+    // "+" FAB handler --> navigate to selected fragment of the admin activity
+    private fun navigateToAddGroup() {
+
+        // determine highest index in all smobGroups
+        val highPos = _viewModel.smobGroups.value.let {
+            if (it.status == Status.SUCCESS) {
+                // return  highest index
+                it.data?.fold(0L) { max, list -> if (list.itemPosition > max) list.itemPosition else max } ?: 0L
+            } else {
+                0L
+            }
+        }
+
+        // communicate the currently highest list position
+        val bundle = bundleOf(
+            "listPosMax" to highPos,
+        )
+
+        // use the navigationCommand live data to navigate between the fragments
+        _viewModel.navigationCommand.postValue(
+            NavigationCommand.ToWithBundle(
+                R.id.smobAdminGroupsEditFragment,
+                bundle
+            )
+        )
 
     }
 

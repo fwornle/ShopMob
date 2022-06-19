@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.planning.listsEdit
+package com.tanfra.shopmob.smob.ui.planning.lists
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -92,7 +92,7 @@ class PlanningListsEditFragment : BaseFragment(), KoinComponent {
     override fun onDestroy() {
         super.onDestroy()
         //make sure to clear the view model after destroy, as it's a single view model.
-        _viewModel.onClear()
+        _viewModel.onClearProduct()
     }
 
 }

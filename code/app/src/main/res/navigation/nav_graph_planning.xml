@@ -35,7 +35,7 @@
 
     <fragment
         android:id="@+id/smobPlanningListsEditFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.listsEdit.PlanningListsEditFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.groups.AdminGroupsEditFragment"
         android:label="Planning Lists Edit"
         tools:layout="@layout/fragment_planning_lists_edit"
         >
@@ -60,7 +60,7 @@
 
     <fragment
         android:id="@+id/smobPlanningProductEditFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.productEdit.PlanningProductEditFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.product.PlanningProductEditFragment"
         android:label="Planning Product Edit"
         tools:layout="@layout/fragment_planning_product_edit"
         >

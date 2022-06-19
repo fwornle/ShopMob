@@ -12,6 +12,7 @@ import com.tanfra.shopmob.smob.data.net.api.SmobUserApi
 import com.tanfra.shopmob.smob.data.net.nto.SmobUserNTO
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
+import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.asResource
@@ -88,6 +89,33 @@ class SmobUserRepository(
             return try {
                 // fetch data from DB (and convert to ATO)
                 atoFlow = smobUserDao.getSmobItems().asDomainModel()
+                // wrap data in Resource (--> error/success/[loading])
+                atoFlow.asResource(null)
+            } catch (e: Exception) {
+                // handle exceptions --> error message returned in Resource.error
+                atoFlow.asResource(e.localizedMessage)
+            }
+
+        }  // idlingResource (testing)
+
+    }
+
+
+    /**
+     * Get the smob members of a particular smob group from the local db
+     * @param id of the smob group
+     * @return Result holds a Success with all the smob users or an Error object with the error message
+     */
+    override fun getSmobMembersByGroupId(id: String): Flow<Resource<List<SmobUserATO>>> {
+
+        // support espresso testing (w/h coroutines)
+        wrapEspressoIdlingResource {
+
+            // try to fetch data from the local DB
+            var atoFlow: Flow<List<SmobUserATO>> = flowOf(listOf())
+            return try {
+                // fetch data from DB (and convert to ATO)
+                atoFlow = smobUserDao.getSmobMembersByGroupId(id).asDomainModel()
                 // wrap data in Resource (--> error/success/[loading])
                 atoFlow.asResource(null)
             } catch (e: Exception) {

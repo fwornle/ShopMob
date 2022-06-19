@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.admin.groups
+package com.tanfra.shopmob.smob.ui.admin.groupMembers
 
 import android.view.View
 import androidx.lifecycle.findViewTreeLifecycleOwner
@@ -7,7 +7,7 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
-import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -15,18 +15,17 @@ import org.koin.core.component.inject
 
 
 // use data binding to show the smob item on the RV item
-class AdminGroupsAdapter(rootView: View, callBack: (selectedSmobATO: SmobGroupATO) -> Unit) :
-    BaseRecyclerViewAdapter<SmobGroupATO>(rootView, callBack), KoinComponent {
+class AdminGroupMembersAdapter(rootView: View, callBack: (selectedSmobATO: SmobUserATO) -> Unit) :
+    BaseRecyclerViewAdapter<SmobUserATO>(rootView, callBack), KoinComponent {
 
     // inject _viewModel from Koin service locator
     private val _viewModel: AdminViewModel by inject()
 
     // filter (and sort) list - straight through, if not needed
-    override fun listFilter(items: List<SmobGroupATO>): List<SmobGroupATO> {
+    override fun listFilter(items: List<SmobUserATO>): List<SmobUserATO> {
 
         // take out all items which have been deleted by swiping
         return items
-            .filter { item -> item.members.contains(SmobApp.currUser?.id)  }
             .filter { item -> item.itemStatus != SmobItemStatus.DELETED  }
             //.map { item -> consolidateListItem(item) }
             .sortedWith(
@@ -37,11 +36,11 @@ class AdminGroupsAdapter(rootView: View, callBack: (selectedSmobATO: SmobGroupAT
     }
 
     // allow the BaseRecyclerViewAdapter to access the item layout for this particular RV list
-    override fun getLayoutRes(viewType: Int) = R.layout.smob_groups_item
+    override fun getLayoutRes(viewType: Int) = R.layout.smob_users_item
 
     // called, when the user action has been confirmed and the local DB / backend needs updated
     // ... this is the point where the list can be consolidated, if needed (eg. aggregate status)
-    override fun uiActionConfirmed(item: SmobGroupATO, rootView: View) {
+    override fun uiActionConfirmed(item: SmobUserATO, rootView: View) {
 
         // consolidate list item data (prior to writing to the DB)
         val itemAdjusted = if(item.itemStatus != SmobItemStatus.DELETED) {
@@ -56,21 +55,20 @@ class AdminGroupsAdapter(rootView: View, callBack: (selectedSmobATO: SmobGroupAT
         // ... also used to "DELETE" a list (marked as DELETED, then filtered out)
         rootView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
 
-            // collect SmobGroup flow
-            val updatedList = SmobGroupATO(
+            // collect SmobUser flow
+            val updatedList = SmobUserATO(
                 itemAdjusted.id,
                 itemAdjusted.itemStatus,
                 itemAdjusted.itemPosition,
+                itemAdjusted.username,
                 itemAdjusted.name,
-                itemAdjusted.description,
-                itemAdjusted.type,
-                itemAdjusted.members,
-                itemAdjusted.activity,
+                itemAdjusted.email,
+                itemAdjusted.imageUrl,
             )
 
-            // store updated smobGroup in local DB
+            // store updated smobUser in local DB
             // ... this also triggers an immediate push to the backend (once stored locally)
-            _viewModel.groupDataSource.updateSmobItem(updatedList)
+            _viewModel.userDataSource.updateSmobItem(updatedList)
 
         }  // coroutine scope (lifecycleScope)
 
@@ -78,7 +76,7 @@ class AdminGroupsAdapter(rootView: View, callBack: (selectedSmobATO: SmobGroupAT
 
 
     // recompute status & completion rate from linked list items
-    private fun consolidateListItem(item: SmobGroupATO): SmobGroupATO {
+    private fun consolidateListItem(item: SmobUserATO): SmobUserATO {
 
         // return adjusted item
         return item

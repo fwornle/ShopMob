@@ -1,6 +1,7 @@
 package com.tanfra.shopmob.smob.data.repo.dataSource
 
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
+import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import kotlinx.coroutines.flow.Flow
 

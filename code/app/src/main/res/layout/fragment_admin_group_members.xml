@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.tanfra.shopmob.smob.ui.admin.AdminViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        >
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context="com.tanfra.shopmob.smob.ui.admin.groups.AdminGroupsFragment">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/secondaryLightColor">
+
+                <ImageView
+                    android:id="@+id/ivSmobAdminGroupMembers"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/image_header_height"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginTop="@dimen/vertical_margin_image"
+                    android:layout_marginEnd="@dimen/horizontal_margin_small"
+                    android:layout_marginBottom="@dimen/vertical_margin_image"
+                    android:contentDescription="@string/adminGroupMemberDescription"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_baseline_group_24"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/smobItemsRecyclerView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:src="@drawable/ic_baseline_group_24" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/smobItemsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivSmobAdminGroupMembers"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:stateFlowResource="@{viewModel.smobGroupMembers}" />
+
+                <TextView
+                    android:id="@+id/noDataTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/no_data"
+                    android:textSize="@dimen/text_size_large"
+                    app:fadeVisible="@{viewModel.showNoData.booleanValue()}"
+                    app:drawableTopCompat="@drawable/ic_no_data"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+                <!-- centered (red) progress bar, indicating the loading state when accessing the DB -->
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:fadeVisibleOnLoading="@{viewModel.smobGroupMembers}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/add_smob_item_fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_normal"
+                    android:src="@drawable/ic_add"
+                    android:contentDescription="@string/add_smob_group_member"
+                    app:fabSize="normal"
+                    app:layout_anchor="@id/smobItemsRecyclerView"
+                    app:layout_anchorGravity="bottom|right|end"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+                <Button
+                    android:id="@+id/btDismiss"
+                    android:layout_width="@dimen/button_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/vertical_margin_large"
+                    android:layout_marginBottom="@dimen/vertical_margin_large"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:paddingStart="@dimen/button_padding"
+                    android:paddingEnd="@dimen/button_padding"
+                    android:text="@string/dismiss"
+                    android:textColor="@color/swipePrimaryColor"
+                    android:textSize="@dimen/button_text_size"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </ScrollView>
+
+</layout>

@@ -415,7 +415,7 @@ class PlanningViewModel(
     /**
      * Clear the live data objects to start fresh next time the view model gets called
      */
-    fun onClear() {
+    fun onClearProduct() {
         smobProductName.value = null
         smobProductDescription.value = null
         smobProductImageUrl.value = null

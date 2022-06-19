@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.planning.productEdit
+package com.tanfra.shopmob.smob.ui.planning.product
 
 import android.annotation.SuppressLint
 import android.icu.text.SimpleDateFormat
@@ -216,7 +216,7 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
     override fun onDestroy() {
         super.onDestroy()
         //make sure to clear the view model after destroy, as it's a single view model.
-        _viewModel.onClear()
+        _viewModel.onClearProduct()
     }
 
     // set-up spinners (categories)
