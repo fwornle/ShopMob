@@ -7,24 +7,20 @@
     <data>
         <variable
             name="viewModel"
-            type="com.tanfra.shopmob.smob.ui.details.DetailsViewModel" />
+            type="com.tanfra.shopmob.smob.ui.admin.AdminViewModel" />
     </data>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        >
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clSmobProductDetails"
+            android:id="@+id/clSmobAdminGroupMemberDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/vertical_margin_small"
-            android:layout_marginStart="@dimen/horizontal_margin_small"
-            android:layout_marginEnd="@dimen/horizontal_margin_small"
+            android:background="@color/secondaryLightColor"
             >
-
 
             <!-- centered (red) progress bar, indicating the loading state when accessing the DB -->
             <ProgressBar
@@ -45,40 +41,43 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/smob_product_details"
+                android:layout_marginTop="@dimen/vertical_margin_image"
+                android:layout_marginBottom="@dimen/vertical_margin_image"
+                android:layout_marginStart="@dimen/horizontal_margin_small"
+                android:layout_marginEnd="@dimen/horizontal_margin_small"
+                android:text="@string/smob_group_member_details"
                 android:textSize="@dimen/text_size_large"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/ivSmobDetails"
+                app:layout_constraintBottom_toTopOf="@id/ivSmobGroupMember"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
             <ImageView
-                android:id="@+id/ivSmobDetails"
+                android:id="@+id/ivSmobGroupMember"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/image_header_height"
                 android:layout_marginTop="@dimen/vertical_margin_image"
                 android:layout_marginBottom="@dimen/vertical_margin_image"
                 android:layout_marginStart="@dimen/horizontal_margin_small"
                 android:layout_marginEnd="@dimen/horizontal_margin_small"
-                android:contentDescription="@{viewModel.smobProductDetailsItem.productDescription}"
+                android:contentDescription="@string/adminMemberDescription"
                 android:scaleType="fitCenter"
                 app:layout_constraintTop_toTopOf="@id/tvHeading"
                 app:layout_constraintBottom_toTopOf="@+id/clUsername"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:itemImage="@{viewModel.smobProductDetailsItem.productImageUrl}"
-                tools:src="@drawable/smob_1"
+                app:profileImage="@{viewModel.currGroupMember.imageUrl}"
+                tools:src="@drawable/ic_baseline_person_24"
                 />
 
-
-            <!-- row: title -->
+            <!-- row: Username -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/ivSmobDetails"
+                app:layout_constraintTop_toBottomOf="@id/ivSmobGroupMember"
                 app:layout_constraintBottom_toTopOf="@+id/clName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -106,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/horizontal_margin_small"
                     android:layout_marginEnd="@dimen/horizontal_margin_small"
-                    android:text="@string/title_product"
+                    android:text="@string/admin_group_member_username"
                     android:textSize="@dimen/label_text_size"
                     app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorUsername"
                     app:layout_constraintEnd_toStartOf="@+id/tvAnchorUsername"
@@ -119,8 +118,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/horizontal_margin_small"
                     android:layout_marginEnd="@dimen/horizontal_margin_huge"
-                    android:text="@{viewModel.smobProductDetailsItem.productName}"
-                    tools:text="Some product name"
+                    android:text="@{viewModel.currGroupMember.username}"
+                    tools:text="Some username"
                     android:textSize="@dimen/label_text_size"
                     app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorUsername"
                     app:layout_constraintStart_toEndOf="@+id/tvAnchorUsername"
@@ -131,7 +130,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <!-- row: Description -->
+            <!-- row: Name -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clName"
                 android:layout_width="match_parent"
@@ -164,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/horizontal_margin_small"
                     android:layout_marginEnd="@dimen/horizontal_margin_small"
-                    android:text="@string/description"
+                    android:text="@string/admin_group_member_name"
                     android:textSize="@dimen/label_text_size"
                     app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorName"
                     app:layout_constraintEnd_toStartOf="@+id/tvAnchorName"
@@ -177,7 +176,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/horizontal_margin_small"
                     android:layout_marginEnd="@dimen/horizontal_margin_huge"
-                    android:text="@{viewModel.smobProductDetailsItem.productDescription}"
+                    android:text="@{viewModel.currGroupMember.name}"
                     tools:text="Some product description"
                     android:textSize="@dimen/label_text_size"
                     app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorName"
@@ -189,13 +188,12 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <!-- row: CategoryMain -->
+            <!-- row: Email -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/clName"
-                app:layout_constraintBottom_toTopOf="@+id/clCategorySub"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 >
@@ -222,7 +220,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/horizontal_margin_small"
                     android:layout_marginEnd="@dimen/horizontal_margin_small"
-                    android:text="@string/catMain"
+                    android:text="@string/admin_group_member_email"
                     android:textSize="@dimen/label_text_size"
                     app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorEmail"
                     app:layout_constraintEnd_toStartOf="@+id/tvAnchorEmail"
@@ -236,7 +234,7 @@
                     android:layout_marginStart="@dimen/horizontal_margin_small"
                     android:layout_marginEnd="@dimen/horizontal_margin_huge"
                     android:layout_marginBottom="@dimen/vertical_margin_large"
-                    android:text="@{viewModel.smobProductDetailsItem.productCategory.main.toString()}"
+                    android:text="@{viewModel.currGroupMember.email}"
                     tools:text="Some product category"
                     android:textSize="@dimen/label_text_size"
                     app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorEmail"
@@ -246,185 +244,6 @@
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <!-- row: CategorySub -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clCategorySub"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/clEmail"
-                app:layout_constraintBottom_toTopOf="@+id/clActivityDate"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                >
-
-                <!-- invisible TV for alignment of label and edit text field -->
-                <TextView
-                    android:id="@+id/tvAnchorCatSub"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/horizontal_margin_anchor_login"
-                    android:text="@string/anchor_char"
-                    android:textSize="@dimen/invisible_gap_details"
-                    android:visibility="invisible"
-                    app:layout_constraintHorizontal_weight="0.1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
-
-
-                <TextView
-                    android:id="@+id/tvCatSub"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/horizontal_margin_small"
-                    android:layout_marginEnd="@dimen/horizontal_margin_small"
-                    android:text="@string/catSub"
-                    android:textSize="@dimen/label_text_size"
-                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorCatSub"
-                    app:layout_constraintEnd_toStartOf="@+id/tvAnchorCatSub"
-                    app:layout_constraintHorizontal_weight="0.2"
-                    tools:labelFor="@id/tvUsernameText" />
-
-                <TextView
-                    android:id="@+id/tvCatSubText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/horizontal_margin_small"
-                    android:layout_marginEnd="@dimen/horizontal_margin_huge"
-                    android:layout_marginBottom="@dimen/vertical_margin_large"
-                    android:text="@{viewModel.smobProductDetailsItem.productCategory.sub.toString()}"
-                    tools:text="Product sub-category"
-                    android:textSize="@dimen/label_text_size"
-                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorCatSub"
-                    app:layout_constraintStart_toEndOf="@+id/tvAnchorCatSub"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_weight="0.7"
-                    />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <!-- row: ActivityDate -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clActivityDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/clCategorySub"
-                app:layout_constraintBottom_toTopOf="@+id/clActivityReps"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                >
-
-                <!-- invisible TV for alignment of label and edit text field -->
-                <TextView
-                    android:id="@+id/tvAnchorActDate"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/horizontal_margin_anchor_login"
-                    android:text="@string/anchor_char"
-                    android:textSize="@dimen/invisible_gap_details"
-                    android:visibility="invisible"
-                    app:layout_constraintHorizontal_weight="0.1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
-
-
-                <TextView
-                    android:id="@+id/tvActDate"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/horizontal_margin_small"
-                    android:layout_marginEnd="@dimen/horizontal_margin_small"
-                    android:text="@string/actDate"
-                    android:textSize="@dimen/label_text_size"
-                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorActDate"
-                    app:layout_constraintEnd_toStartOf="@+id/tvAnchorActDate"
-                    app:layout_constraintHorizontal_weight="0.2"
-                    tools:labelFor="@id/tvUsernameText" />
-
-                <TextView
-                    android:id="@+id/tvActDateText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/horizontal_margin_small"
-                    android:layout_marginEnd="@dimen/horizontal_margin_huge"
-                    android:layout_marginBottom="@dimen/vertical_margin_large"
-                    android:text="@{viewModel.smobProductDetailsItem.productActivity.date}"
-                    tools:text="Last purchased"
-                    android:textSize="@dimen/label_text_size"
-                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorActDate"
-                    app:layout_constraintStart_toEndOf="@+id/tvAnchorActDate"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_weight="0.7"
-                    />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <!-- row: ActivityReps -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clActivityReps"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/vertical_margin_small"
-                app:layout_constraintTop_toBottomOf="@id/clActivityDate"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                >
-
-                <!-- invisible TV for alignment of label and edit text field -->
-                <TextView
-                    android:id="@+id/tvAnchorActReps"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/horizontal_margin_anchor_login"
-                    android:text="@string/anchor_char"
-                    android:textSize="@dimen/invisible_gap_details"
-                    android:visibility="invisible"
-                    app:layout_constraintHorizontal_weight="0.1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
-
-
-                <TextView
-                    android:id="@+id/tvActReps"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/horizontal_margin_small"
-                    android:layout_marginEnd="@dimen/horizontal_margin_small"
-                    android:text="@string/actReps"
-                    android:textSize="@dimen/label_text_size"
-                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorActReps"
-                    app:layout_constraintEnd_toStartOf="@+id/tvAnchorActReps"
-                    app:layout_constraintHorizontal_weight="0.2"
-                    tools:labelFor="@id/tvUsernameText" />
-
-                <TextView
-                    android:id="@+id/tvActRepsText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/horizontal_margin_small"
-                    android:layout_marginEnd="@dimen/horizontal_margin_huge"
-                    android:layout_marginBottom="@dimen/vertical_margin_large"
-                    android:text="@{Long.toString(viewModel.smobProductDetailsItem.productActivity.reps)}"
-                    tools:text="repeat purchases"
-                    android:textSize="@dimen/label_text_size"
-                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorActReps"
-                    app:layout_constraintStart_toEndOf="@+id/tvAnchorActReps"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_weight="0.7"
-                    />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

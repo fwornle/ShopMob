@@ -388,4 +388,11 @@ class AdminViewModel(
 
     }  // swipeRefreshUserDataInLocalDB
 
+
+    // GroupMemberDetailsViewModel ---------------------------------------------
+    // GroupMemberDetailsViewModel ---------------------------------------------
+    // GroupMemberDetailsViewModel ---------------------------------------------
+
+    // current group member data record
+    var currGroupMember: SmobUserATO? = null
 }

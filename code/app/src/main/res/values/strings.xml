@@ -90,6 +90,8 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="smob_product_details">ShopMob Product Details</string>
+    <string name="smob_group_member_details">ShopMob Member Details</string>
+
     <string name="smob_shop_details">ShopMob Store Details</string>
     <string name="map">map</string>
     <string name="undo_delete">Undo "Delete"?</string>
@@ -106,11 +108,15 @@
     <string name="profile">Profile</string>
     <string name="floor_plan">Floor Plan</string>
     <string name="description">Description</string>
+    <string name="admin_group_member_username">Username</string>
+    <string name="admin_group_member_name">Name</string>
+    <string name="admin_group_member_email">Email</string>
     <string name="adminDescription">ShopMob administration</string>
     <string name="adminGroupDescription">ShopMob group administration</string>
     <string name="adminGroupMemberDescription">ShopMob group member administration</string>
     <string name="adminListDescription">ShopMob shopping list administration</string>
     <string name="adminProfileDescription">ShopMob user profile administration</string>
+    <string name="adminMemberDescription">ShopMob group member details</string>
     <string name="adminUserAvatar">ShopMob user avatar</string>
     <string name="location">Location</string>
     <string name="location_latlong">%1$.6f,%2$.6f</string>

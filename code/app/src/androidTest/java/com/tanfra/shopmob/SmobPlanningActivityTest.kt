@@ -285,8 +285,8 @@ class SmobPlanningActivityTest: AutoCloseKoinTest() {
         onView(withId(R.id.clSmobItemDetails)).check((matches(isDisplayed())))
 
         // verify that the smob item details are displayed correctly
-        onView(withId(R.id.tvTitleText)).check(matches(withText(testSmobItemATO.title)))
-        onView(withId(R.id.tvDescText)).check(matches(withText(testSmobItemATO.description)))
+        onView(withId(R.id.tvUsernameText)).check(matches(withText(testSmobItemATO.title)))
+        onView(withId(R.id.tvNameText)).check(matches(withText(testSmobItemATO.description)))
         onView(withId(R.id.tvLocText)).check(matches(withText(testSmobItemATO.location)))
 
         // click 'DISMISS' to back to the SmobItemList fragment

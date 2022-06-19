@@ -12,16 +12,11 @@ import android.content.Intent
 import android.widget.Toast
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
-import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
-import com.tanfra.shopmob.smob.ui.details.SmobDetailsSources
-import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.databinding.FragmentAdminGroupMembersBinding
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
-import com.tanfra.shopmob.smob.ui.admin.groups.AdminGroupsEditFragmentDirections
-import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import com.tanfra.shopmob.utils.setup
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -121,11 +116,6 @@ class AdminGroupMembersListFragment : BaseFragment(), KoinComponent {
         // "+" FAB
         binding.addSmobItemFab.setOnClickListener { navigateToAdminUserEdit() }
 
-
-        // set onClick handler for DISMISS button
-        // ... back to groups list
-        binding.btDismiss.setOnClickListener { navigateToGroupsList() }
-
     }
 
     // FAB handler --> navigate to AdminUserEdit fragment
@@ -138,32 +128,22 @@ class AdminGroupMembersListFragment : BaseFragment(), KoinComponent {
         )
     }
 
-    // navigate back to the groups list
-    private fun navigateToGroupsList() {
-        // use the navigationCommand live data to navigate between the fragments
-        _viewModel.navigationCommand.postValue(
-            NavigationCommand.To(
-                AdminGroupMembersListFragmentDirections.actionSmobAdminGroupMembersListFragmentToSmobAdminGroupsFragment()
-            )
-        )
-    }
-
     private fun setupRecyclerView() {
         val adapter = AdminGroupMembersAdapter(binding.root) {
 
             // this lambda is the 'callback' function which gets called when clicking an item in the
             // RecyclerView - it gets the data behind the clicked item as parameter
 
-            // create intent which starts activity SmobDetailsActivity, with clicked data item
-            val intent = SmobDetailsActivity.newIntent(
-                requireContext(),
-                SmobDetailsSources.PLANNING_PRODUCT_LIST,
-                it
-            )
+            // communicate the selected item (= member)
+            _viewModel.currGroupMember = it
 
-            wrapEspressoIdlingResource {
-                startActivity(intent)
-            }
+            // use the navigationCommand live data to navigate between the fragments
+            _viewModel.navigationCommand.postValue(
+                NavigationCommand.To(
+                    AdminGroupMembersListFragmentDirections
+                        .actionSmobAdminGroupMembersListFragmentToSmobAdminGroupMemberDetailsFragment()
+                )
+            )
 
         }  // "on-item-click" lambda
 
