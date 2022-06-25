@@ -7,6 +7,7 @@
   <color name="secondaryLightColor">#c1d5e0</color>
   <color name="secondaryDarkColor">#62757f</color>
   <color name="primaryTextColor">#3e2723</color>
+  <color name="primaryTextColorHint">#455A64</color>
   <color name="secondaryTextColor">#263238</color>
 
   <color name="swipeSecondaryLightColor">#F1FBF2</color>

@@ -5,16 +5,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.databinding.FragmentAdminGroupMembersEditBinding
 import com.tanfra.shopmob.smob.data.local.utils.*
-import com.tanfra.shopmob.smob.ui.base.BaseFragment
-import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
+import com.tanfra.shopmob.smob.ui.base.BaseFragment
+import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
+import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
+import com.tanfra.shopmob.utils.setup
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
 import java.util.*
@@ -43,7 +48,7 @@ class AdminGroupMembersEditFragment : BaseFragment(), KoinComponent {
 
         // inflate fragment layout and return binding object
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_admin_groups_edit, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_admin_group_members_edit, container, false)
 
         // fetch currently highest list position from incoming bundle
         listPosMax = arguments?.getLong("listPosMax") ?: 0L
@@ -53,13 +58,37 @@ class AdminGroupMembersEditFragment : BaseFragment(), KoinComponent {
         // provide (injected) viewModel as data source for data binding
         binding.viewModel = _viewModel
 
+        // install listener for SwipeRefreshLayout view
+        binding.refreshLayout.setOnRefreshListener {
+
+            // deactivate SwipeRefreshLayout spinner
+            binding.refreshLayout.setRefreshing(false)
+
+            // refresh local DB data from backend (for this list) - also updates 'showNoData'
+            _viewModel.swipeRefreshDataInLocalDB()
+
+            // empty? --> inform user that there is no point swiping for further updates...
+            if (_viewModel.showNoData.value == true) {
+                Toast.makeText(activity, getString(R.string.error_add_smob_users), Toast.LENGTH_SHORT).show()
+            }
+
+        }
+
+        // refresh local DB data from backend (for this list) - also updates 'showNoData'
+        _viewModel.swipeRefreshDataInLocalDB()
+
         return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.lifecycleOwner = viewLifecycleOwner
+
+        // RV - incl. onClick listener for items
+        setupRecyclerView()
+
 
         // clicking on the 'saveSmobGroup' FAB updates the smobGroup with the newly added member
         binding.saveSmobGroup.setOnClickListener {
@@ -96,6 +125,46 @@ class AdminGroupMembersEditFragment : BaseFragment(), KoinComponent {
 
     }  // onViewCreated
 
+
+    private fun setupRecyclerView() {
+        val adapter = AdminGroupMembersAdapter(binding.root) {
+
+            // this lambda is the 'callback' function which gets called when clicking an item in the
+            // RecyclerView - it gets the data behind the clicked item as parameter
+
+            // communicate the selected item (= member)
+            _viewModel.currGroupMember = it
+            _viewModel.enableAddButton = true
+
+            // use the navigationCommand live data to navigate between the fragments
+            _viewModel.navigationCommand.postValue(
+                NavigationCommand.To(
+                    AdminGroupMembersEditFragmentDirections
+                        .actionSmobAdminGroupMembersEditFragmentToSmobAdminGroupMemberDetailsFragment()
+                )
+            )
+
+        }  // "on-item-click" lambda
+
+        // connect SearchView to RecyclerView
+        binding.smobGroupMemberSearch.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return false
+            }
+        })
+
+        // setup the recycler view using the extension function
+        binding.smobItemsRecyclerView.setup(adapter)
+
+        // enable swiping left/right
+        val itemTouchHelper = ItemTouchHelper(AdminGroupMembersSwipeActionHandler(adapter))
+        itemTouchHelper.attachToRecyclerView(binding.smobItemsRecyclerView)
+
+    }
 
     override fun onDestroy() {
         super.onDestroy()

@@ -100,6 +100,9 @@
         <action
             android:id="@+id/action_smobAdminGroupMembersEditFragment_to_smobAdminGroupMembersListFragment"
             app:destination="@id/smobAdminGroupMembersListFragment" />
+        <action
+            android:id="@+id/action_smobAdminGroupMembersEditFragment_to_smobAdminGroupMemberDetailsFragment"
+            app:destination="@id/smobAdminGroupMemberDetailsFragment" />
     </fragment>
 
     <fragment

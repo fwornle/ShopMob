@@ -1,5 +1,6 @@
 package com.tanfra.shopmob.smob.ui.admin.groupMembers
 
+import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,6 +16,8 @@ import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
+import com.tanfra.shopmob.smob.ui.base.NavigationCommand
+import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
@@ -57,38 +60,24 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
 
-//        // clicking on the 'saveSmobGroup' FAB updates the smobGroup with the newly added member
-//        binding.saveSmobGroup.setOnClickListener {
-//
-//            // close SoftKeyboard
-//            closeSoftKeyboard(requireContext(), view)
-//
-//            val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss", Locale.GERMANY)
-//            val currentDate = sdf.format(Date())
-//
-//            // TODO: need to "update" existing entry (rather than adding a new one)
-//            // TODO: need to "update" existing entry (rather than adding a new one)
-//            // TODO: need to "update" existing entry (rather than adding a new one)
-//
-//            // initialize data record to be written to DB
-//            // ... if no better values have been provided by the user (taken from viewModel), this
-//            //     is going to be the data record written to the DB
-//            daSmobGroupATO = SmobGroupATO(
-//                UUID.randomUUID().toString(),
-//                SmobItemStatus.OPEN,
-//                listPosMax + 1,
-//                _viewModel.smobGroupName.value ?: "mystery group",
-//                _viewModel.smobGroupDescription.value ?: "something exciting",
-//                _viewModel.smobGroupType.value ?: GroupType.OTHER,
-//                SmobApp.currUser?.let { listOf(it.id) } ?: listOf(), // members
-//                ActivityStatus(currentDate, 0)
-//            )
-//
-//            // store smob Group in DB
-//            // ... this also takes the user back to the SmobGroupsFragment
-//            _viewModel.validateAndSaveSmobGroup(daSmobGroupATO)
-//
-//        }  // onClickListener (FAB - save)
+        // set onClick handler for 'Add to Group' button
+        // ... navigate back to the main app
+        binding.btAddToGroup.setOnClickListener {
+
+            // back to default: button invisible
+            _viewModel.enableAddButton = false
+
+            // ToDo: add to group
+
+            // return to selected group list
+            _viewModel.navigationCommand.postValue(
+                NavigationCommand.To(
+                    AdminGroupMemberDetailsFragmentDirections
+                        .actionSmobAdminGroupMemberDetailsFragmentToSmobAdminGroupMembersListFragment()
+                )
+            )
+
+        }
 
     }  // onViewCreated
 

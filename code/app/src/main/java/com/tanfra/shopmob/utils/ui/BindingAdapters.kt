@@ -131,7 +131,6 @@ object BindingAdapters {
         }
     }
 
-
     /**
      * Use this binding adapter to control the background color of the RV item (card) depending
      * on the item status

@@ -202,6 +202,10 @@ class AdminViewModel(
     // current group ID and group position (in the list of SmobGroups)
     var currGroupId: String? = null
 
+    // collect all SmobUsers
+    val _smobUsers: Flow<Resource<List<SmobUserATO>?>> = fetchSmobUsersFlow()
+    val smobUsers = smobUsersFlowToStateFlow(_smobUsers)
+
     // collect the upstream selected smobGroup as well as the list of SmobUserATO items
     // ... lateinit, as this can only be done once the fragment is created (and the id's are here)
     lateinit var _smobGroup: Flow<Resource<SmobGroupATO?>>
@@ -214,6 +218,25 @@ class AdminViewModel(
     lateinit var smobGroupMembers: StateFlow<Resource<List<SmobUserATO>?>>
 
     lateinit var smobGroupMembersWithStatus: StateFlow<List<SmobMemberOfGroupATO>?>
+
+
+    /**
+     * fetch the flow of the list of items for the upstream list the user just selected
+     */
+    @ExperimentalCoroutinesApi
+    fun fetchSmobUsersFlow(): Flow<Resource<List<SmobUserATO>?>> {
+        val fetchFlow = userDataSource.getAllSmobItems()
+        return fetchFlow
+    }
+
+    // convert to StateFlow
+    fun smobUsersFlowToStateFlow(inFlow: Flow<Resource<List<SmobUserATO>?>>): StateFlow<Resource<List<SmobUserATO>?>> {
+        return inFlow.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = Resource.loading(null)
+        )  // StateFlow<...>
+    }
 
 
     /**
@@ -395,4 +418,5 @@ class AdminViewModel(
 
     // current group member data record
     var currGroupMember: SmobUserATO? = null
+    var enableAddButton: Boolean = false
 }

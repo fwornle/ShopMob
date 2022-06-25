@@ -8,6 +8,7 @@ import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -20,6 +21,13 @@ class AdminGroupsAdapter(rootView: View, callBack: (selectedSmobATO: SmobGroupAT
 
     // inject _viewModel from Koin service locator
     private val _viewModel: AdminViewModel by inject()
+
+    // SearchView widget can be used to preFilter the list using user input
+    override fun getSearchViewItems(items: List<SmobGroupATO>, charSearch: String)
+    : MutableList<SmobGroupATO> {
+        // default: no filtering
+        return items.toMutableList()
+    }
 
     // filter (and sort) list - straight through, if not needed
     override fun listFilter(items: List<SmobGroupATO>): List<SmobGroupATO> {

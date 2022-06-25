@@ -10,77 +10,64 @@
             type="com.tanfra.shopmob.smob.ui.admin.AdminViewModel" />
     </data>
 
-    <ScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        >
+        android:layout_height="wrap_content"
+        tools:context="com.tanfra.shopmob.smob.ui.admin.groups.AdminGroupsFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clGroupListEdit"
+            android:id="@+id/clGroupLMembersEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/secondaryLightColor">
 
-            <EditText
-                android:id="@+id/smobGroupMemberUsername"
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/smobGroupMemberSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_standard"
-                android:layout_marginStart="@dimen/horiz_margin_small"
-                android:layout_marginTop="@dimen/vert_margin_small"
-                android:layout_marginEnd="@dimen/horiz_margin_small"
-                android:hint="@string/smob_group_member_username"
-                android:autofillHints="@string/smob_group_member_username"
-                android:inputType="textCapSentences|textAutoCorrect"
-                android:text="@={viewModel.smobGroupName}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:background="@color/secondaryColor"
+                android:textCursorDrawable="@null"
                 app:layout_constraintTop_toTopOf="parent"
-                />
+                app:iconifiedByDefault="false"
+                app:queryBackground="@null" />
 
-            <EditText
-                android:id="@+id/smobGroupMemberName"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/smobItemsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_standard"
-                android:layout_marginStart="@dimen/horiz_margin_small"
-                android:layout_marginTop="@dimen/vert_margin_small"
-                android:layout_marginEnd="@dimen/horiz_margin_small"
-                android:gravity="start"
-                android:hint="@string/smob_group_member_name"
-                android:autofillHints="@string/smob_group_member_name"
-                android:inputType="textCapSentences|textAutoCorrect"
-                android:lines="10"
-                android:text="@={viewModel.smobGroupDescription}"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constrainedHeight="true"
+                app:layout_constraintTop_toBottomOf="@id/smobGroupMemberSearch"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:stateFlowResource="@{viewModel.smobUsers}" />
+
+            <TextView
+                android:id="@+id/noDataTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/no_data"
+                android:textSize="@dimen/text_size_large"
+                app:fadeVisible="@{viewModel.showNoData.booleanValue()}"
+                app:drawableTopCompat="@drawable/ic_no_data"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/smobGroupMemberUsername"
+                app:layout_constraintEnd_toEndOf="parent"
                 />
 
-            <!--
-            <Spinner
-                android:id="@+id/smobGroupType"
-                style="@style/Widget.AppCompat.Spinner"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/dropdownListPreferredItemHeight"
-                android:layout_margin="@dimen/margin_standard"
-                android:layout_marginStart="@dimen/horiz_margin_small"
-                android:layout_marginTop="@dimen/vert_margin_small"
-                android:layout_marginEnd="@dimen/horiz_margin_small"
-                android:prompt="@string/smob_group_type"
-                android:background="@drawable/spinner_bg"
-                android:dropDownWidth="match_parent"
-                android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
-                android:paddingEnd="14dp"
-                android:popupBackground="@drawable/spinner_bg"
-                android:popupElevation="3dp"
-                android:stateListAnimator="@drawable/spinner_sla"
-                app:layout_constraintEnd_toEndOf="parent"
+            <!-- centered (red) progress bar, indicating the loading state when accessing the DB -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:fadeVisibleOnLoading="@{viewModel.smobGroupMembers}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/smobGroupMemberName"
-                tools:ignore="RtlSymmetry" />
-            -->
+                app:layout_constraintEnd_toEndOf="parent"
+                />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/saveSmobGroup"
@@ -95,19 +82,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:contentDescription="@string/save_smob_group" />
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:fadeVisible="@{viewModel.showLoading.booleanValue()}"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </layout>

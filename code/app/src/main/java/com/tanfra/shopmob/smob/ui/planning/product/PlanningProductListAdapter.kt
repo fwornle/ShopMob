@@ -22,6 +22,13 @@ class PlanningProductListAdapter(rootView: View, callBack: (selectedSmobATO: Smo
     // inject _viewModel from Koin service locator
     private val _viewModel: PlanningViewModel by inject()
 
+    // SearchView widget can be used to preFilter the list using user input
+    override fun getSearchViewItems(items: List<SmobProductOnListATO>, charSearch: String)
+    : MutableList<SmobProductOnListATO> {
+        // default: no filtering
+        return items.toMutableList()
+    }
+
     // filter (and sort) list - straight through, if not needed
     override fun listFilter(items: List<SmobProductOnListATO>): List<SmobProductOnListATO> {
 

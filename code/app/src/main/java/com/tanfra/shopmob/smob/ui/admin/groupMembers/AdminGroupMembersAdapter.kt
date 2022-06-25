@@ -11,6 +11,7 @@ import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.*
 
 
 // use data binding to show the smob item on the RV item
@@ -19,6 +20,22 @@ class AdminGroupMembersAdapter(rootView: View, callBack: (selectedSmobATO: SmobU
 
     // inject _viewModel from Koin service locator
     private val _viewModel: AdminViewModel by inject()
+
+    // SearchView widget can be used to preFilter the list using user input
+    override fun getSearchViewItems(items: List<SmobUserATO>, charSearch: String)
+    : MutableList<SmobUserATO> {
+
+        // ignore case
+        val searchP = charSearch.lowercase(Locale.ROOT)
+
+        // filter items list according to user provided search string (SearchView)
+        return items.filter { item ->
+            item.name.lowercase(Locale.ROOT).contains(searchP) ||
+            item.username.lowercase(Locale.ROOT).contains(searchP) ||
+            item.email.lowercase(Locale.ROOT).contains(searchP)
+        }.toMutableList()
+
+    }
 
     // filter (and sort) list - straight through, if not needed
     override fun listFilter(items: List<SmobUserATO>): List<SmobUserATO> {
@@ -29,7 +46,7 @@ class AdminGroupMembersAdapter(rootView: View, callBack: (selectedSmobATO: SmobU
             //.map { item -> consolidateListItem(item) }
             .sortedWith(
                 compareBy(
-                    { it.itemPosition },
+                    { it.name },
                 )
             )
     }

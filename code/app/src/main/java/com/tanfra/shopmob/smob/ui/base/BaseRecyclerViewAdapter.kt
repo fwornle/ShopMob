@@ -9,14 +9,16 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import android.widget.Filter
+import android.widget.Filterable
 import com.google.android.material.snackbar.BaseTransientBottomBar
-
 import com.google.android.material.snackbar.Snackbar
 import com.tanfra.shopmob.R
 
 
+
 abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callback: ((item: T) -> Unit)? = null) :
-    RecyclerView.Adapter<DataBindingViewHolder<T>>() {
+    RecyclerView.Adapter<DataBindingViewHolder<T>>(), Filterable {
 
     // the data...
     private var _items: MutableList<T> = mutableListOf()
@@ -36,8 +38,40 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
     // possibility to filter and sort a list --> can be straight through
     abstract fun listFilter(items: List<T>): List<T>
 
+    // fetch string array for SearchView widget
+    abstract fun getSearchViewItems(items: List<T>, charSearch: String): MutableList<T>
+
 
     // generic adapter functionality --------------------------------------------------
+
+    // filtering of the list (from user input in SearchView)
+    override fun getFilter(): Filter {
+
+        return object : Filter() {
+
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val charSearch = constraint.toString()
+                val resultList = if (charSearch.isNotEmpty()) {
+                    getSearchViewItems(items, charSearch)
+                } else {
+                    // no user input --> show everything
+                    items
+                }
+                val filterResults = FilterResults()
+                filterResults.values = resultList
+                return filterResults
+            }
+
+            @Suppress("UNCHECKED_CAST")
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                _items = results?.values as MutableList<T>
+                notifyDataSetChanged()
+            }
+
+        }
+
+    }  // getFilter
+
 
     /**
      * Returns the _items data

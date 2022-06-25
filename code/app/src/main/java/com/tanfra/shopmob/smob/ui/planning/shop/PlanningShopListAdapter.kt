@@ -5,6 +5,7 @@ import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
@@ -20,6 +21,12 @@ class PlanningShopListAdapter(rootView: View, callBack: (selectedSmobATO: SmobSh
     // inject _viewModel from Koin service locator
     private val _viewModel: PlanningViewModel by inject()
 
+    // SearchView widget can be used to preFilter the list using user input
+    override fun getSearchViewItems(items: List<SmobShopATO>, charSearch: String)
+    : MutableList<SmobShopATO> {
+        // default: no filtering
+        return items.toMutableList()
+    }
 
     // filter (and sort) list - straight through, if not needed
     override fun listFilter(items: List<SmobShopATO>): List<SmobShopATO> {

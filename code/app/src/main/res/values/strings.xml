@@ -103,6 +103,7 @@
     <string name="title_product">Product</string>
     <string name="title_shop">Store</string>
     <string name="dismiss">Dismiss</string>
+    <string name="add_to_group">Add to Group</string>
     <string name="groups">Groups</string>
     <string name="lists">Lists</string>
     <string name="profile">Profile</string>

@@ -9,6 +9,7 @@ import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.local.utils.SmobListItem
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -22,6 +23,13 @@ class PlanningListsAdapter(rootView: View, callBack: (selectedSmobATO: SmobListA
 
     // inject _viewModel from Koin service locator
     private val _viewModel: PlanningViewModel by inject()
+
+    // SearchView widget can be used to preFilter the list using user input
+    override fun getSearchViewItems(items: List<SmobListATO>, charSearch: String)
+    : MutableList<SmobListATO> {
+        // default: no filtering
+        return items.toMutableList()
+    }
 
     // filter (and sort) list - straight through, if not needed
     override fun listFilter(items: List<SmobListATO>): List<SmobListATO> {
