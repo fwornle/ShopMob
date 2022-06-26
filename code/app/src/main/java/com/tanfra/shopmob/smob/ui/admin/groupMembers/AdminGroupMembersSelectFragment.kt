@@ -2,16 +2,14 @@ package com.tanfra.shopmob.smob.ui.admin.groupMembers
 
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.SmobApp
-import com.tanfra.shopmob.databinding.FragmentAdminGroupMembersEditBinding
+import com.tanfra.shopmob.databinding.FragmentAdminGroupMembersSelectBinding
 import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
@@ -25,15 +23,15 @@ import org.koin.core.component.KoinComponent
 import java.util.*
 
 
-class AdminGroupMembersEditFragment : BaseFragment(), KoinComponent {
+class AdminGroupMembersSelectFragment : BaseFragment(), KoinComponent {
 
     // get the view model (from Koin service locator) ... shared with PlanningListsFragment
     override val _viewModel: AdminViewModel by sharedViewModel()
 
     // data binding of underlying layout
-    private lateinit var binding: FragmentAdminGroupMembersEditBinding
+    private lateinit var binding: FragmentAdminGroupMembersSelectBinding
 
-    // assemble smobList data item
+    // assemble smobGroup data item
     private lateinit var daSmobGroupATO: SmobGroupATO
 
     // new lists are created at the highest position (+1)
@@ -48,7 +46,7 @@ class AdminGroupMembersEditFragment : BaseFragment(), KoinComponent {
 
         // inflate fragment layout and return binding object
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_admin_group_members_edit, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_admin_group_members_select, container, false)
 
         // fetch currently highest list position from incoming bundle
         listPosMax = arguments?.getLong("listPosMax") ?: 0L
@@ -89,44 +87,11 @@ class AdminGroupMembersEditFragment : BaseFragment(), KoinComponent {
         // RV - incl. onClick listener for items
         setupRecyclerView()
 
-
-        // clicking on the 'saveSmobGroup' FAB updates the smobGroup with the newly added member
-        binding.saveSmobGroup.setOnClickListener {
-
-            // close SoftKeyboard
-            closeSoftKeyboard(requireContext(), view)
-
-            val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss", Locale.GERMANY)
-            val currentDate = sdf.format(Date())
-
-            // TODO: need to "update" existing entry (rather than adding a new one)
-            // TODO: need to "update" existing entry (rather than adding a new one)
-            // TODO: need to "update" existing entry (rather than adding a new one)
-
-            // initialize data record to be written to DB
-            // ... if no better values have been provided by the user (taken from viewModel), this
-            //     is going to be the data record written to the DB
-            daSmobGroupATO = SmobGroupATO(
-                UUID.randomUUID().toString(),
-                SmobItemStatus.OPEN,
-                listPosMax + 1,
-                _viewModel.smobGroupName.value ?: "mystery group",
-                _viewModel.smobGroupDescription.value ?: "something exciting",
-                _viewModel.smobGroupType.value ?: GroupType.OTHER,
-                SmobApp.currUser?.let { listOf(it.id) } ?: listOf(), // members
-                ActivityStatus(currentDate, 0)
-            )
-
-            // store smob Group in DB
-            // ... this also takes the user back to the SmobGroupsFragment
-            _viewModel.validateAndSaveSmobGroup(daSmobGroupATO)
-
-        }  // onClickListener (FAB - save)
-
     }  // onViewCreated
 
 
     private fun setupRecyclerView() {
+
         val adapter = AdminGroupMembersAdapter(binding.root) {
 
             // this lambda is the 'callback' function which gets called when clicking an item in the
@@ -139,8 +104,8 @@ class AdminGroupMembersEditFragment : BaseFragment(), KoinComponent {
             // use the navigationCommand live data to navigate between the fragments
             _viewModel.navigationCommand.postValue(
                 NavigationCommand.To(
-                    AdminGroupMembersEditFragmentDirections
-                        .actionSmobAdminGroupMembersEditFragmentToSmobAdminGroupMemberDetailsFragment()
+                    AdminGroupMembersSelectFragmentDirections
+                        .actionSmobAdminGroupMembersSelectFragmentToSmobAdminGroupMemberDetailsFragment()
                 )
             )
 
@@ -160,9 +125,9 @@ class AdminGroupMembersEditFragment : BaseFragment(), KoinComponent {
         // setup the recycler view using the extension function
         binding.smobItemsRecyclerView.setup(adapter)
 
-        // enable swiping left/right
-        val itemTouchHelper = ItemTouchHelper(AdminGroupMembersSwipeActionHandler(adapter))
-        itemTouchHelper.attachToRecyclerView(binding.smobItemsRecyclerView)
+        // enable swiping left/right (comment out to disable swiping)
+//        val itemTouchHelper = ItemTouchHelper(AdminGroupMembersSwipeActionHandler(adapter))
+//        itemTouchHelper.attachToRecyclerView(binding.smobItemsRecyclerView)
 
     }
 

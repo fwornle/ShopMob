@@ -7,7 +7,6 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -20,12 +19,13 @@ import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import com.tanfra.shopmob.utils.setup
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
 
 class AdminGroupsFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
-    override val _viewModel: AdminViewModel by viewModel()
+    override val _viewModel: AdminViewModel by sharedViewModel()
 
     // data binding for fragment_planning_lists.xml
     private lateinit var binding: FragmentAdminGroupsBinding
@@ -101,19 +101,29 @@ class AdminGroupsFragment : BaseFragment(), KoinComponent {
             // this lambda is the 'callback' function which gets called when clicking an item in the
             // RecyclerView - it gets the data behind the clicked item as parameter
 
-            // communicate the ID and name of the selected item (= group)
-            val bundle = bundleOf(
-                "groupId" to it.id,
-                "groupName" to it.name,
-            )
+            // store currently selected group in viewModel
+            _viewModel.currGroup = it
 
             // use the navigationCommand live data to navigate between the fragments
             _viewModel.navigationCommand.postValue(
-                NavigationCommand.ToWithBundle(
-                    R.id.smobAdminGroupMembersListFragment,
-                    bundle
+                NavigationCommand.To(
+                    AdminGroupsFragmentDirections
+                        .actionSmobAdminGroupsFragmentToSmobAdminGroupMembersListFragment()
                 )
             )
+
+//            // communicate the ID and name of the selected item (= group)
+//            val bundle = bundleOf(
+//                "groupId" to it.id,
+//                "groupName" to it.name,
+//            )
+//
+//            _viewModel.navigationCommand.postValue(
+//                NavigationCommand.ToWithBundle(
+//                    R.id.smobAdminGroupMembersListFragment,
+//                    bundle
+//                )
+//            )
 
         }  // "on-item-click" lambda
 

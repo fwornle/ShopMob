@@ -181,6 +181,25 @@ class AdminViewModel(
     }
 
     /**
+     * Update the smobGroup item in the data source
+     */
+    @ExperimentalCoroutinesApi
+    fun updateSmobGroupItem(smobGroupData: SmobGroupATO) {
+        showLoading.value = true
+        viewModelScope.launch {
+            // update in local DB (and sync to server)
+            groupDataSource.updateSmobItem(smobGroupData)
+        }
+        showLoading.value = false
+
+        // load SmobLists from local DB to update StateFlow value
+        fetchSmobGroups()
+
+        // check if the "no data" symbol has to be shown (empty list)
+        updateShowNoData(_smobGroups.value)
+    }
+
+    /**
      * Validate the entered data and show error to the user if there's any invalid data
      */
     private fun validateEnteredData(shopMobData: SmobGroupATO): Boolean {
@@ -201,6 +220,7 @@ class AdminViewModel(
 
     // current group ID and group position (in the list of SmobGroups)
     var currGroupId: String? = null
+    var currGroup: SmobGroupATO? = null
 
     // collect all SmobUsers
     val _smobUsers: Flow<Resource<List<SmobUserATO>?>> = fetchSmobUsersFlow()

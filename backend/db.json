@@ -305,7 +305,8 @@
       "description": "Daily grocery shopping",
       "type": "OTHER",
       "members": [
-        "BTwLBEmaoWfQKbooBguh0x84bV52"
+        "BTwLBEmaoWfQKbooBguh0x84bV52",
+        "ddb56034-668b-48f0-9ac0-90be246c355d"
       ],
       "activity": {
         "date": "18/6/2022 06:38:51",
@@ -320,7 +321,10 @@
       "description": "Summer Party",
       "type": "WORK",
       "members": [
-        "BTwLBEmaoWfQKbooBguh0x84bV52"
+        "BTwLBEmaoWfQKbooBguh0x84bV52",
+        "bb463b8b-b76c-4f6a-9726-65ab5730b69b",
+        "b98c56ab-d229-4fd5-bd11-603e7e83104d",
+        "631f7ea5-4ae4-4734-9656-ecdbb7f86d3b"
       ],
       "activity": {
         "date": "19/6/2022 09:32:13",

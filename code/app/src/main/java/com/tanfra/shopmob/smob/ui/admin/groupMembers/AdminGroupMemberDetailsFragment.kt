@@ -1,27 +1,18 @@
 package com.tanfra.shopmob.smob.ui.admin.groupMembers
 
-import android.content.Intent
-import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.databinding.FragmentAdminGroupMemberDetailsBinding
-import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
-import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
-import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
-import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
-import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
-import java.util.*
 
 
 class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
@@ -31,6 +22,7 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
 
     // data binding of underlying layout
     private lateinit var binding: FragmentAdminGroupMemberDetailsBinding
+
 
     // create fragment view
     override fun onCreateView(
@@ -67,16 +59,31 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
             // back to default: button invisible
             _viewModel.enableAddButton = false
 
-            // ToDo: add to group
+            // add newly selected member to group
+            _viewModel.currGroup?.let { daGroup ->
+
+                // append member ID to list of members
+                _viewModel.currGroupMember?.id?.let {
+
+                    // new member list
+                    val updatedMemberList = daGroup.members.toMutableList().apply {
+                        add(it)
+                    }
+
+                    // update group with new member list
+                    daGroup.members = updatedMemberList
+
+                    // update smob Group in DB
+                    _viewModel.updateSmobGroupItem(daGroup)
+
+                }  // currGroupMember?
+
+            }  // currGroup?
 
             // return to selected group list
             _viewModel.navigationCommand.postValue(
-                NavigationCommand.To(
-                    AdminGroupMemberDetailsFragmentDirections
-                        .actionSmobAdminGroupMemberDetailsFragmentToSmobAdminGroupMembersListFragment()
-                )
+                NavigationCommand.BackTo(R.id.smobAdminGroupMembersListFragment)
             )
-
         }
 
     }  // onViewCreated
