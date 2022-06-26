@@ -83,9 +83,8 @@ class AdminGroupMembersListFragment : BaseFragment(), KoinComponent {
         }
 
         // configure navbar
-        setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(true)
-        setTitle(String.format(getString(R.string.app_name_planning), groupName))
+        setTitle(String.format(getString(R.string.app_name_admin_members), groupName))
 
         // install listener for SwipeRefreshLayout view
         binding.refreshLayout.setOnRefreshListener {
@@ -156,34 +155,10 @@ class AdminGroupMembersListFragment : BaseFragment(), KoinComponent {
         // setup the recycler view using the extension function
         binding.smobItemsRecyclerView.setup(adapter)
 
-        // enable swiping left/right
+        // enable swiping left/right (comment out to disable swiping)
         val itemTouchHelper = ItemTouchHelper(AdminGroupMembersSwipeActionHandler(adapter))
         itemTouchHelper.attachToRecyclerView(binding.smobItemsRecyclerView)
 
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.logout -> {
-                // logout authenticated user
-                AuthUI.getInstance()
-                    .signOut(this.requireContext())
-                    .addOnCompleteListener {
-                        // user is now signed out -> redirect to login screen
-                        startActivity(Intent(this.context, SmobAuthActivity::class.java))
-                        // and we're done here
-                        this.activity?.finish()
-                    }
-            }
-        }  // when(item...)
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        // display logout as menu item
-        inflater.inflate(R.menu.main_menu, menu)
     }
 
 }

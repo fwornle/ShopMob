@@ -1,8 +1,6 @@
 package com.tanfra.shopmob.smob.data.repo.ato
 
-import com.tanfra.shopmob.smob.data.local.utils.ActivityStatus
-import com.tanfra.shopmob.smob.data.local.utils.GroupType
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.*
 import kotlinx.serialization.*
 
 // domain independent data type (Application Transfer Object)
@@ -14,7 +12,7 @@ data class SmobGroupATO(
     var name: String,
     var description: String?,
     var type: GroupType,
-    var members: List<String>,
+    var members: List<SmobGroupItem>,
     // serialization strategy decided at run-time (@Contextual)
     var activity: @Contextual ActivityStatus,
 ) : Ato, java.io.Serializable

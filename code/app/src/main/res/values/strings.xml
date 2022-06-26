@@ -4,6 +4,7 @@
 
     <string name="app_name">ShopMob</string>
     <string name="app_name_planning">Shop for: %1$s</string>
+    <string name="app_name_admin_members">Group: %1$s</string>
     <string name="app_name_planning_shop">ShopMob: %1$s</string>
     <string name="app_name_admin">ShopMob Administration</string>
     <string name="app_name_admin_profile">ShopMob User Profile</string>
