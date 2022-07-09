@@ -62,8 +62,8 @@
             android:id="@+id/action_smobAdminGroupsFragment_to_smobAdminSelectFragment"
             app:destination="@id/smobAdminSelectFragment" />
         <action
-            android:id="@+id/action_smobAdminGroupsFragment_to_smobAdminGroupMembersListFragment"
-            app:destination="@id/smobAdminGroupMembersListFragment" />
+            android:id="@+id/action_smobAdminGroupsFragment_to_smobAdminGroupMemberListFragment"
+            app:destination="@id/smobAdminGroupMemberListFragment" />
     </fragment>
 
     <fragment
@@ -78,44 +78,44 @@
     </fragment>
 
     <fragment
-        android:id="@+id/smobAdminGroupMembersListFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.groupMembers.AdminGroupMembersListFragment"
+        android:id="@+id/smobAdminGroupMemberListFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.groupMemberList.AdminGroupMemberListFragment"
         android:label="Show Group Members"
-        tools:layout="@layout/fragment_admin_group_members"
+        tools:layout="@layout/fragment_admin_group_member_list"
         >
         <action
-            android:id="@+id/action_smobAdminGroupMembersListFragment_to_smobAdminGroupsFragment"
+            android:id="@+id/action_smobAdminGroupMemberListFragment_to_smobAdminGroupsFragment"
             app:destination="@id/smobAdminGroupsFragment" />
         <action
-            android:id="@+id/action_smobAdminGroupMembersListFragment_to_smobAdminGroupMembersSelectFragment"
-            app:destination="@id/smobAdminGroupMembersSelectFragment" />
+            android:id="@+id/action_smobAdminGroupMemberListFragment_to_smobAdminGroupMemberSelectFragment"
+            app:destination="@id/smobAdminGroupMemberSelectFragment" />
         <action
-            android:id="@+id/action_smobAdminGroupMembersListFragment_to_smobAdminGroupMemberDetailsFragment"
+            android:id="@+id/action_smobAdminGroupMemberListFragment_to_smobAdminGroupMemberDetailsFragment"
             app:destination="@id/smobAdminGroupMemberDetailsFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/smobAdminGroupMembersSelectFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.groupMembers.AdminGroupMembersSelectFragment"
+        android:id="@+id/smobAdminGroupMemberSelectFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.groupMemberSelect.AdminGroupMemberSelectFragment"
         android:label="Select Group Members"
-        tools:layout="@layout/fragment_admin_group_members_select"
+        tools:layout="@layout/fragment_admin_group_member_select"
         >
         <action
-            android:id="@+id/action_smobAdminGroupMembersSelectFragment_to_smobAdminGroupMembersListFragment"
-            app:destination="@id/smobAdminGroupMembersListFragment" />
+            android:id="@+id/action_smobAdminGroupMemberSelectFragment_to_smobAdminGroupMemberListFragment"
+            app:destination="@id/smobAdminGroupMemberListFragment" />
         <action
-            android:id="@+id/action_smobAdminGroupMembersSelectFragment_to_smobAdminGroupMemberDetailsFragment"
+            android:id="@+id/action_smobAdminGroupMemberSelectFragment_to_smobAdminGroupMemberDetailsFragment"
             app:destination="@id/smobAdminGroupMemberDetailsFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/smobAdminGroupMemberDetailsFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.groupMembers.AdminGroupMemberDetailsFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.groupMemberList.AdminGroupMemberDetailsFragment"
         android:label="Group Member Details"
         tools:layout="@layout/fragment_admin_group_member_details">
         <action
-            android:id="@+id/action_smobAdminGroupMemberDetailsFragment_to_smobAdminGroupMembersListFragment"
-            app:destination="@id/smobAdminGroupMembersListFragment" />
+            android:id="@+id/action_smobAdminGroupMemberDetailsFragment_to_smobAdminGroupMemberListFragment"
+            app:destination="@id/smobAdminGroupMemberListFragment" />
     </fragment>
 
     <fragment

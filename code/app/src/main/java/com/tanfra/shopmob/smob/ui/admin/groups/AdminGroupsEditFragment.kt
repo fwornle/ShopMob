@@ -83,7 +83,9 @@ class AdminGroupsEditFragment : BaseFragment(), AdapterView.OnItemSelectedListen
                 _viewModel.smobGroupName.value ?: "mystery group",
                 _viewModel.smobGroupDescription.value ?: "something exciting",
                 _viewModel.smobGroupType.value ?: GroupType.OTHER,
-                SmobApp.currUser?.let { listOf(it.id) } ?: listOf(), // members
+                SmobApp.currUser?.let {
+                    listOf(SmobMemberItem(it.id, SmobItemStatus.OPEN, 0))
+                } ?: listOf(), // members
                 ActivityStatus(currentDate, 0)
             )
 

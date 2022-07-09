@@ -58,6 +58,7 @@ function smob () {
     // generate some groups
     var smobGroups = []
     var groupIds = []
+    const itemStatus = ['OPEN', 'IN_PROGRESS', 'DONE']
     const groupTypes = ['OTHER', 'FAMILY', 'FRIENDS', 'WORK']
     for (let id = 0; id < 5; id++) {
 
@@ -67,7 +68,15 @@ function smob () {
         var name = faker.lorem.word()
         var description = faker.lorem.words(rand(5))
         var type = faker.helpers.randomize(groupTypes)
-        var members = [...Array(rand(10)).keys()].map(_ => faker.helpers.randomize(userIds)).sort()
+        var membersOnList = [...Array(rand(10)).keys()].map(_ => faker.helpers.randomize(userIds)).sort()
+        membersOnList.splice(0, 0, "BTwLBEmaoWfQKbooBguh0x84bV52")
+        var members = membersOnList.map(
+            (userId, idx) => { return { 
+                "id": userId, 
+                "status": faker.helpers.randomize(itemStatus), 
+                "listPosition": idx,
+            } 
+        })
         var activityDate = faker.date.past()
         var activityReps = rand(20)
 
@@ -256,7 +265,6 @@ function smob () {
     // generate some shopping lists
     var smobLists = []
     var listIds = []
-    const itemStatus = ['OPEN', 'IN_PROGRESS', 'DONE']
     for (let id = 0; id < daLists.length; id++) {
 
         var uuid = daLists[id].id

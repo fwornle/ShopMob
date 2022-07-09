@@ -108,7 +108,7 @@ class AdminGroupsFragment : BaseFragment(), KoinComponent {
             _viewModel.navigationCommand.postValue(
                 NavigationCommand.To(
                     AdminGroupsFragmentDirections
-                        .actionSmobAdminGroupsFragmentToSmobAdminGroupMembersListFragment()
+                        .actionSmobAdminGroupsFragmentToSmobAdminGroupMemberListFragment()
                 )
             )
 

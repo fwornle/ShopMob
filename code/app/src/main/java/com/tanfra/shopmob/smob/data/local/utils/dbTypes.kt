@@ -96,7 +96,7 @@ data class SmobListItem(
 ) : java.io.Serializable
 
 @Serializable
-data class SmobGroupItem(
+data class SmobMemberItem(
     val id: String,
     var status: SmobItemStatus,
     val listPosition: Long,

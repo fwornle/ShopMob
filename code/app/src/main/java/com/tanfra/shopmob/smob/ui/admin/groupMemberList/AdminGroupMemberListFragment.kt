@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.admin.groupMembers
+package com.tanfra.shopmob.smob.ui.admin.groupMemberList
 
 import android.os.Bundle
 import android.view.*
@@ -8,26 +8,23 @@ import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
-import android.content.Intent
 import android.widget.Toast
-import com.firebase.ui.auth.AuthUI
-import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
 import androidx.recyclerview.widget.ItemTouchHelper
-import com.tanfra.shopmob.databinding.FragmentAdminGroupMembersBinding
+import com.tanfra.shopmob.databinding.FragmentAdminGroupMemberListBinding
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.utils.setup
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
-class AdminGroupMembersListFragment : BaseFragment(), KoinComponent {
+class AdminGroupMemberListFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
     override val _viewModel: AdminViewModel by sharedViewModel()
 
-    // data binding for fragment_smob_planning_lists.xml
-    private lateinit var binding: FragmentAdminGroupMembersBinding
+    // data binding for fragment_admin_group_member_list.xml
+    private lateinit var binding: FragmentAdminGroupMemberListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +35,7 @@ class AdminGroupMembersListFragment : BaseFragment(), KoinComponent {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_admin_group_members, container, false
+                R.layout.fragment_admin_group_member_list, container, false
             )
 
         // set injected viewModel (from KOIN service locator)
@@ -75,7 +72,7 @@ class AdminGroupMembersListFragment : BaseFragment(), KoinComponent {
             _viewModel.smobGroupMembers = _viewModel.smobGroupMembersFlowToStateFlow(_viewModel._smobGroupMembers)
 
             // combine the flows and turn into StateFlow
-            _viewModel.smobGroupMembersWithStatus = _viewModel.combineFlowsAndConvertToStateFlow(
+            _viewModel.smobGroupMemberWithGroupData = _viewModel.combineFlowsAndConvertToStateFlow(
                 _viewModel._smobGroup,
                 _viewModel._smobGroupMembers,
             )
@@ -118,35 +115,36 @@ class AdminGroupMembersListFragment : BaseFragment(), KoinComponent {
         setupRecyclerView()
 
         // "+" FAB
-        binding.addSmobItemFab.setOnClickListener { navigateToAdminUserEdit() }
+        binding.addSmobItemFab.setOnClickListener { navigateToAdminAddGroupMember() }
 
     }
 
     // FAB handler --> navigate to AdminUserEdit fragment
-    private fun navigateToAdminUserEdit() {
+    private fun navigateToAdminAddGroupMember() {
 
         // use the navigationCommand live data to navigate between the fragments
         _viewModel.navigationCommand.postValue(
             NavigationCommand.To(
-                AdminGroupMembersListFragmentDirections.actionSmobAdminGroupMembersListFragmentToSmobAdminGroupMembersSelectFragment()
+                AdminGroupMemberListFragmentDirections.actionSmobAdminGroupMemberListFragmentToSmobAdminGroupMemberSelectFragment()
             )
         )
     }
 
     private fun setupRecyclerView() {
-        val adapter = AdminGroupMembersAdapter(binding.root) {
+
+        val adapter = AdminGroupMemberListAdapter(binding.root) {
 
             // this lambda is the 'callback' function which gets called when clicking an item in the
             // RecyclerView - it gets the data behind the clicked item as parameter
 
             // communicate the selected item (= member)
-            _viewModel.currGroupMember = it
+            _viewModel.currGroupMemberWithGroupData = it
 
             // use the navigationCommand live data to navigate between the fragments
             _viewModel.navigationCommand.postValue(
                 NavigationCommand.To(
-                    AdminGroupMembersListFragmentDirections
-                        .actionSmobAdminGroupMembersListFragmentToSmobAdminGroupMemberDetailsFragment()
+                    AdminGroupMemberListFragmentDirections
+                        .actionSmobAdminGroupMemberListFragmentToSmobAdminGroupMemberDetailsFragment()
                 )
             )
 
@@ -156,7 +154,7 @@ class AdminGroupMembersListFragment : BaseFragment(), KoinComponent {
         binding.smobItemsRecyclerView.setup(adapter)
 
         // enable swiping left/right (comment out to disable swiping)
-        val itemTouchHelper = ItemTouchHelper(AdminGroupMembersSwipeActionHandler(adapter))
+        val itemTouchHelper = ItemTouchHelper(AdminGroupMemberListSwipeActionHandler(adapter))
         itemTouchHelper.attachToRecyclerView(binding.smobItemsRecyclerView)
 
     }

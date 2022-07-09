@@ -1,38 +1,29 @@
-package com.tanfra.shopmob.smob.ui.admin.groupMembers
+package com.tanfra.shopmob.smob.ui.admin.groupMemberSelect
 
-import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.SmobApp
-import com.tanfra.shopmob.databinding.FragmentAdminGroupMembersSelectBinding
-import com.tanfra.shopmob.smob.data.local.utils.*
-import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
+import com.tanfra.shopmob.databinding.FragmentAdminGroupMemberSelectBinding
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
+import com.tanfra.shopmob.smob.ui.admin.groupMemberList.AdminGroupMemberListAdapter
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
-import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setup
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
-import java.util.*
 
 
-class AdminGroupMembersSelectFragment : BaseFragment(), KoinComponent {
+class AdminGroupMemberSelectFragment : BaseFragment(), KoinComponent {
 
     // get the view model (from Koin service locator) ... shared with PlanningListsFragment
     override val _viewModel: AdminViewModel by sharedViewModel()
 
     // data binding of underlying layout
-    private lateinit var binding: FragmentAdminGroupMembersSelectBinding
-
-    // assemble smobGroup data item
-    private lateinit var daSmobGroupATO: SmobGroupATO
+    private lateinit var binding: FragmentAdminGroupMemberSelectBinding
 
     // new lists are created at the highest position (+1)
     private var listPosMax: Long = 0L
@@ -46,7 +37,7 @@ class AdminGroupMembersSelectFragment : BaseFragment(), KoinComponent {
 
         // inflate fragment layout and return binding object
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_admin_group_members_select, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_admin_group_member_select, container, false)
 
         // fetch currently highest list position from incoming bundle
         listPosMax = arguments?.getLong("listPosMax") ?: 0L
@@ -92,7 +83,7 @@ class AdminGroupMembersSelectFragment : BaseFragment(), KoinComponent {
 
     private fun setupRecyclerView() {
 
-        val adapter = AdminGroupMembersAdapter(binding.root) {
+        val adapter = AdminGroupMemberSelectAdapter(binding.root) {
 
             // this lambda is the 'callback' function which gets called when clicking an item in the
             // RecyclerView - it gets the data behind the clicked item as parameter
@@ -104,8 +95,8 @@ class AdminGroupMembersSelectFragment : BaseFragment(), KoinComponent {
             // use the navigationCommand live data to navigate between the fragments
             _viewModel.navigationCommand.postValue(
                 NavigationCommand.To(
-                    AdminGroupMembersSelectFragmentDirections
-                        .actionSmobAdminGroupMembersSelectFragmentToSmobAdminGroupMemberDetailsFragment()
+                    AdminGroupMemberSelectFragmentDirections
+                        .actionSmobAdminGroupMemberSelectFragmentToSmobAdminGroupMemberDetailsFragment()
                 )
             )
 

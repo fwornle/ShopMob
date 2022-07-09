@@ -329,10 +329,10 @@ The _smobList_ entries of the _smobLists_ table adheres to the following schema:
     { }
   ],
   "members": [
-    "userId1",
-    "userId2",
-    "userId3",
-    "..."
+    { "id": "userId1", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 1 },
+    { "id": "userId2", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 2 },
+    { "id": "userId3", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 3 },
+    { }
   ],
   "lifecycle": {
     "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED",

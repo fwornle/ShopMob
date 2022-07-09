@@ -237,7 +237,7 @@ class AdminViewModel(
     lateinit var _smobGroupMembers: Flow<Resource<List<SmobUserATO>?>>
     lateinit var smobGroupMembers: StateFlow<Resource<List<SmobUserATO>?>>
 
-    lateinit var smobGroupMembersWithStatus: StateFlow<List<SmobMemberOfGroupATO>?>
+    lateinit var smobGroupMemberWithGroupData: StateFlow<List<SmobGroupMemberWithGroupDataATO>?>
 
 
     /**
@@ -302,49 +302,56 @@ class AdminViewModel(
     fun combineFlowsAndConvertToStateFlow(
         groupFlow: Flow<Resource<SmobGroupATO?>>,
         usersFlow: Flow<Resource<List<SmobUserATO>?>>,
-    ): StateFlow<List<SmobMemberOfGroupATO>?> {
+    ): StateFlow<List<SmobGroupMemberWithGroupDataATO>?> {
 
         return usersFlow.combine(groupFlow) { users, group ->
 
             // unwrap group (from Resource)
-            group.data?.let { rawGroup ->
+            group.data?.let { daGroup ->
 
                 // evaluate/unwrap Resource
                 when(users.status) {
 
                     Status.SUCCESS -> {
-                        // received all users --> filter and process
-                        users.data
-                            ?.filter { user -> rawGroup.members.contains(user.id)}
-                            ?.map { member ->
 
-                            // at this point, the users of the group have been properly
-                            // received --> implies that the group itself is also available
-                            // output merged data type (with status set to users item status)
+                        // successfully received all users --> could be empty system though
+                        users.data?.let { allUsers ->
 
-                            SmobMemberOfGroupATO(
-                                id = member.id,
-                                itemStatus = member.itemStatus,
-                                itemPosition = member.itemPosition,
-                                memberUsername = member.username,
-                                memberName = member.name,
-                                memberEmail = member.email,
-                                memberImageUrl = member.imageUrl,
-                                groupId = rawGroup.id,
-                                groupStatus = rawGroup.itemStatus,
-                                groupPosition = rawGroup.itemPosition,
-                                groupName = rawGroup.name,
-                                groupDescription = rawGroup.description,
-                                groupType = rawGroup.type,
-                                groupMembers = rawGroup.members,
-                                groupActivity = rawGroup.activity,
-                            )
+                            // fetch all users as defined by the member list of the selected group
+                            val daGroupUsers = allUsers.filter { user ->
+                                daGroup.members.map { member -> member.id }.contains(user.id)
+                            }
+
+                            // return all users from daGroup member list
+                            daGroupUsers.map { member ->
+
+                                // extend user record by group data
+                                SmobGroupMemberWithGroupDataATO(
+                                    id = member.id,
+                                    itemStatus = member.itemStatus,
+                                    itemPosition = member.itemPosition,
+                                    memberUsername = member.username,
+                                    memberName = member.name,
+                                    memberEmail = member.email,
+                                    memberImageUrl = member.imageUrl,
+                                    groupId = daGroup.id,
+                                    groupStatus = daGroup.itemStatus,
+                                    groupPosition = daGroup.itemPosition,
+                                    groupName = daGroup.name,
+                                    groupDescription = daGroup.description,
+                                    groupType = daGroup.type,
+                                    groupMembers = daGroup.members,
+                                    groupActivity = daGroup.activity,
+                                )
+
+                            }
                         }
-                    }
+
+                    }  // status == SUCCESS
                     else -> {
                         // Status.LOADING or Status.ERROR -> do nothing
                         null
-                    }
+                    }  // status != SUCCESS
 
                 }  // when
 
@@ -438,5 +445,6 @@ class AdminViewModel(
 
     // current group member data record
     var currGroupMember: SmobUserATO? = null
+    var currGroupMemberWithGroupData: SmobGroupMemberWithGroupDataATO? = null
     var enableAddButton: Boolean = false
 }

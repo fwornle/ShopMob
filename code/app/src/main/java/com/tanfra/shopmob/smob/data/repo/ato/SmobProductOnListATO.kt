@@ -21,6 +21,6 @@ data class SmobProductOnListATO(
     var listName: String,
     var listDescription: String?,
     var listItems: List<@Contextual SmobListItem>,
-    var listMembers: List<String>,
+    var listMembers: List<SmobMemberItem>,
     var listLifecycle: @Contextual SmobListLifecycle,
 ) : Ato, java.io.Serializable

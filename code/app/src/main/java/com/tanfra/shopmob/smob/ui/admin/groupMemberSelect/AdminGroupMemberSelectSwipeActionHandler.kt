@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.admin.groupMembers
+package com.tanfra.shopmob.smob.ui.admin.groupMemberSelect
 
 import android.os.Vibrator
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -12,7 +12,7 @@ import com.tanfra.shopmob.smob.ui.planning.utils.vibrateDevice
 
 // swiping action on RV - concrete implementation for smobList list
 @Suppress("UNCHECKED_CAST")
-class AdminGroupMembersSwipeActionHandler(adapter: AdminGroupMembersAdapter):
+class AdminGroupMemberSelectSwipeActionHandler(adapter: AdminGroupMemberSelectAdapter):
     BaseSwipeActionHandler<BaseRecyclerViewAdapter<Ato>>(adapter as BaseRecyclerViewAdapter<Ato>) {
 
     // apply side effect of swiping action

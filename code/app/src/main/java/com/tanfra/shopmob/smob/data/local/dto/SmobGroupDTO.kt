@@ -2,7 +2,7 @@ package com.tanfra.shopmob.smob.data.local.dto
 
 import androidx.room.*
 import com.tanfra.shopmob.smob.data.local.utils.GroupType
-import com.tanfra.shopmob.smob.data.local.utils.SmobGroupItem
+import com.tanfra.shopmob.smob.data.local.utils.SmobMemberItem
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 
 /**
@@ -27,7 +27,7 @@ data class SmobGroupDTO(
     @ColumnInfo(name = "groupName") var name: String = "",
     @ColumnInfo(name = "groupDescription") var description: String? = "",
     @ColumnInfo(name = "groupType") var type: GroupType = GroupType.OTHER,
-    @ColumnInfo(name = "groupMembers") var members: List<SmobGroupItem> = listOf(),
+    @ColumnInfo(name = "groupMembers") var members: List<SmobMemberItem> = listOf(),
     @ColumnInfo(name = "groupActivityDate") var activityDate: String = "",
     @ColumnInfo(name = "groupActivityReps") var activityReps: Long = 0,
 ) : Dto()

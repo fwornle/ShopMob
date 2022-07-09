@@ -1,12 +1,13 @@
-package com.tanfra.shopmob.smob.ui.admin.groupMembers
+package com.tanfra.shopmob.smob.ui.admin.groupMemberSelect
 
 import android.view.View
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.tanfra.shopmob.R
+import com.tanfra.shopmob.smob.data.local.utils.SmobMemberItem
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
-import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -15,7 +16,7 @@ import java.util.*
 
 
 // use data binding to show the smob item on the RV item
-class AdminGroupMembersAdapter(rootView: View, callBack: (selectedSmobATO: SmobUserATO) -> Unit) :
+class AdminGroupMemberSelectAdapter(rootView: View, callBack: (selectedSmobUserATO: SmobUserATO) -> Unit) :
     BaseRecyclerViewAdapter<SmobUserATO>(rootView, callBack), KoinComponent {
 
     // inject _viewModel from Koin service locator
@@ -52,51 +53,56 @@ class AdminGroupMembersAdapter(rootView: View, callBack: (selectedSmobATO: SmobU
     }
 
     // allow the BaseRecyclerViewAdapter to access the item layout for this particular RV list
-    override fun getLayoutRes(viewType: Int) = R.layout.smob_users_item
+    override fun getLayoutRes(viewType: Int) = R.layout.smob_user_select_item
 
     // called, when the user action has been confirmed and the local DB / backend needs updated
     // ... this is the point where the list can be consolidated, if needed (eg. aggregate status)
     override fun uiActionConfirmed(item: SmobUserATO, rootView: View) {
 
-        // consolidate list item data (prior to writing to the DB)
-        val itemAdjusted = if(item.itemStatus != SmobItemStatus.DELETED) {
-            // user swiped right --> marking all sub-entries as "IN_PROGRESS" + aggregating here
-            consolidateListItem(item)
-        } else {
-            // user swiped left --> delete list (by marking it as DELETED)
-            item
-        }
-
-        // update (PUT) adjusted smobList item
-        // ... also used to "DELETE" a list (marked as DELETED, then filtered out)
+        // collect current list from smobList (flow)
         rootView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
 
-            // collect SmobUser flow
-            val updatedList = SmobUserATO(
-                itemAdjusted.id,
-                itemAdjusted.itemStatus,
-                itemAdjusted.itemPosition,
-                itemAdjusted.username,
-                itemAdjusted.name,
-                itemAdjusted.email,
-                itemAdjusted.imageUrl,
-            )
+            // update currently selected group with new item
+            _viewModel.currGroup?.let {
 
-            // store updated smobUser in local DB
-            // ... this also triggers an immediate push to the backend (once stored locally)
-            _viewModel.userDataSource.updateSmobItem(updatedList)
+                // check if selected user is already part of the list
+                if(!it.members.map { member -> member.id }.contains(item.id)) {
+
+                    // nope --> append member
+                    val newMemberList = it.members.toMutableList()
+                    newMemberList.add(
+                        SmobMemberItem(
+                            item.id,
+                            item.itemStatus,  // update list item status (from status set by user)
+                            (it.members.size + 1).toLong(),
+                        )
+                    )
+
+                    // assemble updated SmobGroup item
+                    val updatedGroup = SmobGroupATO(
+                        it.id,
+                        it.itemStatus,
+                        it.itemPosition,
+                        it.name,
+                        it.description,
+                        it.type,
+                        newMemberList,
+                        it.activity,
+                    )
+
+                    // store updated smobGroup in local DB
+                    // ... this also triggers an immediate push to the backend (once stored locally)
+                    _viewModel.groupDataSource.updateSmobItem(updatedGroup)
+
+                    // update current group holder
+                    _viewModel.currGroup = updatedGroup
+
+                }  // newly selected member not yet a member of this group
+
+            }  // _viewModel.currGroup != null
 
         }  // coroutine scope (lifecycleScope)
 
     }  // uiActionConfirmed
-
-
-    // recompute status & completion rate from linked list items
-    private fun consolidateListItem(item: SmobUserATO): SmobUserATO {
-
-        // return adjusted item
-        return item
-
-    }  // consolidateListItem
 
 }

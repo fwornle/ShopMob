@@ -1,6 +1,7 @@
 package com.tanfra.shopmob.smob.data.local.dto
 
 import androidx.room.*
+import com.tanfra.shopmob.smob.data.local.utils.SmobMemberItem
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.local.utils.SmobListItem
 
@@ -26,7 +27,7 @@ data class SmobListDTO(
     @ColumnInfo(name = "listName") var name: String = "",
     @ColumnInfo(name = "listDescription") var description: String? = "",
     @ColumnInfo(name = "listItems") var items: List<SmobListItem> = listOf(),
-    @ColumnInfo(name = "listMembers") var members: List<String> = listOf(),
+    @ColumnInfo(name = "listMembers") var members: List<SmobMemberItem> = listOf(),
     @ColumnInfo(name = "listLifecycleStatus") var lcStatus: SmobItemStatus = SmobItemStatus.OPEN,
     @ColumnInfo(name = "listLifecycleCompletion") var lcCompletion: Double = -1.0,
 ) : Dto()

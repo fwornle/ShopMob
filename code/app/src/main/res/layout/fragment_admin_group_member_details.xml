@@ -69,7 +69,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tvHeading"
-                app:profileImage="@{viewModel.currGroupMember.imageUrl}"
+                app:profileImage="@{viewModel.currGroupMemberWithGroupData.memberImageUrl}"
                 tools:src="@drawable/ic_baseline_person_24" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/horizontal_margin_small"
                     android:layout_marginEnd="@dimen/horizontal_margin_huge"
-                    android:text="@{viewModel.currGroupMember.username}"
+                    android:text="@{viewModel.currGroupMemberWithGroupData.memberUsername}"
                     tools:text="Some username"
                     android:textSize="@dimen/label_text_size"
                     app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorUsername"
@@ -175,7 +175,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/horizontal_margin_small"
                     android:layout_marginEnd="@dimen/horizontal_margin_huge"
-                    android:text="@{viewModel.currGroupMember.name}"
+                    android:text="@{viewModel.currGroupMemberWithGroupData.memberName}"
                     tools:text="Some product description"
                     android:textSize="@dimen/label_text_size"
                     app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorName"
@@ -233,7 +233,7 @@
                     android:layout_marginStart="@dimen/horizontal_margin_small"
                     android:layout_marginEnd="@dimen/horizontal_margin_huge"
                     android:layout_marginBottom="@dimen/vertical_margin_large"
-                    android:text="@{viewModel.currGroupMember.email}"
+                    android:text="@{viewModel.currGroupMemberWithGroupData.memberEmail}"
                     tools:text="Some product category"
                     android:textSize="@dimen/label_text_size"
                     app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorEmail"

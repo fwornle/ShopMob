@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.admin.groupMembers
+package com.tanfra.shopmob.smob.ui.admin.groupMemberList
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentAdminGroupMemberDetailsBinding
+import com.tanfra.shopmob.smob.data.local.utils.SmobMemberItem
+import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
@@ -67,7 +69,11 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
 
                     // new member list
                     val updatedMemberList = daGroup.members.toMutableList().apply {
-                        add(it)
+                        add(SmobMemberItem(
+                            it,
+                            SmobItemStatus.OPEN,
+                            daGroup.members.size.toLong() + 1)
+                        )
                     }
 
                     // update group with new member list
@@ -82,7 +88,7 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
 
             // return to selected group list
             _viewModel.navigationCommand.postValue(
-                NavigationCommand.BackTo(R.id.smobAdminGroupMembersListFragment)
+                NavigationCommand.BackTo(R.id.smobAdminGroupMemberListFragment)
             )
         }
 

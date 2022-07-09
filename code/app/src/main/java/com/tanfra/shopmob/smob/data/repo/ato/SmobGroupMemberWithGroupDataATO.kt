@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 // domain independent data type (Application Transfer Object)
 @Serializable
-data class SmobMemberOfGroupATO(
+data class SmobGroupMemberWithGroupDataATO(
     override val id: String,
     override var itemStatus: @Contextual SmobItemStatus,
     override var itemPosition: Long,
@@ -20,7 +20,7 @@ data class SmobMemberOfGroupATO(
     var groupName: String,
     var groupDescription: String?,
     var groupType: GroupType,
-    var groupMembers: List<@Contextual SmobGroupItem>,
+    var groupMembers: List<@Contextual SmobMemberItem>,
     // serialization strategy decided at run-time (@Contextual)
     var groupActivity: @Contextual ActivityStatus,
 ) : Ato, java.io.Serializable
