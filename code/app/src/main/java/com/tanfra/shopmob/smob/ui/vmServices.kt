@@ -40,6 +40,7 @@ val vmServices = module {
         AdminViewModel(
             get(),  // app (context)
             get() as SmobGroupDataSource,  // repo as data source
+            get() as SmobListDataSource,   // repo as data source
             get() as SmobUserDataSource,   // repo as data source
         )
     }

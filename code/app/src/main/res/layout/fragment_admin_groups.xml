@@ -27,29 +27,11 @@
                 android:layout_height="match_parent"
                 android:background="@color/secondaryLightColor">
 
-                <ImageView
-                    android:id="@+id/ivSmobAdminGroups"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/image_header_height"
-                    android:layout_marginStart="@dimen/horizontal_margin_small"
-                    android:layout_marginTop="@dimen/vertical_margin_image"
-                    android:layout_marginEnd="@dimen/horizontal_margin_small"
-                    android:layout_marginBottom="@dimen/vertical_margin_image"
-                    android:contentDescription="@string/adminGroupDescription"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_baseline_group_24"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/smobItemsRecyclerView"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:src="@drawable/ic_baseline_group_24" />
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/smobItemsRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:layout_constraintTop_toBottomOf="@id/ivSmobAdminGroups"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:stateFlowResource="@{viewModel.smobGroups}" />

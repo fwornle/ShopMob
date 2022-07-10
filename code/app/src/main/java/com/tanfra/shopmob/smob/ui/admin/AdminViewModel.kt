@@ -9,6 +9,7 @@ import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.base.BaseViewModel
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobGroupDataSource
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Member
 import com.tanfra.shopmob.smob.data.repo.utils.Status
@@ -22,6 +23,7 @@ import kotlinx.coroutines.launch
 class AdminViewModel(
     app: Application,
     val groupDataSource: SmobGroupDataSource,  // public - used in AdminGroupsAdapter
+    val listDataSource: SmobListDataSource,  // public - used in AdminListsAdapter
     val userDataSource: SmobUserDataSource,    // public - used in AdminGroupMembersAdapter
     ) : BaseViewModel(app) {
 
