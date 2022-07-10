@@ -20,9 +20,23 @@
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clSmobAdminProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/secondaryLightColor">
+
+            <!-- centered (red) progress bar, indicating the loading state when accessing the DB -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fadeVisible="@{viewModel.showLoading.booleanValue()}"
+                android:gravity="center"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
 
             <ImageView
                 android:id="@+id/ivSmobAdminProfile"
@@ -35,7 +49,7 @@
                 android:contentDescription="@string/adminProfileDescription"
                 android:scaleType="fitCenter"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/btProfile"
+                app:layout_constraintBottom_toTopOf="@id/clUsername"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -43,81 +57,195 @@
                 tools:src="@drawable/ic_baseline_person_24"
                 />
 
-            <Button
-                android:id="@+id/btProfile"
-                android:layout_width="@dimen/button_width"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clUsername"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vertical_margin_large"
-                android:layout_marginBottom="@dimen/vertical_margin_small"
-                android:layout_marginStart="@dimen/horizontal_margin_small"
-                android:paddingStart="@dimen/button_padding"
-                android:paddingEnd="@dimen/button_padding"
-                android:text="@string/profile"
-                android:textColor="@color/swipeSecondaryLightColor"
-                android:textSize="@dimen/button_text_size"
-                android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/ivSmobAdminProfile"
-                app:layout_constraintBottom_toTopOf="@id/btGroups"
+                app:layout_constraintBottom_toTopOf="@+id/clName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                />
+                >
 
-            <Button
-                android:id="@+id/btGroups"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vertical_margin_large"
-                android:layout_marginBottom="@dimen/vertical_margin_small"
-                android:layout_marginStart="@dimen/horizontal_margin_small"
-                android:paddingStart="@dimen/button_padding"
-                android:paddingEnd="@dimen/button_padding"
-                android:text="@string/groups"
-                android:textColor="@color/swipeSecondaryLightColor"
-                android:textSize="@dimen/button_text_size"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/btProfile"
-                app:layout_constraintBottom_toTopOf="@id/btLists"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
+                <!-- invisible TV for alignment of label and edit text field -->
+                <TextView
+                    android:id="@+id/tvAnchorUsername"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_anchor_login"
+                    android:text="@string/anchor_char"
+                    android:textSize="@dimen/invisible_gap_details"
+                    android:visibility="invisible"
+                    app:layout_constraintHorizontal_weight="0.1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
 
-            <Button
-                android:id="@+id/btLists"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vertical_margin_large"
-                android:layout_marginBottom="@dimen/vertical_margin_large"
-                android:layout_marginStart="@dimen/horizontal_margin_small"
-                android:paddingStart="@dimen/button_padding"
-                android:paddingEnd="@dimen/button_padding"
-                android:text="@string/lists"
-                android:textColor="@color/swipeSecondaryLightColor"
-                android:textSize="@dimen/button_text_size"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/btGroups"
-                app:layout_constraintBottom_toTopOf="@id/btDismiss"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
 
-            <Button
-                android:id="@+id/btDismiss"
-                android:layout_width="@dimen/button_width"
+                <TextView
+                    android:id="@+id/tvUsername"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/horizontal_margin_small"
+                    android:text="@string/admin_group_member_username"
+                    android:textSize="@dimen/label_text_size"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorUsername"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAnchorUsername"
+                    app:layout_constraintHorizontal_weight="0.2"
+                    tools:labelFor="@id/tvUsernameText" />
+
+                <TextView
+                    android:id="@+id/tvUsernameText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/horizontal_margin_huge"
+                    android:text="@{smobApp.Companion.currUser.username}"
+                    tools:text="Some username"
+                    android:textSize="@dimen/label_text_size"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorUsername"
+                    app:layout_constraintStart_toEndOf="@+id/tvAnchorUsername"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="0.7"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <!-- row: Name -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clName"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vertical_margin_large"
-                android:layout_marginBottom="@dimen/vertical_margin_large"
-                android:layout_marginStart="@dimen/horizontal_margin_small"
-                android:paddingStart="@dimen/button_padding"
-                android:paddingEnd="@dimen/button_padding"
-                android:text="@string/dismiss"
-                android:textColor="@color/swipePrimaryColor"
-                android:textSize="@dimen/button_text_size"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btLists"
+                app:layout_constraintTop_toBottomOf="@id/clUsername"
+                app:layout_constraintBottom_toTopOf="@+id/clEmail"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                />
+                >
+
+                <!-- invisible TV for alignment of label and edit text field -->
+                <TextView
+                    android:id="@+id/tvAnchorName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_anchor_login"
+                    android:text="@string/anchor_char"
+                    android:textSize="@dimen/invisible_gap_details"
+                    android:visibility="invisible"
+                    app:layout_constraintHorizontal_weight="0.1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/horizontal_margin_small"
+                    android:text="@string/admin_group_member_name"
+                    android:textSize="@dimen/label_text_size"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorName"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAnchorName"
+                    app:layout_constraintHorizontal_weight="0.2"
+                    tools:labelFor="@id/tvUsernameText" />
+
+                <TextView
+                    android:id="@+id/tvNameText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/horizontal_margin_huge"
+                    android:text="@{smobApp.Companion.currUser.name}"
+                    tools:text="The user's full name"
+                    android:textSize="@dimen/label_text_size"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorName"
+                    app:layout_constraintStart_toEndOf="@+id/tvAnchorName"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="0.7"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <!-- row: Email -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/clName"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                >
+
+                <!-- invisible TV for alignment of label and edit text field -->
+                <TextView
+                    android:id="@+id/tvAnchorEmail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_anchor_login"
+                    android:text="@string/anchor_char"
+                    android:textSize="@dimen/invisible_gap_details"
+                    android:visibility="invisible"
+                    app:layout_constraintHorizontal_weight="0.1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/horizontal_margin_small"
+                    android:text="@string/admin_group_member_email"
+                    android:textSize="@dimen/label_text_size"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorEmail"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAnchorEmail"
+                    app:layout_constraintHorizontal_weight="0.2"
+                    tools:labelFor="@id/tvUsernameText" />
+
+                <TextView
+                    android:id="@+id/tvEmailText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/horizontal_margin_huge"
+                    android:layout_marginBottom="@dimen/vertical_margin_large"
+                    android:text="@{smobApp.Companion.currUser.email}"
+                    tools:text="The user's registered email"
+                    android:textSize="@dimen/label_text_size"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorEmail"
+                    app:layout_constraintStart_toEndOf="@+id/tvAnchorEmail"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="0.7"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/btDismiss"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/vertical_margin_large"
+            android:layout_marginBottom="@dimen/vertical_margin_large"
+            android:layout_marginStart="@dimen/horizontal_margin_small"
+            android:paddingStart="@dimen/button_padding"
+            android:paddingEnd="@dimen/button_padding"
+            android:text="@string/dismiss"
+            android:textColor="@color/swipePrimaryColor"
+            android:textSize="@dimen/button_text_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
