@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.admin.groupMemberList
+package com.tanfra.shopmob.smob.ui.admin.select.groups.groupMemberSelect
 
 import android.os.Vibrator
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -12,7 +12,7 @@ import com.tanfra.shopmob.smob.ui.planning.utils.vibrateDevice
 
 // swiping action on RV - concrete implementation for smobList list
 @Suppress("UNCHECKED_CAST")
-class AdminGroupMemberListSwipeActionHandler(adapter: AdminGroupMemberListAdapter):
+class AdminGroupMemberSelectSwipeActionHandler(adapter: AdminGroupMemberSelectAdapter):
     BaseSwipeActionHandler<BaseRecyclerViewAdapter<Ato>>(adapter as BaseRecyclerViewAdapter<Ato>) {
 
     // apply side effect of swiping action
@@ -44,12 +44,6 @@ class AdminGroupMemberListSwipeActionHandler(adapter: AdminGroupMemberListAdapte
                         // return to 'group inactive'
                         item.itemStatus = SmobItemStatus.OPEN
                         adapter.setItem(position, item)
-
-                        // restore RV item view (removing the animation effects)
-                        adapter.restoreItemView(position)
-
-                        // send status to DB/backend
-                        adapter.uiActionConfirmed(item, viewHolder.itemView)
                     }
 
                 }  // when
@@ -72,15 +66,15 @@ class AdminGroupMemberListSwipeActionHandler(adapter: AdminGroupMemberListAdapte
 
                 }  // when (status)
 
-                // restore RV item view (removing the animation effects)
-                adapter.restoreItemView(position)
-
-                // send status to DB/backend
-                adapter.uiActionConfirmed(item, viewHolder.itemView)
-
             }  // RIGHT
 
         }  // when (direction)
+
+        // restore RV item view (removing the animation effects)
+        adapter.restoreItemView(position)
+
+        // send status to DB/backend
+        adapter.uiActionConfirmed(item, viewHolder.itemView)
 
     }  // SwipeActionStateMachine
 

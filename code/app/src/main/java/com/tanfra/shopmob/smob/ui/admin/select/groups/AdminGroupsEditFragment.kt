@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.admin.groups
+package com.tanfra.shopmob.smob.ui.admin.select.groups
 
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle

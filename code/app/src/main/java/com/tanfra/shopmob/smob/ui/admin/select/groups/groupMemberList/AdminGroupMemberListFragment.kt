@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.admin.groupMemberList
+package com.tanfra.shopmob.smob.ui.admin.select.groups.groupMemberList
 
 import android.os.Bundle
 import android.view.*
@@ -14,7 +14,6 @@ import org.koin.core.component.KoinComponent
 import timber.log.Timber
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.databinding.FragmentAdminGroupMemberListBinding
-import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.utils.setup
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel

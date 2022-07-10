@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.admin.groupMemberSelect
+package com.tanfra.shopmob.smob.ui.admin.select.groups.groupMemberSelect
 
 import android.os.Bundle
 import android.view.*
@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentAdminGroupMemberSelectBinding
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
-import com.tanfra.shopmob.smob.ui.admin.groupMemberList.AdminGroupMemberListAdapter
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled

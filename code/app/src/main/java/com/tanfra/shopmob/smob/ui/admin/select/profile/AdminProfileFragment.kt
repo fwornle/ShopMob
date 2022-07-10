@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.admin.profile
+package com.tanfra.shopmob.smob.ui.admin.select.profile
 
 import android.os.Bundle
 import android.view.*
@@ -13,7 +13,6 @@ import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentAdminProfileBinding
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
-import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import org.koin.core.component.KoinComponent
 

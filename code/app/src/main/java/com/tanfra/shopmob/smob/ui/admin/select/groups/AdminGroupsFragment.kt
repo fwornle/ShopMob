@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.admin.groups
+package com.tanfra.shopmob.smob.ui.admin.select.groups
 
 import android.os.Bundle
 import android.view.*

@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.admin.groupMemberList
+package com.tanfra.shopmob.smob.ui.admin.select.groups.groupMemberList
 
 import android.view.View
 import androidx.lifecycle.findViewTreeLifecycleOwner

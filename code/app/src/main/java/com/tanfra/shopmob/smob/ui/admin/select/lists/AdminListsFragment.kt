@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.admin.lists
+package com.tanfra.shopmob.smob.ui.admin.select.lists
 
 import android.os.Bundle
 import android.view.*
@@ -16,7 +16,6 @@ import com.tanfra.shopmob.databinding.FragmentAdminListsBinding
 import com.tanfra.shopmob.smob.data.local.utils.ShopCategory
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
-import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import org.koin.core.component.KoinComponent
 import timber.log.Timber

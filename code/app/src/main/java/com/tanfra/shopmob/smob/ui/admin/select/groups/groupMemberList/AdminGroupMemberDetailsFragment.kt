@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.admin.groupMemberList
+package com.tanfra.shopmob.smob.ui.admin.select.groups.groupMemberList
 
 import android.os.Bundle
 import android.view.LayoutInflater

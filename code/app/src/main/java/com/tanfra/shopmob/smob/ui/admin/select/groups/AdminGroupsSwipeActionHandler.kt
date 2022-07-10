@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.admin.groups
+package com.tanfra.shopmob.smob.ui.admin.select.groups
 
 import android.os.Vibrator
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -7,7 +7,6 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.utils.ui.BaseSwipeActionHandler
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
-import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.ui.planning.utils.vibrateDevice
 

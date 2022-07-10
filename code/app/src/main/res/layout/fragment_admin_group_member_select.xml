@@ -14,7 +14,7 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context="com.tanfra.shopmob.smob.ui.admin.groups.AdminGroupsFragment">
+        tools:context=".smob.ui.admin.select.groups.AdminGroupsFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clGroupLMembersEdit"

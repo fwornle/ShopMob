@@ -35,7 +35,7 @@
 
     <fragment
         android:id="@+id/smobPlanningListsEditFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.groups.AdminGroupsEditFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.select.groups.AdminGroupsEditFragment"
         android:label="Planning Lists Edit"
         tools:layout="@layout/fragment_planning_lists_edit"
         >

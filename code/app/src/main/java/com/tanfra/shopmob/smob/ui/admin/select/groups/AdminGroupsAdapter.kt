@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.admin.groups
+package com.tanfra.shopmob.smob.ui.admin.select.groups
 
 import android.view.View
 import androidx.lifecycle.findViewTreeLifecycleOwner
@@ -8,7 +8,6 @@ import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
-import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
