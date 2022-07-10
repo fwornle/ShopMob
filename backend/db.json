@@ -384,6 +384,16 @@
           "id": "f8a8c6b5-3876-4c0a-8011-a56f2754c5b3",
           "status": "DELETED",
           "listPosition": 6
+        },
+        {
+          "id": "631f7ea5-4ae4-4734-9656-ecdbb7f86d3b",
+          "status": "OPEN",
+          "listPosition": 8
+        },
+        {
+          "id": "0c4e6054-5fd8-48a8-817c-f6611278f755",
+          "status": "DELETED",
+          "listPosition": 9
         }
       ],
       "activity": {

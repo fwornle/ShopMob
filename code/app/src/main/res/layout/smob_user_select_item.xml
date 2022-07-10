@@ -8,7 +8,7 @@
 
         <variable
             name="item"
-            type="com.tanfra.shopmob.smob.data.repo.ato.SmobGroupMemberWithGroupDataATO" />
+            type="com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/padding_small"
-                android:text="@{item.memberName}"
+                android:text="@{item.name}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_normal"
                 app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +41,7 @@
                 android:id="@+id/tvListName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{item.memberUsername}"
+                android:text="@{item.username}"
                 android:textSize="@dimen/text_size_small"
                 app:layout_constraintStart_toStartOf="@id/tvListUsername"
                 app:layout_constraintTop_toBottomOf="@id/tvListUsername"
@@ -56,7 +56,7 @@
                 android:scaleType="fitCenter"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:profileImage="@{item.memberImageUrl}"
+                app:profileImage="@{item.imageUrl}"
                 tools:src="@drawable/ic_baseline_person_24"
                 />
 

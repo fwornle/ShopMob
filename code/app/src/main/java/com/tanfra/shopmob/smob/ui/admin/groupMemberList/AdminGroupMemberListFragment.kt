@@ -9,10 +9,12 @@ import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.databinding.FragmentAdminGroupMemberListBinding
+import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.utils.setup
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -122,12 +124,27 @@ class AdminGroupMemberListFragment : BaseFragment(), KoinComponent {
     // FAB handler --> navigate to AdminUserEdit fragment
     private fun navigateToAdminAddGroupMember() {
 
+        // determine highest index of all members in currently selected group
+        val highPos = _viewModel.currGroup.let {
+            it?.members?.fold(0L) { max, list ->
+                if (list.listPosition > max) list.listPosition
+                else max
+            } ?: 0L
+        }
+
+        // communicate the currently highest list position
+        val bundle = bundleOf(
+            "listPosMax" to highPos,
+        )
+
         // use the navigationCommand live data to navigate between the fragments
         _viewModel.navigationCommand.postValue(
-            NavigationCommand.To(
-                AdminGroupMemberListFragmentDirections.actionSmobAdminGroupMemberListFragmentToSmobAdminGroupMemberSelectFragment()
+            NavigationCommand.ToWithBundle(
+                R.id.smobAdminGroupMemberSelectFragment,
+                bundle
             )
         )
+
     }
 
     private fun setupRecyclerView() {
@@ -139,6 +156,7 @@ class AdminGroupMemberListFragment : BaseFragment(), KoinComponent {
 
             // communicate the selected item (= member)
             _viewModel.currGroupMemberWithGroupData = it
+            _viewModel.currMemberDetails = it.member()  // used in details display
 
             // use the navigationCommand live data to navigate between the fragments
             _viewModel.navigationCommand.postValue(

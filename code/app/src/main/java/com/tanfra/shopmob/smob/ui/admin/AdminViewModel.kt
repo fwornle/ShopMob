@@ -10,6 +10,7 @@ import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.base.BaseViewModel
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobGroupDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
+import com.tanfra.shopmob.smob.data.repo.utils.Member
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
@@ -446,5 +447,6 @@ class AdminViewModel(
     // current group member data record
     var currGroupMember: SmobUserATO? = null
     var currGroupMemberWithGroupData: SmobGroupMemberWithGroupDataATO? = null
+    var currMemberDetails: Member? = null
     var enableAddButton: Boolean = false
 }

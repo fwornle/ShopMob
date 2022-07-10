@@ -37,7 +37,12 @@ class AdminGroupMemberSelectFragment : BaseFragment(), KoinComponent {
 
         // inflate fragment layout and return binding object
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_admin_group_member_select, container, false)
+            DataBindingUtil.inflate(
+                inflater,
+                R.layout.fragment_admin_group_member_select,
+                container,
+                false
+            )
 
         // fetch currently highest list position from incoming bundle
         listPosMax = arguments?.getLong("listPosMax") ?: 0L
@@ -90,6 +95,7 @@ class AdminGroupMemberSelectFragment : BaseFragment(), KoinComponent {
 
             // communicate the selected item (= member)
             _viewModel.currGroupMember = it
+            _viewModel.currMemberDetails = it.member()  // used in details display
             _viewModel.enableAddButton = true
 
             // use the navigationCommand live data to navigate between the fragments

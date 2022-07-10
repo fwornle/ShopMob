@@ -1,6 +1,7 @@
 package com.tanfra.shopmob.smob.data.repo.ato
 
 import com.tanfra.shopmob.smob.data.local.utils.*
+import com.tanfra.shopmob.smob.data.repo.utils.Member
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
@@ -23,4 +24,6 @@ data class SmobGroupMemberWithGroupDataATO(
     var groupMembers: List<@Contextual SmobMemberItem>,
     // serialization strategy decided at run-time (@Contextual)
     var groupActivity: @Contextual ActivityStatus,
-) : Ato, java.io.Serializable
+) : Ato, java.io.Serializable {
+    fun member() = Member(this.memberName, this.memberUsername, this.memberEmail, this.memberImageUrl)
+}

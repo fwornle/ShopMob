@@ -1,5 +1,7 @@
 package com.tanfra.shopmob.smob.data.repo.ato
+
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.repo.utils.Member
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
@@ -13,4 +15,6 @@ data class SmobUserATO(
     var name: String,
     var email: String,
     var imageUrl: String?,
-) : Ato, java.io.Serializable
+) : Ato, java.io.Serializable {
+    fun member() = Member(this.name, this.username, this.email, this.imageUrl)
+}
