@@ -513,37 +513,33 @@ class PlanningViewModel(
     fun fetchSmobShopList() {
 
         // collect flow
-        viewModelScope.launch {
-
-            // flow terminator
-            shopDataSource.getAllSmobItems()
-                .catch { e ->
-                    // previously unhandled exception (= not handled at Room level)
-                    // --> catch it here and represent in Resource status
-                    _smobShopList.value = Resource.error(e.toString(), null)
-                    showSnackBar.value = _smobShopList.value.message
-                }
-                .take(1)
-                .collect {
-                    // no exception during flow collection
-                    when(it.status) {
-                        Status.SUCCESS -> {
-                            // --> store successfully received data in StateFlow value
-                            _smobShopList.value = it
-                            updateShowNoData(it)
-                        }
-                        Status.ERROR -> {
-                            // these are errors handled at Room level --> display
-                            showSnackBar.value = it.message
-                            _smobShopList.value = it  // still return Resource value (w/h error)
-                        }
-                        Status.LOADING -> {
-                            // could control visibility of progress bar here
-                        }
+        shopDataSource.getAllSmobItems()
+            .catch { e ->
+                // previously unhandled exception (= not handled at Room level)
+                // --> catch it here and represent in Resource status
+                _smobShopList.value = Resource.error(e.toString(), null)
+                showSnackBar.value = _smobShopList.value.message
+            }
+            .take(1)
+            .onEach {
+                // no exception during flow collection
+                when(it.status) {
+                    Status.SUCCESS -> {
+                        // --> store successfully received data in StateFlow value
+                        _smobShopList.value = it
+                        updateShowNoData(it)
+                    }
+                    Status.ERROR -> {
+                        // these are errors handled at Room level --> display
+                        showSnackBar.value = it.message
+                        _smobShopList.value = it  // still return Resource value (w/h error)
+                    }
+                    Status.LOADING -> {
+                        // could control visibility of progress bar here
                     }
                 }
-
-        }  // coroutine
+            }
+            .launchIn(viewModelScope)  // co-routine scope
 
     }  // fetchSmobShopList
 
@@ -560,36 +556,32 @@ class PlanningViewModel(
     fun fetchSmobShop(id: String) {
 
         // collect flow
-        viewModelScope.launch {
-
-            // flow terminator
-            shopDataSource.getSmobItem(id)
-                .catch { e ->
-                    // previously unhandled exception (= not handled at Room level)
-                    // --> catch it here and represent in Resource status
-                    _smobShop.value = Resource.error(e.toString(), null)
-                    showSnackBar.value = _smobShop.value.message
-                }
-                .take(1)
-                .collect {
-                    // no exception during flow collection
-                    when(it.status) {
-                        Status.SUCCESS -> {
-                            // --> store successfully received data in StateFlow value
-                            _smobShop.value = it
-                        }
-                        Status.ERROR -> {
-                            // these are errors handled at Room level --> display
-                            showSnackBar.value = it.message
-                            _smobShop.value = it  // still return Resource value (w/h error)
-                        }
-                        Status.LOADING -> {
-                            // could control visibility of progress bar here
-                        }
+        shopDataSource.getSmobItem(id)
+            .catch { e ->
+                // previously unhandled exception (= not handled at Room level)
+                // --> catch it here and represent in Resource status
+                _smobShop.value = Resource.error(e.toString(), null)
+                showSnackBar.value = _smobShop.value.message
+            }
+            .take(1)
+            .onEach {
+                // no exception during flow collection
+                when(it.status) {
+                    Status.SUCCESS -> {
+                        // --> store successfully received data in StateFlow value
+                        _smobShop.value = it
+                    }
+                    Status.ERROR -> {
+                        // these are errors handled at Room level --> display
+                        showSnackBar.value = it.message
+                        _smobShop.value = it  // still return Resource value (w/h error)
+                    }
+                    Status.LOADING -> {
+                        // could control visibility of progress bar here
                     }
                 }
-
-        }  // coroutine
+            }
+            .launchIn(viewModelScope)  // co-routine scope
 
     }  // fetchSmobShop
 
@@ -700,37 +692,33 @@ class PlanningViewModel(
     fun fetchSmobLists() {
 
         // collect flow
-        viewModelScope.launch {
-
-            // flow terminator
-            listDataSource.getAllSmobItems()
-                .catch { e ->
-                    // previously unhandled exception (= not handled at Room level)
-                    // --> catch it here and represent in Resource status
-                    _smobLists.value = Resource.error(e.toString(), null)
-                    showSnackBar.value = _smobLists.value.message
-                }
-                .take(1)
-                .collect {
-                    // no exception during flow collection
-                    when(it.status) {
-                        Status.SUCCESS -> {
-                            // --> store successfully received data in StateFlow value
-                            _smobLists.value = it
-                            updateShowNoData(it)
-                        }
-                        Status.ERROR -> {
-                            // these are errors handled at Room level --> display
-                            showSnackBar.value = it.message
-                            _smobLists.value = it  // still return Resource value (w/h error)
-                        }
-                        Status.LOADING -> {
-                            // could control visibility of progress bar here
-                        }
+        listDataSource.getAllSmobItems()
+            .catch { e ->
+                // previously unhandled exception (= not handled at Room level)
+                // --> catch it here and represent in Resource status
+                _smobLists.value = Resource.error(e.toString(), null)
+                showSnackBar.value = _smobLists.value.message
+            }
+            .take(1)
+            .onEach {
+                // no exception during flow collection
+                when(it.status) {
+                    Status.SUCCESS -> {
+                        // --> store successfully received data in StateFlow value
+                        _smobLists.value = it
+                        updateShowNoData(it)
+                    }
+                    Status.ERROR -> {
+                        // these are errors handled at Room level --> display
+                        showSnackBar.value = it.message
+                        _smobLists.value = it  // still return Resource value (w/h error)
+                    }
+                    Status.LOADING -> {
+                        // could control visibility of progress bar here
                     }
                 }
-
-        }  // coroutine
+            }
+            .launchIn(viewModelScope)  // co-routine scope
 
     }  // fetchSmobLists
 

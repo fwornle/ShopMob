@@ -15,8 +15,10 @@ import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.utils.fadeIn
 import com.tanfra.shopmob.utils.fadeOut
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 object BindingAdapters {
@@ -35,7 +37,10 @@ object BindingAdapters {
         recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
 
             // collect flow items
-            items.take(1).collect { itemList ->
+            items
+                .take(1)
+                .catch { Timber.i("error in flow/take(1): $it") }
+                .collect { itemList ->
                 (recyclerView.adapter as? BaseRecyclerViewAdapter<T>)?.apply {
                     clear()
                     addData(itemList)
@@ -61,7 +66,10 @@ object BindingAdapters {
         recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
 
             // collect flow items
-            items.take(1).collect { itemList ->
+            items
+                .take(1)
+                .catch { Timber.i("error in flow/take(1): $it") }
+                .collect { itemList ->
                 (recyclerView.adapter as? BaseRecyclerViewAdapter<T>)?.apply {
                     clear()
                     itemList.data?.let { addData(it) }

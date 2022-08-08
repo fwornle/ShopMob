@@ -12,6 +12,7 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentPlanningShopListBinding
@@ -20,6 +21,8 @@ import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsSources
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.utils.setup
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -131,11 +134,12 @@ class PlanningShopListFragment : BaseFragment(), KoinComponent {
 
                     // clicks should select the shop and return to the product edit screen
                     val daFlow = _viewModel.shopDataSource.getSmobItem(it.id)
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        daFlow.take(1).collect {
+                    daFlow
+                        .take(1)
+                        .onEach {
                             Timber.i("Received shop: ${it.data?.name}")
                         }
-                    }
+                        .launchIn(viewLifecycleOwner.lifecycleScope)  // co-routine scope
 
                     // navigate back to smobPlanningProductEditFragment
                     // ... communicate the selected SmobShop via shared ViewModel

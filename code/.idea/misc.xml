@@ -41,6 +41,7 @@
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/layout/fragment_admin_group_members_select.xml" value="0.1" />
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/layout/fragment_admin_groups.xml" value="0.1" />
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/layout/fragment_admin_groups_edit.xml" value="0.2" />
+        <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/layout/fragment_admin_list_member_list.xml" value="0.1703125" />
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/layout/fragment_admin_lists.xml" value="0.2" />
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/layout/fragment_admin_member.xml" value="0.1" />
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/layout/fragment_admin_profile.xml" value="0.1734375" />
@@ -67,6 +68,7 @@
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/layout/nav_admin_header.xml" value="0.11203703703703703" />
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/layout/nav_header.xml" value="0.176" />
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/layout/nav_planning_header.xml" value="0.15" />
+        <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/layout/smob_admin_lists_item.xml" value="0.259375" />
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/layout/smob_groups_item.xml" value="0.1" />
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/layout/smob_item.xml" value="0.13385416666666666" />
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/layout/smob_lists_item.xml" value="0.2375" />

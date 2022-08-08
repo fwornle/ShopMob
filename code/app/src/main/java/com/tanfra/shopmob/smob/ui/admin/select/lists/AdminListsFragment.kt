@@ -9,13 +9,18 @@ import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
-import android.widget.AdapterView
+import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentAdminListsBinding
+import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
+import com.tanfra.shopmob.smob.ui.base.NavigationCommand
+import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
+import com.tanfra.shopmob.utils.setup
 import org.koin.core.component.KoinComponent
-import timber.log.Timber
 
 class AdminListsFragment : BaseFragment(), KoinComponent {
 
@@ -44,6 +49,25 @@ class AdminListsFragment : BaseFragment(), KoinComponent {
         setDisplayHomeAsUpEnabled(true)
         setTitle(getString(R.string.app_name_admin_lists))
 
+        // install listener for SwipeRefreshLayout view
+        binding.refreshLayout.setOnRefreshListener {
+
+            // deactivate SwipeRefreshLayout spinner
+            binding.refreshLayout.setRefreshing(false)
+
+            // refresh local DB data from backend (for this list) - also updates 'showNoData'
+            _viewModel.swipeRefreshDataInLocalDB()
+
+            // empty? --> inform user that there is no point swiping for further updates...
+            if (_viewModel.showNoData.value == true) {
+                Toast.makeText(activity, getString(R.string.error_add_smob_lists), Toast.LENGTH_SHORT).show()
+            }
+
+        }
+
+        // refresh local DB data from backend (for this list) - also updates 'showNoData'
+        _viewModel.swipeRefreshDataInLocalDB()
+
         return binding.root
     }
 
@@ -52,48 +76,95 @@ class AdminListsFragment : BaseFragment(), KoinComponent {
 
         binding.lifecycleOwner = viewLifecycleOwner
 
-//        // configure spinner (shop category)
-//        setupSpinners()
+        // RV - incl. onClick listener for items
+        setupRecyclerView()
+
+        // handlers for "+" FAB
+        binding.addSmobItemFab.setOnClickListener { navigateToAddList() }
+
+
+        // set onClick handler for DISMISS button
+        // ... navigate back to the main app
+        binding.btDismiss.setOnClickListener {
+            val intent = Intent(this.context, SmobPlanningActivity::class.java)
+            startActivity(intent)
+            // and we're done here
+            this.activity?.finish()
+        }
 
     }
 
-//    // set-up spinners (categories)
-//    private fun setupSpinners() {
+
+    private fun setupRecyclerView() {
+        val adapter = AdminListsAdapter(binding.root) {
+
+            // this lambda is the 'callback' function which gets called when clicking an item in the
+            // RecyclerView - it gets the data behind the clicked item as parameter
+
+            // store currently selected group in viewModel
+            _viewModel.currList = it
+
+            // use the navigationCommand live data to navigate between the fragments
+            _viewModel.navigationCommand.postValue(
+                NavigationCommand.To(
+                    AdminListsFragmentDirections
+                        .actionSmobAdminListsFragmentToSmobAdminListMemberListFragment()
+                )
+            )
+
+//            // communicate the ID and name of the selected item (= group)
+//            val bundle = bundleOf(
+//                "groupId" to it.id,
+//                "groupName" to it.name,
+//            )
 //
-//        // ShopCategory
-//        // create an ArrayAdapter using the enum and a default spinner layout
-//        ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, ShopCategory.values())
-//            .also {
-//                // specify the layout to use when the list of choices appears
-//                it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//                // apply the adapter to the spinner
-//                binding.smobShopLists.adapter = it
-//            }
-//
-//        // hook up onItemSelected listener (to this fragment)
-//        binding.smobShopLists.onItemSelectedListener = this
-//
-//    }
-//
-//    // spinner: item selection made
-//    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-//        // we might have several spinners at some point...
-//        when(p0) {
-//            binding.smobShopLists -> {
-//                // set shop category in VM
-//                //_viewModel.locatedShop.value?.category = ShopCategory.values()[p2]
-//            }
-//            else -> {
-//                // should not happen - unless someone added more spinners
-//                Timber.i("Unknown spinner found: $p0")
-//            }
-//        }
-//    }
-//
-//    // spinner: no item selected
-//    override fun onNothingSelected(p0: AdapterView<*>?) {
-//        Timber.i("No selection made... (this is never called?!) $p0")
-//    }
+//            _viewModel.navigationCommand.postValue(
+//                NavigationCommand.ToWithBundle(
+//                    R.id.smobAdminGroupMembersListFragment,
+//                    bundle
+//                )
+//            )
+
+        }  // "on-item-click" lambda
+
+        // setup the recycler view using the extension function
+        binding.smobItemsRecyclerView.setup(adapter)
+
+        // enable swiping left/right
+        val itemTouchHelper = ItemTouchHelper(AdminListsSwipeActionHandler(adapter))
+        itemTouchHelper.attachToRecyclerView(binding.smobItemsRecyclerView)
+
+    }
+
+
+    // "+" FAB handler --> navigate to selected fragment of the admin activity
+    private fun navigateToAddList() {
+
+        // determine highest index in all smobGroups
+        val highPos = _viewModel.smobGroups.value.let {
+            if (it.status == Status.SUCCESS) {
+                // return  highest index
+                it.data?.fold(0L) { max, list -> if (list.itemPosition > max) list.itemPosition else max } ?: 0L
+            } else {
+                0L
+            }
+        }
+
+        // communicate the currently highest list position
+        val bundle = bundleOf(
+            "listPosMax" to highPos,
+        )
+
+        // use the navigationCommand live data to navigate between the fragments
+        _viewModel.navigationCommand.postValue(
+            NavigationCommand.ToWithBundle(
+                //R.id.smobAdminListsEditFragment,
+                R.id.smobAdminGroupsEditFragment,
+                bundle
+            )
+        )
+
+    }
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

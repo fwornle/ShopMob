@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 class AdminViewModel(
     app: Application,
     val groupDataSource: SmobGroupDataSource,  // public - used in AdminGroupsAdapter
-    val listDataSource: SmobListDataSource,  // public - used in AdminListsAdapter
+    val listDataSource: SmobListDataSource,    // public - used in AdminListsAdapter
     val userDataSource: SmobUserDataSource,    // public - used in AdminGroupMembersAdapter
     ) : BaseViewModel(app) {
 
@@ -58,37 +58,33 @@ class AdminViewModel(
     fun fetchSmobGroups() {
 
         // collect flow
-        viewModelScope.launch {
-
-            // flow terminator
-            groupDataSource.getAllSmobItems()
-                .catch { e ->
-                    // previously unhandled exception (= not handled at Room level)
-                    // --> catch it here and represent in Resource status
-                    _smobGroups.value = Resource.error(e.toString(), null)
-                    showSnackBar.value = _smobGroups.value.message
-                }
-                .take(1)
-                .collect {
-                    // no exception during flow collection
-                    when(it.status) {
-                        Status.SUCCESS -> {
-                            // --> store successfully received data in StateFlow value
-                            _smobGroups.value = it
-                            updateShowNoData(it)
-                        }
-                        Status.ERROR -> {
-                            // these are errors handled at Room level --> display
-                            showSnackBar.value = it.message
-                            _smobGroups.value = it  // still return Resource value (w/h error)
-                        }
-                        Status.LOADING -> {
-                            // could control visibility of progress bar here
-                        }
+        groupDataSource.getAllSmobItems()
+            .catch { e ->
+                // previously unhandled exception (= not handled at Room level)
+                // --> catch it here and represent in Resource status
+                _smobGroups.value = Resource.error(e.toString(), null)
+                showSnackBar.value = _smobGroups.value.message
+            }
+            .take(1)
+            .onEach {
+                // no exception during flow collection
+                when(it.status) {
+                    Status.SUCCESS -> {
+                        // --> store successfully received data in StateFlow value
+                        _smobGroups.value = it
+                        updateShowNoSmobItemsData(it)
+                    }
+                    Status.ERROR -> {
+                        // these are errors handled at Room level --> display
+                        showSnackBar.value = it.message
+                        _smobGroups.value = it  // still return Resource value (w/h error)
+                    }
+                    Status.LOADING -> {
+                        // could control visibility of progress bar here
                     }
                 }
-
-        }  // coroutine
+            }
+            .launchIn(viewModelScope)  // co-routine scope
 
     }  // fetchSmobGroups
 
@@ -109,22 +105,20 @@ class AdminViewModel(
             fetchSmobGroups()
 
             // check if the "no data" symbol has to be shown (empty list)
-            updateShowNoData(_smobGroups.value)
+            updateShowNoSmobItemsData(_smobGroups.value)
 
         }
 
     }  // swipeRefreshDataInLocalDB
 
-
-
     /**
-     * Inform the user that the list is empty
+     * Inform the user that the list of SmobItems is empty
      */
     @ExperimentalCoroutinesApi
-    private fun updateShowNoData(smobGroupListNewest: Resource<List<*>?>) {
+    private fun updateShowNoSmobItemsData(smobItemsNewest: Resource<List<*>?>) {
         showNoData.value = (
-                smobGroupListNewest.status == Status.SUCCESS && smobGroupListNewest.data!!.isEmpty() ||
-                        smobGroupListNewest.status == Status.SUCCESS && smobGroupListNewest.data!!.all {
+                smobItemsNewest.status == Status.SUCCESS && smobItemsNewest.data!!.isEmpty() ||
+                        smobItemsNewest.status == Status.SUCCESS && smobItemsNewest.data!!.all {
                         (it as Ato).itemStatus == SmobItemStatus.DELETED
                     }
                 )
@@ -158,7 +152,7 @@ class AdminViewModel(
      */
     @ExperimentalCoroutinesApi
     fun validateAndSaveSmobGroup(shopMobData: SmobGroupATO) {
-        if (validateEnteredData(shopMobData)) {
+        if (validateEnteredGroupData(shopMobData)) {
             saveSmobGroupItem(shopMobData)
             navigationCommand.value = NavigationCommand.Back
         }
@@ -180,7 +174,7 @@ class AdminViewModel(
         fetchSmobGroups()
 
         // check if the "no data" symbol has to be shown (empty list)
-        updateShowNoData(_smobGroups.value)
+        updateShowNoSmobItemsData(_smobGroups.value)
     }
 
     /**
@@ -199,16 +193,140 @@ class AdminViewModel(
         fetchSmobGroups()
 
         // check if the "no data" symbol has to be shown (empty list)
-        updateShowNoData(_smobGroups.value)
+        updateShowNoSmobItemsData(_smobGroups.value)
     }
 
     /**
      * Validate the entered data and show error to the user if there's any invalid data
      */
-    private fun validateEnteredData(shopMobData: SmobGroupATO): Boolean {
+    private fun validateEnteredGroupData(shopMobData: SmobGroupATO): Boolean {
 
         if (shopMobData.name.isEmpty()) {
             showSnackBarInt.value = R.string.err_enter_group_name
+            return false
+        }
+
+        // successful validation
+        return true
+    }
+
+
+    // ListsEditViewModel ---------------------------------------------
+    // ListsEditViewModel ---------------------------------------------
+    // ListsEditViewModel ---------------------------------------------
+
+    val smobListName = MutableLiveData<String?>()
+    val smobListDescription = MutableLiveData<String?>()
+    val smobListType = MutableLiveData<GroupType?>()
+
+    init {
+        onClearList()
+    }
+
+    /**
+     * Clear the live data objects to start fresh next time the view model gets instantiated
+     */
+    fun onClearList() {
+        // viewModel is initiated in background "doWork" job (coroutine)
+        smobListName.postValue(null)
+        smobListDescription.postValue(null)
+        smobListType.postValue(null)
+    }
+
+    /**
+     * collect the flow of the upstream list the user just selected
+     */
+    @ExperimentalCoroutinesApi
+    fun fetchSmobLists() {
+
+        // collect flow
+        listDataSource.getAllSmobItems()
+            .catch { e ->
+                // previously unhandled exception (= not handled at Room level)
+                // --> catch it here and represent in Resource status
+                _smobLists2.value = Resource.error(e.toString(), null)
+                showSnackBar.value = _smobGroups.value.message
+            }
+            .take(1)
+            .onEach {
+                // no exception during flow collection
+                when(it.status) {
+                    Status.SUCCESS -> {
+                        // --> store successfully received data in StateFlow value
+                        _smobLists2.value = it
+                        updateShowNoSmobItemsData(it)
+                    }
+                    Status.ERROR -> {
+                        // these are errors handled at Room level --> display
+                        showSnackBar.value = it.message
+                        _smobLists2.value = it  // still return Resource value (w/h error)
+                    }
+                    Status.LOADING -> {
+                        // could control visibility of progress bar here
+                    }
+                }
+            }
+            .launchIn(viewModelScope)  // co-routine scope
+
+    }  // fetchSmobLists
+
+
+    /**
+     * Validate the entered data then saves the smobList to the DataSource
+     */
+    @ExperimentalCoroutinesApi
+    fun validateAndSaveSmobList(shopMobData: SmobListATO) {
+        if (validateEnteredListData(shopMobData)) {
+            saveSmobListItem(shopMobData)
+            navigationCommand.value = NavigationCommand.Back
+        }
+    }
+
+    /**
+     * Save the smobGroup item to the data source
+     */
+    @ExperimentalCoroutinesApi
+    private fun saveSmobListItem(smobListData: SmobListATO) {
+        showLoading.value = true
+        viewModelScope.launch {
+            // store in local DB (and sync to server)
+            listDataSource.saveSmobItem(smobListData)
+        }
+        showLoading.value = false
+
+        // load SmobList from local DB to update StateFlow value
+        fetchSmobLists()
+
+        // check if the "no data" symbol has to be shown (empty list)
+        updateShowNoSmobItemsData(smobLists2.value)
+    }
+
+    /**
+     * Update the smobGroup item in the data source
+     */
+    @ExperimentalCoroutinesApi
+    fun updateSmobListItem(smobListData: SmobListATO) {
+        showLoading.value = true
+        viewModelScope.launch {
+            // update in local DB (and sync to server)
+            listDataSource.updateSmobItem(smobListData)
+        }
+        showLoading.value = false
+
+        // load SmobLists from local DB to update StateFlow value
+        fetchSmobLists()
+
+        // check if the "no data" symbol has to be shown (empty list)
+        updateShowNoSmobItemsData(_smobGroups.value)
+    }
+
+    /**
+     * Validate the entered data and show error to the user if there's any invalid data
+     */
+    private fun validateEnteredListData(shopMobData: SmobListATO): Boolean {
+
+        if (shopMobData.name.isEmpty()) {
+            showSnackBarInt.value = R.string.err_enter_list_name
             return false
         }
 
@@ -302,7 +420,7 @@ class AdminViewModel(
      * combine the two flows (users, groups [user status]) and turn into StateFlow
      */
     @ExperimentalCoroutinesApi
-    fun combineFlowsAndConvertToStateFlow(
+    fun combineGroupFlowsAndConvertToStateFlow(
         groupFlow: Flow<Resource<SmobGroupATO?>>,
         usersFlow: Flow<Resource<List<SmobUserATO>?>>,
     ): StateFlow<List<SmobGroupMemberWithGroupDataATO>?> {
@@ -434,7 +552,7 @@ class AdminViewModel(
                 }
 
                 // check if the "no data" symbol has to be shown (empty list)
-                updateShowNoData(it)
+                updateShowNoSmobItemsData(it)
             }
 
         }
@@ -451,4 +569,246 @@ class AdminViewModel(
     var currGroupMemberWithGroupData: SmobGroupMemberWithGroupDataATO? = null
     var currMemberDetails: Member? = null
     var enableAddButton: Boolean = false
+
+
+    // ListsViewModel --------------------------------------------------------
+    // ListsViewModel --------------------------------------------------------
+    // ListsViewModel --------------------------------------------------------
+
+    // list that holds the smob data items to be displayed on the UI
+    // ... flow, converted to StateFlow --> data changes in the backend are observed
+    // ... ref: https://medium.com/androiddevelopers/migrating-from-livedata-to-kotlins-flow-379292f419fb
+    private val _smobLists2 = MutableStateFlow<Resource<List<SmobListATO>>>(Resource.loading(null))
+    val smobLists2 = _smobLists2.asStateFlow()
+
+
+    // current list ID and list position (in the list of SmobLists)
+    var currListId: String? = null
+    var currList: SmobListATO? = null
+
+    // collect all SmobLists
+    val _smobLists: Flow<Resource<List<SmobListATO>?>> = fetchSmobListsFlow()
+    val smobLists = smobListsFlowToStateFlow(_smobLists)
+
+    // collect the upstream selected smobList as well as the list of SmobUserATO items
+    // ... lateinit, as this can only be done once the fragment is created (and the id's are here)
+    lateinit var _smobList: Flow<Resource<SmobListATO?>>
+    lateinit var smobList: StateFlow<Resource<SmobListATO?>>
+
+    val _smobList2 = MutableStateFlow<Resource<SmobListATO?>>(Resource.loading(null))
+    val smobList2 = _smobList2.asStateFlow()
+
+    lateinit var _smobListMembers: Flow<Resource<List<SmobUserATO>?>>
+    lateinit var smobListMembers: StateFlow<Resource<List<SmobUserATO>?>>
+
+    lateinit var smobListMemberWithListData: StateFlow<List<SmobListMemberWithListDataATO>?>
+
+
+    /**
+     * fetch the flow of the list of items for the upstream list the user just selected
+     */
+    @ExperimentalCoroutinesApi
+    fun fetchSmobListsFlow(): Flow<Resource<List<SmobListATO>?>> {
+        val fetchFlow = listDataSource.getAllSmobItems()
+        return fetchFlow
+    }
+
+    // convert to StateFlow
+    fun smobListsFlowToStateFlow(inFlow: Flow<Resource<List<SmobListATO>?>>): StateFlow<Resource<List<SmobListATO>?>> {
+        return inFlow.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = Resource.loading(null)
+        )  // StateFlow<...>
+    }
+
+
+    /**
+     * fetch the flow of the upstream group the user just selected
+     */
+    @ExperimentalCoroutinesApi
+    fun fetchSmobListFlow(id: String): Flow<Resource<SmobListATO?>> {
+        val fetchFlow = listDataSource.getSmobItem(id)
+        return fetchFlow
+    }
+
+    // convert to StateFlow
+    fun smobListFlowToStateFlow(inFlow: Flow<Resource<SmobListATO?>>): StateFlow<Resource<SmobListATO?>> {
+        return inFlow.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = Resource.loading(null)
+        )  // StateFlow<...>
+    }
+
+    /**
+     * fetch the flow of the list of items for the upstream list the user just selected
+     */
+    @ExperimentalCoroutinesApi
+    fun fetchSmobListMembersFlow(id: String): Flow<Resource<List<SmobUserATO>?>> {
+        val fetchFlow = userDataSource.getSmobMembersByListId(id)
+        return fetchFlow
+    }
+
+    // convert to StateFlow
+    fun smobListMembersFlowToStateFlow(inFlow: Flow<Resource<List<SmobUserATO>?>>): StateFlow<Resource<List<SmobUserATO>?>> {
+        return inFlow.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = Resource.loading(null)
+        )  // StateFlow<...>
+    }
+
+    /**
+     * combine the two flows (users, groups [user status]) and turn into StateFlow
+     */
+    @ExperimentalCoroutinesApi
+    fun combineListFlowsAndConvertToStateFlow(
+        listFlow: Flow<Resource<SmobListATO?>>,
+        usersFlow: Flow<Resource<List<SmobUserATO>?>>,
+    ): StateFlow<List<SmobListMemberWithListDataATO>?> {
+
+        return usersFlow.combine(listFlow) { users, list ->
+
+            // unwrap group (from Resource)
+            list.data?.let { daList ->
+
+                // evaluate/unwrap Resource
+                when(users.status) {
+
+                    Status.SUCCESS -> {
+
+                        // successfully received all users --> could be empty system though
+                        users.data?.let { allUsers ->
+
+                            // fetch all users as defined by the member list of the selected group
+                            val daListUsers = allUsers.filter { user ->
+                                daList.members.map { member -> member.id }.contains(user.id)
+                            }
+
+                            // return all users from daList member list
+                            daListUsers.map { member ->
+
+                                // extend user record by group data
+                                SmobListMemberWithListDataATO(
+                                    id = member.id,
+                                    itemStatus = member.itemStatus,
+                                    itemPosition = member.itemPosition,
+                                    memberUsername = member.username,
+                                    memberName = member.name,
+                                    memberEmail = member.email,
+                                    memberImageUrl = member.imageUrl,
+                                    listId = daList.id,
+                                    listStatus = daList.itemStatus,
+                                    listPosition = daList.itemPosition,
+                                    listName = daList.name,
+                                    listDescription = daList.description,
+                                    listItems = daList.items,
+                                    listMembers = daList.members,
+                                    listLifecycle = daList.lifecycle,
+                                )
+
+                            }
+                        }
+
+                    }  // status == SUCCESS
+                    else -> {
+                        // Status.LOADING or Status.ERROR -> do nothing
+                        null
+                    }  // status != SUCCESS
+
+                }  // when
+
+            }  // unwrap group
+
+        }  // combine(Flow_1, Flow_2)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = listOf()
+            )  // StateFlow<...>
+
+    }  //  combineFlowsAndConvertToStateFlow
+
+
+    /**
+     * collect the flow of the upstream list the user just selected
+     */
+    @ExperimentalCoroutinesApi
+    fun fetchSmobList() {
+
+        // list ID set yet?
+        currListId?.let { id ->
+
+            // collect flow
+            viewModelScope.launch {
+
+                // flow terminator
+                listDataSource.getSmobItem(id)
+                    .catch { e ->
+                        // previously unhandled exception (= not handled at Room level)
+                        // --> catch it here and represent in Resource status
+                        _smobList2.value = Resource.error(e.toString(), null)
+                        showSnackBar.value = _smobList2.value.message
+                    }
+                    .collectLatest {
+                        // no exception during flow collection
+                        when(it.status) {
+                            Status.SUCCESS -> {
+                                // --> store successfully received data in StateFlow value
+                                _smobList2.value = it
+                            }
+                            Status.ERROR -> {
+                                // these are errors handled at Room level --> display
+                                showSnackBar.value = it.message
+                                _smobList2.value = it  // still return Resource value (w/h error)
+                            }
+                            Status.LOADING -> {
+                                // could control visibility of progress bar here
+                            }
+                        }
+                    }
+
+            }  // coroutine
+
+        } // groupId set
+
+    }  // fetchSmobList
+
+    /**
+     * update all items in the local DB by querying the backend - triggered on "swipe down"
+     */
+    @ExperimentalCoroutinesApi
+    fun swipeRefreshListDataInLocalDB() {
+
+        // user is impatient - trigger update of local DB from net
+        viewModelScope.launch {
+
+            // update backend DB (from net API)
+            listDataSource.refreshDataInLocalDB()
+
+            // collect flow to update StateFlow with current value from DB
+            smobGroupMembers.take(1).collect {
+
+                if(it.status == Status.ERROR) {
+                    showSnackBar.value = it.message!!
+                }
+
+                // check if the "no data" symbol has to be shown (empty list)
+                updateShowNoSmobItemsData(it)
+            }
+
+        }
+
+    }  // swipeRefreshListDataInLocalDB
+
+
+    // ListMemberDetailsViewModel ----------------------------------------------
+    // ListMemberDetailsViewModel ----------------------------------------------
+    // ListMemberDetailsViewModel ----------------------------------------------
+
+    // current list member data record
+    var currListMember: SmobUserATO? = null
+    var currListMemberWithListData: SmobListMemberWithListDataATO? = null
+
 }

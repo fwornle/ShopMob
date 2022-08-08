@@ -24,17 +24,35 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/secondaryLightColor">
+
+                <ImageView
+                    android:id="@+id/ivSmobAdminListMembers"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/image_header_height"
+                    android:layout_marginStart="@dimen/horizontal_margin_small"
+                    android:layout_marginTop="@dimen/vertical_margin_image"
+                    android:layout_marginEnd="@dimen/horizontal_margin_small"
+                    android:layout_marginBottom="@dimen/vertical_margin_image"
+                    android:contentDescription="@string/adminListMemberDescription"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_baseline_group_24"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/smobItemsRecyclerView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:src="@drawable/ic_baseline_group_24" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/smobItemsRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivSmobAdminListMembers"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:stateFlowResource="@{viewModel.smobLists2}" />
+                    app:stateFlow="@{viewModel.smobListMemberWithListData}" />
 
                 <TextView
                     android:id="@+id/noDataTextView"
@@ -57,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    app:fadeVisibleOnLoading="@{viewModel.smobGroups}"
+                    app:fadeVisibleOnLoading="@{viewModel.smobListMembers}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -70,29 +88,11 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_normal"
                     android:src="@drawable/ic_add"
-                    android:contentDescription="@string/add_smob_group"
+                    android:contentDescription="@string/add_smob_list_member"
                     app:fabSize="normal"
                     app:layout_anchor="@id/smobItemsRecyclerView"
                     app:layout_anchorGravity="bottom|right|end"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    />
-
-                <Button
-                    android:id="@+id/btDismiss"
-                    android:layout_width="@dimen/button_width"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/vertical_margin_large"
-                    android:layout_marginBottom="@dimen/vertical_margin_large"
-                    android:layout_marginStart="@dimen/horizontal_margin_small"
-                    android:paddingStart="@dimen/button_padding"
-                    android:paddingEnd="@dimen/button_padding"
-                    android:text="@string/dismiss"
-                    android:textColor="@color/swipePrimaryColor"
-                    android:textSize="@dimen/button_text_size"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     />
 

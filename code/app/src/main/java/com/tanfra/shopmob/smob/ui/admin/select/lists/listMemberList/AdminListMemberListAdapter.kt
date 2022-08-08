@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.admin.select.groups.groupMemberList
+package com.tanfra.shopmob.smob.ui.admin.select.lists.listMemberList
 
 import android.view.View
 import androidx.lifecycle.findViewTreeLifecycleOwner
@@ -15,25 +15,25 @@ import org.koin.core.component.inject
 
 
 // use data binding to show the smob item on the RV item
-class AdminGroupMemberListAdapter(rootView: View, callBack: (selectedSmobATO: SmobGroupMemberWithGroupDataATO) -> Unit) :
-    BaseRecyclerViewAdapter<SmobGroupMemberWithGroupDataATO>(rootView, callBack), KoinComponent {
+class AdminListMemberListAdapter(rootView: View, callBack: (selectedSmobATO: SmobListMemberWithListDataATO) -> Unit) :
+    BaseRecyclerViewAdapter<SmobListMemberWithListDataATO>(rootView, callBack), KoinComponent {
 
     // inject _viewModel from Koin service locator
     private val _viewModel: AdminViewModel by inject()
 
     // SearchView widget can be used to preFilter the list using user input
-    override fun getSearchViewItems(items: List<SmobGroupMemberWithGroupDataATO>, charSearch: String)
-    : MutableList<SmobGroupMemberWithGroupDataATO> {
+    override fun getSearchViewItems(items: List<SmobListMemberWithListDataATO>, charSearch: String)
+    : MutableList<SmobListMemberWithListDataATO> {
         // default: no filtering
         return items.toMutableList()
     }
 
     // filter (and sort) list - straight through, if not needed
-    override fun listFilter(items: List<SmobGroupMemberWithGroupDataATO>): List<SmobGroupMemberWithGroupDataATO> {
+    override fun listFilter(items: List<SmobListMemberWithListDataATO>): List<SmobListMemberWithListDataATO> {
 
         // figure out who hasn't been deleted yet
         val validMemberIds =
-            if (items.isNotEmpty()) items.first().groupMembers
+            if (items.isNotEmpty()) items.first().listMembers
                 .filter { member -> member.status != SmobItemStatus.DELETED }
                 .map { member -> member.id }
             else listOf()
@@ -49,27 +49,27 @@ class AdminGroupMemberListAdapter(rootView: View, callBack: (selectedSmobATO: Sm
     }
 
     // allow the BaseRecyclerViewAdapter to access the item layout for this particular RV list
-    override fun getLayoutRes(viewType: Int) = R.layout.smob_admin_users_item
+    override fun getLayoutRes(viewType: Int) = R.layout.smob_admin_lists_item
 
     // called, when the user action has been confirmed and the local DB / backend needs updated
     // ... this is the point where the list can be consolidated, if needed (eg. aggregate status)
-    override fun uiActionConfirmed(item: SmobGroupMemberWithGroupDataATO, rootView: View) {
+    override fun uiActionConfirmed(item: SmobListMemberWithListDataATO, rootView: View) {
 
         // collect current list from smobList (flow)
         rootView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
 
-            // collect SmobGroup flow
-            val updatedGroup = SmobGroupATO(
-                item.groupId,
-                item.groupStatus,
-                item.groupPosition,
-                item.groupName,
-                item.groupDescription,
-                item.groupType,
-                // replace list of group members with updated list of members
-                item.groupMembers.map { member ->
+            // collect SmobList flow
+            val updatedList = SmobListATO(
+                item.listId,
+                item.listStatus,
+                item.listPosition,
+                item.listName,
+                item.listDescription,
+                item.listItems,
+                // replace list of list members with updated list of members
+                item.listMembers.map { member ->
                     if(member.id == item.id) {
-                        // set new status (group property)
+                        // set new status (list property)
                         SmobMemberItem(
                             member.id,
                             item.itemStatus,  // update list item status (from status set by user)
@@ -79,12 +79,12 @@ class AdminGroupMemberListAdapter(rootView: View, callBack: (selectedSmobATO: Sm
                         member  // not the manipulated product --> keep as is
                     }
                 },
-                item.groupActivity,
+                item.listLifecycle,
             )
 
             // store updated smobGroup in local DB
             // ... this also triggers an immediate push to the backend (once stored locally)
-            _viewModel.groupDataSource.updateSmobItem(updatedGroup)
+            _viewModel.listDataSource.updateSmobItem(updatedList)
 
         }  // coroutine scope (lifecycleScope)
 

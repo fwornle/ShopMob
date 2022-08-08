@@ -53,7 +53,7 @@ class AdminGroupMemberSelectAdapter(rootView: View, callBack: (selectedSmobUserA
     }
 
     // allow the BaseRecyclerViewAdapter to access the item layout for this particular RV list
-    override fun getLayoutRes(viewType: Int) = R.layout.smob_user_select_item
+    override fun getLayoutRes(viewType: Int) = R.layout.smob_admin_user_select_item
 
     // called, when the user action has been confirmed and the local DB / backend needs updated
     // ... this is the point where the list can be consolidated, if needed (eg. aggregate status)

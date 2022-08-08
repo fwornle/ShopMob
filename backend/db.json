@@ -271,7 +271,7 @@
     },
     {
       "id": "336c32c2-19f3-44b6-9a49-fe0fa805c935",
-      "itemStatus": "OPEN",
+      "itemStatus": "IN_PROGRESS",
       "itemPosition": 2,
       "name": "sunt",
       "description": "aut est",
@@ -289,7 +289,7 @@
         },
         {
           "id": "f8a8c6b5-3876-4c0a-8011-a56f2754c5b3",
-          "status": "OPEN",
+          "status": "DELETED",
           "listPosition": 2
         }
       ],
@@ -425,7 +425,7 @@
   "shops": [
     {
       "id": "57a70dc5-6e68-4737-87d5-a776e82983a8",
-      "itemStatus": "OPEN",
+      "itemStatus": "IN_PROGRESS",
       "itemPosition": 0,
       "name": "Lidl",
       "description": "et quam aut",
@@ -437,12 +437,17 @@
       "type": "CHAIN",
       "category": "SUPERMARKET",
       "business": [
-        "09:00 - 12:00, 14:00 - 22:00",
-        "09:00 - 12:00, 14:00 - 22:00",
         "09:00 - 12:00",
-        "09:00 - 12:00, 14:00 - 22:00",
-        "09:00 - 12:00, 14:00 - 22:00",
-        "09:00 - 12:00, 14:00 - 18:00",
+        " 14:00 - 22:00",
+        "09:00 - 12:00",
+        " 14:00 - 22:00",
+        "09:00 - 12:00",
+        "09:00 - 12:00",
+        " 14:00 - 22:00",
+        "09:00 - 12:00",
+        " 14:00 - 22:00",
+        "09:00 - 12:00",
+        " 14:00 - 18:00",
         "closed"
       ]
     },
@@ -1571,19 +1576,19 @@
         },
         {
           "id": "b0b1f8e7-72af-47c3-96c1-aa83972fd0e2",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
           "listPosition": 7,
           "mainCategory": "FOODS"
         },
         {
           "id": "c77bd9f1-3b98-4d9f-94eb-405ea1cb2f58",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
           "listPosition": 8,
           "mainCategory": "HARDWARE"
         },
         {
           "id": "c77bd9f1-3b98-4d9f-94eb-405ea1cb2f58",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
           "listPosition": 9,
           "mainCategory": "HARDWARE"
         }
