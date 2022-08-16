@@ -32,7 +32,7 @@ fun <DTO: Dto, ATO: Ato> List<DTO?>._asDomainModel(d: DTO): List<ATO> {
                     name = it.name,
                     description = it.description,
                     items = it.items,
-                    members = it.members,
+                    groups = it.groups,
                     lifecycle = SmobListLifecycle(it.lcStatus, it.lcCompletion),
                 ) as ATO
             }
@@ -72,7 +72,8 @@ fun <DTO: Dto, ATO: Ato> List<DTO?>._asDomainModel(d: DTO): List<ATO> {
                     name = it.name,
                     email = it.email,
                     imageUrl = it.imageUrl,
-                ) as ATO
+                    groups = it.groups,
+                    ) as ATO
             }
 
         }  // when(DTO) ... resolving generic type to concrete type

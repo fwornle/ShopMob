@@ -20,7 +20,8 @@ fun Flow<List<SmobUserDTO>>.asDomainModel(): Flow<List<SmobUserATO>> = transform
                 name = it.name,
                 email = it.email,
                 imageUrl = it.imageUrl,
-            )
+                groups = it.groups,
+                )
         }
     )
 }
@@ -36,7 +37,8 @@ fun List<SmobUserATO>.asDatabaseModel(): List<SmobUserDTO> {
                 name = it.name,
                 email = it.email,
                 imageUrl = it.imageUrl,
-            )
+                groups = it.groups,
+                )
         }
 }
 
@@ -55,7 +57,8 @@ fun Flow<SmobUserDTO?>.asDomainModel(): Flow<SmobUserATO?> = transform {
                 name = it.name,
                 email = it.email,
                 imageUrl = it.imageUrl,
-            )
+                groups = it.groups,
+                )
         }
     )
 }
@@ -71,6 +74,7 @@ fun SmobUserATO.asDatabaseModel(): SmobUserDTO {
                 name = it.name,
                 email = it.email,
                 imageUrl = it.imageUrl,
-            )
+                groups = it.groups,
+                )
         }
 }

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentAdminGroupMemberDetailsBinding
-import com.tanfra.shopmob.smob.data.local.utils.SmobMemberItem
+import com.tanfra.shopmob.smob.data.local.utils.SmobGroupItem
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
@@ -58,26 +58,29 @@ class AdminListMemberDetailsFragment : BaseFragment(), KoinComponent {
         // ... navigate back to the main app
         binding.btAddToGroup.setOnClickListener {
 
+            // Todo: change from member to group logic
+
             // back to default: button invisible
             _viewModel.enableAddButton = false
 
             // add newly selected member to list
             _viewModel.currList?.let { daList ->
 
-                // append member ID to list of members
+                // append group ID to list of gropus
                 _viewModel.currListMember?.id?.let {
 
-                    // new member list
-                    val updatedMemberList = daList.members.toMutableList().apply {
-                        add(SmobMemberItem(
+                    // new group list
+                    val updatedMemberList = daList.groups.toMutableList().apply {
+                        add(
+                            SmobGroupItem(
                             it,
                             SmobItemStatus.OPEN,
-                            daList.members.size.toLong() + 1)
+                            daList.groups.size.toLong() + 1)
                         )
                     }
 
-                    // update list with new member list
-                    daList.members = updatedMemberList
+                    // update list with new group list
+                    daList.groups = updatedMemberList
 
                     // update smob list in DB
                     _viewModel.updateSmobListItem(daList)

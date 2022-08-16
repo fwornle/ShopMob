@@ -33,7 +33,8 @@ class AdminListsAdapter(rootView: View, callBack: (selectedSmobATO: SmobListATO)
 
         // take out all items which have been deleted by swiping
         return items
-            .filter { item -> item.members.map { member -> member.id }.contains(SmobApp.currUser?.id)  }
+            //.filter { item -> item.members.map { member -> member.id }.contains(SmobApp.currUser?.id)  }
+            .filter { item -> item.groups.map { group -> group.id }.intersect(SmobApp.currUser?.groups ?: listOf()).any() }
             .filter { item -> item.itemStatus != SmobItemStatus.DELETED  }
             //.map { item -> consolidateListItem(item) }
             .sortedWith(
@@ -71,7 +72,7 @@ class AdminListsAdapter(rootView: View, callBack: (selectedSmobATO: SmobListATO)
                 itemAdjusted.name,
                 itemAdjusted.description,
                 itemAdjusted.items,
-                itemAdjusted.members,
+                itemAdjusted.groups,
                 itemAdjusted.lifecycle,
             )
 

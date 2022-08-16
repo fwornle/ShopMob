@@ -116,6 +116,7 @@ class SmobPlanningActivity : AppCompatActivity() {
                             userName,
                             userEmail,
                             userProfileUrl.toString(),
+                            daUser?.groups ?: listOf(),
                         )
 
                         // attempt to update user data in local/backend DB (or store, if new)

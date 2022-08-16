@@ -68,7 +68,7 @@ interface SmobUserDao: SmobItemDao<SmobUserDTO> {
     // - using LIKE to perform a regex search on field 'smobGroups.members', as this is a JSON
     //   encoded serialization of the underlying List<SmobUser>
     //
-    @Query("SELECT * FROM smobUsers INNER JOIN smobLists ON smobLists.listId=:listId AND smobLists.listMembers LIKE '%' || smobUsers.userId  || '%' ORDER BY smobUsers.userUsername ASC, smobUsers.userItemStatus")
+    @Query("SELECT * FROM smobUsers INNER JOIN smobLists ON smobLists.listId=:listId INNER JOIN smobGroups ON smobLists.listGroups LIKE '%' || smobGroups.groupId || '%' ORDER BY smobUsers.userName, smobUsers.userItemStatus")
     fun getSmobMembersByListId(listId: String): Flow<List<SmobUserDTO>>
 
     /**

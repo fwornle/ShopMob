@@ -33,7 +33,7 @@ fun <DTO: Dto, ATO: Ato> Flow<DTO?>._asDomainModel(d: DTO): Flow<ATO> {
                         name = it.name,
                         description = it.description,
                         items = it.items,
-                        members = it.members,
+                        groups = it.groups,
                         lifecycle = SmobListLifecycle(it.lcStatus, it.lcCompletion),
                     ) as ATO
                 }
@@ -73,6 +73,7 @@ fun <DTO: Dto, ATO: Ato> Flow<DTO?>._asDomainModel(d: DTO): Flow<ATO> {
                         name = it.name,
                         email = it.email,
                         imageUrl = it.imageUrl,
+                        groups = it.groups,
                     ) as ATO
                 }
 

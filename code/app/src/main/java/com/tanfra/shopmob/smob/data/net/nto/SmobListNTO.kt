@@ -1,9 +1,6 @@
 package com.tanfra.shopmob.smob.data.net.nto
 
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
-import com.tanfra.shopmob.smob.data.local.utils.SmobListItem
-import com.tanfra.shopmob.smob.data.local.utils.SmobListLifecycle
-import com.tanfra.shopmob.smob.data.local.utils.SmobMemberItem
+import com.tanfra.shopmob.smob.data.local.utils.*
 
 // network data type
 data class SmobListNTO(
@@ -13,6 +10,6 @@ data class SmobListNTO(
     var name: String,
     var description: String?,
     var items: List<SmobListItem>,
-    var members: List<SmobMemberItem>,
+    var groups: List<SmobGroupItem>,
     var lifecycle: SmobListLifecycle,
 ): Nto

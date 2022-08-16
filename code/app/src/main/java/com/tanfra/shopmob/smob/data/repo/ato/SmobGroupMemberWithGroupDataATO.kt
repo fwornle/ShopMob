@@ -15,6 +15,7 @@ data class SmobGroupMemberWithGroupDataATO(
     var memberName: String,
     var memberEmail: String,
     var memberImageUrl: String?,
+    var memberGroups: List<String>,
     val groupId: String,
     val groupStatus: @Contextual SmobItemStatus,
     val groupPosition: Long,
@@ -25,5 +26,11 @@ data class SmobGroupMemberWithGroupDataATO(
     // serialization strategy decided at run-time (@Contextual)
     var groupActivity: @Contextual ActivityStatus,
 ) : Ato, java.io.Serializable {
-    fun member() = Member(this.memberName, this.memberUsername, this.memberEmail, this.memberImageUrl)
+    fun member() = Member(
+        this.memberName,
+        this.memberUsername,
+        this.memberEmail,
+        this.memberImageUrl,
+        this.memberGroups,
+    )
 }

@@ -4,6 +4,7 @@ import android.view.View
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.tanfra.shopmob.R
+import com.tanfra.shopmob.smob.data.local.utils.SmobGroupItem
 import com.tanfra.shopmob.smob.data.local.utils.SmobMemberItem
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.*
@@ -33,9 +34,9 @@ class AdminListMemberListAdapter(rootView: View, callBack: (selectedSmobATO: Smo
 
         // figure out who hasn't been deleted yet
         val validMemberIds =
-            if (items.isNotEmpty()) items.first().listMembers
-                .filter { member -> member.status != SmobItemStatus.DELETED }
-                .map { member -> member.id }
+            if (items.isNotEmpty()) items.first().listGroups
+                .filter { group -> group.status != SmobItemStatus.DELETED }
+                .map { group -> group.id }
             else listOf()
 
         // take out all items which have been deleted by swiping
@@ -66,17 +67,17 @@ class AdminListMemberListAdapter(rootView: View, callBack: (selectedSmobATO: Smo
                 item.listName,
                 item.listDescription,
                 item.listItems,
-                // replace list of list members with updated list of members
-                item.listMembers.map { member ->
-                    if(member.id == item.id) {
+                // replace list of Smob groups with updated list of Smob groups
+                item.listGroups.map { group ->
+                    if(group.id == item.id) {
                         // set new status (list property)
-                        SmobMemberItem(
-                            member.id,
+                        SmobGroupItem(
+                            group.id,
                             item.itemStatus,  // update list item status (from status set by user)
-                            member.listPosition,
+                            group.listPosition,
                         )
                     } else {
-                        member  // not the manipulated product --> keep as is
+                        group  // not the manipulated product --> keep as is
                     }
                 },
                 item.listLifecycle,

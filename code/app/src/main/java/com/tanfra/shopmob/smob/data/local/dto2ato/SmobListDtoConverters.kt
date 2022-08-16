@@ -20,7 +20,7 @@ fun Flow<List<SmobListDTO>>.asDomainModel(): Flow<List<SmobListATO>> = transform
                 name = it.name,
                 description = it.description,
                 items = it.items,
-                members = it.members,
+                groups = it.groups,
                 lifecycle = SmobListLifecycle(it.lcStatus, it.lcCompletion),
             )
         }
@@ -37,7 +37,7 @@ fun List<SmobListATO>.asDatabaseModel(): List<SmobListDTO> {
             name = it.name,
             description = it.description,
             items = it.items,
-            members = it.members,
+            groups = it.groups,
             lcStatus = it.lifecycle.status,
             lcCompletion = it.lifecycle.completion,
         )
@@ -58,7 +58,7 @@ fun Flow<SmobListDTO?>.asDomainModel(): Flow<SmobListATO?> = transform {
                 name = it.name,
                 description = it.description,
                 items = it.items,
-                members = it.members,
+                groups = it.groups,
                 lifecycle = SmobListLifecycle(it.lcStatus, it.lcCompletion),
             )
         }
@@ -75,7 +75,7 @@ fun SmobListATO.asDatabaseModel(): SmobListDTO {
             name = it.name,
             description = it.description,
             items = it.items,
-            members = it.members,
+            groups = it.groups,
             lcStatus = it.lifecycle.status,
             lcCompletion = it.lifecycle.completion,
         )

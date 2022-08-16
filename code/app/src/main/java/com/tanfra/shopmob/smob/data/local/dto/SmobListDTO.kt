@@ -1,7 +1,7 @@
 package com.tanfra.shopmob.smob.data.local.dto
 
 import androidx.room.*
-import com.tanfra.shopmob.smob.data.local.utils.SmobMemberItem
+import com.tanfra.shopmob.smob.data.local.utils.SmobGroupItem
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.local.utils.SmobListItem
 
@@ -14,7 +14,7 @@ import com.tanfra.shopmob.smob.data.local.utils.SmobListItem
  * @param name           name of the smobList
  * @param description    optional description
  * @param items          list of descriptors (id, state) of items on the smobList
- * @param members        list of IDs of the smob users sharing this list
+ * @param groups         list of IDs of the smob groups sharing this list
  * @param lcStatus       lifecycle status information of the list (OPEN|IN PROGRESS|DONE)
  * @param lcCompletion   lifecycle completion information of the list (degree of completion, %)
  */
@@ -27,7 +27,7 @@ data class SmobListDTO(
     @ColumnInfo(name = "listName") var name: String = "",
     @ColumnInfo(name = "listDescription") var description: String? = "",
     @ColumnInfo(name = "listItems") var items: List<SmobListItem> = listOf(),
-    @ColumnInfo(name = "listMembers") var members: List<SmobMemberItem> = listOf(),
+    @ColumnInfo(name = "listGroups") var groups: List<SmobGroupItem> = listOf(),
     @ColumnInfo(name = "listLifecycleStatus") var lcStatus: SmobItemStatus = SmobItemStatus.OPEN,
     @ColumnInfo(name = "listLifecycleCompletion") var lcCompletion: Double = -1.0,
 ) : Dto()

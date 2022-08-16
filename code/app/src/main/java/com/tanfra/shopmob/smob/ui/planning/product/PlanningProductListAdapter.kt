@@ -74,7 +74,7 @@ class PlanningProductListAdapter(rootView: View, callBack: (selectedSmobATO: Smo
                         product  // not the manipulated product --> keep as is
                     }
                                    },
-                item.listMembers,
+                item.listGroups,
                 item.listLifecycle,
             )
 

@@ -19,14 +19,22 @@ fs.writeFile('db.json', data, (err) => {
 function rand(max) {
     return Math.floor(Math.random() * max);
 }
-  
+
+
+/*
+ * ***************************************************************************************
+ * smob
+ * ***************************************************************************************
+ */
 function smob () {
 
     // always produce the same results
     faker.seed(123)
 
 
+    // ----------------------------------------------------------------------------------
     // generate some users
+    // ----------------------------------------------------------------------------------
     var smobUsers = []
     var userIds = []
     for (let id = 0; id < 20; id++) {
@@ -47,6 +55,7 @@ function smob () {
             "name": name,
             "email": email,
             "imageUrl": imageUrl,
+            "groups": [],
         })
 
         // log all userIds
@@ -54,13 +63,35 @@ function smob () {
 
     }
 
+    // manually add "myself" (own user: BTwLBEmaoWfQKbooBguh0x84bV52)
+    //
+    // "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
+    // "itemStatus": "OPEN",
+    // "itemPosition": 20,
+    // "username": "Frank.Douvre",
+    // "name": "Frank Douvre",
+    // "email": "fradou7@gmail.com",
+    // "imageUrl": "https://lh3.googleusercontent.com/a/AATXAJx9nYtfUiFXPg2JABf1OWUMGasy_szkM1PSvfiT=s96-c"
+    smobUsers.push({
+        "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
+        "itemStatus": "OPEN",
+        "itemPosition": 20,
+        "username": "Frank.Douvre",
+        "name": "Frank Douvre",
+        "email": "fradou7@gmail.com",
+        "imageUrl": "https://lh3.googleusercontent.com/a/AATXAJx9nYtfUiFXPg2JABf1OWUMGasy_szkM1PSvfiT=s96-c",
+        "groups": [],
+    })
 
+
+    // ----------------------------------------------------------------------------------
     // generate some groups
+    // ----------------------------------------------------------------------------------
     var smobGroups = []
     var groupIds = []
     const itemStatus = ['OPEN', 'IN_PROGRESS', 'DONE']
     const groupTypes = ['OTHER', 'FAMILY', 'FRIENDS', 'WORK']
-    for (let id = 0; id < 5; id++) {
+    for (let id = 0; id < 8; id++) {
 
         var uuid = faker.datatype.uuid()
         var listItemStatus = 'OPEN'
@@ -71,12 +102,24 @@ function smob () {
         var membersOnList = [...Array(rand(10)).keys()].map(_ => faker.helpers.randomize(userIds)).sort()
         membersOnList.splice(0, 0, "BTwLBEmaoWfQKbooBguh0x84bV52")
         var members = membersOnList.map(
-            (userId, idx) => { return { 
-                "id": userId, 
-                "status": faker.helpers.randomize(itemStatus), 
-                "listPosition": idx,
-            } 
-        })
+            (userId, idx) => { 
+
+                // adjust groups list of current user (back reference to this group)
+                if(userId != "BTwLBEmaoWfQKbooBguh0x84bV52") {
+                    // only do this for all dynamically created (dev) users
+                    var daUser = smobUsers.find(user => user.id == userId)
+                    if(!daUser.groups.includes(uuid)) daUser.groups.push(uuid)
+                } 
+    
+                // return member as tuple of ID and status and list position
+                return { 
+                    "id": userId, 
+                    "status": faker.helpers.randomize(itemStatus), 
+                    "listPosition": idx,
+                } 
+            }
+        )
+
         var activityDate = faker.date.past()
         var activityReps = rand(20)
 
@@ -99,8 +142,13 @@ function smob () {
 
     }
 
+    // manually add (all) groups IDs as groups reference to "myself" (own user: BTwLBEmaoWfQKbooBguh0x84bV52)
+    smobUsers.find(user => user.id == "BTwLBEmaoWfQKbooBguh0x84bV52").groups = groupIds
 
+
+    // ----------------------------------------------------------------------------------
     // define some (consistent) products
+    // ----------------------------------------------------------------------------------
     const daProducts = [
         { id: faker.datatype.uuid(), name: 'Milk', description: 'lactose free', catMain: 'FOODS', catSub: 'DAIRY', listPosition: 1, inShopCategory: "SUPERMARKET", inShopName: "Rewe", },
         { id: faker.datatype.uuid(), name: 'Cheese', description: 'Cheddar', catMain: 'FOODS', catSub: 'DAIRY', listPosition: 2, inShopCategory: "SUPERMARKET", inShopName: "Rewe", },
@@ -176,7 +224,9 @@ function smob () {
     }
 
 
+    // ----------------------------------------------------------------------------------
     // define some local shops
+    // ----------------------------------------------------------------------------------
     const daShops = [
         { id: faker.datatype.uuid(), name: 'Lidl', category: 'SUPERMARKET', latitude: 48.19446661077098, longitude: 11.465429663658142, type: 'CHAIN' },
         { id: faker.datatype.uuid(), name: 'Aldi', category: 'SUPERMARKET', latitude: 48.19283416587666, longitude: 11.466210186481476, type: 'CHAIN' },
@@ -247,13 +297,15 @@ function smob () {
             "business": business,
         })
 
-        // log all userIds
+        // log all shopIds
         shopIds.push(uuid)
 
     }
             
 
+    // ----------------------------------------------------------------------------------
     // define some lists
+    // ----------------------------------------------------------------------------------
     const daLists = [
         { id: faker.datatype.uuid(), name: 'Groceries', },
         { id: faker.datatype.uuid(), name: 'Xmas party', },
@@ -282,6 +334,16 @@ function smob () {
             } 
         }
         )
+
+        // groups associated with lists
+        var groupsOnList = [...Array(1 + rand(groupIds.length)).keys()].map(_ => faker.helpers.randomize(groupIds)).sort()
+        var groups = groupsOnList.map(
+            (groupId, idx) => { return { 
+                "id": groupId, 
+                "status": faker.helpers.randomize(itemStatus), 
+                "listPosition": idx,
+            } 
+        })
 
         // aggregate status
         var listStatus = 'DONE'
@@ -313,17 +375,17 @@ function smob () {
         //         { "id": "productId3", "status": "open|in progress|done" },
         //         { }
         //     ],
-        //     "members": [
-        //         "userId1",
-        //         "userId2",
-        //         "userId3",
+        //     "groups": [
+        //         { "id": "groupId1", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 1 },
+        //         { "id": "groupId2", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 2 },
+        //         { "id": "groupId3", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 3 },
         //         "..."
         //     ],
-        //     "lifecycle": {
+        //        "lifecycle": {
         //         "status": "open|in progress|done",
         //         "completion": 35
         //     }
-        // }
+        // }    
 
         smobLists.push({
             "id": uuid,
@@ -332,7 +394,7 @@ function smob () {
             "name": name,
             "description": description,
             "items": items,
-            "members": members,
+            "groups": groups,
             "lifecycle": lifecycle
         })
 
@@ -342,6 +404,7 @@ function smob () {
     }
 
 
+    // ----------------------------------------------------------------------------------
     return { 
         "users": smobUsers,
         "groups": smobGroups,
@@ -351,6 +414,8 @@ function smob () {
     }
 
 }
+
+
 
 // determine the degree of completion of a list
 function completion(statusList) {

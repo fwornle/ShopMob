@@ -183,7 +183,7 @@ class PlanningProductEditFragment : BaseFragment(), AdapterView.OnItemSelectedLi
                         it.name,
                         it.description,
                         newItems,
-                        it.members,
+                        it.groups,
                         SmobListLifecycle(
                             if (it.lifecycle.status.ordinal <= SmobItemStatus.OPEN.ordinal) {
                                 SmobItemStatus.OPEN

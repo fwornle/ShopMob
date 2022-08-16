@@ -13,6 +13,7 @@ import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
  * @param name           name of the smobUser
  * @param email          email of the smobUser
  * @param imageUrl       (optional) URL to image of the smobUser
+ * @param groups         list of group IDs the user has subscribed to
  */
 @Entity(tableName = "smobUsers")
 @RewriteQueriesToDropUnusedColumns
@@ -23,5 +24,6 @@ data class SmobUserDTO(
     @ColumnInfo(name = "userUsername") var username: String = "",
     @ColumnInfo(name = "userName") var name: String = "",
     @ColumnInfo(name = "userEmail") var email: String = "",
-    @ColumnInfo(name = "userImageUrl") var imageUrl: String? = ""
+    @ColumnInfo(name = "userImageUrl") var imageUrl: String? = "",
+    @ColumnInfo(name = "userGroups") var groups: List<String> = listOf(),
 ) : Dto()

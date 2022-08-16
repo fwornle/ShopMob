@@ -31,7 +31,7 @@ fun <DTO: Dto, ATO: Ato> ArrayList<ATO>._asDatabaseModel(d: DTO): List<DTO> {
                     name = it.name,
                     description = it.description,
                     items = it.items,
-                    members = it.members,
+                    groups = it.groups,
                     lcStatus = it.lifecycle.status,
                     lcCompletion = it.lifecycle.completion,
                 ) as DTO
@@ -77,6 +77,7 @@ fun <DTO: Dto, ATO: Ato> ArrayList<ATO>._asDatabaseModel(d: DTO): List<DTO> {
                     name = it.name,
                     email = it.email,
                     imageUrl = it.imageUrl,
+                    groups = it.groups,
                 ) as DTO
             }
 

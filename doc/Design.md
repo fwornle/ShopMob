@@ -229,7 +229,12 @@ The _smobUser_ entries of the _smobUsers_ table adheres to the following schema:
   "username": "username",
   "name": "name",
   "email": "max@mustermann.com",
-  "imageUrl": "URL-to-profile-picture-or-avatar"
+  "imageUrl": "URL-to-profile-picture-or-avatar",
+  "groups": [
+    "groupd1",
+    "groupd2",
+    "..."
+  ]
 }
 ```
 
@@ -328,10 +333,10 @@ The _smobList_ entries of the _smobLists_ table adheres to the following schema:
     { "id": "productId3", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 3, "mainCategory":  "CLOTHING" },
     { }
   ],
-  "members": [
-    { "id": "userId1", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 1 },
-    { "id": "userId2", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 2 },
-    { "id": "userId3", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 3 },
+  "groups": [
+    { "id": "groupId1", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 1 },
+    { "id": "groupId2", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 2 },
+    { "id": "groupId3", "status": "NEW|OPEN|IN_PROGRESS|DONE|DELETED", "customPosition": 3 },
     { }
   ],
   "lifecycle": {

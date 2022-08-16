@@ -29,7 +29,7 @@ fun <DTO: Dto, NTO: Nto> DTO?._asNetworkModel(d: DTO): NTO {
                     name = this.name,
                     description = this.description,
                     items = this.items,
-                    members = this.members,
+                    groups = this.groups,
                     lifecycle = SmobListLifecycle(this.lcStatus, this.lcCompletion),
                 ) as NTO
             }
@@ -69,6 +69,7 @@ fun <DTO: Dto, NTO: Nto> DTO?._asNetworkModel(d: DTO): NTO {
                     name = this.name,
                     email = this.email,
                     imageUrl = this.imageUrl,
+                    groups = this.groups,
                 ) as NTO
             }
 

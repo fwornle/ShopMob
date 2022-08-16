@@ -30,7 +30,7 @@ fun <DTO: Dto, ATO: Ato> DTO?._asDomainModel(d: DTO): ATO {
                     name = this.name,
                     description = this.description,
                     items = this.items,
-                    members = this.members,
+                    groups = this.groups,
                     lifecycle = SmobListLifecycle(this.lcStatus, this.lcCompletion),
                 ) as ATO
             }
@@ -70,6 +70,7 @@ fun <DTO: Dto, ATO: Ato> DTO?._asDomainModel(d: DTO): ATO {
                     name = this.name,
                     email = this.email,
                     imageUrl = this.imageUrl,
+                    groups = this.groups,
                 ) as ATO
             }
 

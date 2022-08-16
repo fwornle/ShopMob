@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.R
+import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.smob.data.local.utils.GroupType
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.*
@@ -455,6 +456,7 @@ class AdminViewModel(
                                     memberName = member.name,
                                     memberEmail = member.email,
                                     memberImageUrl = member.imageUrl,
+                                    memberGroups = member.groups,
                                     groupId = daGroup.id,
                                     groupStatus = daGroup.itemStatus,
                                     groupPosition = daGroup.itemPosition,
@@ -681,12 +683,13 @@ class AdminViewModel(
                         // successfully received all users --> could be empty system though
                         users.data?.let { allUsers ->
 
-                            // fetch all users as defined by the member list of the selected group
+                            // fetch all users who refer to any of the groups associated with the
+                            // selected list (daList)
                             val daListUsers = allUsers.filter { user ->
-                                daList.members.map { member -> member.id }.contains(user.id)
+                                user.groups.intersect(daList.groups).any()
                             }
 
-                            // return all users from daList member list
+                            // return all users associated with daList, incl. the list details
                             daListUsers.map { member ->
 
                                 // extend user record by group data
@@ -698,13 +701,14 @@ class AdminViewModel(
                                     memberName = member.name,
                                     memberEmail = member.email,
                                     memberImageUrl = member.imageUrl,
+                                    memberGroups = member.groups,
                                     listId = daList.id,
                                     listStatus = daList.itemStatus,
                                     listPosition = daList.itemPosition,
                                     listName = daList.name,
                                     listDescription = daList.description,
                                     listItems = daList.items,
-                                    listMembers = daList.members,
+                                    listGroups = daList.groups,
                                     listLifecycle = daList.lifecycle,
                                 )
 

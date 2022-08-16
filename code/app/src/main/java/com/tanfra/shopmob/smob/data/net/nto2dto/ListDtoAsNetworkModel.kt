@@ -36,7 +36,7 @@ fun <DTO: Dto, NTO: Nto> List<DTO?>._asNetworkModel(d: DTO): ArrayList<NTO> {
                             name = it.name,
                             description = it.description,
                             items = it.items,
-                            members = it.members,
+                            groups = it.groups,
                             lifecycle = SmobListLifecycle(it.lcStatus, it.lcCompletion),
                         ) as NTO
                     },
@@ -88,6 +88,7 @@ fun <DTO: Dto, NTO: Nto> List<DTO?>._asNetworkModel(d: DTO): ArrayList<NTO> {
                             name = it.name,
                             email = it.email,
                             imageUrl = it.imageUrl,
+                            groups = it.groups,
                         ) as NTO
                     },
                 )

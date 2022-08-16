@@ -24,6 +24,7 @@ class SmobApp : Application(), KoinComponent {
     companion object{
         // details of currently logged-in user
         var currUser: SmobUserATO? = null
+        var currUserGroupIds = listOf<String>()
     }
 
     override fun onCreate() {

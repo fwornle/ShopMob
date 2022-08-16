@@ -23,12 +23,19 @@ class LocalDbConverters {
     @TypeConverter
     fun jsonToActivity(value: String) = Json.decodeFromString<ActivityStatus>(value)
 
-    // SmobGroupItem converter - List
+    // SmobMemberItem converter - List
     @TypeConverter
-    fun listOfGroupEntryToJson(value: List<SmobMemberItem?>) = Json.encodeToString(value)
+    fun listOfMemberEntryToJson(value: List<SmobMemberItem?>) = Json.encodeToString(value)
 
     @TypeConverter
-    fun jsonToListOfGroupEntry(value: String) = Json.decodeFromString<Array<SmobMemberItem>>(value).toList()
+    fun jsonToListOfMemberEntry(value: String) = Json.decodeFromString<Array<SmobMemberItem>>(value).toList()
+
+    // SmobGroupItem converter - List
+    @TypeConverter
+    fun listOfGroupEntryToJson(value: List<SmobGroupItem?>) = Json.encodeToString(value)
+
+    @TypeConverter
+    fun jsonToListOfGroupEntry(value: String) = Json.decodeFromString<Array<SmobGroupItem>>(value).toList()
 
     // SmobListItem converter - List
     @TypeConverter

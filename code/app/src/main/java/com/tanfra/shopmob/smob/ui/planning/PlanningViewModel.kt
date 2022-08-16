@@ -125,7 +125,7 @@ class PlanningViewModel(
                                 listName = rawList.name,
                                 listDescription = rawList.description,
                                 listItems = rawList.items,
-                                listMembers = rawList.members,
+                                listGroups = rawList.groups,
                                 listLifecycle = rawList.lifecycle,
                             )
                         }
@@ -303,7 +303,7 @@ class PlanningViewModel(
 //                                        listName = rawList.name,
 //                                        listDescription = rawList.description,
 //                                        listItems = rawList.items,
-//                                        listMembers = rawList.members,
+//                                        listGroups = rawList.groups,
 //                                        listLifecycle = rawList.lifecycle,
 //                                    )
 //                                }

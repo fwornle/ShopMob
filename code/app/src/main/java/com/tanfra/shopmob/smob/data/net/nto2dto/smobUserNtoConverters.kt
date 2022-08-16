@@ -17,6 +17,7 @@ fun ArrayList<SmobUserNTO>.asRepoModel(): List<SmobUserDTO> {
                 name = it.name,
                 email = it.email,
                 imageUrl = it.imageUrl,
+                groups = it.groups,
             )
         }
     }
@@ -34,6 +35,7 @@ fun List<SmobUserDTO>.asNetworkModel(): ArrayList<SmobUserNTO> {
                 name = it.name,
                 email = it.email,
                 imageUrl = it.imageUrl,
+                groups = it.groups,
             )
         },
     )
@@ -49,6 +51,7 @@ fun SmobUserNTO.asRepoModel(): SmobUserDTO {
         name = this.name,
         email = this.email,
         imageUrl = this.imageUrl,
+        groups = this.groups,
     )
 }
 
@@ -62,6 +65,7 @@ fun SmobUserDTO.asNetworkModel(): SmobUserNTO {
         name = this.name,
         email = this.email,
         imageUrl = this.imageUrl,
+        groups = this.groups,
     )
 }
 

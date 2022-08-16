@@ -24,4 +24,5 @@ data class Member(
     val username: String,
     val email: String,
     val imageUrl: String?,
-)
+    var groups: List<String>,
+    )

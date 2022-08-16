@@ -15,15 +15,22 @@ data class SmobListMemberWithListDataATO(
     var memberName: String,
     var memberEmail: String,
     var memberImageUrl: String?,
+    var memberGroups: List<String>,
     val listId: String,
     val listStatus: @Contextual SmobItemStatus,
     val listPosition: Long,
     var listName: String,
     var listDescription: String?,
     var listItems: List<@Contextual SmobListItem>,
-    var listMembers: List<@Contextual SmobMemberItem>,
+    var listGroups: List<@Contextual SmobGroupItem>,
     // serialization strategy decided at run-time (@Contextual)
     var listLifecycle: @Contextual SmobListLifecycle,
 ) : Ato, java.io.Serializable {
-    fun member() = Member(this.memberName, this.memberUsername, this.memberEmail, this.memberImageUrl)
+    fun member() = Member(
+        this.memberName,
+        this.memberUsername,
+        this.memberEmail,
+        this.memberImageUrl,
+        this.memberGroups,
+    )
 }

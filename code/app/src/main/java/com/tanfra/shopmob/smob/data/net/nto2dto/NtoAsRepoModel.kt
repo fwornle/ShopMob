@@ -29,7 +29,7 @@ fun <DTO: Dto, NTO: Nto> NTO._asRepoModel(d: DTO): DTO {
                 name = this.name,
                 description = this.description,
                 items = this.items,
-                members = this.members,
+                groups = this.groups,
                 lcStatus = this.lifecycle.status,
                 lcCompletion = this.lifecycle.completion,
             ) as DTO
@@ -75,6 +75,7 @@ fun <DTO: Dto, NTO: Nto> NTO._asRepoModel(d: DTO): DTO {
                 name = this.name,
                 email = this.email,
                 imageUrl = this.imageUrl,
+                groups = this.groups,
             ) as DTO
         }
 

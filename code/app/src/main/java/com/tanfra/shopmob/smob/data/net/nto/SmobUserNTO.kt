@@ -11,4 +11,5 @@ data class SmobUserNTO(
     var name: String,
     var email: String,
     var imageUrl: String?,
+    var groups: List<String>,
 ): Nto

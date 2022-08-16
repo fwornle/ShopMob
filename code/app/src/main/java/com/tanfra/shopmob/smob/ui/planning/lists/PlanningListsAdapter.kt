@@ -36,7 +36,8 @@ class PlanningListsAdapter(rootView: View, callBack: (selectedSmobATO: SmobListA
 
         // take out all items which have been deleted by swiping
         return items
-            .filter { item -> item.members.map { member -> member.id }.contains(SmobApp.currUser?.id)  }
+                //
+            .filter { item -> item.groups.map { group -> group.id }.intersect(SmobApp.currUser?.groups ?: listOf()).any() }
             .filter { item -> item.itemStatus != SmobItemStatus.DELETED  }
             .map { item -> consolidateListItem(item) }
             .sortedWith(
@@ -87,7 +88,7 @@ class PlanningListsAdapter(rootView: View, callBack: (selectedSmobATO: SmobListA
                         product
                     }
                 },
-                itemAdjusted.members,
+                itemAdjusted.groups,
                 itemAdjusted.lifecycle,
             )
 
