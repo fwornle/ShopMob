@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_planning"
-    app:startDestination="@id/smobPlanningListsFragment">
+    app:startDestination="@id/smobPlanningListsTableFragment">
 
     <!-- cross activity navigation made easy...
          https://stackoverflow.com/questions/62214514/navigate-from-one-activity-to-another-with-navigation-component
@@ -17,92 +17,92 @@
         />
 
     <fragment
-        android:id="@+id/smobPlanningListsFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsFragment"
-        android:label="Planning Lists"
-        tools:layout="@layout/fragment_planning_lists"
+        android:id="@+id/smobPlanningListsTableFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsTableFragment"
+        android:label="Planning Tables"
+        tools:layout="@layout/fragment_planning_lists_table"
         >
         <action
-            android:id="@+id/action_planningListsFragment_to_planningProductListFragment"
-            app:destination="@id/smobPlanningProductListFragment" />
+            android:id="@+id/action_planningListsTableFragment_to_planningProductsTableFragment"
+            app:destination="@id/smobPlanningProductsTableFragment" />
         <action
-            android:id="@+id/action_planningListsFragment_to_planningListsEditFragment"
-            app:destination="@id/smobPlanningListsEditFragment" />
+            android:id="@+id/action_planningListsTableFragment_to_planningListsAddNewItemFragment"
+            app:destination="@id/smobPlanningListsAddNewItemFragment" />
         <action
-            android:id="@+id/action_planningListsFragment_to_planningShopEditFragment"
-            app:destination="@id/smobPlanningShopEditFragment" />
+            android:id="@+id/action_planningListsTableFragment_to_planningShopsAddNewItemFragment"
+            app:destination="@id/smobPlanningShopsAddNewItemFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/smobPlanningListsEditFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.select.groups.AdminGroupsEditFragment"
-        android:label="Planning Lists Edit"
-        tools:layout="@layout/fragment_planning_lists_edit"
+        android:id="@+id/smobPlanningListsAddNewItemFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsAddNewItemFragment"
+        android:label="Planning Lists - Add New Item"
+        tools:layout="@layout/fragment_planning_lists_add_new_item"
         >
         <action
-            android:id="@+id/action_planningListsEditFragment_to_planningProductListsFragment"
-            app:destination="@id/smobPlanningProductListFragment" />
+            android:id="@+id/action_planningListsAddNewItemFragment_to_planningProductListsTableFragment"
+            app:destination="@id/smobPlanningProductsTableFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/smobPlanningProductListFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.product.PlanningProductListFragment"
-        android:label="Planning Product List"
-        tools:layout="@layout/fragment_planning_product_list"
+        android:id="@+id/smobPlanningProductsTableFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.products.PlanningProductsTableFragment"
+        android:label="Planning Products Table"
+        tools:layout="@layout/fragment_planning_products_table"
         >
         <action
-            android:id="@+id/action_planningProductListFragment_to_planningProductEditFragment"
-            app:destination="@id/smobPlanningProductEditFragment" />
+            android:id="@+id/action_planningProductsTableFragment_to_planningProductsAddNewItemFragment"
+            app:destination="@id/smobPlanningProductsAddNewItemFragment" />
         <action
-            android:id="@+id/action_planningProductListFragment_to_planningListsFragment"
-            app:destination="@id/smobPlanningListsFragment" />
+            android:id="@+id/action_planningProductsTableFragment_to_planningListsTableFragment"
+            app:destination="@id/smobPlanningListsTableFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/smobPlanningProductEditFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.product.PlanningProductEditFragment"
-        android:label="Planning Product Edit"
-        tools:layout="@layout/fragment_planning_product_edit"
+        android:id="@+id/smobPlanningProductsAddNewItemFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.products.PlanningProductsAddNewItemFragment"
+        android:label="Planning Products - Add New Item"
+        tools:layout="@layout/fragment_planning_products_add_new_item"
         >
         <action
-            android:id="@+id/action_planningProductEditFragment_to_planningShopListFragment"
-            app:destination="@id/smobPlanningShopListFragment" />
+            android:id="@+id/action_planningProductsAddNewItemFragment_to_planningShopsTableFragment"
+            app:destination="@id/smobPlanningShopsTableFragment" />
         <action
-            android:id="@+id/action_planningProductEditFragment_to_planningProductListFragment"
-            app:destination="@id/smobPlanningProductListFragment" />
+            android:id="@+id/action_planningProductsAddNewItemFragment_to_planningProductsTableFragment"
+            app:destination="@id/smobPlanningProductsTableFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/smobPlanningShopListFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.shop.PlanningShopListFragment"
-        android:label="Planning Shop List"
-        tools:layout="@layout/fragment_planning_shop_list"
+        android:id="@+id/smobPlanningShopsTableFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.shops.PlanningShopsTableFragment"
+        android:label="Planning Shops Table"
+        tools:layout="@layout/fragment_planning_shops_table"
         >
         <action
-            android:id="@+id/action_planningShopListFragment_to_planningProductEditFragment"
-            app:destination="@id/smobPlanningProductEditFragment" />
+            android:id="@+id/action_planningShopsTableFragment_to_planningProductsAddNewItemFragment"
+            app:destination="@id/smobPlanningProductsAddNewItemFragment" />
         <action
-            android:id="@+id/action_smobPlanningShopListFragment_to_smobPlanningShopEditFragment"
-            app:destination="@id/smobPlanningShopEditFragment" />
+            android:id="@+id/action_smobPlanningShopsTableFragment_to_smobPlanningShopsAddNewItemFragment"
+            app:destination="@id/smobPlanningShopsAddNewItemFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/smobPlanningShopEditFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditFragment"
-        android:label="Planning Shop Edit"
-        tools:layout="@layout/fragment_planning_shop_edit"
+        android:id="@+id/smobPlanningShopsAddNewItemFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.shops.addNewItem.PlanningShopsAddNewItemFragment"
+        android:label="Planning Shops - Add New Item"
+        tools:layout="@layout/fragment_planning_shops_add_new_item"
         >
         <action
-            android:id="@+id/action_planningShopEditFragment_to_planningShopMapFragment"
+            android:id="@+id/action_planningShopsAddNewItemFragment_to_planningShopMapFragment"
             app:destination="@id/smobPlanningShopMapFragment" />
         <action
-            android:id="@+id/action_planningShopEditFragment_to_planningShopListFragment"
-            app:destination="@id/smobPlanningShopListFragment" />
+            android:id="@+id/action_planningShopsAddNewItemFragment_to_planningShopsTableFragment"
+            app:destination="@id/smobPlanningShopsTableFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/smobPlanningShopMapFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopMapFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.shops.addNewItem.PlanningShopMapFragment"
         android:label="Select Store Location"
         tools:layout="@layout/fragment_planning_shop_map"
         />

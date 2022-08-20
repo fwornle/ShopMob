@@ -1,8 +1,6 @@
 package com.tanfra.shopmob.smob.data.local.utils
 
-import androidx.room.ColumnInfo
 import kotlinx.serialization.Serializable
-import java.text.FieldPosition
 
 // define data types to be used with the Room DB (possibly w/h conversion)
 enum class ShopCategory {

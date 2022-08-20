@@ -102,6 +102,30 @@ class SmobGroupRepository(
 
     }
 
+    /**
+     * Get the smob members of a particular smob group from the local db
+     * @param id of the smob group
+     * @return Result holds a Success with all the smob users or an Error object with the error message
+     */
+    override fun getSmobGroupsByListId(id: String): Flow<Resource<List<SmobGroupATO>>> {
+        // support espresso testing (w/h coroutines)
+        wrapEspressoIdlingResource {
+
+            // try to fetch data from the local DB
+            var atoFlow: Flow<List<SmobGroupATO>> = flowOf(listOf())
+            return try {
+                // fetch data from DB (and convert to ATO)
+                atoFlow = smobGroupDao.getSmobGroupsByListId(id).asDomainModel()
+                // wrap data in Resource (--> error/success/[loading])
+                atoFlow.asResource(null)
+            } catch (e: Exception) {
+                // handle exceptions --> error message returned in Resource.error
+                atoFlow.asResource(e.localizedMessage)
+            }
+
+        }  // idlingResource (testing)
+    }
+
 
     /**
      * Insert a smob group in the db. Replace a potentially existing smob group record.

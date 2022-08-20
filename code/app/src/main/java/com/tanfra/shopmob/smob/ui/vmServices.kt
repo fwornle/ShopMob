@@ -4,7 +4,7 @@ import com.tanfra.shopmob.smob.data.repo.dataSource.*
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.details.DetailsViewModel
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
-import com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditViewModel
+import com.tanfra.shopmob.smob.ui.planning.shops.addNewItem.PlanningShopsAddNewItemViewModel
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -26,7 +26,7 @@ val vmServices = module {
 
     // ShopEdit fragment
     viewModel {
-        PlanningShopEditViewModel(
+        PlanningShopsAddNewItemViewModel(
             get(),  // app (context)
             get() as SmobShopDataSource,  // repo as data source
         )

@@ -675,7 +675,7 @@ class PlanningViewModel(
     // Detailed investigation of Flow vs. LiveData: LD seems the better fit for UI layer
     // see: https://bladecoder.medium.com/kotlins-flow-in-viewmodels-it-s-complicated-556b472e281a
     //
-    // --> reverting back to LiveData at ViewModel layer (collection point) and profiting of the
+    // --> reverting back to LiveData at ViewModel layer (collection point) and benefitting of the
     //     much less cumbersome handling of the data incl. the better "lifecycle optimized" behavior
     //
     // --> using ".asLiveData()", as the incoming flow is not based on "suspendable" operations

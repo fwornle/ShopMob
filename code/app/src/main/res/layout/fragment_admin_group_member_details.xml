@@ -48,14 +48,14 @@
                 android:text="@string/smob_group_member_details"
                 android:textSize="@dimen/text_size_large"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/ivSmobGroupMember"
+                app:layout_constraintBottom_toTopOf="@id/ivSmobListGroup"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
             <!-- row: Username -->
             <ImageView
-                android:id="@+id/ivSmobGroupMember"
+                android:id="@+id/ivSmobListGroup"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/image_header_height"
                 android:layout_marginStart="@dimen/horizontal_margin_small"
@@ -69,14 +69,14 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tvHeading"
-                app:profileImage="@{viewModel.currMemberDetails.imageUrl}"
+                app:profileImage="@{viewModel.currGroupMember.imageUrl}"
                 tools:src="@drawable/ic_baseline_person_24" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/ivSmobGroupMember"
+                app:layout_constraintTop_toBottomOf="@id/ivSmobListGroup"
                 app:layout_constraintBottom_toTopOf="@+id/clName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/horizontal_margin_small"
                     android:layout_marginEnd="@dimen/horizontal_margin_huge"
-                    android:text="@{viewModel.currMemberDetails.username}"
+                    android:text="@{viewModel.currGroupMember.username}"
                     tools:text="Some username"
                     android:textSize="@dimen/label_text_size"
                     app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorUsername"
@@ -175,7 +175,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/horizontal_margin_small"
                     android:layout_marginEnd="@dimen/horizontal_margin_huge"
-                    android:text="@{viewModel.currMemberDetails.name}"
+                    android:text="@{viewModel.currGroupMember.name}"
                     tools:text="Some product description"
                     android:textSize="@dimen/label_text_size"
                     app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorName"
@@ -233,7 +233,7 @@
                     android:layout_marginStart="@dimen/horizontal_margin_small"
                     android:layout_marginEnd="@dimen/horizontal_margin_huge"
                     android:layout_marginBottom="@dimen/vertical_margin_large"
-                    android:text="@{viewModel.currMemberDetails.email}"
+                    android:text="@{viewModel.currGroupMember.email}"
                     tools:text="Some product category"
                     android:textSize="@dimen/label_text_size"
                     app:layout_constraintBaseline_toBaselineOf="@id/tvAnchorEmail"

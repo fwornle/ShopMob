@@ -2,6 +2,7 @@ package com.tanfra.shopmob.smob.data.local.dao
 
 import androidx.room.*
 import com.tanfra.shopmob.smob.data.local.dto.SmobGroupDTO
+import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -23,6 +24,12 @@ interface SmobGroupDao: SmobItemDao<SmobGroupDTO> {
      */
     @Query("SELECT * FROM smobGroups")
     override fun getSmobItems(): Flow<List<SmobGroupDTO>>
+
+    /**
+     * @return all smobGroups on a given SmobList (= referenced groups).
+     */
+    @Query("SELECT * FROM smobGroups INNER JOIN smobLists ON smobLists.listId=:listId AND smobLists.listGroups LIKE '%' || smobGroups.groupId  || '%' ORDER BY smobGroups.groupName ASC, smobGroups.groupItemStatus")
+    fun getSmobGroupsByListId(listId: String): Flow<List<SmobGroupDTO>>
 
     /**
      * Insert a smob group in the database. If the smob group already exists, replace it.

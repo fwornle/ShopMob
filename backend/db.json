@@ -260,6 +260,16 @@
         "856c33ae-0ec5-485e-a8d0-42cc4787d5d4",
         "2fab3ccb-79db-40b0-808b-cb3a7e6d6b19"
       ]
+    },
+    {
+      "id": "user-without-firebase-id",
+      "itemStatus": "NEW",
+      "itemPosition": 21,
+      "username": "user-without-username",
+      "name": "user-without-username",
+      "email": "user-without-email",
+      "imageUrl": "null",
+      "groups": []
     }
   ],
   "groups": [
@@ -343,7 +353,7 @@
     },
     {
       "id": "219f34b6-5a49-4fe0-ba80-5c93511a0bea",
-      "itemStatus": "OPEN",
+      "itemStatus": "IN_PROGRESS",
       "itemPosition": 2,
       "name": "sed",
       "description": "ab quia exercitationem",
@@ -363,6 +373,11 @@
           "id": "757e108b-d767-490c-8657-fc9c529c372e",
           "status": "DONE",
           "listPosition": 2
+        },
+        {
+          "id": "465ca607-c295-4adb-a861-f732eae81a75",
+          "status": "OPEN",
+          "listPosition": 4
         }
       ],
       "activity": {
@@ -392,6 +407,16 @@
           "id": "e858a057-eeb3-410b-ae58-df07e0a8e899",
           "status": "DONE",
           "listPosition": 2
+        },
+        {
+          "id": "631f7ea5-4ae4-4734-9656-ecdbb7f86d3b",
+          "status": "OPEN",
+          "listPosition": 4
+        },
+        {
+          "id": "0c4e6054-5fd8-48a8-817c-f6611278f755",
+          "status": "OPEN",
+          "listPosition": 5
         }
       ],
       "activity": {
@@ -509,6 +534,11 @@
           "id": "39fbaadf-0e40-4861-9f23-9553f193a46a",
           "status": "IN_PROGRESS",
           "listPosition": 2
+        },
+        {
+          "id": "1d21d940-8b10-4915-b5ea-558b9a3f94a3",
+          "status": "OPEN",
+          "listPosition": 4
         }
       ],
       "activity": {
@@ -1406,7 +1436,7 @@
         },
         {
           "id": "58a3a9a9-3af2-4deb-9708-a933088ddbd2",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
           "listPosition": 2,
           "mainCategory": "FOODS"
         },
@@ -1417,21 +1447,15 @@
           "mainCategory": "HARDWARE"
         },
         {
-          "id": "b8807dde-3834-45fc-a1b0-b56e36fc1679",
-          "status": "DONE",
-          "listPosition": 4,
-          "mainCategory": "HARDWARE"
-        },
-        {
           "id": "d732a1bd-78d5-4bbe-bc08-375720c8d662",
           "status": "DONE",
-          "listPosition": 5,
+          "listPosition": 4,
           "mainCategory": "CLOTHING"
         },
         {
           "id": "e224cffe-f2cf-46c1-83e1-ee68a8a6502a",
           "status": "IN_PROGRESS",
-          "listPosition": 6,
+          "listPosition": 5,
           "mainCategory": "FOODS"
         }
       ],
@@ -1479,99 +1503,57 @@
           "mainCategory": "FOODS"
         },
         {
-          "id": "58a3a9a9-3af2-4deb-9708-a933088ddbd2",
-          "status": "IN_PROGRESS",
-          "listPosition": 4,
-          "mainCategory": "FOODS"
-        },
-        {
           "id": "5cc319cd-9dd9-4619-b8af-ac6882ce038a",
           "status": "DONE",
-          "listPosition": 5,
+          "listPosition": 4,
           "mainCategory": "HARDWARE"
         },
         {
           "id": "68459a03-f303-4bf9-b9ca-76969effa33b",
           "status": "DONE",
+          "listPosition": 5,
+          "mainCategory": "SUPPLIES"
+        },
+        {
+          "id": "6d409a2a-51cd-4d9a-9e90-733e095e9552",
+          "status": "OPEN",
           "listPosition": 6,
           "mainCategory": "SUPPLIES"
         },
         {
-          "id": "6d409a2a-51cd-4d9a-9e90-733e095e9552",
-          "status": "OPEN",
+          "id": "862cb73d-4157-4076-8df2-e67c1836477d",
+          "status": "IN_PROGRESS",
           "listPosition": 7,
-          "mainCategory": "SUPPLIES"
-        },
-        {
-          "id": "6d409a2a-51cd-4d9a-9e90-733e095e9552",
-          "status": "DONE",
-          "listPosition": 8,
-          "mainCategory": "SUPPLIES"
-        },
-        {
-          "id": "862cb73d-4157-4076-8df2-e67c1836477d",
-          "status": "IN_PROGRESS",
-          "listPosition": 9,
-          "mainCategory": "FOODS"
-        },
-        {
-          "id": "862cb73d-4157-4076-8df2-e67c1836477d",
-          "status": "OPEN",
-          "listPosition": 10,
-          "mainCategory": "FOODS"
-        },
-        {
-          "id": "862cb73d-4157-4076-8df2-e67c1836477d",
-          "status": "OPEN",
-          "listPosition": 11,
-          "mainCategory": "FOODS"
-        },
-        {
-          "id": "862cb73d-4157-4076-8df2-e67c1836477d",
-          "status": "IN_PROGRESS",
-          "listPosition": 12,
           "mainCategory": "FOODS"
         },
         {
           "id": "b8807dde-3834-45fc-a1b0-b56e36fc1679",
           "status": "IN_PROGRESS",
-          "listPosition": 13,
+          "listPosition": 8,
           "mainCategory": "HARDWARE"
         },
         {
           "id": "babfc35a-57cb-466b-89f5-71513ec78fd5",
           "status": "IN_PROGRESS",
-          "listPosition": 14,
+          "listPosition": 9,
           "mainCategory": "CLOTHING"
         },
         {
           "id": "cc7e3765-e4f1-491a-bdce-2634abcac72d",
           "status": "OPEN",
-          "listPosition": 15,
+          "listPosition": 10,
           "mainCategory": "FOODS"
         },
         {
           "id": "d732a1bd-78d5-4bbe-bc08-375720c8d662",
           "status": "OPEN",
-          "listPosition": 16,
+          "listPosition": 11,
           "mainCategory": "CLOTHING"
         },
         {
           "id": "fe3b9499-f7af-49b8-9c71-103fc7c5955c",
           "status": "IN_PROGRESS",
-          "listPosition": 17,
-          "mainCategory": "FOODS"
-        },
-        {
-          "id": "fe3b9499-f7af-49b8-9c71-103fc7c5955c",
-          "status": "DONE",
-          "listPosition": 18,
-          "mainCategory": "FOODS"
-        },
-        {
-          "id": "fe3b9499-f7af-49b8-9c71-103fc7c5955c",
-          "status": "DONE",
-          "listPosition": 19,
+          "listPosition": 12,
           "mainCategory": "FOODS"
         }
       ],
@@ -1592,29 +1574,14 @@
           "listPosition": 2
         },
         {
-          "id": "850efd9d-0ea6-4642-b90b-0a0318b8ebf5",
+          "id": "856c33ae-0ec5-485e-a8d0-42cc4787d5d4",
           "status": "IN_PROGRESS",
           "listPosition": 3
         },
         {
-          "id": "850efd9d-0ea6-4642-b90b-0a0318b8ebf5",
+          "id": "cfdf16aa-96a4-4016-8b42-6920f017ad7e",
           "status": "DONE",
           "listPosition": 4
-        },
-        {
-          "id": "856c33ae-0ec5-485e-a8d0-42cc4787d5d4",
-          "status": "IN_PROGRESS",
-          "listPosition": 5
-        },
-        {
-          "id": "cfdf16aa-96a4-4016-8b42-6920f017ad7e",
-          "status": "DONE",
-          "listPosition": 6
-        },
-        {
-          "id": "cfdf16aa-96a4-4016-8b42-6920f017ad7e",
-          "status": "OPEN",
-          "listPosition": 7
         }
       ],
       "lifecycle": {
@@ -1648,15 +1615,9 @@
           "mainCategory": "FOODS"
         },
         {
-          "id": "724858fb-74a6-458f-9a53-213f5f19e073",
-          "status": "DONE",
-          "listPosition": 3,
-          "mainCategory": "FOODS"
-        },
-        {
           "id": "e224cffe-f2cf-46c1-83e1-ee68a8a6502a",
           "status": "IN_PROGRESS",
-          "listPosition": 4,
+          "listPosition": 3,
           "mainCategory": "FOODS"
         }
       ],
@@ -1682,14 +1643,9 @@
           "listPosition": 3
         },
         {
-          "id": "856c33ae-0ec5-485e-a8d0-42cc4787d5d4",
-          "status": "DONE",
-          "listPosition": 4
-        },
-        {
           "id": "cfdf16aa-96a4-4016-8b42-6920f017ad7e",
           "status": "DONE",
-          "listPosition": 5
+          "listPosition": 4
         }
       ],
       "lifecycle": {
@@ -1834,7 +1790,7 @@
       "items": [
         {
           "id": "043f776b-c3cd-416f-88d9-d68a9dca4f7b",
-          "status": "OPEN",
+          "status": "DONE",
           "listPosition": 0,
           "mainCategory": "SUPPLIES"
         },
@@ -1882,7 +1838,7 @@
         },
         {
           "id": "babfc35a-57cb-466b-89f5-71513ec78fd5",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
           "listPosition": 8,
           "mainCategory": "CLOTHING"
         },
@@ -1913,7 +1869,7 @@
         },
         {
           "id": "2fab3ccb-79db-40b0-808b-cb3a7e6d6b19",
-          "status": "DONE",
+          "status": "IN_PROGRESS",
           "listPosition": 1
         },
         {
@@ -1922,12 +1878,12 @@
           "listPosition": 2
         },
         {
-          "id": "850efd9d-0ea6-4642-b90b-0a0318b8ebf5",
-          "status": "DONE",
+          "id": "cfdf16aa-96a4-4016-8b42-6920f017ad7e",
+          "status": "OPEN",
           "listPosition": 3
         },
         {
-          "id": "cfdf16aa-96a4-4016-8b42-6920f017ad7e",
+          "id": "219f34b6-5a49-4fe0-ba80-5c93511a0bea",
           "status": "OPEN",
           "listPosition": 4
         }

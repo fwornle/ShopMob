@@ -16,7 +16,6 @@ interface SmobUserDataSource: SmobItemDataSource<SmobUserATO> {
     override fun getSmobItem(id: String): Flow<Resource<SmobUserATO?>>
     override fun getAllSmobItems(): Flow<Resource<List<SmobUserATO>>>
     fun getSmobMembersByGroupId(id: String): Flow<Resource<List<SmobUserATO>>>
-    fun getSmobMembersByListId(id: String): Flow<Resource<List<SmobUserATO>>>
 
     // By default Room runs suspend queries off the main thread
     override suspend fun saveSmobItem(smobItemATO: SmobUserATO)

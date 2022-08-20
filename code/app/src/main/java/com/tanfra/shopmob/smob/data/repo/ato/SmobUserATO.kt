@@ -16,6 +16,4 @@ data class SmobUserATO(
     var email: String,
     var imageUrl: String?,
     var groups: List<String>,
-) : Ato, java.io.Serializable {
-    fun member() = Member(this.name, this.username, this.email, this.imageUrl, this.groups)
-}
+) : Ato, java.io.Serializable

@@ -4,7 +4,8 @@
 
     <string name="app_name">ShopMob</string>
     <string name="app_name_planning">Shop for: %1$s</string>
-    <string name="app_name_admin_members">Group: %1$s</string>
+    <string name="app_name_admin_groups_in_list">Groups of List: %1$s</string>
+    <string name="app_name_admin_group_members">Group: %1$s</string>
     <string name="app_name_planning_shop">ShopMob: %1$s</string>
     <string name="app_name_admin">ShopMob Administration</string>
     <string name="app_name_admin_profile">ShopMob User Profile</string>
@@ -85,6 +86,7 @@
     <string name="save_smob_item">Save ShopMob item</string>
     <string name="save_smob_shop">Save ShopMob shop</string>
     <string name="save_smob_group">Save ShopMob group</string>
+    <string name="save_smob_list">Save ShopMob list</string>
 
     <!-- Smob fcm channel ID -->
     <string name="smob_update_notification_channel_id">smob_update_notification_channel_id</string>
@@ -94,6 +96,7 @@
     <string name="cancel">Cancel</string>
     <string name="smob_product_details">ShopMob Product Details</string>
     <string name="smob_group_member_details">ShopMob Member Details</string>
+    <string name="smob_list_group_details">ShopMob List - Group Details</string>
 
     <string name="smob_shop_details">ShopMob Store Details</string>
     <string name="map">map</string>
@@ -137,6 +140,7 @@
     <string name="map_user_prompt">Select location of the ShopMob Store.</string>
     <string name="error_add_smob_items">Add some ShopMob items first…</string>
     <string name="error_add_smob_users">Add some ShopMob users first…</string>
+    <string name="error_add_smob_groups">Add some ShopMob groups first…</string>
     <string name="error_add_smob_lists">Add some ShopMob lists first…</string>
     <string name="location_accuracy_explanation"><![CDATA[ShopMob needs \'Improve Location Accuracy\' enabled. Go to settings \'Security & Location > Location > Mode\' to enable this.]]></string>
     <string name="static_shortcut_label_short">Active Shopping List</string>

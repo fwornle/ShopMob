@@ -7,7 +7,7 @@ import android.text.TextUtils
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofenceStatusCodes
 import com.google.android.gms.location.GeofencingEvent
-import com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditFragment.Companion.ACTION_GEOFENCE_EVENT
+import com.tanfra.shopmob.smob.ui.planning.shops.addNewItem.PlanningShopsAddNewItemFragment.Companion.ACTION_GEOFENCE_EVENT
 import com.tanfra.shopmob.smob.work.SmobAppWork
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

@@ -25,7 +25,7 @@ import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import com.tanfra.shopmob.smob.data.local.LocalDB
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
-import com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopEditViewModel
+import com.tanfra.shopmob.smob.ui.planning.shops.addNewItem.PlanningShopsAddNewItemViewModel
 import com.tanfra.shopmob.util.DataBindingIdlingResource
 import com.tanfra.shopmob.util.monitorActivity
 import com.tanfra.shopmob.utils.EspressoIdlingResource
@@ -56,7 +56,7 @@ import java.util.*
 class SmobPlanningActivityTest: AutoCloseKoinTest() {
 
     private lateinit var repository: SmobItemDataSource
-    private lateinit var _viewModel: PlanningShopEditViewModel
+    private lateinit var _viewModel: PlanningShopsAddNewItemViewModel
     private lateinit var appContext: Application
 
     // an idling resource that waits for Data Binding to have no pending bindings
@@ -132,7 +132,7 @@ class SmobPlanningActivityTest: AutoCloseKoinTest() {
                 )
             }
             single {
-                PlanningShopEditViewModel(
+                PlanningShopsAddNewItemViewModel(
                     appContext,
                     get() as SmobShopDataSource
                 )
@@ -309,7 +309,7 @@ class SmobPlanningActivityTest: AutoCloseKoinTest() {
         repository.saveSmobItem(testSmobItemATO)
 
         // fetch SaveSmobItemViewModel to set some test data
-        _viewModel = inject<PlanningShopEditViewModel>().value
+        _viewModel = inject<PlanningShopsAddNewItemViewModel>().value
         _viewModel.smobItemSelectedLocationStr.postValue("Espresso test location")
 
         // startup with the SmobActivity screen (fragment container)

@@ -15,6 +15,7 @@ interface SmobGroupDataSource: SmobItemDataSource<SmobGroupATO> {
     // Observed Flow will notify the observer when the data has changed.
     override fun getSmobItem(id: String): Flow<Resource<SmobGroupATO?>>
     override fun getAllSmobItems(): Flow<Resource<List<SmobGroupATO>>>
+    fun getSmobGroupsByListId(id: String): Flow<Resource<List<SmobGroupATO>>>
 
     // By default Room runs suspend queries off the main thread
     override suspend fun saveSmobItem(smobItemATO: SmobGroupATO)

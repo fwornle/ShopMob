@@ -140,7 +140,7 @@ class DetailsShopFragment : BaseFragment(), KoinComponent {
 
                 when (item.itemId) {
 
-                    R.id.smobPlanningListsFragment -> {
+                    R.id.smobPlanningListsTableFragment -> {
                         // start the app
                         startActivity(Intent(this.context, SmobPlanningActivity::class.java))
                         // and we're done here

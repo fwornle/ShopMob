@@ -14,16 +14,16 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".smob.ui.admin.select.groups.AdminGroupsFragment">
+        tools:context=".smob.ui.admin.groups.groupsTable.AdminGroupsTableFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clGroupLMembersEdit"
+            android:id="@+id/clGroupListAddNewItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/secondaryLightColor">
 
             <androidx.appcompat.widget.SearchView
-                android:id="@+id/smobGroupMemberSearch"
+                android:id="@+id/smobGroupItemSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/secondaryColor"
@@ -37,9 +37,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constrainedHeight="true"
-                app:layout_constraintTop_toBottomOf="@id/smobGroupMemberSearch"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:stateFlowResource="@{viewModel.smobUsers}" />
+                app:layout_constraintTop_toBottomOf="@id/smobGroupItemSearch"
+                app:stateFlowResource="@{viewModel.smobUsersSF}" />
 
             <TextView
                 android:id="@+id/noDataTextView"
@@ -62,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                app:fadeVisibleOnLoading="@{viewModel.smobGroupMembers}"
+                app:fadeVisibleOnLoading="@{viewModel.smobGroupMembersSF}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

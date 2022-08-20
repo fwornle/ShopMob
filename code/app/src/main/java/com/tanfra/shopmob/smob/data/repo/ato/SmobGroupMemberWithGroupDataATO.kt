@@ -26,11 +26,29 @@ data class SmobGroupMemberWithGroupDataATO(
     // serialization strategy decided at run-time (@Contextual)
     var groupActivity: @Contextual ActivityStatus,
 ) : Ato, java.io.Serializable {
-    fun member() = Member(
+
+    // extract member
+    fun member() = SmobUserATO(
+        this.id,
+        this.itemStatus,
+        this.itemPosition,
         this.memberName,
         this.memberUsername,
         this.memberEmail,
         this.memberImageUrl,
         this.memberGroups,
     )
+
+    // extract group
+    fun group() = SmobGroupATO(
+        this.groupId,
+        this.groupStatus,
+        this.groupPosition,
+        this.groupName,
+        this.groupDescription,
+        this.groupType,
+        this.groupMembers,
+        this.groupActivity,
+    )
+
 }

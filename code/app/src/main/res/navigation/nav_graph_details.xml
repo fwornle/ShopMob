@@ -28,7 +28,7 @@
     <!-- cross activity navigation made easy... -->
     <fragment
         android:id="@+id/smobPlanningShopMapFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.shopEdit.PlanningShopMapFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.shops.addNewItem.PlanningShopMapFragment"
         android:label="Select Store Location"
         tools:layout="@layout/fragment_planning_shop_map"
         >

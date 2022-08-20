@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_administration"
-    app:startDestination="@id/smobAdminSelectFragment">
+    app:startDestination="@id/smobAdminSelectCategoryFragment">
 
     <!-- cross activity navigation made easy...
      https://stackoverflow.com/questions/62214514/navigate-from-one-activity-to-another-with-navigation-component
@@ -17,92 +17,97 @@
         />
 
     <fragment
-        android:id="@+id/smobPlanningShopListFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.shop.PlanningShopListFragment"
-        android:label="Planning Shop List"
-        tools:layout="@layout/fragment_planning_shop_list"
+        android:id="@+id/smobPlanningShopsTableFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.shops.PlanningShopsTableFragment"
+        android:label="Planning Shop Table"
+        tools:layout="@layout/fragment_planning_shops_table"
         >
     </fragment>
 
     <fragment
-        android:id="@+id/smobAdminSelectFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.select.AdminSelectFragment"
+        android:id="@+id/smobAdminSelectCategoryFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.AdminSelectCategoryFragment"
         android:label="Administration Selector"
-        tools:layout="@layout/fragment_admin_select"
+        tools:layout="@layout/fragment_admin_select_category"
         >
         <action
-            android:id="@+id/action_smobAdminSelectFragment_to_smobAdminProfileFragment"
+            android:id="@+id/action_smobAdminSelectCategoryFragment_to_smobAdminProfileFragment"
             app:destination="@id/smobAdminProfileFragment" />
         <action
-            android:id="@+id/action_smobAdminSelectFragment_to_smobAdminGroupsFragment"
-            app:destination="@id/smobAdminGroupsFragment" />
+            android:id="@+id/action_smobAdminSelectCategoryFragment_to_smobAdminGroupsTableFragment"
+            app:destination="@id/smobAdminGroupsTableFragment" />
         <action
-            android:id="@+id/action_smobAdminSelectFragment_to_smobAdminListsFragment"
-            app:destination="@id/smobAdminListsFragment" />
+            android:id="@+id/action_smobAdminSelectCategoryFragment_to_smobAdminListsTableFragment"
+            app:destination="@id/smobAdminListsTableFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/smobAdminProfileFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.select.profile.AdminProfileFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.profile.AdminProfileFragment"
         android:label="Administer User Profile"
         tools:layout="@layout/fragment_admin_profile"
         >
         <action
-            android:id="@+id/action_smobAdminProfileFragment_to_smobAdminSelectFragment"
-            app:destination="@id/smobAdminSelectFragment" />
+            android:id="@+id/action_smobAdminProfileFragment_to_smobAdminSelectCategoryFragment"
+            app:destination="@id/smobAdminSelectCategoryFragment" />
     </fragment>
 
+
+    <!-- GROUPS ************************************** -->
+    <!-- GROUPS ************************************** -->
+    <!-- GROUPS ************************************** -->
+
     <fragment
-        android:id="@+id/smobAdminGroupsFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.select.groups.AdminGroupsFragment"
+        android:id="@+id/smobAdminGroupsTableFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.groups.groupsTable.AdminGroupsTableFragment"
         android:label="Administer Groups"
-        tools:layout="@layout/fragment_admin_groups"
+        tools:layout="@layout/fragment_admin_groups_table"
         >
         <action
-            android:id="@+id/action_smobAdminGroupsFragment_to_smobAdminSelectFragment"
-            app:destination="@id/smobAdminSelectFragment" />
+            android:id="@+id/action_smobAdminGroupsTableFragment_to_smobAdminSelectCategoryCategoryFragment"
+            app:destination="@id/smobAdminSelectCategoryFragment" />
         <action
-            android:id="@+id/action_smobAdminGroupsFragment_to_smobAdminGroupMemberListFragment"
-            app:destination="@id/smobAdminGroupMemberListFragment" />
+            android:id="@+id/action_smobAdminGroupsTableFragment_to_smobAdminGroupMembersTableFragment"
+            app:destination="@id/smobAdminGroupMembersTableFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/smobAdminGroupsEditFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.select.groups.AdminGroupsEditFragment"
+        android:id="@+id/smobAdminGroupsAddNewItemFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.groups.groupsTable.AdminGroupsAddNewItemFragment"
         android:label="Add New Group"
-        tools:layout="@layout/fragment_admin_groups_edit"
+        tools:layout="@layout/fragment_admin_groups_add_new_item"
         >
         <action
-            android:id="@+id/action_smobAdminGroupsEditFragment_to_smobAdminGroupsFragment"
-            app:destination="@id/smobAdminGroupsFragment" />
+            android:id="@+id/action_smobAdminGroupsAddNewItemFragment_to_smobAdminGroupsTableFragment"
+            app:destination="@id/smobAdminGroupsTableFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/smobAdminGroupMemberListFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.select.groups.groupMemberList.AdminGroupMemberListFragment"
+        android:id="@+id/smobAdminGroupMembersTableFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.groups.groupMembersTable.AdminGroupMembersTableFragment"
         android:label="Show Group Members"
-        tools:layout="@layout/fragment_admin_group_member_list"
+        tools:layout="@layout/fragment_admin_group_members_table"
         >
         <action
-            android:id="@+id/action_smobAdminGroupMemberListFragment_to_smobAdminGroupsFragment"
-            app:destination="@id/smobAdminGroupsFragment" />
+            android:id="@+id/action_smobAdminGroupMembersTableFragment_to_smobAdminGroupsTableFragment"
+            app:destination="@id/smobAdminGroupsTableFragment" />
         <action
-            android:id="@+id/action_smobAdminGroupMemberListFragment_to_smobAdminGroupMemberSelectFragment"
+            android:id="@+id/action_smobAdminGroupMembersTableFragment_to_smobAdminGroupMemberSelectFragment"
             app:destination="@id/smobAdminGroupMemberSelectFragment" />
         <action
-            android:id="@+id/action_smobAdminGroupMemberListFragment_to_smobAdminGroupMemberDetailsFragment"
+            android:id="@+id/action_smobAdminGroupMembersTableFragment_to_smobAdminGroupMemberDetailsFragment"
             app:destination="@id/smobAdminGroupMemberDetailsFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/smobAdminGroupMemberSelectFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.select.groups.groupMemberSelect.AdminGroupMemberSelectFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.groups.groupMemberSelect.AdminGroupMemberSelectFragment"
         android:label="Select Group Members"
         tools:layout="@layout/fragment_admin_group_member_select"
         >
         <action
-            android:id="@+id/action_smobAdminGroupMemberSelectFragment_to_smobAdminGroupMemberListFragment"
-            app:destination="@id/smobAdminGroupMemberListFragment" />
+            android:id="@+id/action_smobAdminGroupMemberSelectFragment_to_smobAdminGroupMembersTableFragment"
+            app:destination="@id/smobAdminGroupMembersTableFragment" />
         <action
             android:id="@+id/action_smobAdminGroupMemberSelectFragment_to_smobAdminGroupMemberDetailsFragment"
             app:destination="@id/smobAdminGroupMemberDetailsFragment" />
@@ -110,67 +115,84 @@
 
     <fragment
         android:id="@+id/smobAdminGroupMemberDetailsFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.select.groups.groupMemberList.AdminGroupMemberDetailsFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.groups.groupMembersTable.AdminGroupMemberDetailsFragment"
         android:label="Group Member Details"
         tools:layout="@layout/fragment_admin_group_member_details">
         <action
-            android:id="@+id/action_smobAdminGroupMemberDetailsFragment_to_smobAdminGroupMemberListFragment"
-            app:destination="@id/smobAdminGroupMemberListFragment" />
+            android:id="@+id/action_smobAdminGroupMemberDetailsFragment_to_smobAdminGroupMembersTableFragment"
+            app:destination="@id/smobAdminGroupMembersTableFragment" />
     </fragment>
 
+
+
+    <!-- LISTS ************************************** -->
+    <!-- LISTS ************************************** -->
+    <!-- LISTS ************************************** -->
+
     <fragment
-        android:id="@+id/smobAdminListsFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.select.lists.AdminListsFragment"
+        android:id="@+id/smobAdminListsTableFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.lists.listsTable.AdminListsTableFragment"
         android:label="Administer Lists"
-        tools:layout="@layout/fragment_admin_lists"
+        tools:layout="@layout/fragment_admin_lists_table"
         >
        <action
-            android:id="@+id/action_smobAdminListsFragment_to_smobAdminSelectFragment"
-            app:destination="@id/smobAdminSelectFragment" />
+            android:id="@+id/action_smobAdminListsTableFragment_to_smobAdminSelectCategoryCategoryFragment"
+            app:destination="@id/smobAdminSelectCategoryFragment" />
         <action
-            android:id="@+id/action_smobAdminListsFragment_to_smobAdminListMemberListFragment"
-            app:destination="@id/smobAdminListMemberListFragment" />
+            android:id="@+id/action_smobAdminListsTableFragment_to_smobAdminListGroupsTableFragment"
+            app:destination="@id/smobAdminListGroupsTableFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/smobAdminListMemberListFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.select.lists.listMemberList.AdminListMemberListFragment"
-        android:label="Show List Members"
-        tools:layout="@layout/fragment_admin_list_member_list"
+        android:id="@+id/smobAdminListsAddNewItemFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.lists.listsTable.AdminListsAddNewItemFragment"
+        android:label="Add New SmobList"
+        tools:layout="@layout/fragment_admin_lists_add_new_item"
         >
         <action
-            android:id="@+id/action_smobAdminListMemberListFragment_to_smobAdminListsFragment"
-            app:destination="@id/smobAdminListsFragment" />
-        <action
-            android:id="@+id/action_smobAdminListMemberListFragment_to_smobAdminListMemberSelectFragment"
-            app:destination="@id/smobAdminListMemberSelectFragment" />
-        <action
-            android:id="@+id/action_smobAdminListMemberListFragment_to_smobAdminListMemberDetailsFragment"
-            app:destination="@id/smobAdminListMemberDetailsFragment" />
+            android:id="@+id/action_smobAdminListsAddNewItemFragment_to_smobAdminListsTableFragment"
+            app:destination="@id/smobAdminListsTableFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/smobAdminListMemberSelectFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.select.lists.listMemberSelect.AdminListMemberSelectFragment"
-        android:label="Select List Members"
-        tools:layout="@layout/fragment_admin_list_member_select"
+        android:id="@+id/smobAdminListGroupsTableFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.lists.listGroupsTable.AdminListGroupsTableFragment"
+        android:label="Show Groups associated with List"
+        tools:layout="@layout/fragment_admin_list_groups_table"
         >
         <action
-            android:id="@+id/action_smobAdminListMemberSelectFragment_to_smobAdminListMemberListFragment"
-            app:destination="@id/smobAdminListMemberListFragment" />
+            android:id="@+id/action_smobAdminListGroupsTableFragment_to_smobAdminListsTableFragment"
+            app:destination="@id/smobAdminListsTableFragment" />
         <action
-            android:id="@+id/action_smobAdminListMemberSelectFragment_to_smobAdminListMemberDetailsFragment"
-            app:destination="@id/smobAdminListMemberDetailsFragment" />
+            android:id="@+id/action_smobAdminListGroupsTableFragment_to_smobAdminListGroupSelectFragment"
+            app:destination="@id/smobAdminListGroupSelectFragment" />
+        <action
+            android:id="@+id/action_smobAdminListGroupsTableFragment_to_smobAdminListGroupDetailsFragment"
+            app:destination="@id/smobAdminListGroupDetailsFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/smobAdminListMemberDetailsFragment"
-        android:name="com.tanfra.shopmob.smob.ui.admin.select.lists.listMemberList.AdminListMemberDetailsFragment"
-        android:label="List Member Details"
-        tools:layout="@layout/fragment_admin_list_member_details">
+        android:id="@+id/smobAdminListGroupSelectFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.lists.listGroupSelect.AdminListGroupSelectFragment"
+        android:label="Select Groups sharing this List"
+        tools:layout="@layout/fragment_admin_list_group_select"
+        >
         <action
-            android:id="@+id/action_smobAdminListMemberDetailsFragment_to_smobAdminListMemberListFragment"
-            app:destination="@id/smobAdminListMemberListFragment" />
+            android:id="@+id/action_smobAdminListGroupSelectFragment_to_smobAdminListGroupsTableFragment"
+            app:destination="@id/smobAdminListGroupsTableFragment" />
+        <action
+            android:id="@+id/action_smobAdminListGroupSelectFragment_to_smobAdminListGroupDetailsFragment"
+            app:destination="@id/smobAdminListGroupDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/smobAdminListGroupDetailsFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.lists.listGroupsTable.AdminListGroupDetailsFragment"
+        android:label="List Group Details"
+        tools:layout="@layout/fragment_admin_list_group_details">
+        <action
+            android:id="@+id/action_smobAdminListGroupDetailsFragment_to_smobAdminListGroupsTableFragment"
+            app:destination="@id/smobAdminListGroupsTableFragment" />
     </fragment>
 
 </navigation>
