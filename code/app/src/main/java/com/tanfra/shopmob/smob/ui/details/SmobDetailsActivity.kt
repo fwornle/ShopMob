@@ -3,15 +3,13 @@ package com.tanfra.shopmob.smob.ui.details
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.databinding.ActivityDetailsBinding
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
-import com.tanfra.shopmob.smob.data.repo.ato.SmobProductOnListATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobProductWithListDataATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.work.SmobAppWork
 import org.koin.android.ext.android.inject
@@ -108,7 +106,7 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
                 extras?.let {
                     if (it.containsKey(EXTRA_SmobItem)) {
                         // extract the extra-data
-                        val smobListItem = it.getSerializable("EXTRA_SmobItem") as SmobProductOnListATO
+                        val smobListItem = it.getSerializable("EXTRA_SmobItem") as SmobProductWithListDataATO
 
                         // store value in ViewModel
                         _viewModel.smobProductDetailsItem.value = smobListItem

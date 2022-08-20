@@ -8,7 +8,7 @@ import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.local.utils.SmobListItem
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
-import com.tanfra.shopmob.smob.data.repo.ato.SmobProductOnListATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobProductWithListDataATO
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -16,21 +16,21 @@ import org.koin.core.component.inject
 
 
 // use data binding to show the smob item on the RV item
-class PlanningProductsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobProductOnListATO) -> Unit) :
-    BaseRecyclerViewAdapter<SmobProductOnListATO>(rootView, callBack), KoinComponent {
+class PlanningProductsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobProductWithListDataATO) -> Unit) :
+    BaseRecyclerViewAdapter<SmobProductWithListDataATO>(rootView, callBack), KoinComponent {
 
     // inject _viewModel from Koin service locator
     private val _viewModel: PlanningViewModel by inject()
 
     // SearchView widget can be used to preFilter the list using user input
-    override fun getSearchViewItems(items: List<SmobProductOnListATO>, charSearch: String)
-    : MutableList<SmobProductOnListATO> {
+    override fun getSearchViewItems(items: List<SmobProductWithListDataATO>, charSearch: String)
+    : MutableList<SmobProductWithListDataATO> {
         // default: no filtering
         return items.toMutableList()
     }
 
     // filter (and sort) list - straight through, if not needed
-    override fun listFilter(items: List<SmobProductOnListATO>): List<SmobProductOnListATO> {
+    override fun listFilter(items: List<SmobProductWithListDataATO>): List<SmobProductWithListDataATO> {
 
         // take out all items which have been deleted by swiping
         return items
@@ -48,7 +48,7 @@ class PlanningProductsTableAdapter(rootView: View, callBack: (selectedSmobATO: S
     override fun getLayoutRes(viewType: Int) = R.layout.smob_planning_products_item
 
     // called, when the user action has been confirmed and the local DB / backend needs updated
-    override fun uiActionConfirmed(item: SmobProductOnListATO, rootView: View) {
+    override fun uiActionConfirmed(item: SmobProductWithListDataATO, rootView: View) {
 
         // collect current list from smobList (flow)
         rootView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {

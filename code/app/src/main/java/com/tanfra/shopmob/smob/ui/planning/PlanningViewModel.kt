@@ -43,7 +43,7 @@ class PlanningViewModel(
     lateinit var _smobListItems: Flow<Resource<List<SmobProductATO>?>>
     lateinit var smobListItems: StateFlow<Resource<List<SmobProductATO>?>>
 
-    lateinit var smobListItemsWithStatus: StateFlow<List<SmobProductOnListATO>?>
+    lateinit var smobListItemsWithStatus: StateFlow<List<SmobProductWithListDataATO>?>
 
 
     /**
@@ -89,7 +89,7 @@ class PlanningViewModel(
     fun combineFlowsAndConvertToStateFlow(
         listFlow: Flow<Resource<SmobListATO?>>,
         itemsFlow: Flow<Resource<List<SmobProductATO>?>>,
-    ): StateFlow<List<SmobProductOnListATO>?> {
+    ): StateFlow<List<SmobProductWithListDataATO>?> {
 
         return itemsFlow.combine(listFlow) { items, list ->
 
@@ -110,7 +110,7 @@ class PlanningViewModel(
                             // fetch product details from 'items' list on the smobList
                             val productOnList = rawList.items.first { item -> item.id == product.id }
 
-                            SmobProductOnListATO(
+                            SmobProductWithListDataATO(
                                 id = product.id,
                                 itemStatus = productOnList.status,
                                 itemPosition = productOnList.listPosition,
@@ -119,6 +119,7 @@ class PlanningViewModel(
                                 productImageUrl = product.imageUrl,
                                 productCategory = product.category,
                                 productActivity = product.activity,
+                                productInShop = product.inShop,
                                 listId = rawList.id,
                                 listStatus = rawList.itemStatus,
                                 listPosition = rawList.itemPosition,

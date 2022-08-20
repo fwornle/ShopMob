@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 // domain independent data type (Application Transfer Object)
 @Serializable
-data class SmobProductOnListATO(
+data class SmobProductWithListDataATO(
     override val id: String,
     override var itemStatus: @Contextual SmobItemStatus,
     override var itemPosition: Long,
@@ -15,6 +15,7 @@ data class SmobProductOnListATO(
     var productImageUrl: String?,
     var productCategory: @Contextual ProductCategory,
     var productActivity: @Contextual ActivityStatus,
+    var productInShop: @Contextual InShop,
     val listId: String,
     val listStatus: @Contextual SmobItemStatus,
     val listPosition: Long,
@@ -23,4 +24,31 @@ data class SmobProductOnListATO(
     var listItems: List<@Contextual SmobListItem>,
     var listGroups: List<SmobGroupItem>,
     var listLifecycle: @Contextual SmobListLifecycle,
-) : Ato, java.io.Serializable
+) : Ato, java.io.Serializable {
+
+    // extract product
+    fun product() = SmobProductATO(
+        this.id,
+        this.itemStatus,
+        this.itemPosition,
+        this.productName,
+        this.productDescription,
+        this.productImageUrl,
+        this.productCategory,
+        this.productActivity,
+        this.productInShop,
+    )
+
+    // extract list
+    fun list() = SmobListATO(
+        this.listId,
+        this.listStatus,
+        this.listPosition,
+        this.listName,
+        this.listDescription,
+        this.listItems,
+        this.listGroups,
+        this.listLifecycle,
+    )
+
+}
