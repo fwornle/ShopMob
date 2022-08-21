@@ -426,7 +426,7 @@
     },
     {
       "id": "8dc6d4ef-4d5c-49a7-8e46-b729863fc1d3",
-      "itemStatus": "OPEN",
+      "itemStatus": "IN_PROGRESS",
       "itemPosition": 4,
       "name": "odit",
       "description": "quia et ratione",
@@ -441,6 +441,11 @@
           "id": "3d48dd86-a5c5-4d26-9057-8899840efae5",
           "status": "DONE",
           "listPosition": 1
+        },
+        {
+          "id": "bb463b8b-b76c-4f6a-9726-65ab5730b69b",
+          "status": "DELETED",
+          "listPosition": 3
         }
       ],
       "activity": {

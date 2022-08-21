@@ -6,14 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.local.utils.GroupType
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
-import com.tanfra.shopmob.smob.data.local.utils.SmobMemberItem
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.base.BaseViewModel
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobGroupDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
-import com.tanfra.shopmob.smob.data.repo.utils.Group
-import com.tanfra.shopmob.smob.data.repo.utils.Member
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
@@ -208,15 +205,15 @@ class AdminViewModel(
 
     // collect all SmobUsers
     private val smobUsersF: Flow<Resource<List<SmobUserATO>?>> = registerSmobUsersFlow()
-    val smobUsersSF = smobUsersFlowToSF(smobUsersF)
+    val smobUsersSF = smobUsersFlowAsSF(smobUsersF)
 
     // collect the upstream selected smobGroup as well as the list of SmobUserATO items
     // ... lateinit, as this can only be done once the fragment is created (and the id's are here)
     lateinit var smobGroupF: Flow<Resource<SmobGroupATO?>>
     lateinit var smobGroupSF: StateFlow<Resource<SmobGroupATO?>>
 
-    private val _smobGroupAltSF = MutableStateFlow<Resource<SmobGroupATO?>>(Resource.loading(null))
-    val smobGroupAltSF = _smobGroupAltSF.asStateFlow()  // read-only
+//    private val _smobGroupAltSF = MutableStateFlow<Resource<SmobGroupATO?>>(Resource.loading(null))
+//    val smobGroupAltSF = _smobGroupAltSF.asStateFlow()  // read-only
 
     lateinit var smobGroupMembersF: Flow<Resource<List<SmobUserATO>?>>
     lateinit var smobGroupMembersSF: StateFlow<Resource<List<SmobUserATO>?>>
@@ -230,7 +227,7 @@ class AdminViewModel(
         userDataSource.getAllSmobItems()
 
     // convert to StateFlow
-    fun smobUsersFlowToSF(inFlow: Flow<Resource<List<SmobUserATO>?>>):
+    fun smobUsersFlowAsSF(inFlow: Flow<Resource<List<SmobUserATO>?>>):
             StateFlow<Resource<List<SmobUserATO>?>> =
         inFlow.stateIn(
             scope = viewModelScope,
@@ -245,7 +242,7 @@ class AdminViewModel(
         groupDataSource.getSmobItem(id)
 
     // convert to StateFlow
-    fun smobGroupFlowToSF(inFlow: Flow<Resource<SmobGroupATO?>>):
+    fun smobGroupFlowAsSF(inFlow: Flow<Resource<SmobGroupATO?>>):
             StateFlow<Resource<SmobGroupATO?>> =
         inFlow.stateIn(
             scope = viewModelScope,
@@ -340,47 +337,47 @@ class AdminViewModel(
     }  //  combineGroupAndUserFlowsSF
 
 
-    // collect the flow of the upstream list the user just selected
-    @ExperimentalCoroutinesApi
-    fun collectSmobGroupAltSF() {
-
-        // group ID set yet?
-        currGroupId?.let { id ->
-
-            // collect flow
-            viewModelScope.launch {
-
-                // flow terminator
-                groupDataSource.getSmobItem(id)
-                    .catch { e ->
-                        // previously unhandled exception (= not handled at Room level)
-                        // --> catch it here and represent in Resource status
-                        _smobGroupAltSF.value = Resource.error(e.toString(), null)
-                        showSnackBar.value = smobGroupAltSF.value.message
-                    }
-                    .collectLatest {
-                        // no exception during flow collection
-                        when(it.status) {
-                            Status.SUCCESS -> {
-                                // --> store successfully received data in StateFlow value
-                                _smobGroupAltSF.value = it
-                            }
-                            Status.ERROR -> {
-                                // these are errors handled at Room level --> display
-                                showSnackBar.value = it.message
-                                _smobGroupAltSF.value = it  // still return Resource value (w/h error)
-                            }
-                            Status.LOADING -> {
-                                // could control visibility of progress bar here
-                            }
-                        }
-                    }
-
-            }  // coroutine
-
-        } // groupId set
-
-    }  // collectSmobGroupAltSF
+//    // collect the flow of the upstream list the user just selected
+//    @ExperimentalCoroutinesApi
+//    fun collectSmobGroupAltSF() {
+//
+//        // group ID set yet?
+//        currGroupId?.let { id ->
+//
+//            // collect flow
+//            viewModelScope.launch {
+//
+//                // flow terminator
+//                groupDataSource.getSmobItem(id)
+//                    .catch { e ->
+//                        // previously unhandled exception (= not handled at Room level)
+//                        // --> catch it here and represent in Resource status
+//                        _smobGroupAltSF.value = Resource.error(e.toString(), null)
+//                        showSnackBar.value = _smobGroupAltSF.value.message
+//                    }
+//                    .collectLatest {
+//                        // no exception during flow collection
+//                        when(it.status) {
+//                            Status.SUCCESS -> {
+//                                // --> store successfully received data in StateFlow value
+//                                _smobGroupAltSF.value = it
+//                            }
+//                            Status.ERROR -> {
+//                                // these are errors handled at Room level --> display
+//                                showSnackBar.value = it.message
+//                                _smobGroupAltSF.value = it  // still return Resource value (w/h error)
+//                            }
+//                            Status.LOADING -> {
+//                                // could control visibility of progress bar here
+//                            }
+//                        }
+//                    }
+//
+//            }  // coroutine
+//
+//        } // groupId set
+//
+//    }  // collectSmobGroupAltSF
 
 
     //update all items in the local DB by querying the backend - triggered on "swipe down"
@@ -466,7 +463,7 @@ class AdminViewModel(
                 // previously unhandled exception (= not handled at Room level)
                 // --> catch it here and represent in Resource status
                 _smobListsAltSF.value = Resource.error(e.toString(), null)
-                showSnackBar.value = _smobGroupsSF.value.message
+                showSnackBar.value = _smobListsAltSF.value.message
             }
             .take(1)
             .onEach {
@@ -766,7 +763,7 @@ class AdminViewModel(
         collectSmobListsFlowAsAltSF()
 
         // check if the "no data" symbol has to be shown (empty list)
-        updateShowNoSmobItemsData(_smobGroupsSF.value)
+        updateShowNoSmobItemsData(_smobListsAltSF.value)
     }
 
     /**
