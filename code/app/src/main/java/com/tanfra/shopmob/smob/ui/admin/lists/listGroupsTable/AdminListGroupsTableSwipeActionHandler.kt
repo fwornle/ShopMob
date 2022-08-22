@@ -7,6 +7,8 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.utils.ui.BaseSwipeActionHandler
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
+import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupWithListDataATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.ui.planning.utils.vibrateDevice
 
@@ -24,63 +26,82 @@ class AdminListGroupsTableSwipeActionHandler(adapter: AdminListGroupsTableAdapte
         viewHolder: RecyclerView.ViewHolder,
         adapter: BaseRecyclerViewAdapter<Ato>
     ) {
-        when (direction) {
 
-            ItemTouchHelper.LEFT -> {
+        // cast to actual item of this instance
+        // ... by reference --> changes on these objects affect the original object (item)
+        val daList: SmobListATO = (item as SmobGroupWithListDataATO).list()
+        val daGroupItem = daList.groups.find { group -> group.id == item.id }
+        val daItemStatus = daGroupItem?.status
 
-                when (item.itemStatus) {
+        // avoid "null" status (should never happen)
+        daItemStatus?.let {
 
-                    SmobItemStatus.NEW, SmobItemStatus.OPEN -> {
-                        // mark smobGroup as 'deleted'
-                        item.itemStatus = SmobItemStatus.DELETED
-                        adapter.setItem(position, item)
+            when (direction) {
 
-                        // throw item off the list
-                        // --> swings by UNDO... communication to DB/backend from there
-                        adapter.deleteItem(position, R.string.undo_delete)
-                    }
+                ItemTouchHelper.LEFT -> {
 
-                    else -> {
-                        // return to 'group inactive'
-                        item.itemStatus = SmobItemStatus.OPEN
-                        adapter.setItem(position, item)
+                    // daItemStatus
+                    when (it) {
 
-                        // restore RV item view (removing the animation effects)
-                        adapter.restoreItemView(position)
+                        // delete
+                        SmobItemStatus.NEW, SmobItemStatus.OPEN,
+                        SmobItemStatus.IN_PROGRESS, SmobItemStatus.DONE -> {
+                            // mark smobGroup as 'deleted'
+                            daGroupItem.status = SmobItemStatus.DELETED
+                            item.itemStatus = SmobItemStatus.DELETED  //  (item filtering in RV)
+                            adapter.setItem(position, item)
 
-                        // send status to DB/backend
-                        adapter.uiActionConfirmed(item, viewHolder.itemView)
-                    }
+                            // throw item off the list
+                            // --> swings by UNDO... communication to DB/backend from there
+                            adapter.deleteItem(position, R.string.undo_delete)
+                        }
 
-                }  // when
+                        // SmobItemStatus.DELETE (--> never reached, as DEL items are filtered out)
+                        else -> {
+                            // return to 'group inactive'
+                            daGroupItem.status = SmobItemStatus.OPEN
+                            item.itemStatus = SmobItemStatus.OPEN  //  (item filtering in RV)
+                            adapter.setItem(position, item)
 
-            } // LEFT
+                            // restore RV item view (removing the animation effects)
+                            adapter.restoreItemView(position)
 
-            ItemTouchHelper.RIGHT -> {
+                            // send status to DB/backend
+                            adapter.uiActionConfirmed(item, viewHolder.itemView)
+                        }
 
-                // activate group ('IN_PROGRESS')
-                when (item.itemStatus) {
-                    SmobItemStatus.NEW, SmobItemStatus.OPEN -> {
-                        item.itemStatus = SmobItemStatus.IN_PROGRESS
-                        adapter.setItem(position, item)
-                    }
-                    else -> {
-                        // smobList already is "IN_PROGRESS" --> indicate haptically
-                        val vib = adapter.rootView.context.getSystemService(Vibrator::class.java)
-                        vibrateDevice(vib, 150)
-                    }
+                    }  // when
 
-                }  // when (status)
+                } // LEFT
 
-                // restore RV item view (removing the animation effects)
-                adapter.restoreItemView(position)
+                ItemTouchHelper.RIGHT -> {
 
-                // send status to DB/backend
-                adapter.uiActionConfirmed(item, viewHolder.itemView)
+                    // activate group ('IN_PROGRESS')
+                    when (daItemStatus) {
+                        SmobItemStatus.NEW, SmobItemStatus.OPEN -> {
+                            daGroupItem.status = SmobItemStatus.IN_PROGRESS
+                            item.itemStatus = SmobItemStatus.IN_PROGRESS  //  (item filtering in RV)
+                            adapter.setItem(position, item)
+                        }
+                        else -> {
+                            // smobList already is "IN_PROGRESS" --> indicate haptically
+                            val vib = adapter.rootView.context.getSystemService(Vibrator::class.java)
+                            vibrateDevice(vib, 150)
+                        }
 
-            }  // RIGHT
+                    }  // when (status)
 
-        }  // when (direction)
+                    // restore RV item view (removing the animation effects)
+                    adapter.restoreItemView(position)
+
+                    // send status to DB/backend
+                    adapter.uiActionConfirmed(item, viewHolder.itemView)
+
+                }  // RIGHT
+
+            }  // when (direction)
+
+        }  // let (daItemStatus == null)
 
     }  // SwipeActionStateMachine
 

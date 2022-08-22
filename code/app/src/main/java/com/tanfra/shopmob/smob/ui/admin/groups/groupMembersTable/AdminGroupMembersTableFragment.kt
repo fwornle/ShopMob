@@ -60,7 +60,7 @@ class AdminGroupMembersTableFragment : BaseFragment(), KoinComponent {
             // set current group ID and group(list)position in viewModel
             _viewModel.currGroupId = it
 
-//            // fetch flow into new (alternative) StateFlow variable smobGroup2
+//            // fetch flow into new (alternative) StateFlow variable (_)smobGroupAltSF
 //            // ... this just hooks up the (cold) Room flow to the StateFlow variable - no collection
 //            _viewModel.collectSmobGroupAltSF()
 

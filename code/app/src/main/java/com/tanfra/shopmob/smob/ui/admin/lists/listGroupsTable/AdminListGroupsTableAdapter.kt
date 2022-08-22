@@ -33,17 +33,19 @@ class AdminListGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: Sm
 
         // figure out which group hasn't been deleted yet
         val validGroupIds =
-            if (items.isNotEmpty()) items.first().listGroups
-                .filter { group -> group.status != SmobItemStatus.DELETED }
-                .map { group -> group.id }
-            else listOf()
+            if (items.isNotEmpty()) {
+                items
+                    .first().listGroups
+                    .filter { group -> group.status != SmobItemStatus.DELETED }
+                    .map { group -> group.id }
+            } else listOf()
 
         // take out all items which have been deleted by swiping
         return items
             .filter { item -> validGroupIds.contains(item.id) }
             .sortedWith(
                 compareBy(
-                    { it.groupName },
+                    { it.itemPosition },
                 )
             )
     }
@@ -67,16 +69,16 @@ class AdminListGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: Sm
                 item.listDescription,
                 item.listItems,
                 // replace list of Smob groups with updated list of Smob groups
-                item.listGroups.map { group ->
-                    if(group.id == item.id) {
+                item.listGroups.map { groupItem ->
+                    if(groupItem.id == item.id) {
                         // set new status (list property)
                         SmobGroupItem(
-                            group.id,
+                            groupItem.id,
                             item.itemStatus,  // update list item status (from status set by user)
-                            group.listPosition,
+                            groupItem.listPosition,
                         )
                     } else {
-                        group  // not the manipulated product --> keep as is
+                        groupItem  // not the manipulated product --> keep as is
                     }
                 },
                 item.listLifecycle,

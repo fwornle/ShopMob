@@ -66,15 +66,15 @@ class AdminListGroupSelectSwipeActionHandler(adapter: AdminListGroupSelectAdapte
 
                 }  // when (status)
 
+                // restore RV item view (removing the animation effects)
+                adapter.restoreItemView(position)
+
+                // send status to DB/backend
+                adapter.uiActionConfirmed(item, viewHolder.itemView)
+
             }  // RIGHT
 
         }  // when (direction)
-
-        // restore RV item view (removing the animation effects)
-        adapter.restoreItemView(position)
-
-        // send status to DB/backend
-        adapter.uiActionConfirmed(item, viewHolder.itemView)
 
     }  // SwipeActionStateMachine
 

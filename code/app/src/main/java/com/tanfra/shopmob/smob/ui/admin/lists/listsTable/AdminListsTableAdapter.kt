@@ -51,46 +51,16 @@ class AdminListsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobLis
     // ... this is the point where the list can be consolidated, if needed (eg. aggregate status)
     override fun uiActionConfirmed(item: SmobListATO, rootView: View) {
 
-        // consolidate list item data (prior to writing to the DB)
-        val itemAdjusted = if(item.itemStatus != SmobItemStatus.DELETED) {
-            // user swiped right --> marking all sub-entries as "IN_PROGRESS" + aggregating here
-            consolidateListItem(item)
-        } else {
-            // user swiped left --> delete list (by marking it as DELETED)
-            item
-        }
-
         // update (PUT) adjusted smobList item
         // ... also used to "DELETE" a list (marked as DELETED, then filtered out)
         rootView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
 
-            // collect SmobList flow
-            val updatedList = SmobListATO(
-                itemAdjusted.id,
-                itemAdjusted.itemStatus,
-                itemAdjusted.itemPosition,
-                itemAdjusted.name,
-                itemAdjusted.description,
-                itemAdjusted.items,
-                itemAdjusted.groups,
-                itemAdjusted.lifecycle,
-            )
-
             // store updated smobList in local DB
             // ... this also triggers an immediate push to the backend (once stored locally)
-            _viewModel.listDataSource.updateSmobItem(updatedList)
+            _viewModel.listDataSource.updateSmobItem(item)
 
         }  // coroutine scope (lifecycleScope)
 
     }  // uiActionConfirmed
-
-
-    // recompute status & completion rate from linked list items
-    private fun consolidateListItem(item: SmobListATO): SmobListATO {
-
-        // return adjusted item
-        return item
-
-    }  // consolidateListItem
 
 }

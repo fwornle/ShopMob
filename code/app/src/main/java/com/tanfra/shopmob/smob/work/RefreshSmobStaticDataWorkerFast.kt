@@ -2,16 +2,11 @@ package com.tanfra.shopmob.smob.work
 
 import android.content.Context
 import androidx.work.*
-import com.tanfra.shopmob.Constants
 import com.tanfra.shopmob.smob.data.repo.dataSource.*
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import retrofit2.HttpException
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 
 // use WorkManager to do work - derived from CoroutineWorker, as we have async work to be done
 // ... need to inherit from KoinComponent to use Koin based DI in this module:
