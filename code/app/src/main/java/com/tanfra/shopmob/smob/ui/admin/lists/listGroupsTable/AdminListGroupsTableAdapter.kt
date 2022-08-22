@@ -31,7 +31,7 @@ class AdminListGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: Sm
     // filter (and sort) list - straight through, if not needed
     override fun listFilter(items: List<SmobGroupWithListDataATO>): List<SmobGroupWithListDataATO> {
 
-        // figure out which group hasn't been deleted yet
+        // figure out which group hasn't been removed from the list yet
         val validGroupIds =
             if (items.isNotEmpty()) {
                 items

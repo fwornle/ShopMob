@@ -546,54 +546,54 @@ class AdminViewModel(
         )
 
 
-    // -------------------------------------------------------------------------------------------
-    // alternative formulation: directly define Stateflow (SF) of currently selected SmobList
-    // --> as per 'currListId' (above) that gets stored in currListId when the Fragment is created
-    private val _currListAltSF = MutableStateFlow<Resource<SmobListATO?>>(Resource.loading(null))
-    val currListAltSF = _currListAltSF.asStateFlow()  // read-only
-
-    // collect the flow of the upstream list the user just selected and return it in StateFlow (SF)
-    // variable '_currListAltSF/currListAltSF'
-    @ExperimentalCoroutinesApi
-    fun collectSmobListItemAsAltSF() {
-
-        // list ID set yet?
-        currListId?.let { id ->
-
-            // collect flow
-            viewModelScope.launch {
-
-                // flow terminator
-                listDataSource.getSmobItem(id)
-                    .catch { e ->
-                        // previously unhandled exception (= not handled at Room level)
-                        // --> catch it here and represent in Resource status
-                        _currListAltSF.value = Resource.error(e.toString(), null)
-                        showSnackBar.value = _currListAltSF.value.message
-                    }
-                    .collectLatest {
-                        // no exception during flow collection
-                        when(it.status) {
-                            Status.SUCCESS -> {
-                                // --> store successfully received data in StateFlow value
-                                _currListAltSF.value = it
-                            }
-                            Status.ERROR -> {
-                                // these are errors handled at Room level --> display
-                                showSnackBar.value = it.message
-                                _currListAltSF.value = it  // still return Resource value (w/h error)
-                            }
-                            Status.LOADING -> {
-                                // could control visibility of progress bar here
-                            }
-                        }
-                    }
-
-            }  // coroutine
-
-        } // currListId set
-
-    }  // collectSmobListItemAsAltSF
+//    // -------------------------------------------------------------------------------------------
+//    // alternative formulation: directly define Stateflow (SF) of currently selected SmobList
+//    // --> as per 'currListId' (above) that gets stored in currListId when the Fragment is created
+//    private val _currListAltSF = MutableStateFlow<Resource<SmobListATO?>>(Resource.loading(null))
+//    val currListAltSF = _currListAltSF.asStateFlow()  // read-only
+//
+//    // collect the flow of the upstream list the user just selected and return it in StateFlow (SF)
+//    // variable '_currListAltSF/currListAltSF'
+//    @ExperimentalCoroutinesApi
+//    fun collectSmobListItemAsAltSF() {
+//
+//        // list ID set yet?
+//        currListId?.let { id ->
+//
+//            // collect flow
+//            viewModelScope.launch {
+//
+//                // flow terminator
+//                listDataSource.getSmobItem(id)
+//                    .catch { e ->
+//                        // previously unhandled exception (= not handled at Room level)
+//                        // --> catch it here and represent in Resource status
+//                        _currListAltSF.value = Resource.error(e.toString(), null)
+//                        showSnackBar.value = _currListAltSF.value.message
+//                    }
+//                    .collectLatest {
+//                        // no exception during flow collection
+//                        when(it.status) {
+//                            Status.SUCCESS -> {
+//                                // --> store successfully received data in StateFlow value
+//                                _currListAltSF.value = it
+//                            }
+//                            Status.ERROR -> {
+//                                // these are errors handled at Room level --> display
+//                                showSnackBar.value = it.message
+//                                _currListAltSF.value = it  // still return Resource value (w/h error)
+//                            }
+//                            Status.LOADING -> {
+//                                // could control visibility of progress bar here
+//                            }
+//                        }
+//                    }
+//
+//            }  // coroutine
+//
+//        } // currListId set
+//
+//    }  // collectSmobListItemAsAltSF
 
 
 
@@ -839,14 +839,26 @@ class AdminViewModel(
                         // successfully received all groups --> could be empty system though
                         groups.data?.let { allGroups ->
 
-                            // fetch all groups who do not (yet) refer to any of the groups
-                            // associated with the selected list (daList.groups)... filterNOT
-                            val daListGroups = allGroups.filterNot { group ->
-                                daList.groups.map { listGroup -> listGroup.id }.contains(group.id)
-                            }
+                            // fetch all groups who refer to any of the groups associated with the
+                            // selected list (daList.groups)
+                            val daListGroups = allGroups
+                                .filter { group ->
+                                    daList.groups
+                                        .map { listGroup ->
+                                            if (listGroup.status != SmobItemStatus.DELETED)
+                                                listGroup.id
+                                            else
+                                                ""
+                                        }
+                                        .contains(group.id)
+                                }
+
+
+                            // fetch all groups which are not yet referred to by the selected list
+                            val daOtherGroups = allGroups.subtract(daListGroups)
 
                             // return all groups associated with daList, incl. the list details
-                            daListGroups.map { group ->
+                            daOtherGroups.map { group ->
 
                                 // extend user record by group data
                                 SmobGroupWithListDataATO(

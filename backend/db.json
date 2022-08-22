@@ -1639,7 +1639,7 @@
         },
         {
           "id": "850efd9d-0ea6-4642-b90b-0a0318b8ebf5",
-          "status": "IN_PROGRESS",
+          "status": "DELETED",
           "listPosition": 2
         },
         {
@@ -1779,6 +1779,21 @@
           "id": "850efd9d-0ea6-4642-b90b-0a0318b8ebf5",
           "status": "DONE",
           "listPosition": 0
+        },
+        {
+          "id": "cfdf16aa-96a4-4016-8b42-6920f017ad7e",
+          "status": "DELETED",
+          "listPosition": 2
+        },
+        {
+          "id": "2890f8e0-320c-4f5e-8e66-9b93261db2ce",
+          "status": "DELETED",
+          "listPosition": 3
+        },
+        {
+          "id": "cfdf16aa-96a4-4016-8b42-6920f017ad7e",
+          "status": "OPEN",
+          "listPosition": 4
         }
       ],
       "lifecycle": {
@@ -1877,6 +1892,16 @@
           "id": "2890f8e0-320c-4f5e-8e66-9b93261db2ce",
           "status": "DELETED",
           "listPosition": 6
+        },
+        {
+          "id": "856c33ae-0ec5-485e-a8d0-42cc4787d5d4",
+          "status": "DELETED",
+          "listPosition": 8
+        },
+        {
+          "id": "2fab3ccb-79db-40b0-808b-cb3a7e6d6b19",
+          "status": "OPEN",
+          "listPosition": 9
         }
       ],
       "lifecycle": {

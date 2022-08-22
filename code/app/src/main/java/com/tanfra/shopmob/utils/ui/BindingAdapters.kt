@@ -147,10 +147,11 @@ object BindingAdapters {
     @JvmStatic
     fun setStatusColor(view: View, status: SmobItemStatus = SmobItemStatus.OPEN) {
         when(status) {
+            SmobItemStatus.NEW -> view.setBackgroundResource(R.color.swipeSecondaryLightColor)
             SmobItemStatus.OPEN -> view.setBackgroundResource(R.color.swipeSecondaryLightColor)
             SmobItemStatus.IN_PROGRESS -> view.setBackgroundResource(R.color.swipePrimaryColor)
             SmobItemStatus.DONE -> view.setBackgroundResource(R.color.swipeSecondaryColor)
-            else -> view.setBackgroundResource(R.color.white)
+            else -> view.setBackgroundResource(R.color.white) // should not happen
         }
 
     }

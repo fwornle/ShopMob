@@ -76,26 +76,12 @@ class AdminListGroupsTableSwipeActionHandler(adapter: AdminListGroupsTableAdapte
 
                 ItemTouchHelper.RIGHT -> {
 
-                    // activate group ('IN_PROGRESS')
-                    when (daItemStatus) {
-                        SmobItemStatus.NEW, SmobItemStatus.OPEN -> {
-                            daGroupItem.status = SmobItemStatus.IN_PROGRESS
-                            item.itemStatus = SmobItemStatus.IN_PROGRESS  //  (item filtering in RV)
-                            adapter.setItem(position, item)
-                        }
-                        else -> {
-                            // smobList already is "IN_PROGRESS" --> indicate haptically
-                            val vib = adapter.rootView.context.getSystemService(Vibrator::class.java)
-                            vibrateDevice(vib, 150)
-                        }
-
-                    }  // when (status)
+                    // no swipe right allowed --> vibrate
+                    val vib = adapter.rootView.context.getSystemService(Vibrator::class.java)
+                    vibrateDevice(vib, 150)
 
                     // restore RV item view (removing the animation effects)
                     adapter.restoreItemView(position)
-
-                    // send status to DB/backend
-                    adapter.uiActionConfirmed(item, viewHolder.itemView)
 
                 }  // RIGHT
 

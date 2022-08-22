@@ -58,9 +58,9 @@ class AdminListGroupsTableFragment : BaseFragment(), KoinComponent {
             _viewModel.smobListF = _viewModel.registerSmobListFlow(it)
             _viewModel.smobListSF = _viewModel.registerSmobListFlowAsStateFlow(_viewModel.smobListF)
 
-            // collect flow of selected SmobList into (ALTERNATIVE) StateFlow variable
-            // ... this variant (currListAltSF) is still Resource wrapped
-            _viewModel.collectSmobListItemAsAltSF()
+//            // collect flow of selected SmobList into (ALTERNATIVE) StateFlow variable
+//            // ... this variant (currListAltSF) is still Resource wrapped
+//            _viewModel.collectSmobListItemAsAltSF()
 
             // register (not yet collected) flow / StateFlow in viewModel:
             // --> referenced Groups of selected SmobList
