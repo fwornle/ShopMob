@@ -45,6 +45,9 @@ class AdminGroupsTableFragment : BaseFragment(), KoinComponent {
         // set injected viewModel (from KOIN service locator)
         binding.viewModel = _viewModel
 
+        // reset backDestinationId
+        _viewModel.backDestinationId = null
+
         setHasOptionsMenu(false)
         setDisplayHomeAsUpEnabled(true)
         setTitle(getString(R.string.app_name_admin_groups))

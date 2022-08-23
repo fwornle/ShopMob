@@ -15,6 +15,7 @@ import timber.log.Timber
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.databinding.FragmentAdminListGroupsTableBinding
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
+import com.tanfra.shopmob.smob.ui.admin.groups.groupsTable.AdminGroupsTableFragmentDirections
 import com.tanfra.shopmob.utils.setup
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -42,6 +43,9 @@ class AdminListGroupsTableFragment : BaseFragment(), KoinComponent {
         // set injected viewModel (from KOIN service locator)
         binding.viewModel = _viewModel
 
+        // reset backDestinationId
+        _viewModel.backDestinationId = null
+
         // fetch list ID of the (clicked) list that got us here
         val listId = _viewModel.currList?.id
         val listName = _viewModel.currList?.name
@@ -57,10 +61,6 @@ class AdminListGroupsTableFragment : BaseFragment(), KoinComponent {
             // --> selected SmobList
             _viewModel.smobListF = _viewModel.registerSmobListFlow(it)
             _viewModel.smobListSF = _viewModel.registerSmobListFlowAsStateFlow(_viewModel.smobListF)
-
-//            // collect flow of selected SmobList into (ALTERNATIVE) StateFlow variable
-//            // ... this variant (currListAltSF) is still Resource wrapped
-//            _viewModel.collectSmobListItemAsAltSF()
 
             // register (not yet collected) flow / StateFlow in viewModel:
             // --> referenced Groups of selected SmobList
@@ -148,15 +148,30 @@ class AdminListGroupsTableFragment : BaseFragment(), KoinComponent {
             // this lambda is the 'callback' function which gets called when clicking an item in the
             // RecyclerView - it gets the data behind the clicked item as parameter
 
-            // communicate the selected item (= member)
-            _viewModel.currGroupWithListData = it
-            _viewModel.currGroupDetail = it.group()  // used in details display
+//            // communicate the selected item (= member)
+//            _viewModel.currGroupWithListData = it
+//            _viewModel.currGroupDetail = it.group()  // used in details display
+//
+//            // use the navigationCommand live data to navigate between the fragments
+//            _viewModel.navigationCommand.postValue(
+//                NavigationCommand.To(
+//                    AdminListGroupsTableFragmentDirections
+//                        .actionSmobAdminListGroupsTableFragmentToSmobAdminListGroupDetailsFragment()
+//                )
+//            )
+
+            // store currently selected group in viewModel
+            _viewModel.currGroup = it.group()
+
+            // set back address (to return to this fragment, if we came from here)
+            _viewModel.backDestinationId = R.id.smobAdminListGroupsTableFragment
+            Timber.i("Setting 'backDestinationId' to smobAdminListGroupsTableFragment: ${_viewModel.backDestinationId}")
 
             // use the navigationCommand live data to navigate between the fragments
             _viewModel.navigationCommand.postValue(
                 NavigationCommand.To(
                     AdminListGroupsTableFragmentDirections
-                        .actionSmobAdminListGroupsTableFragmentToSmobAdminListGroupDetailsFragment()
+                        .actionSmobAdminListGroupsTableFragmentToSmobAdminGroupMembersTableFragment()
                 )
             )
 

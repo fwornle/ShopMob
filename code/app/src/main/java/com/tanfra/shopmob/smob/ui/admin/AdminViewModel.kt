@@ -1,6 +1,7 @@
 package com.tanfra.shopmob.smob.ui.admin
 
 import android.app.Application
+import androidx.annotation.IdRes
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.R
@@ -212,9 +213,6 @@ class AdminViewModel(
     lateinit var smobGroupF: Flow<Resource<SmobGroupATO?>>
     lateinit var smobGroupSF: StateFlow<Resource<SmobGroupATO?>>
 
-//    private val _smobGroupAltSF = MutableStateFlow<Resource<SmobGroupATO?>>(Resource.loading(null))
-//    val smobGroupAltSF = _smobGroupAltSF.asStateFlow()  // read-only
-
     lateinit var smobGroupMembersF: Flow<Resource<List<SmobUserATO>?>>
     lateinit var smobGroupMembersSF: StateFlow<Resource<List<SmobUserATO>?>>
 
@@ -286,12 +284,29 @@ class AdminViewModel(
                         // successfully received all users --> could be empty system though
                         users.data?.let { allUsers ->
 
+                            // fetch all groups who refer to any of the groups associated with the
+                            // selected list (daList.groups)
+//                            val daGroupUsers = allUsers
+//                                .filter { user ->
+//                                    daGroup.members
+//                                        .map { groupMember ->
+//                                            if (groupMember.status != SmobItemStatus.DELETED)
+//                                                groupMember.id
+//                                            else
+//                                                ""
+//                                        }
+//                                        .contains(user.id)
+//                                }
+//
+//                            // fetch all groups which are not yet referred to by the selected list
+//                            val daOtherUsers = allUsers.subtract(daGroupUsers)
+
                             // fetch all users as defined by the member list of the selected group
                             val daGroupUsers = allUsers.filter { user ->
                                 daGroup.members.map { member -> member.id }.contains(user.id)
                             }
 
-                            // return all users from daGroup member list
+                            // return all (other) users, except those from daGroup member list
                             daGroupUsers.map { member ->
 
                                 // extend user record by group data
@@ -337,49 +352,6 @@ class AdminViewModel(
     }  //  combineGroupAndUserFlowsSF
 
 
-//    // collect the flow of the upstream list the user just selected
-//    @ExperimentalCoroutinesApi
-//    fun collectSmobGroupAltSF() {
-//
-//        // group ID set yet?
-//        currGroupId?.let { id ->
-//
-//            // collect flow
-//            viewModelScope.launch {
-//
-//                // flow terminator
-//                groupDataSource.getSmobItem(id)
-//                    .catch { e ->
-//                        // previously unhandled exception (= not handled at Room level)
-//                        // --> catch it here and represent in Resource status
-//                        _smobGroupAltSF.value = Resource.error(e.toString(), null)
-//                        showSnackBar.value = _smobGroupAltSF.value.message
-//                    }
-//                    .collectLatest {
-//                        // no exception during flow collection
-//                        when(it.status) {
-//                            Status.SUCCESS -> {
-//                                // --> store successfully received data in StateFlow value
-//                                _smobGroupAltSF.value = it
-//                            }
-//                            Status.ERROR -> {
-//                                // these are errors handled at Room level --> display
-//                                showSnackBar.value = it.message
-//                                _smobGroupAltSF.value = it  // still return Resource value (w/h error)
-//                            }
-//                            Status.LOADING -> {
-//                                // could control visibility of progress bar here
-//                            }
-//                        }
-//                    }
-//
-//            }  // coroutine
-//
-//        } // groupId set
-//
-//    }  // collectSmobGroupAltSF
-
-
     //update all items in the local DB by querying the backend - triggered on "swipe down"
     @ExperimentalCoroutinesApi
     fun swipeRefreshUserDataInLocalDB() {
@@ -414,6 +386,7 @@ class AdminViewModel(
     var currGroupMember: SmobUserATO? = null
     var currGroupMemberWithGroupData: SmobGroupMemberWithGroupDataATO? = null
     var enableAddButton: Boolean = false
+    var backDestinationId: Int? = null
 
 
 
@@ -544,57 +517,6 @@ class AdminViewModel(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = Resource.loading(null)
         )
-
-
-//    // -------------------------------------------------------------------------------------------
-//    // alternative formulation: directly define Stateflow (SF) of currently selected SmobList
-//    // --> as per 'currListId' (above) that gets stored in currListId when the Fragment is created
-//    private val _currListAltSF = MutableStateFlow<Resource<SmobListATO?>>(Resource.loading(null))
-//    val currListAltSF = _currListAltSF.asStateFlow()  // read-only
-//
-//    // collect the flow of the upstream list the user just selected and return it in StateFlow (SF)
-//    // variable '_currListAltSF/currListAltSF'
-//    @ExperimentalCoroutinesApi
-//    fun collectSmobListItemAsAltSF() {
-//
-//        // list ID set yet?
-//        currListId?.let { id ->
-//
-//            // collect flow
-//            viewModelScope.launch {
-//
-//                // flow terminator
-//                listDataSource.getSmobItem(id)
-//                    .catch { e ->
-//                        // previously unhandled exception (= not handled at Room level)
-//                        // --> catch it here and represent in Resource status
-//                        _currListAltSF.value = Resource.error(e.toString(), null)
-//                        showSnackBar.value = _currListAltSF.value.message
-//                    }
-//                    .collectLatest {
-//                        // no exception during flow collection
-//                        when(it.status) {
-//                            Status.SUCCESS -> {
-//                                // --> store successfully received data in StateFlow value
-//                                _currListAltSF.value = it
-//                            }
-//                            Status.ERROR -> {
-//                                // these are errors handled at Room level --> display
-//                                showSnackBar.value = it.message
-//                                _currListAltSF.value = it  // still return Resource value (w/h error)
-//                            }
-//                            Status.LOADING -> {
-//                                // could control visibility of progress bar here
-//                            }
-//                        }
-//                    }
-//
-//            }  // coroutine
-//
-//        } // currListId set
-//
-//    }  // collectSmobListItemAsAltSF
-
 
 
     // -------------------------------------------------------------------------------------------

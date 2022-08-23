@@ -15,6 +15,7 @@ import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
+import timber.log.Timber
 
 
 class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
@@ -56,7 +57,7 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
 
         // set onClick handler for 'Add to Group' button
         // ... navigate back to the main app
-        binding.btAddToGroup.setOnClickListener {
+        binding.btAddToGroup.setOnClickListener(View.OnClickListener {
 
             // back to default: button invisible
             _viewModel.enableAddButton = false
@@ -87,10 +88,21 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
             }  // currGroup?
 
             // return to selected group list
-            _viewModel.navigationCommand.postValue(
-                NavigationCommand.BackTo(R.id.smobAdminGroupsTableFragment)
-            )
-        }
+            Timber.i("_viewModel.backDestinationId = ${_viewModel.backDestinationId}")
+            when(_viewModel.backDestinationId) {
+                R.id.smobAdminListGroupsTableFragment ->
+                    // special case: we came from lists...
+                    _viewModel.navigationCommand.postValue(
+                        NavigationCommand.BackTo(R.id.smobAdminListGroupsTableFragment)
+                    )
+                else ->
+                    // default: we came from groups...
+                    _viewModel.navigationCommand.postValue(
+                        NavigationCommand.BackTo(R.id.smobAdminGroupsTableFragment)
+                    )
+            }
+
+        })
 
     }  // onViewCreated
 

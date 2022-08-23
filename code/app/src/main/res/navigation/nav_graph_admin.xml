@@ -169,6 +169,9 @@
         <action
             android:id="@+id/action_smobAdminListGroupsTableFragment_to_smobAdminListGroupDetailsFragment"
             app:destination="@id/smobAdminListGroupDetailsFragment" />
+        <action
+            android:id="@+id/action_smobAdminListGroupsTableFragment_to_smobAdminGroupMembersTableFragment"
+            app:destination="@id/smobAdminGroupMembersTableFragment" />
     </fragment>
 
     <fragment
