@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_smobAdminSelectCategoryFragment_to_smobAdminListsTableFragment"
             app:destination="@id/smobAdminListsTableFragment" />
+        <action
+            android:id="@+id/action_smobAdminSelectCategoryFragment_to_smobAdminContactsImportFragment"
+            app:destination="@id/smobAdminContactsImportFragment" />
     </fragment>
 
     <fragment
@@ -52,6 +55,17 @@
             app:destination="@id/smobAdminSelectCategoryFragment" />
     </fragment>
 
+
+    <fragment
+        android:id="@+id/smobAdminContactsImportFragment"
+        android:name="com.tanfra.shopmob.smob.ui.admin.contacts.AdminContactsImportTableFragment"
+        android:label="Import contacts from this device"
+        tools:layout="@layout/fragment_admin_contacts_import_table"
+        >
+        <action
+            android:id="@+id/action_smobAdminContactsImportTableFragment_to_smobAdminSelectCategoryFragment"
+            app:destination="@id/smobAdminSelectCategoryFragment" />
+    </fragment>
 
     <!-- GROUPS ************************************** -->
     <!-- GROUPS ************************************** -->

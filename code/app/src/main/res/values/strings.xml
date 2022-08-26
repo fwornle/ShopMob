@@ -20,6 +20,7 @@
     <string name="icon_shopping_cart">Shopping Cart</string>
     <string name="shopping">Shopping at the supermarket</string>
     <string name="no_data">No Data</string>
+    <string name="contact_phone_number">Contact phone number</string>
 
     <string name="smob_item_name">ShopMob Item</string>
     <string name="smob_item_desc">ShopMob Item Description (optional)</string>
@@ -63,6 +64,7 @@
     <string name="full_location_permission_explanation">Full (permanent) location access needed to use geoFences.</string>
     <string name="full_location_permission_denied_consequence">No geoFences will be set. You can change this in settings.</string>
     <string name="fine_location_permission_denied_consequence">Map cannot show your location without access to it.</string>
+    <string name="access_contacts_permission_denied_consequence">Access to contacts would help you in defining ShopMob groups.</string>
     <string name="location_access_explanation">ShopMob needs location to be enabled (geoFences). Activate in settings.</string>
     <string name="anonymous_place">A nice, anonymous place</string>
     <string name="settings">Settings</string>
@@ -82,6 +84,7 @@
     <string name="add_smob_shop">Add ShopMob shop</string>
     <string name="add_smob_group">Add ShopMob group</string>
     <string name="add_smob_group_member">Add ShopMob group member</string>
+    <string name="import_device_contacts">Import contacts from device</string>
     <string name="add_smob_list_member">Add ShopMob list member</string>
     <string name="save_smob_item">Save ShopMob item</string>
     <string name="save_smob_shop">Save ShopMob shop</string>
@@ -112,6 +115,8 @@
     <string name="add_to_group">Add to Group</string>
     <string name="groups">Groups</string>
     <string name="lists">Lists</string>
+    <string name="contacts">Contacts</string>
+    <string name="import_contacts">Import Contacts</string>
     <string name="profile">Profile</string>
     <string name="floor_plan">Floor Plan</string>
     <string name="description">Description</string>

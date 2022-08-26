@@ -16,7 +16,7 @@
     <dimen name="title_bottom_margin">16dp</dimen>
 
     <dimen name="vertical_margin_small">20dp</dimen>
-    <dimen name="vertical_margin_large">40dp</dimen>
+    <dimen name="vertical_margin_large">30dp</dimen>
     <dimen name="vertical_margin_huge">100dp</dimen>
     <dimen name="vertical_margin_image">40dp</dimen>
     <dimen name="horizontal_margin_small">8dp</dimen>

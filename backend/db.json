@@ -263,13 +263,15 @@
     },
     {
       "id": "user-without-firebase-id",
-      "itemStatus": "NEW",
+      "itemStatus": "OPEN",
       "itemPosition": 21,
       "username": "user-without-username",
       "name": "user-without-username",
       "email": "user-without-email",
       "imageUrl": "null",
-      "groups": []
+      "groups": [
+        ""
+      ]
     }
   ],
   "groups": [

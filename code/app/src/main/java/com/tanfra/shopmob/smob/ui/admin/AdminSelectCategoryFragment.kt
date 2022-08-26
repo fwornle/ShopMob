@@ -55,6 +55,7 @@ class AdminSelectCategoryFragment : BaseFragment(), KoinComponent {
         binding.btProfile.setOnClickListener { navigateToAdminProfileFragment() }
         binding.btGroups.setOnClickListener { navigateToAdminGroupsFragment() }
         binding.btLists.setOnClickListener { navigateToAdminListsFragment() }
+        binding.btContacts.setOnClickListener { navigateToAdminContactsFragment() }
 
         // set onClick handler for DISMISS button
         // ... navigate back to the main app
@@ -123,4 +124,14 @@ class AdminSelectCategoryFragment : BaseFragment(), KoinComponent {
         )
     }
 
+    // navigate to AdminContacts fragment
+    private fun navigateToAdminContactsFragment() {
+        // use the navigationCommand live data to navigate between the fragments
+        _viewModel.navigationCommand.postValue(
+            NavigationCommand.To(
+                AdminSelectCategoryFragmentDirections
+                    .actionSmobAdminSelectCategoryFragmentToSmobAdminContactsImportFragment()
+            )
+        )
+    }
 }
