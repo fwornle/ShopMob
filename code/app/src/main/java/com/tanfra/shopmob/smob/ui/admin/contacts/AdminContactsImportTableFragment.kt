@@ -90,7 +90,7 @@ class AdminContactsImportTableFragment : BaseFragment(), KoinComponent {
             // RecyclerView - it gets the data behind the clicked item as parameter
 
             // communicate the selected item (= a contact)
-            _viewModel.currContact = it
+            _viewModel.currSmobContactATO = it
 
             // use the navigationCommand live data to navigate between the fragments
             _viewModel.navigationCommand.postValue(
@@ -117,13 +117,13 @@ class AdminContactsImportTableFragment : BaseFragment(), KoinComponent {
             })
 
             // setup the recycler view using the extension function
-            rvContacts.setup(adapter)
+            smobItemsRecyclerView.setup(adapter)
 
         }
 
         // enable swiping left/right (comment out to disable swiping)
         val itemTouchHelper = ItemTouchHelper(AdminContactsImportTableSwipeActionHandler(adapter))
-        itemTouchHelper.attachToRecyclerView(binding.rvContacts)
+        itemTouchHelper.attachToRecyclerView(binding.smobItemsRecyclerView)
 
         // fetch contacts data (after asking for permission)
         if (requireContext().hasPermission(Manifest.permission.READ_CONTACTS)) {

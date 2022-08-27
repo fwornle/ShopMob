@@ -5,7 +5,7 @@
     <data>
         <variable
             name="item"
-            type="com.tanfra.shopmob.smob.ui.admin.contacts.Contact" />
+            type="com.tanfra.shopmob.smob.data.repo.ato.SmobContactATO" />
     </data>
 
     <androidx.cardview.widget.CardView

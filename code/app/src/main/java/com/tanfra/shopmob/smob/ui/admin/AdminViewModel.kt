@@ -16,7 +16,7 @@ import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
-import com.tanfra.shopmob.smob.ui.admin.contacts.Contact
+import com.tanfra.shopmob.smob.data.repo.ato.SmobContactATO
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
@@ -38,11 +38,11 @@ class AdminViewModel(
 
     // adapted from: https://medium.com/@kednaik/android-contacts-fetching-using-coroutines-aa0129bffdc4
 
-    private val _contactsLiveData = MutableLiveData<List<Contact>>()
-    val contactsLiveData: LiveData<List<Contact>> = _contactsLiveData
+    private val _contactsLiveData = MutableLiveData<List<SmobContactATO>>()
+    val contactsLiveData: LiveData<List<SmobContactATO>> = _contactsLiveData
 
     // currently selected contact (by clicking one in the list)
-    var currContact: Contact? = null
+    var currSmobContactATO: SmobContactATO? = null
 
     fun fetchContacts() {
         viewModelScope.launch {
@@ -67,8 +67,8 @@ class AdminViewModel(
         }
     }
 
-    private fun getDeviceContacts(): List<Contact> {
-        val contactsList = mutableListOf<Contact>()
+    private fun getDeviceContacts(): List<SmobContactATO> {
+        val contactsList = mutableListOf<SmobContactATO>()
         val contactsCursor = app.contentResolver?.query(
             ContactsContract.Contacts.CONTENT_URI,
             null,
@@ -78,11 +78,18 @@ class AdminViewModel(
         if (contactsCursor != null && contactsCursor.count > 0) {
             val idIndex = contactsCursor.getColumnIndex(ContactsContract.Contacts._ID)
             val nameIndex = contactsCursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
+            var idx: Long = 0
             while (contactsCursor.moveToNext()) {
                 val id = contactsCursor.getString(idIndex)
                 val name = contactsCursor.getString(nameIndex)
                 if (name != null) {
-                    contactsList.add(Contact(id, name, SmobItemStatus.NEW))
+                    contactsList.add(SmobContactATO(
+                        id,
+                        SmobItemStatus.NEW,
+                        idx,
+                        name
+                    ))
+                    idx = idx + 1
                 }
             }
             contactsCursor.close()

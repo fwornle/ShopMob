@@ -8,6 +8,7 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.RowContactBinding
 import com.tanfra.shopmob.databinding.RowContactDataBinding
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.repo.ato.SmobContactATO
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import org.koin.core.component.KoinComponent
@@ -16,15 +17,15 @@ import java.util.*
 
 
 // use data binding to show the smob item on the RV item
-class AdminContactsImportTableAdapter(rootView: View, callBack: (selectedContact: Contact) -> Unit) :
-    BaseRecyclerViewAdapter<Contact>(rootView, callBack), KoinComponent {
+class AdminContactsImportTableAdapter(rootView: View, callBack: (selectedSmobContactATO: SmobContactATO) -> Unit) :
+    BaseRecyclerViewAdapter<SmobContactATO>(rootView, callBack), KoinComponent {
 
     // inject _viewModel from Koin service locator
     private val _viewModel: AdminViewModel by inject()
 
     // SearchView widget can be used to preFilter the list using user input
-    override fun getSearchViewItems(items: List<Contact>, charSearch: String)
-    : MutableList<Contact> {
+    override fun getSearchViewItems(items: List<SmobContactATO>, charSearch: String)
+    : MutableList<SmobContactATO> {
 
         // ignore case
         val searchP = charSearch.lowercase(Locale.ROOT)
@@ -40,7 +41,7 @@ class AdminContactsImportTableAdapter(rootView: View, callBack: (selectedContact
     }
 
     // filter (and sort) list - straight through, if not needed
-    override fun listFilter(items: List<Contact>): List<Contact> {
+    override fun listFilter(items: List<SmobContactATO>): List<SmobContactATO> {
 
         // take out all items which have been deleted by swiping
         return items
@@ -57,12 +58,12 @@ class AdminContactsImportTableAdapter(rootView: View, callBack: (selectedContact
 
     // called, when the user action has been confirmed and the local DB / backend needs updated
     // ... this is the point where the list can be consolidated, if needed (eg. aggregate status)
-    override fun uiActionConfirmed(item: Contact, rootView: View) {
+    override fun uiActionConfirmed(item: SmobContactATO, rootView: View) {
         // TODO: add/remove contact from app
     }  // uiActionConfirmed
 
     // dynamically adjust view item content
-    override fun adjustViewItem(binding: ViewDataBinding, item: Contact) {
+    override fun adjustViewItem(binding: ViewDataBinding, item: SmobContactATO) {
 
         // fetch layoutInflater (from context/SystemService)
         val layoutInflater = binding.root.context

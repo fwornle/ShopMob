@@ -34,7 +34,7 @@
 
             <!-- data transferred to RV via LD variable / BindingAdapter -->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvContacts"
+                android:id="@+id/smobItemsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -79,7 +79,7 @@
                 android:src="@drawable/ic_baseline_import_contacts_24"
                 android:contentDescription="@string/import_device_contacts"
                 app:fabSize="normal"
-                app:layout_anchor="@id/rvContacts"
+                app:layout_anchor="@id/smobItemsRecyclerView"
                 app:layout_anchorGravity="bottom|right|end"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
