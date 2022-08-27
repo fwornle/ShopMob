@@ -1,6 +1,7 @@
 package com.tanfra.shopmob.smob.ui.admin.groups.groupMemberSelect
 
 import android.view.View
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.tanfra.shopmob.R
@@ -9,6 +10,7 @@ import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
+import com.tanfra.shopmob.smob.ui.admin.contacts.Contact
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -104,5 +106,8 @@ class AdminGroupMemberSelectAdapter(rootView: View, callBack: (selectedSmobUserA
         }  // coroutine scope (lifecycleScope)
 
     }  // uiActionConfirmed
+
+    // dynamically adjust view item content
+    override fun adjustViewItem(binding: ViewDataBinding, item: SmobUserATO) {}
 
 }

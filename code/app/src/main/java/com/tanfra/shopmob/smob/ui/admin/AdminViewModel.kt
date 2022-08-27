@@ -36,14 +36,17 @@ class AdminViewModel(
     // Import contact details
     // Import contact details
 
-    // source: https://medium.com/@kednaik/android-contacts-fetching-using-coroutines-aa0129bffdc4
+    // adapted from: https://medium.com/@kednaik/android-contacts-fetching-using-coroutines-aa0129bffdc4
 
-    private val _contactsLiveData = MutableLiveData<ArrayList<Contact>>()
-    val contactsLiveData: LiveData<ArrayList<Contact>> = _contactsLiveData
+    private val _contactsLiveData = MutableLiveData<List<Contact>>()
+    val contactsLiveData: LiveData<List<Contact>> = _contactsLiveData
+
+    // currently selected contact (by clicking one in the list)
+    var currContact: Contact? = null
 
     fun fetchContacts() {
         viewModelScope.launch {
-            val contactsListAsync = async { getPhoneContacts() }
+            val contactsListAsync = async { getDeviceContacts() }
             val contactNumbersAsync = async { getContactNumbers() }
             val contactEmailAsync = async { getContactEmails() }
 
@@ -51,20 +54,21 @@ class AdminViewModel(
             val contactNumbers = contactNumbersAsync.await()
             val contactEmails = contactEmailAsync.await()
 
-            contacts.forEach {
-                contactNumbers[it.id]?.let { numbers ->
-                    it.numbers = numbers
+            // add numbers & emails to contacts
+            contacts.forEach { contact ->
+                contactNumbers[contact.id]?.let { numbers ->
+                    numbers.map { number -> contact.numbers.add(number) }
                 }
-                contactEmails[it.id]?.let { emails ->
-                    it.emails = emails
+                contactEmails[contact.id]?.let { emails ->
+                    emails.map { email -> contact.emails.add(email) }
                 }
             }
             _contactsLiveData.postValue(contacts)
         }
     }
 
-    private fun getPhoneContacts(): ArrayList<Contact> {
-        val contactsList = ArrayList<Contact>()
+    private fun getDeviceContacts(): List<Contact> {
+        val contactsList = mutableListOf<Contact>()
         val contactsCursor = app.contentResolver?.query(
             ContactsContract.Contacts.CONTENT_URI,
             null,
@@ -78,7 +82,7 @@ class AdminViewModel(
                 val id = contactsCursor.getString(idIndex)
                 val name = contactsCursor.getString(nameIndex)
                 if (name != null) {
-                    contactsList.add(Contact(id, name))
+                    contactsList.add(Contact(id, name, SmobItemStatus.NEW))
                 }
             }
             contactsCursor.close()
@@ -86,8 +90,8 @@ class AdminViewModel(
         return contactsList
     }
 
-    private fun getContactNumbers(): HashMap<String, ArrayList<String>> {
-        val contactsNumberMap = HashMap<String, ArrayList<String>>()
+    private fun getContactNumbers(): HashMap<String, MutableList<String>> {
+        val contactsNumberMap = HashMap<String, MutableList<String>>()
         val phoneCursor: Cursor? = app.contentResolver.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
             null,
@@ -105,7 +109,7 @@ class AdminViewModel(
                 if (contactsNumberMap.containsKey(contactId)) {
                     contactsNumberMap[contactId]?.add(number)
                 } else {
-                    contactsNumberMap[contactId] = arrayListOf(number)
+                    contactsNumberMap[contactId] = mutableListOf(number)
                 }
             }
             //contact contains all the number of a particular contact
@@ -114,8 +118,8 @@ class AdminViewModel(
         return contactsNumberMap
     }
 
-    private fun getContactEmails(): HashMap<String, ArrayList<String>> {
-        val contactsEmailMap = HashMap<String, ArrayList<String>>()
+    private fun getContactEmails(): HashMap<String, MutableList<String>> {
+        val contactsEmailMap = HashMap<String, MutableList<String>>()
         val emailCursor = app.contentResolver.query(
             ContactsContract.CommonDataKinds.Email.CONTENT_URI,
             null,
@@ -132,7 +136,7 @@ class AdminViewModel(
                 if (contactsEmailMap.containsKey(contactId)) {
                     contactsEmailMap[contactId]?.add(email)
                 } else {
-                    contactsEmailMap[contactId] = arrayListOf(email)
+                    contactsEmailMap[contactId] = mutableListOf(email)
                 }
             }
             //contact contains all the emails of a particular contact

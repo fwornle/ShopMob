@@ -1,10 +1,12 @@
 package com.tanfra.shopmob.smob.ui.planning.shops
 
 import android.view.View
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.repo.ato.SmobProductWithListDataATO
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
@@ -56,5 +58,8 @@ class PlanningShopsTableAdapter(rootView: View, callBack: (selectedSmobATO: Smob
         }  // coroutine scope (lifecycleScope)
 
     }  // leftSwipeConfirmed
+
+    // dynamically adjust view item content
+    override fun adjustViewItem(binding: ViewDataBinding, item: SmobShopATO) {}
 
 }

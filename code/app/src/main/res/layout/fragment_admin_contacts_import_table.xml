@@ -32,13 +32,15 @@
                 app:iconifiedByDefault="false"
                 app:queryBackground="@null" />
 
+            <!-- data transferred to RV via LD variable / BindingAdapter -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvContacts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constrainedHeight="true"
-                app:layout_constraintTop_toBottomOf="@id/smobContactsImportSearch" />
+                app:layout_constraintTop_toBottomOf="@id/smobContactsImportSearch"
+                app:liveData="@{viewModel.contactsLiveData}" />
 
             <TextView
                 android:id="@+id/noDataTextView"

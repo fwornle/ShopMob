@@ -1,6 +1,7 @@
 package com.tanfra.shopmob.smob.ui.admin.lists.listGroupsTable
 
 import android.view.View
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.tanfra.shopmob.R
@@ -91,5 +92,8 @@ class AdminListGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: Sm
         }  // coroutine scope (lifecycleScope)
 
     }  // uiActionConfirmed
+
+    // dynamically adjust view item content
+    override fun adjustViewItem(binding: ViewDataBinding, item: SmobGroupWithListDataATO) {}
 
 }

@@ -1,12 +1,14 @@
 package com.tanfra.shopmob.smob.ui.planning.lists
 
 import android.view.View
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.local.utils.SmobListItem
+import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupWithListDataATO
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
@@ -129,5 +131,8 @@ class PlanningListsTableAdapter(rootView: View, callBack: (selectedSmobATO: Smob
         return item
 
     }  // consolidateListItem
+
+    // dynamically adjust view item content
+    override fun adjustViewItem(binding: ViewDataBinding, item: SmobListATO) {}
 
 }

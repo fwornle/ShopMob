@@ -15,6 +15,8 @@ import com.tanfra.shopmob.utils.setTitle
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.material.snackbar.Snackbar
 import com.tanfra.shopmob.BuildConfig
 import org.koin.core.component.KoinComponent
@@ -30,7 +32,7 @@ class AdminContactsImportTableFragment : BaseFragment(), KoinComponent {
     // use Koin service locator to retrieve the ViewModel instance
     override val _viewModel: AdminViewModel by sharedViewModel()
 
-    // data binding for fragment_admin_group_member_list.xml
+    // data binding for fragment_admin_contacts_import_table.xml
     private lateinit var binding: FragmentAdminContactsImportTableBinding
 
     // permissions (access to contact details)
@@ -62,8 +64,15 @@ class AdminContactsImportTableFragment : BaseFragment(), KoinComponent {
             // deactivate SwipeRefreshLayout spinner
             binding.refreshLayout.setRefreshing(false)
 
-            // refresh local DB data from backend (for this list) - also updates 'showNoData'
-            _viewModel.swipeRefreshUserDataInLocalDB()
+
+            // fetch contacts data (after asking for permission)
+            if (requireContext().hasPermission(Manifest.permission.READ_CONTACTS)) {
+                // permissions already granted --> fetch contacts data
+                _viewModel.fetchContacts()
+            } else {
+                // initiate permission check for (read) access to contacts on this device
+                contactsAccessPermissionRequest.launch(Manifest.permission.READ_CONTACTS)
+            }
 
             // empty? --> inform user that there is no point swiping for further updates...
             if (_viewModel.showNoData.value == true) {
@@ -75,12 +84,46 @@ class AdminContactsImportTableFragment : BaseFragment(), KoinComponent {
         // handling of access to contacts stored on this devices
         registerAccessContactsPermissionCheck()
 
-        val adapter = AdminContactsImportTableAdapter(requireContext())
-        binding.rvContacts.adapter = adapter
+        val adapter = AdminContactsImportTableAdapter(binding.root) {
 
-        _viewModel.contactsLiveData.observe(viewLifecycleOwner, {
-            adapter.contacts = it
-        })
+            // this lambda is the 'callback' function which gets called when clicking an item in the
+            // RecyclerView - it gets the data behind the clicked item as parameter
+
+            // communicate the selected item (= a contact)
+            _viewModel.currContact = it
+
+            // use the navigationCommand live data to navigate between the fragments
+            _viewModel.navigationCommand.postValue(
+                NavigationCommand.To(
+                    AdminContactsImportTableFragmentDirections
+                        .actionSmobAdminContactsImportTableFragmentToSmobAdminSelectCategoryFragment()
+                )
+            )
+
+        }  // "on-item-click" lambda
+
+        // connect SearchView to RecyclerView
+        with(binding) {
+
+            // connect SearchView to RecyclerView
+            smobContactsImportSearch.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    adapter.filter.filter(newText)
+                    return false
+                }
+            })
+
+            // setup the recycler view using the extension function
+            rvContacts.setup(adapter)
+
+        }
+
+        // enable swiping left/right (comment out to disable swiping)
+        val itemTouchHelper = ItemTouchHelper(AdminContactsImportTableSwipeActionHandler(adapter))
+        itemTouchHelper.attachToRecyclerView(binding.rvContacts)
 
         // fetch contacts data (after asking for permission)
         if (requireContext().hasPermission(Manifest.permission.READ_CONTACTS)) {

@@ -1,6 +1,7 @@
 package com.tanfra.shopmob.smob.ui.admin.groups.groupsTable
 
 import android.view.View
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.tanfra.shopmob.R
@@ -9,6 +10,7 @@ import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
+import com.tanfra.shopmob.smob.ui.admin.contacts.Contact
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -23,7 +25,7 @@ class AdminGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobGr
 
     // SearchView widget can be used to preFilter the list using user input
     override fun getSearchViewItems(items: List<SmobGroupATO>, charSearch: String)
-    : MutableList<SmobGroupATO> {
+            : MutableList<SmobGroupATO> {
         // default: no filtering
         return items.toMutableList()
     }
@@ -33,8 +35,10 @@ class AdminGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobGr
 
         // take out all items which have been deleted by swiping
         return items
-            .filter { item -> item.members.map { member -> member.id }.contains(SmobApp.currUser?.id)  }
-            .filter { item -> item.itemStatus != SmobItemStatus.DELETED  }
+            .filter { item ->
+                item.members.map { member -> member.id }.contains(SmobApp.currUser?.id)
+            }
+            .filter { item -> item.itemStatus != SmobItemStatus.DELETED }
             //.map { item -> consolidateListItem(item) }
             .sortedWith(
                 compareBy(
@@ -51,7 +55,7 @@ class AdminGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobGr
     override fun uiActionConfirmed(item: SmobGroupATO, rootView: View) {
 
         // consolidate list item data (prior to writing to the DB)
-        val itemAdjusted = if(item.itemStatus != SmobItemStatus.DELETED) {
+        val itemAdjusted = if (item.itemStatus != SmobItemStatus.DELETED) {
             // user swiped right --> marking all sub-entries as "IN_PROGRESS" + aggregating here
             consolidateListItem(item)
         } else {
@@ -91,5 +95,8 @@ class AdminGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobGr
         return item
 
     }  // consolidateListItem
+
+    // dynamically adjust view item content
+    override fun adjustViewItem(binding: ViewDataBinding, item: SmobGroupATO) {}
 
 }

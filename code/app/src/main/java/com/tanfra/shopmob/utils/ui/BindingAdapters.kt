@@ -3,6 +3,7 @@ package com.tanfra.shopmob.utils.ui
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -80,20 +81,20 @@ object BindingAdapters {
     }
 
 
-//    /**
-//     * Use binding adapter to set the recycler view data using livedata object
-//     */
-//    @Suppress("UNCHECKED_CAST")
-//    @BindingAdapter("liveData")
-//    @JvmStatic
-//    fun <T> setRecyclerViewData(recyclerView: RecyclerView, items: LiveData<List<T>>?) {
-//        items?.value?.let { itemList ->
-//            (recyclerView.adapter as? BaseRecyclerViewAdapter<T>)?.apply {
-//                clear()
-//                addData(itemList)
-//            }
-//        }
-//    }
+    /**
+     * Use binding adapter to set the recycler view data using livedata object
+     */
+    @Suppress("UNCHECKED_CAST")
+    @BindingAdapter("liveData")
+    @JvmStatic
+    fun <T> setRecyclerViewData(recyclerView: RecyclerView, items: LiveData<List<T>>?) {
+        items?.value?.let { itemList ->
+            (recyclerView.adapter as? BaseRecyclerViewAdapter<T>)?.apply {
+                clear()
+                addData(itemList)
+            }
+        }
+    }
 
 
     /**

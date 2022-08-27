@@ -24,7 +24,6 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
     private var _items: MutableList<T> = mutableListOf()
 
 
-
     // abstract declaration of list specific functions --------------------------------
     // ... to be implemented in the concrete adapter (--> parent class)
 
@@ -41,6 +40,8 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
     // fetch string array for SearchView widget
     abstract fun getSearchViewItems(items: List<T>, charSearch: String): MutableList<T>
 
+    // dynamically adjust view item - providing access to binding of item to be adjusted
+    abstract fun adjustViewItem(binding: ViewDataBinding, item: T)
 
     // generic adapter functionality --------------------------------------------------
 
@@ -93,11 +94,19 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
     }
 
     override fun onBindViewHolder(holder: DataBindingViewHolder<T>, position: Int) {
+
+        // fetch current item
         val item = getItem(position)
+
+        // bind to viewHolder & set onClick listener
         holder.bind(item)
         holder.itemView.setOnClickListener {
             callback?.invoke(item)
         }
+
+        // optional: dynamically customize each item
+        adjustViewItem(holder.binding, item)
+
     }
 
     // public getter
