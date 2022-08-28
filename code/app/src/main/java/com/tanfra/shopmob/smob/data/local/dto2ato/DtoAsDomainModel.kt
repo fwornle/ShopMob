@@ -66,6 +66,8 @@ fun <DTO: Dto, ATO: Ato> DTO?._asDomainModel(d: DTO): ATO {
                     id = (this as SmobUserDTO).id,
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
+                    userIdFed = this.userIdFed,
+                    userIdContacts = this.userIdContacts,
                     username = this.username,
                     name = this.name,
                     email = this.email,

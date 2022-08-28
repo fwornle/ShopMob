@@ -73,6 +73,8 @@ fun <DTO: Dto, ATO: Ato> ArrayList<ATO>._asDatabaseModel(d: DTO): List<DTO> {
                     id = (it as SmobUserNTO).id,
                     itemStatus = it.itemStatus,
                     itemPosition = it.itemPosition,
+                    userIdFed = it.userIdFed,
+                    userIdContacts = it.userIdContacts,
                     username = it.username,
                     name = it.name,
                     email = it.email,

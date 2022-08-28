@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.tanfra.shopmob.smob.data.local.dao.SmobUserDao
+import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.net.api.SmobUserApi
 import com.tanfra.shopmob.smob.data.repo.SmobUserRepository
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
@@ -68,10 +69,15 @@ class SmobRepositoryTest {
             shopMobUserATOList.add(
                 SmobUserATO(
                     UUID.randomUUID().toString(),
+                    SmobItemStatus.NEW,
+                    -1L,
+                    "test federated ID $idx",
+                    "test contacts ID $idx",
                     "test username $idx",
                     "test name $idx",
                     "test email $idx",
                     "test imageURL $idx",
+                    listOf(),
                 )
             )
         }

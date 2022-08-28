@@ -112,6 +112,8 @@ class SmobPlanningActivity : AppCompatActivity() {
                             userId,
                             if(isNewUser) SmobItemStatus.NEW else SmobItemStatus.OPEN,
                             userItemPos,
+                            "",
+                            "",
                             userName.trim().replace(" ", "."),
                             userName,
                             userEmail,

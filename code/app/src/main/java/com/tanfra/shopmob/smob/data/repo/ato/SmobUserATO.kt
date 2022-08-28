@@ -1,7 +1,6 @@
 package com.tanfra.shopmob.smob.data.repo.ato
 
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
-import com.tanfra.shopmob.smob.data.repo.utils.Member
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
@@ -11,6 +10,8 @@ data class SmobUserATO(
     override val id: String,
     override var itemStatus: @Contextual SmobItemStatus,
     override var itemPosition: Long,
+    var userIdFed: String,
+    var userIdContacts: String,
     var username: String,
     var name: String,
     var email: String,

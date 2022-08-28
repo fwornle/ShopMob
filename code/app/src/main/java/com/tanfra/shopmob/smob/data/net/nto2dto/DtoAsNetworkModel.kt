@@ -65,6 +65,8 @@ fun <DTO: Dto, NTO: Nto> DTO?._asNetworkModel(d: DTO): NTO {
                     id = (this as SmobUserDTO).id,
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
+                    userIdFed = this.userIdFed,
+                    userIdContacts = this.userIdContacts,
                     username = this.username,
                     name = this.name,
                     email = this.email,
