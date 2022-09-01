@@ -20,6 +20,7 @@
     <dimen name="vertical_margin_huge">100dp</dimen>
     <dimen name="vertical_margin_image">40dp</dimen>
     <dimen name="horizontal_margin_small">8dp</dimen>
+    <dimen name="horizontal_margin_medium">15dp</dimen>
     <dimen name="horizontal_margin_huge">30dp</dimen>
     <dimen name="horizontal_margin_anchor_login">120dp</dimen>
     <dimen name="button_padding">16dp</dimen>

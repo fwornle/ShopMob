@@ -71,8 +71,6 @@ fun <DTO: Dto, NTO: Nto> NTO._asRepoModel(d: DTO): DTO {
                 id = (this as SmobUserNTO).id,
                 itemStatus = this.itemStatus,
                 itemPosition = this.itemPosition,
-                userIdFed = this.userIdFed,
-                userIdContacts = this.userIdContacts,
                 username = this.username,
                 name = this.name,
                 email = this.email,

@@ -31,6 +31,21 @@
                 app:stateFlowResource="@{viewModel.smobLists}" />
 
             <TextView
+                android:id="@+id/noGroupsHint1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/horizontal_margin_huge"
+                android:layout_marginBottom="@dimen/vertical_margin_large"
+                android:layout_marginEnd="@dimen/horizontal_margin_huge"
+                android:text="@string/no_group_1"
+                android:textAlignment="textStart"
+                android:textSize="@dimen/text_size_large"
+                app:fadeVisible="@{viewModel.showNoData.booleanValue()}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/noDataTextView" />
+
+            <TextView
                 android:id="@+id/noDataTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,6 +59,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 />
+
+            <TextView
+                android:id="@+id/noGroupsHint2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/horizontal_margin_huge"
+                android:layout_marginTop="@dimen/vertical_margin_large"
+                android:layout_marginEnd="@dimen/horizontal_margin_huge"
+                android:text="@string/no_group_2"
+                android:textAlignment="textStart"
+                android:textSize="@dimen/text_size_large"
+                app:fadeVisible="@{viewModel.showNoData.booleanValue()}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/noDataTextView" />
 
             <!-- centered (red) progress bar, indicating the loading state when accessing the DB -->
             <ProgressBar

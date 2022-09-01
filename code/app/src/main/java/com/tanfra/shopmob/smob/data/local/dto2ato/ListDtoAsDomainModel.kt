@@ -68,8 +68,6 @@ fun <DTO: Dto, ATO: Ato> List<DTO?>._asDomainModel(d: DTO): List<ATO> {
                     id = (it as SmobUserDTO).id,
                     itemStatus = it.itemStatus,
                     itemPosition = it.itemPosition,
-                    userIdFed = it.userIdFed,
-                    userIdContacts = it.userIdContacts,
                     username = it.username,
                     name = it.name,
                     email = it.email,

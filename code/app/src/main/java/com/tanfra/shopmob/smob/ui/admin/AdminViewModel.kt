@@ -439,8 +439,6 @@ class AdminViewModel(
                                     id = member.id,
                                     itemStatus = member.itemStatus,
                                     itemPosition = member.itemPosition,
-                                    memberIdFed = member.userIdFed,
-                                    memberIdContacts = member.userIdContacts,
                                     memberUsername = member.username,
                                     memberName = member.name,
                                     memberEmail = member.email,

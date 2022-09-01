@@ -64,14 +64,6 @@ function smob () {
     }
 
     // manually add "myself" (own user: BTwLBEmaoWfQKbooBguh0x84bV52)
-    //
-    // "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
-    // "itemStatus": "OPEN",
-    // "itemPosition": 20,
-    // "username": "Frank.Douvre",
-    // "name": "Frank Douvre",
-    // "email": "fradou7@gmail.com",
-    // "imageUrl": "https://lh3.googleusercontent.com/a/AATXAJx9nYtfUiFXPg2JABf1OWUMGasy_szkM1PSvfiT=s96-c"
     smobUsers.push({
         "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
         "itemStatus": "OPEN",
@@ -100,6 +92,7 @@ function smob () {
         var description = faker.lorem.words(rand(5))
         var type = faker.helpers.randomize(groupTypes)
         var membersOnList = [...Array(rand(10)).keys()].map(_ => faker.helpers.randomize(userIds)).sort()
+        var membersOnList = unique(membersOnList)
         membersOnList.splice(0, 0, "BTwLBEmaoWfQKbooBguh0x84bV52")
         var members = membersOnList.map(
             (userId, idx) => { 
@@ -324,7 +317,7 @@ function smob () {
         var listItemPosition = id
         var name = daLists[id].name
         var description = faker.lorem.words()
-        var itemsOnList = [...Array(2 + rand(20)).keys()].map(_ => faker.helpers.randomize(productIds)).sort()
+        var itemsOnList = unique([...Array(2 + rand(20)).keys()].map(_ => faker.helpers.randomize(productIds)).sort())
         var items = itemsOnList.map(
             (prodId, idx) => { return { 
                 "id": prodId, 
@@ -336,7 +329,7 @@ function smob () {
         )
 
         // groups associated with lists
-        var groupsOnList = [...Array(1 + rand(groupIds.length)).keys()].map(_ => faker.helpers.randomize(groupIds)).sort()
+        var groupsOnList = unique([...Array(1 + rand(groupIds.length)).keys()].map(_ => faker.helpers.randomize(groupIds)).sort())
         var groups = groupsOnList.map(
             (groupId, idx) => { return { 
                 "id": groupId, 
@@ -416,6 +409,11 @@ function smob () {
 }
 
 
+
+// return array with only unique values
+function unique(arr) {
+    return [...new Set(arr)];
+}
 
 // determine the degree of completion of a list
 function completion(statusList) {

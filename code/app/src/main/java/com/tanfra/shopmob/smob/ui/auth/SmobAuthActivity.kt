@@ -65,6 +65,10 @@ class SmobAuthActivity : AppCompatActivity() {
         val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
             AuthUI.IdpConfig.GoogleBuilder().build(),
+            AuthUI.IdpConfig.GitHubBuilder().build(),
+            AuthUI.IdpConfig.YahooBuilder().build(),
+//            AuthUI.IdpConfig.FacebookBuilder().build(),
+            AuthUI.IdpConfig.FacebookBuilder().setPermissions(arrayListOf("user_friends")).build(),
         )
 
         // firebaseUI: create sign-in intent

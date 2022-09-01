@@ -18,6 +18,9 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE"/>
 
+    <!-- facebook login, without advertisement-ID -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
+
     <!-- permit the fetching of user's contacts -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
@@ -40,6 +43,10 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         tools:targetApi="s"
         tools:ignore="DataExtractionRules">
+
+        <!-- facebook login -->
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_application_id" />
+        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -155,5 +162,8 @@
         <!-- [END fcm_default_channel] -->
 
     </application>
+
+
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
 
 </manifest>

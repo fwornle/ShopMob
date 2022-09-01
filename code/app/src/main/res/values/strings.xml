@@ -2,6 +2,11 @@
     <!-- firebaseUI authentication flow -->
     <string name="signed_out">Signed Out</string>
 
+    <!-- facebook login -->
+    <string name="facebook_application_id" translatable="false">345736037682696</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb345736037682696</string>
+    <string name="facebook_client_token" translatable="false">fceab5c10ea974d722e1c4c2644c157d</string>
+
     <string name="app_name">ShopMob</string>
     <string name="app_name_planning">Shop for: %1$s</string>
     <string name="app_name_admin_groups_in_list">Groups of List: %1$s</string>
@@ -20,6 +25,8 @@
     <string name="icon_shopping_cart">Shopping Cart</string>
     <string name="shopping">Shopping at the supermarket</string>
     <string name="no_data">No Data</string>
+    <string name="no_group_1">You currently have not been added to any ShopMob groups. Please join an open group or start a new group of your own - then add a SmobList to be shared.</string>
+    <string name="no_group_2">Alternatively, ask someone to invite you to an existing group. Shared SmobLists are only visible to members of the sharing group.</string>
     <string name="contact_phone_number">Contact phone number</string>
 
     <string name="smob_item_name">ShopMob Item</string>

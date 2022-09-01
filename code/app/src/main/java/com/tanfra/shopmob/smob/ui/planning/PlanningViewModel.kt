@@ -3,6 +3,7 @@ package com.tanfra.shopmob.smob.ui.planning
 import android.app.Application
 import androidx.lifecycle.*
 import com.tanfra.shopmob.R
+import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.base.BaseViewModel
@@ -371,7 +372,9 @@ class PlanningViewModel(
                 smobListNewest.status == Status.SUCCESS && smobListNewest.data!!.isEmpty() ||
                 smobListNewest.status == Status.SUCCESS && smobListNewest.data!!.all {
                     (it as Ato).itemStatus == SmobItemStatus.DELETED
-                }
+                } ||
+                // show 'no data', if the currently logged in user is not affiliated with any groups
+                SmobApp.currUser?.hasGroupRefs()?.not() ?: false
                 )
     }
 

@@ -112,14 +112,14 @@ class SmobPlanningActivity : AppCompatActivity() {
                             userId,
                             if(isNewUser) SmobItemStatus.NEW else SmobItemStatus.OPEN,
                             userItemPos,
-                            "",
-                            "",
                             userName.trim().replace(" ", "."),
                             userName,
                             userEmail,
                             userProfileUrl.toString(),
                             daUser?.groups ?: listOf(),
                         )
+
+                        Timber.i("User has groups: ${daUser?.hasGroupRefs()}")
 
                         // attempt to update user data in local/backend DB (or store, if new)
                         // --> create new co-routine (also in 'wManager.applicationScope')

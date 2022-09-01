@@ -72,8 +72,6 @@ fun <DTO: Dto, ATO: Ato> Flow<List<DTO?>>._asDomainModel(d: DTO): Flow<List<ATO>
                                     id = (it as SmobUserDTO).id,
                                     itemStatus = it.itemStatus,
                                     itemPosition = it.itemPosition,
-                                    userIdFed = it.userIdFed,
-                                    userIdContacts = it.userIdContacts,
                                     username = it.username,
                                     name = it.name,
                                     email = it.email,

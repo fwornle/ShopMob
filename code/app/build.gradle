@@ -108,6 +108,10 @@ dependencies {
     // use open source library firebaseui to simplify auth flows
     implementation "com.firebaseui:firebase-ui-auth:$firebaseUiVersion"
 
+    // Required only if Facebook login support is required
+    // Find the latest Facebook SDK releases here: https://goo.gl/Ce5L94
+    implementation "com.facebook.android:facebook-login:latest.release"
+
     // retrofit & moshi
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
