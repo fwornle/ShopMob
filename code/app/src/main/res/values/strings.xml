@@ -2,13 +2,9 @@
     <!-- firebaseUI authentication flow -->
     <string name="signed_out">Signed Out</string>
 
-    <!-- facebook login
-         note: assumes the presence of an environment variable SMOB_FB_CLIENT_TOKEN on the build
-               machine... see https://developers.facebook.com/apps/ -> settings -> advanced
-    -->
+    <!-- facebook login (these constants are used in the manifest) -->
     <string name="facebook_application_id" translatable="false">345736037682696</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb345736037682696</string>
-    <string name="facebook_client_token" translatable="false">SMOB_FB_CLIENT_TOKEN</string>
 
     <string name="app_name">ShopMob</string>
     <string name="app_name_planning">Shop for: %1$s</string>
