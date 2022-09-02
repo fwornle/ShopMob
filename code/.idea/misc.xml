@@ -8,6 +8,7 @@
         <entry key="..\:/Users/q284340/.gradle/caches/transforms-3/104a8ebdec5baed87c0acaa4669c711a/transformed/jetified-firebase-ui-auth-8.0.1/res/layout/fui_idp_button_google.xml" value="0.1" />
         <entry key="..\:/Users/q284340/.gradle/caches/transforms-3/104a8ebdec5baed87c0acaa4669c711a/transformed/jetified-firebase-ui-auth-8.0.1/res/layout/fui_idp_button_yahoo.xml" value="0.1" />
         <entry key="..\:/Users/q284340/.gradle/caches/transforms-3/104a8ebdec5baed87c0acaa4669c711a/transformed/jetified-firebase-ui-auth-8.0.1/res/layout/fui_provider_button_email.xml" value="0.1" />
+        <entry key="..\:/Users/q284340/.gradle/caches/transforms-3/71a5ca65032abb4faecd2e6f21cf48a3/transformed/material-1.6.1/res/layout/design_navigation_menu_item.xml" value="0.1" />
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/drawable/android.xml" value="0.2755208333333333" />
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/drawable/ic_add.xml" value="0.14635416666666667" />
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/drawable/ic_baseline_admin_panel_settings_24.xml" value="0.1890625" />
@@ -118,7 +119,7 @@
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/menu/map_options.xml" value="0.13385416666666666" />
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/menu/navdrawer_admin_menu.xml" value="0.11203703703703703" />
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/menu/navdrawer_menu.xml" value="0.259375" />
-        <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/menu/navdrawer_planning_menu.xml" value="0.1" />
+        <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/menu/navdrawer_planning_menu.xml" value="0.152" />
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1205" />
         <entry key="..\:/_Frank/android/_udacity/ShopMob/code/app/src/main/res/xml/shortcuts.xml" value="0.21666666666666667" />
         <entry key="..\:/_Frank/android/_udacity/nd940-android-kotlin-c4-starter/starter/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2755208333333333" />

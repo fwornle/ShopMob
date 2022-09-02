@@ -65,11 +65,11 @@ class SmobPlanningActivity : AppCompatActivity() {
             extras?.let {
                 if (it.containsKey("userName")) {
                     // extract the extra-data in the intent
-                    userId = it.get("userId") as String
-                    userName = it.get("userName") as String
-                    userEmail = it.get("userEmail") as String
-                    userProfileUrl = it.get("userProfileUrl") as String
-                    isNewUser = it.get("isNewUser") as Boolean
+                    userId = it.getString("userId") ?: ""
+                    userName = it.getString("userName") ?: ""
+                    userEmail = it.getString("userEmail") ?: ""
+                    userProfileUrl = it.getString("userProfileUrl") ?: ""
+                    isNewUser = it.getBoolean("isNewUser")
                 }
             }
 
@@ -187,13 +187,24 @@ class SmobPlanningActivity : AppCompatActivity() {
     // handle home button
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return if (navController.currentDestination?.id == navController.graph.startDestinationId) {
+
+            // start destination - we have a Drawer menu here...
+
+            // already handled by class ActionBarDrawerToggle
             if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+                // yes --> prevent further handlers from being called (eg. Fragment, etc.)
                 true
             } else {
+                // nope --> call parent's handler or (in case there is no parent) indicate
+                // 'unhandled' (false)
                 super.onOptionsItemSelected(item)
             }
+
         } else {
-            navController.popBackStack()
+
+            // not the start destination --> indicate 'unhandled' (false) to delegate further
+            // handling to subsequently called handlers (Fragment)
+            false
         }
     }
 

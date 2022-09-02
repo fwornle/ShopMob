@@ -94,7 +94,6 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
             _viewModel.locatedShop.value?.location?.longitude ?: 0.0,
         )
 
-        setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(true)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -198,7 +197,7 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
 
             },
             viewLifecycleOwner,
-            Lifecycle.State.STARTED,
+            Lifecycle.State.RESUMED,
         )
 
     }

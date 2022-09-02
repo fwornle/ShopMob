@@ -8,10 +8,14 @@ import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentAdminProfileBinding
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
+import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
@@ -39,7 +43,6 @@ class AdminProfileFragment : BaseFragment(), KoinComponent {
         // set injected viewModel (from KOIN service locator)
         binding.viewModel = _viewModel
 
-        setHasOptionsMenu(false)
         setDisplayHomeAsUpEnabled(true)
         setTitle(getString(R.string.app_name_admin_profile))
 
@@ -59,32 +62,53 @@ class AdminProfileFragment : BaseFragment(), KoinComponent {
             // and we're done here
             this.activity?.finish()
         }
-    }
 
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.logout -> {
-                // logout authenticated user
-                AuthUI.getInstance()
-                    .signOut(this.requireContext())
-                    .addOnCompleteListener {
-                        // user is now signed out -> redirect to login screen
-                        startActivity(Intent(this.context, SmobAuthActivity::class.java))
-                        // and we're done here
-                        this.activity?.finish()
+        // The usage of an interface lets you inject your own implementation
+        val menuHost: MenuHost = requireActivity()
+
+        // Add menu items without using the Fragment Menu APIs
+        // Note how we can tie the MenuProvider to the viewLifecycleOwner
+        // and an optional Lifecycle.State (here, STARTED) to indicate when
+        // the menu should be visible
+        menuHost.addMenuProvider(
+            object : MenuProvider {
+
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.main_menu, menu)
+                }
+
+                override fun onMenuItemSelected(item: MenuItem) = when (item.itemId) {
+
+                    // logout menu
+                    R.id.logout -> {
+                        // logout authenticated user
+                        AuthUI.getInstance()
+                            .signOut(requireContext())
+                            .addOnCompleteListener {
+                                // user is now signed out -> redirect to login screen
+                                startActivity(Intent(requireContext(), SmobAuthActivity::class.java))
+                                // and we're done here
+                                requireActivity().finish()
+                            }
+                        true
                     }
-            }
-        }  // when(item...)
 
-        return super.onOptionsItemSelected(item)
-    }
+                    // back arrow (home button)
+                    android.R.id.home -> {
+                        _viewModel.navigationCommand.postValue(NavigationCommand.Back)
+                        true
+                    }
 
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        // display logout as menu item
-        inflater.inflate(R.menu.main_menu, menu)
+                    // unhandled...
+                    else -> false
+
+                }  // when(item...)
+
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED,
+        )
+
     }
 
 }

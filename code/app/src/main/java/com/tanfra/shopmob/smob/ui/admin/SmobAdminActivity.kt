@@ -91,13 +91,24 @@ class SmobAdminActivity : AppCompatActivity() {
     // handle home button
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return if (navController.currentDestination?.id == navController.graph.startDestinationId) {
+
+            // start destination - we have a Drawer menu here...
+
+            // already handled by class ActionBarDrawerToggle
             if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+                // yes --> prevent further handlers from being called (eg. Fragment, etc.)
                 true
             } else {
+                // nope --> call parent's handler or (in case there is no parent) indicate
+                // 'unhandled' (false)
                 super.onOptionsItemSelected(item)
             }
+
         } else {
-            navController.popBackStack()
+
+            // not the start destination --> indicate 'unhandled' (false) to delegate further
+            // handling to subsequently called handlers (Fragment)
+            false
         }
     }
 

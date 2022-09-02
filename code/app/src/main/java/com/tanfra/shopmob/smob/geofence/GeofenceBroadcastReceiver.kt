@@ -31,51 +31,56 @@ class GeofenceBroadcastReceiver : BroadcastReceiver(), KoinComponent {
             // yup --> grab the geoFencing event object from provided intent
             val geofencingEvent = GeofencingEvent.fromIntent(intent)
 
-            // only process valid events...
-            if (geofencingEvent.hasError()) {
-                val errorMessage = GeofenceStatusCodes
-                    .getStatusCodeString(geofencingEvent.errorCode)
+            // received a geoFenceing event at all?
+            geofencingEvent?.let { gfEvent ->
 
-                Timber.e(errorMessage)
-                return
-            }
+                // yes --> but only process valid events...
+                if (gfEvent.hasError()) {
+                    val errorMessage = GeofenceStatusCodes
+                        .getStatusCodeString(gfEvent.errorCode)
 
-
-            // fetch transition type
-            val geofenceTransition = geofencingEvent.geofenceTransition
-
-            // ... only looking for ENTER geoFence transitions:
-            when (geofenceTransition) {
-                Geofence.GEOFENCE_TRANSITION_ENTER,
-                // Geofence.GEOFENCE_TRANSITION_EXIT,
-                -> {
-
-                    // fetch all geoFences that have been triggered
-                    // ... note: a single event can trigger multiple geoFences
-                    val triggeringGeofences = geofencingEvent.triggeringGeofences
-
-                    // extract SmobShop IDs and turn into a JSON string (ready for transmission to
-                    // the WorkManager "doWork" job via (string) parameter
-                    val geofenceTransitionDetails = getGeofenceTransitionDetails(
-                        geofenceTransition,    // allow to distinguish between ENTER and EXIT
-                        triggeringGeofences,   // the SmobShop IDs
-                    )
-
-                    // schedule background work (WorkManager), handling potential geofencing entry
-                    // transition events
-                    val geoFenceWorkRequest = workManager
-                        .setupOnTimeJobForGeoFenceNotification(geofenceTransitionDetails)
-
-                    // schedule background job
-                    workManager.scheduleUniqueWorkForGeoFenceNotification(geoFenceWorkRequest)
-
-                }
-                else -> {
-                    // log the unhandled transition
-                    Timber.i("Encountered unhandled geoFence transition (e.g. EXIT, DWELL, ...).")
+                    Timber.e(errorMessage)
+                    return
                 }
 
-            }  // when
+
+                // fetch transition type
+                val geofenceTransition = gfEvent.geofenceTransition
+
+                // ... only looking for ENTER geoFence transitions:
+                when (geofenceTransition) {
+                    Geofence.GEOFENCE_TRANSITION_ENTER,
+                        // Geofence.GEOFENCE_TRANSITION_EXIT,
+                    -> {
+
+                        // fetch all geoFences that have been triggered
+                        // ... note: a single event can trigger multiple geoFences
+                        val triggeringGeofences = gfEvent.triggeringGeofences?.toList() ?: listOf()
+
+                        // extract SmobShop IDs and turn into a JSON string (ready for transmission to
+                        // the WorkManager "doWork" job via (string) parameter
+                        val geofenceTransitionDetails = getGeofenceTransitionDetails(
+                            geofenceTransition,    // allow to distinguish between ENTER and EXIT
+                            triggeringGeofences,   // the SmobShop IDs
+                        )
+
+                        // schedule background work (WorkManager), handling potential geofencing entry
+                        // transition events
+                        val geoFenceWorkRequest = workManager
+                            .setupOnTimeJobForGeoFenceNotification(geofenceTransitionDetails)
+
+                        // schedule background job
+                        workManager.scheduleUniqueWorkForGeoFenceNotification(geoFenceWorkRequest)
+
+                    }
+                    else -> {
+                        // log the unhandled transition
+                        Timber.i("Encountered unhandled geoFence transition (e.g. EXIT, DWELL, ...).")
+                    }
+
+                }  // when
+
+            }  // let
 
         }  // if (ACTION_GEOFENCE_EVENT)
 

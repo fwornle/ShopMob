@@ -17,11 +17,17 @@
         />
 
     <fragment
-        android:id="@+id/smobPlanningShopsTableFragment"
+        android:id="@id/smobPlanningShopsTableFragment"
         android:name="com.tanfra.shopmob.smob.ui.planning.shops.PlanningShopsTableFragment"
-        android:label="Planning Shop Table"
+        android:label="Planning Shops Table"
         tools:layout="@layout/fragment_planning_shops_table"
         >
+        <action
+            android:id="@id/action_planningShopsTableFragment_to_planningProductsAddNewItemFragment"
+            app:destination="@id/smobPlanningProductsAddNewItemFragment" />
+        <action
+            android:id="@id/action_planningShopsTableFragment_to_planningShopsAddNewItemFragment"
+            app:destination="@id/smobPlanningShopsAddNewItemFragment" />
     </fragment>
 
     <fragment

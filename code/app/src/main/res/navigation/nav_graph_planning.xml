@@ -10,7 +10,7 @@
          https://stackoverflow.com/questions/62214514/navigate-from-one-activity-to-another-with-navigation-component
     -->
     <activity
-        android:id="@id/smobAdminActivity"
+        android:id="@+id/smobAdminActivity"
         android:name="com.tanfra.shopmob.smob.ui.admin.SmobAdminActivity"
         android:label="Smob Administration Activity"
         tools:layout="@layout/activity_admin"

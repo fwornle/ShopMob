@@ -7,7 +7,10 @@ import android.os.Bundle
 import android.view.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentDetailsShopBinding
@@ -63,7 +66,6 @@ class DetailsShopFragment : BaseFragment(), KoinComponent {
         // set injected viewModel (from KOIN service locator)
         binding.viewModel = _viewModel
 
-        setHasOptionsMenu(true)
         setTitle(getString(R.string.app_name_details_shop))
 
         // no up button when navigating to here from "void" (Android -> GeoFence)
@@ -128,76 +130,91 @@ class DetailsShopFragment : BaseFragment(), KoinComponent {
 
         }
 
-    }
+        // The usage of an interface lets you inject your own implementation
+        val menuHost: MenuHost = requireActivity()
 
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Add menu items without using the Fragment Menu APIs
+        // Note how we can tie the MenuProvider to the viewLifecycleOwner
+        // and an optional Lifecycle.State (here, STARTED) to indicate when
+        // the menu should be visible
+        menuHost.addMenuProvider(
+            object : MenuProvider {
 
-        // display menu item depending on where we came from...
-        when(_viewModel.navSource) {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
 
-            // entered from a geofence trigger (special)
-            SmobDetailsSources.GEOFENCE -> {
-
-                when (item.itemId) {
-
-                    R.id.smobPlanningListsTableFragment -> {
-                        // start the app
-                        startActivity(Intent(this.context, SmobPlanningActivity::class.java))
-                        // and we're done here
-                        this.activity?.finish()
+                    when(_viewModel.navSource) {
+                        SmobDetailsSources.GEOFENCE ->
+                            menuInflater.inflate(R.menu.geofence_shop_menu, menu)
+                        else ->
+                            menuInflater.inflate(R.menu.main_menu, menu)
                     }
 
-                }  // when(item...)
+                }
 
-            }
+                override fun onMenuItemSelected(item: MenuItem) =
 
-            // entered from within the app (normal)
-            else -> {
+                    // display menu item depending on where we came from...
+                    when(_viewModel.navSource) {
 
-                when (item.itemId) {
+                        // entered from a geofence trigger (special)
+                        SmobDetailsSources.GEOFENCE -> {
 
-                    R.id.logout -> {
-                        // logout authenticated user
-                        AuthUI.getInstance()
-                            .signOut(this.requireContext())
-                            .addOnCompleteListener {
-                                // user is now signed out -> redirect to login screen
-                                startActivity(Intent(this.context, SmobAuthActivity::class.java))
-                                // and we're done here
-                                this.activity?.finish()
-                            }
-                    }
+                            when (item.itemId) {
 
-                    // note: must use 'android' to catch the back button...
-                    android.R.id.home -> {
-                        Timber.i("Back pressed from details fragment.")
+                                R.id.smobPlanningListsTableFragment -> {
+                                    // start the app
+                                    startActivity(Intent(requireContext(), SmobPlanningActivity::class.java))
+                                    // and we're done here
+                                    requireActivity().finish()
+                                    true
+                                }
+                                else -> false
 
-                        // closing this activity brings us back to where we came from (with intact
-                        // backstack history)
-                        this.activity?.finish()
-                    }
+                            }  // when(item...)
 
-                }  // when(item...)
+                        }
 
-            }
+                        // entered from within the app (normal)
+                        else -> {
 
-        }
+                            when (item.itemId) {
 
+                                R.id.logout -> {
+                                    // logout authenticated user
+                                    AuthUI.getInstance()
+                                        .signOut(requireContext())
+                                        .addOnCompleteListener {
+                                            // user is now signed out -> redirect to login screen
+                                            startActivity(Intent(requireContext(), SmobAuthActivity::class.java))
+                                            // and we're done here
+                                            requireActivity().finish()
+                                        }
+                                    true
+                                }
 
+                                // back arrow (home button)
+                                android.R.id.home -> {
+                                    Timber.i("Back pressed from details fragment.")
 
-        return super.onOptionsItemSelected(item)
-    }
+                                    // closing this activity brings us back to where we came from (with intact
+                                    // backstack history)
+                                    requireActivity().finish()
+                                    true
+                                }
 
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
+                                // unhandled...
+                                else -> false
 
-        // display menu item depending on where we came from...
-        when(_viewModel.navSource) {
-            SmobDetailsSources.GEOFENCE -> inflater.inflate(R.menu.geofence_shop_menu, menu)
-            else -> inflater.inflate(R.menu.main_menu, menu)
-        }
+                            }  // inner when(item...)
+
+                        }  // else of outer when(_viewModel.navSource)
+
+                    }  // outer when(_viewModel.navSource)
+
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED,
+        )
 
     }
 
