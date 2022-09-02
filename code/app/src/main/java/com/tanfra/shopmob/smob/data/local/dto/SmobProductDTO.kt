@@ -23,7 +23,7 @@ import com.tanfra.shopmob.smob.data.local.utils.*
 @Entity(tableName = "smobProducts")
 @RewriteQueriesToDropUnusedColumns
 data class SmobProductDTO(
-    @PrimaryKey @ColumnInfo(name = "productId") override val id: String = "invalid smob product id",
+    @PrimaryKey @ColumnInfo(name = "productId") override var id: String = "invalid smob product id",
     @ColumnInfo(name = "productItemStatus") override var itemStatus: SmobItemStatus = SmobItemStatus.NEW,
     @ColumnInfo(name = "productItemPosition") override var itemPosition: Long = -1L,
     @ColumnInfo(name = "productName") var name: String = "",

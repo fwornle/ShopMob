@@ -21,7 +21,7 @@ import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 @Entity(tableName = "smobGroups")
 @RewriteQueriesToDropUnusedColumns
 data class SmobGroupDTO(
-    @PrimaryKey @ColumnInfo(name = "groupId") override val id: String = "invalid smob group entry",
+    @PrimaryKey @ColumnInfo(name = "groupId") override var id: String = "invalid smob group entry",
     @ColumnInfo(name = "groupItemStatus") override var itemStatus: SmobItemStatus = SmobItemStatus.NEW,
     @ColumnInfo(name = "groupItemPosition") override var itemPosition: Long = -1L,
     @ColumnInfo(name = "groupName") var name: String = "",

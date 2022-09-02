@@ -37,6 +37,11 @@ android {
         def smobNetApiKey = System.getenv("SMOB_NET_API_KEY")
         buildConfigField("String", "SMOB_NET_API_KEY", "\"${smobNetApiKey}\"")
 
+        // Facebook login: read API key from environment variable "SMOB_FB_API_KEY"
+        // ... see: https://medium.com/@alexzaitsev/how-to-move-password-to-system-environment-variables-and-load-it-with-gradle-837bc18e6c8f
+        def smobFbClientToken = System.getenv("SMOB_FB_CLIENT_TOKEN")
+        buildConfigField("String", "SMOB_FB_CLIENT_TOKEN", "\"${smobFbClientToken}\"")
+
         // network base URL
         // ... fake backend (emulator maps this to localhost@host)
         // ... production: BASE_URL = "https://shopmob.tanfra.com"
@@ -158,8 +163,8 @@ dependencies {
     // Room dependencies
     implementation "androidx.room:room-ktx:$roomVersion"
     implementation "androidx.room:room-runtime:$roomVersion"
-    implementation 'com.google.firebase:firebase-auth-ktx:21.0.4'
-    kapt "androidx.room:room-compiler:2.4.2"
+    implementation 'com.google.firebase:firebase-auth-ktx:21.0.7'
+    kapt "androidx.room:room-compiler:2.4.3"
 
     // Coroutines Dependencies
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"

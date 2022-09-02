@@ -166,6 +166,7 @@ class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
 
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.logout -> {
@@ -184,6 +185,7 @@ class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
         return super.onOptionsItemSelected(item)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         // display logout as menu item

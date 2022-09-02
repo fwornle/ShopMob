@@ -130,6 +130,7 @@ class DetailsShopFragment : BaseFragment(), KoinComponent {
 
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         // display menu item depending on where we came from...
@@ -188,6 +189,7 @@ class DetailsShopFragment : BaseFragment(), KoinComponent {
         return super.onOptionsItemSelected(item)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
 

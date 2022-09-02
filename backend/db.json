@@ -286,13 +286,15 @@
     },
     {
       "id": "HYquNiYK62YVlceR2vZYyGPqbUn2",
-      "itemStatus": "NEW",
+      "itemStatus": "OPEN",
       "itemPosition": 22,
       "username": "Smob.Dev",
       "name": "Smob Dev",
       "email": "smobber77@gmail.com",
       "imageUrl": "https://graph.facebook.com/110999335072115/picture",
-      "groups": []
+      "groups": [
+        ""
+      ]
     }
   ],
   "groups": [
@@ -1530,7 +1532,7 @@
         },
         {
           "id": "3a9a93af-2deb-4970-8a93-3088ddbd215a",
-          "status": "DONE",
+          "status": "IN_PROGRESS",
           "listPosition": 1,
           "mainCategory": "FOODS"
         },
@@ -1542,7 +1544,7 @@
         },
         {
           "id": "4cffef2c-f6c1-483e-9ee6-8a8a6502a724",
-          "status": "IN_PROGRESS",
+          "status": "DONE",
           "listPosition": 3,
           "mainCategory": "FOODS"
         },

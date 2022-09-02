@@ -3,16 +3,16 @@
 buildscript {
 
     // forward declarations (needed in the buildscript dependencies)
-    ext.gradlePluginVersion = '7.2.1'
-    ext.kotlinVersion = '1.6.20'
-    ext.navigationVersion = '2.4.2'
+    ext.gradlePluginVersion = '7.2.2'
+    ext.kotlinVersion = '1.7.10'
+    ext.navigationVersion = '2.5.1'
     ext.googleServicesVersion = "4.3.10"
 
     repositories {
         google()
         mavenCentral()
-        
     }
+
     dependencies {
         classpath "com.android.tools.build:gradle:$gradlePluginVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
@@ -42,18 +42,18 @@ ext {
     // Sdk and tools
     // JetPack permission handling requires API v24 and above.
     minSdkVersion = 25
-    targetSdkVersion = 31  // needs reduced to below 30 to allow Toast test to run  (see: https://knowledge.udacity.com/questions/608423)
-    compileSdkVersion = 31
+    targetSdkVersion = 33  // needs reduced to below 30 to allow Toast test to run  (see: https://knowledge.udacity.com/questions/608423)
+    compileSdkVersion = 33
 
     // App dependencies
-    activityVersion = '1.4.0'
+    activityVersion = '1.5.1'
     androidXTestCoreVersion = '1.4.0'
     androidXTestExtKotlinRunnerVersion = '1.1.3'
     androidXTestRulesVersion = '1.4.0'
-    androidXAnnotations = '1.3.0'
+    androidXAnnotations = '1.4.0'
     androidXLegacySupport = '1.0.0'
-    appCompatVersion = '1.4.1'
-    archLifecycleVersion = '2.4.1'
+    appCompatVersion = '1.5.0'
+    archLifecycleVersion = '2.5.1'
     archLifecycleOldVersion = '2.2.0'
     archTestingVersion = '2.1.0'
     cardVersion = '1.0.0'
@@ -64,21 +64,21 @@ ext {
     espressoVersion = '3.4.0'
     firebaseBomVersion = '29.3.0'
     firebaseUiVersion = '8.0.1'
-    fragmentVersion = '1.4.1'
+    fragmentVersion = '1.5.2'
     gsonVersion = '2.9.0'
     hamcrestVersion = '1.3'
     junitVersion = '4.13.2'
     koinVersion = '3.1.4'
-    materialVersion = '1.6.0'
+    materialVersion = '1.6.1'
     mockitoVersion = '4.4.0'
     moshiVersion = '1.13.0'
     playServicesLocationVersion = '19.0.1'
     playServicesMapsVersion = '18.0.2'
-    recyclerViewVersion = '1.3.0-alpha02'
+    recyclerViewVersion = '1.3.0-beta02'
     retrofitVersion = '2.9.0'
     retrofitLoggingVersion = '5.0.0-alpha.6'
     robolectricVersion = '4.7.2'
-    roomVersion = '2.4.2'
+    roomVersion = '2.4.3'
     workVersion = '2.7.1'
     serializationVersion = '1.3.2'
     timberVersion = '5.0.1'
