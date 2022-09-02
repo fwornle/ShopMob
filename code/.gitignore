@@ -16,4 +16,5 @@ google_maps_api.xml
 google-services.json
 /backend/node_modules
 /backend/.vscode
+.env
 

@@ -889,6 +889,21 @@
         "09:00 - 12:00, 14:00 - 18:00",
         "closed"
       ]
+    },
+    {
+      "id": "dd892c2f-2be0-4ae1-b7b8-c2949edae987",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "MyAldi",
+      "description": "Super Duper",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19304336489659,
+        "longitude": 11.46634429693222
+      },
+      "type": "INDIVIDUAL",
+      "category": "DRUGSTORE",
+      "business": []
     }
   ],
   "products": [

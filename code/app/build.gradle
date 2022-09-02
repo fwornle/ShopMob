@@ -37,10 +37,10 @@ android {
         def smobNetApiKey = System.getenv("SMOB_NET_API_KEY")
         buildConfigField("String", "SMOB_NET_API_KEY", "\"${smobNetApiKey}\"")
 
-        // Facebook login: read API key from environment variable "SMOB_FB_API_KEY"
-        // ... see: https://medium.com/@alexzaitsev/how-to-move-password-to-system-environment-variables-and-load-it-with-gradle-837bc18e6c8f
-        def smobFbClientToken = System.getenv("SMOB_FB_CLIENT_TOKEN")
-        buildConfigField("String", "SMOB_FB_CLIENT_TOKEN", "\"${smobFbClientToken}\"")
+        // Facebook login: read SMOB_FB_CLIENT_TOKEN key from .env file
+        // ... see: https://github.com/luggit/react-native-config/issues/21
+        //          --> adapted from answer given by 'prtkkmrsngh' (commented on 2 May 2017)
+        manifestPlaceholders = [ SMOB_FB_CLIENT_TOKEN:System.getenv("SMOB_FB_CLIENT_TOKEN") ]
 
         // network base URL
         // ... fake backend (emulator maps this to localhost@host)

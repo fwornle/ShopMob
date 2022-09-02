@@ -50,7 +50,6 @@ class AdminListsTableFragment : BaseFragment(), KoinComponent {
         // set injected viewModel (from KOIN service locator)
         binding.viewModel = _viewModel
 
-//        setHasOptionsMenu(false)
         setDisplayHomeAsUpEnabled(true)
         setTitle(getString(R.string.app_name_admin_lists))
 
@@ -96,42 +95,6 @@ class AdminListsTableFragment : BaseFragment(), KoinComponent {
             // and we're done here
             this.activity?.finish()
         }
-
-        // The usage of an interface lets you inject your own implementation
-        val menuHost: MenuHost = requireActivity()
-
-        // Add menu items without using the Fragment Menu APIs
-        // Note how we can tie the MenuProvider to the viewLifecycleOwner
-        // and an optional Lifecycle.State (here, RESUMED) to indicate when
-        // the menu should be visible
-        menuHost.addMenuProvider(
-            object : MenuProvider {
-
-                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menuInflater.inflate(R.menu.main_menu, menu)
-                }
-
-                override fun onMenuItemSelected(item: MenuItem): Boolean {
-                    when (item.itemId) {
-                        R.id.logout -> {
-                            // logout authenticated user
-                            AuthUI.getInstance()
-                                .signOut(requireContext())
-                                .addOnCompleteListener {
-                                    // user is now signed out -> redirect to login screen
-                                    startActivity(Intent(requireContext(), SmobAuthActivity::class.java))
-                                    // and we're done here
-                                    requireActivity().finish()
-                                }
-                        }
-                    }  // when(item...)
-                    return true
-                }
-
-            },
-            viewLifecycleOwner,
-            Lifecycle.State.STARTED,
-        )
 
     }
 
@@ -192,32 +155,5 @@ class AdminListsTableFragment : BaseFragment(), KoinComponent {
         )
 
     }
-
-
-//    @Deprecated("Deprecated in Java")
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when (item.itemId) {
-//            R.id.logout -> {
-//                // logout authenticated user
-//                AuthUI.getInstance()
-//                    .signOut(this.requireContext())
-//                    .addOnCompleteListener {
-//                        // user is now signed out -> redirect to login screen
-//                        startActivity(Intent(this.context, SmobAuthActivity::class.java))
-//                        // and we're done here
-//                        this.activity?.finish()
-//                    }
-//            }
-//        }  // when(item...)
-//
-//        return super.onOptionsItemSelected(item)
-//    }
-//
-//    @Deprecated("Deprecated in Java")
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        super.onCreateOptionsMenu(menu, inflater)
-//        // display logout as menu item
-//        inflater.inflate(R.menu.main_menu, menu)
-//    }
 
 }
