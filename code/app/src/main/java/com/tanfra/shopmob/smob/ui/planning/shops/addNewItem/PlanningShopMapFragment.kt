@@ -15,7 +15,11 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
+import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -30,6 +34,7 @@ import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.databinding.FragmentPlanningShopMapBinding
 import com.tanfra.shopmob.smob.data.local.utils.ShopLocation
+import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
 import com.tanfra.shopmob.smob.ui.planning.utils.openSoftKeyboard
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
@@ -154,6 +159,51 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
     }
 
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // The usage of an interface lets you inject your own implementation
+        val menuHost: MenuHost = requireActivity()
+
+        // Add menu items without using the Fragment Menu APIs
+        // Note how we can tie the MenuProvider to the viewLifecycleOwner
+        // and an optional Lifecycle.State (here, STARTED) to indicate when
+        // the menu should be visible
+        menuHost.addMenuProvider(
+            object : MenuProvider {
+
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.map_options, menu)
+                }
+
+                override fun onMenuItemSelected(item: MenuItem) = when (item.itemId) {
+                        R.id.normal_map -> {
+                            map.mapType = GoogleMap.MAP_TYPE_NORMAL
+                            true
+                        }
+                        R.id.hybrid_map -> {
+                            map.mapType = GoogleMap.MAP_TYPE_HYBRID
+                            true
+                        }
+                        R.id.satellite_map -> {
+                            map.mapType = GoogleMap.MAP_TYPE_SATELLITE
+                            true
+                        }
+                        R.id.terrain_map -> {
+                            map.mapType = GoogleMap.MAP_TYPE_TERRAIN
+                            true
+                        }
+                        else -> true
+                    }  // when(item...)
+
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.STARTED,
+        )
+
+    }
+
+
     // initialize map
     override fun onMapReady(googleMap: GoogleMap) {
 
@@ -181,12 +231,6 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
     }  // onMapReady
 
 
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.map_options, menu)
-    }
-
-
     // user confirmation of selected location (on map)
     // --> store lat/long in viewModel (location name/description set via data binding, see layout)
     //     and navigate to previous fragment
@@ -201,28 +245,6 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
 
         // use the navigationCommand live data to navigate between the fragments
         _viewModel.navigationCommand.value = NavigationCommand.Back
-    }
-
-
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.normal_map -> {
-            map.mapType = GoogleMap.MAP_TYPE_NORMAL
-            true
-        }
-        R.id.hybrid_map -> {
-            map.mapType = GoogleMap.MAP_TYPE_HYBRID
-            true
-        }
-        R.id.satellite_map -> {
-            map.mapType = GoogleMap.MAP_TYPE_SATELLITE
-            true
-        }
-        R.id.terrain_map -> {
-            map.mapType = GoogleMap.MAP_TYPE_TERRAIN
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
     }
 
 

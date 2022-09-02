@@ -44,9 +44,11 @@
         tools:targetApi="s"
         tools:ignore="DataExtractionRules">
 
-        <!-- facebook login -->
+        <!-- facebook login
+             note: SMOB_FB_CLIENT_TOKEN is read from (system) env variable - see build.gradle (:app)
+        -->
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_application_id" />
-        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="${SMOB_FB_CLIENT_TOKEN}"/>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

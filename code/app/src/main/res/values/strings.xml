@@ -8,7 +8,7 @@
     -->
     <string name="facebook_application_id" translatable="false">345736037682696</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb345736037682696</string>
-    <string name="facebook_client_token" translatable="false">{$BuildConfig.SMOB_FB_CLIENT_TOKEN}</string>
+    <string name="facebook_client_token" translatable="false">SMOB_FB_CLIENT_TOKEN</string>
 
     <string name="app_name">ShopMob</string>
     <string name="app_name_planning">Shop for: %1$s</string>

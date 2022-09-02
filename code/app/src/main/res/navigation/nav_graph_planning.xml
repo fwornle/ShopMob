@@ -82,7 +82,7 @@
             android:id="@+id/action_planningShopsTableFragment_to_planningProductsAddNewItemFragment"
             app:destination="@id/smobPlanningProductsAddNewItemFragment" />
         <action
-            android:id="@+id/action_smobPlanningShopsTableFragment_to_smobPlanningShopsAddNewItemFragment"
+            android:id="@+id/action_planningShopsTableFragment_to_planningShopsAddNewItemFragment"
             app:destination="@id/smobPlanningShopsAddNewItemFragment" />
     </fragment>
 
