@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 // DTO --> ATO
+@Suppress("USELESS_CAST", "UNCHECKED_CAST")
 fun <DTO: Dto, ATO: Ato> Flow<DTO?>._asDomainModel(d: DTO): Flow<ATO> {
 
     return map {

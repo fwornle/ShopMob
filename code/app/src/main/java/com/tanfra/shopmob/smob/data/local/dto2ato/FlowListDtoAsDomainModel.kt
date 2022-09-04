@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 
 // DTO --> ATO
+@Suppress("USELESS_CAST", "UNCHECKED_CAST")
 fun <DTO: Dto, ATO: Ato> Flow<List<DTO?>>._asDomainModel(d: DTO): Flow<List<ATO>> {
 
     return transform {

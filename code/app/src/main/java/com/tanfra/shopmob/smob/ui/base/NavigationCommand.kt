@@ -1,6 +1,8 @@
 package com.tanfra.shopmob.smob.ui.base
 
+import android.net.Uri
 import android.os.Bundle
+import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.NavDirections
 
 /**
@@ -11,6 +13,11 @@ sealed class NavigationCommand {
      * navigate to a direction
      */
     data class To(val directions: NavDirections) : NavigationCommand()
+
+    /**
+     * navigate to a (deeplink) URI
+     */
+    data class ToDeepLink(val request: NavDeepLinkRequest) : NavigationCommand()
 
     /**
      * navigate to a direction carrying a bundle

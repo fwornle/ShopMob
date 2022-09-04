@@ -6,6 +6,7 @@ import com.tanfra.shopmob.smob.data.repo.ato.Ato
 
 
 // ATO --> DTO
+@Suppress("USELESS_CAST", "UNCHECKED_CAST")
 fun <DTO: Dto, ATO: Ato> ATO._asDatabaseModel(d: DTO): DTO {
 
     // note: need "unnecessary cast" to tell Kotlin (and IntelliJ IDEA) that "d is a subclass of

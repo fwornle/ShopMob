@@ -8,9 +8,13 @@
 
     <!-- cross activity navigation made easy...
      https://stackoverflow.com/questions/62214514/navigate-from-one-activity-to-another-with-navigation-component
+     ... need to define smobPlanningActivity in this navgraph, to allow admin drawer menu to link to
+         the start destination fragment of the SmobPlanning world.
+     ... need to reference smobPlanningShopsTableFragment in this navgraph, to allow admin drawer to
+         link to the SmobPlanningShops fragment.
     -->
     <activity
-        android:id="@id/smobPlanningActivity"
+        android:id="@+id/smobPlanningActivity"
         android:name="com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity"
         android:label="Smob Planning Activity"
         tools:layout="@layout/activity_planning"
@@ -22,13 +26,29 @@
         android:label="Planning Shops Table"
         tools:layout="@layout/fragment_planning_shops_table"
         >
-        <action
-            android:id="@id/action_planningShopsTableFragment_to_planningProductsAddNewItemFragment"
-            app:destination="@id/smobPlanningProductsAddNewItemFragment" />
-        <action
-            android:id="@id/action_planningShopsTableFragment_to_planningShopsAddNewItemFragment"
-            app:destination="@id/smobPlanningShopsAddNewItemFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/smobPlanningShopsAddNewItemFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.shops.addNewItem.PlanningShopsAddNewItemFragment"
+        android:label="Planning Shops - Add New Item"
+        tools:layout="@layout/fragment_planning_shops_add_new_item"
+        >
+        <action
+            android:id="@+id/action_smobPlanningShopsAddNewItemFragment_to_smobPlanningShopMapFragment"
+            app:destination="@id/smobPlanningShopMapFragment" />
+        <action
+            android:id="@+id/action_smobPlanningShopsAddNewItemFragment_to_smobPlanningShopsTableFragment"
+            app:destination="@id/smobPlanningShopsTableFragment" />
+        <deepLink app:uri="android-app://com.tanfra.shopmob/planningShopsAddNew" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/smobPlanningShopMapFragment"
+        android:name="com.tanfra.shopmob.smob.ui.planning.shops.addNewItem.PlanningShopMapFragment"
+        android:label="Select Store Location"
+        tools:layout="@layout/fragment_planning_shop_map"
+        />
 
     <fragment
         android:id="@+id/smobAdminSelectCategoryFragment"

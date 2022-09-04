@@ -17,6 +17,7 @@ import com.tanfra.shopmob.databinding.FragmentAdminListGroupsTableBinding
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.admin.groups.groupsTable.AdminGroupsTableFragmentDirections
 import com.tanfra.shopmob.utils.setup
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
@@ -28,6 +29,7 @@ class AdminListGroupsTableFragment : BaseFragment(), KoinComponent {
     // data binding for fragment_admin_group_member_list.xml
     private lateinit var binding: FragmentAdminListGroupsTableBinding
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

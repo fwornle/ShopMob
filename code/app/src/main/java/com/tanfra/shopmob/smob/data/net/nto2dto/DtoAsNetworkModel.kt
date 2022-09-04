@@ -5,6 +5,7 @@ import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.net.nto.*
 
 // DTO --> NTO
+@Suppress("USELESS_CAST", "UNCHECKED_CAST")
 fun <DTO: Dto, NTO: Nto> DTO?._asNetworkModel(d: DTO): NTO {
 
     return when (d as Dto) {

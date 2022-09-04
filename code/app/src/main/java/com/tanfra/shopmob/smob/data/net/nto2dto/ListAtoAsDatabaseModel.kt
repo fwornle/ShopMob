@@ -5,6 +5,7 @@ import com.tanfra.shopmob.smob.data.net.nto.*
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
 
 // ATO --> DTO
+@Suppress("USELESS_CAST", "UNCHECKED_CAST")
 fun <DTO: Dto, ATO: Ato> ArrayList<ATO>._asDatabaseModel(d: DTO): List<DTO> {
 
     return map {

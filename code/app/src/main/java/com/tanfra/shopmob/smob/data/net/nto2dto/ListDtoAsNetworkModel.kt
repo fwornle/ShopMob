@@ -6,6 +6,7 @@ import com.tanfra.shopmob.smob.data.net.nto.*
 import com.tanfra.shopmob.smob.data.repo.ato.*
 
 // DTO --> NTO
+@Suppress("USELESS_CAST", "UNCHECKED_CAST")
 fun <DTO: Dto, NTO: Nto> List<DTO?>._asNetworkModel(d: DTO): ArrayList<NTO> {
 
     return when (d as Dto) {

@@ -13,6 +13,7 @@ import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
@@ -51,13 +52,14 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
     }
 
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
 
         // set onClick handler for 'Add to Group' button
         // ... navigate back to the main app
-        binding.btAddToGroup.setOnClickListener(View.OnClickListener {
+        binding.btAddToGroup.setOnClickListener {
 
             // back to default: button invisible
             _viewModel.enableAddButton = false
@@ -102,7 +104,7 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
                     )
             }
 
-        })
+        }
 
     }  // onViewCreated
 

@@ -12,6 +12,7 @@ import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductWithListDataATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.work.SmobAppWork
+import com.tanfra.shopmob.utils.getSerializable
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
@@ -61,7 +62,10 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
             // fetch incoming parameters (common: EXTRA_Source)
             if (it.containsKey(EXTRA_Source)) {
                 // extract the extra-data in the intent
-                _viewModel.navSource = it.get("EXTRA_Source") as SmobDetailsSources
+                _viewModel.navSource = intent.getSerializable(
+                    "EXTRA_Source",
+                    SmobDetailsSources::class.java
+                )
             }
         }
 
@@ -79,7 +83,10 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
                 extras?.let {
                     if (it.containsKey(EXTRA_SmobItem)) {
                         // extract the extra-data
-                        val smobListItem = it.getSerializable("EXTRA_SmobItem") as SmobShopATO
+                        val smobListItem = intent.getSerializable(
+                            "EXTRA_SmobItem",
+                            SmobShopATO::class.java
+                        )
 
                         // store value in ViewModel
                         _viewModel.smobShopDetailsItem.value = smobListItem
@@ -106,7 +113,10 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
                 extras?.let {
                     if (it.containsKey(EXTRA_SmobItem)) {
                         // extract the extra-data
-                        val smobListItem = it.getSerializable("EXTRA_SmobItem") as SmobProductWithListDataATO
+                        val smobListItem = intent.getSerializable(
+                            "EXTRA_SmobItem",
+                            SmobProductWithListDataATO::class.java
+                        )
 
                         // store value in ViewModel
                         _viewModel.smobProductDetailsItem.value = smobListItem

@@ -23,13 +23,13 @@
         tools:layout="@layout/fragment_planning_lists_table"
         >
         <action
-            android:id="@+id/action_planningListsTableFragment_to_planningProductsTableFragment"
+            android:id="@+id/action_smobPlanningListsTableFragment_to_smobPlanningProductsTableFragment"
             app:destination="@id/smobPlanningProductsTableFragment" />
         <action
-            android:id="@+id/action_planningListsTableFragment_to_planningListsAddNewItemFragment"
+            android:id="@+id/action_smobPlanningListsTableFragment_to_smobPlanningListsAddNewItemFragment"
             app:destination="@id/smobPlanningListsAddNewItemFragment" />
         <action
-            android:id="@+id/action_planningListsTableFragment_to_planningShopsAddNewItemFragment"
+            android:id="@+id/action_smobPlanningListsTableFragment_to_smobPlanningShopsAddNewItemFragment"
             app:destination="@id/smobPlanningShopsAddNewItemFragment" />
     </fragment>
 
@@ -40,7 +40,7 @@
         tools:layout="@layout/fragment_planning_lists_add_new_item"
         >
         <action
-            android:id="@+id/action_planningListsAddNewItemFragment_to_planningProductListsTableFragment"
+            android:id="@+id/action_smobPlanningListsAddNewItemFragment_to_smobPlanningProductListsTableFragment"
             app:destination="@id/smobPlanningProductsTableFragment" />
     </fragment>
 
@@ -51,10 +51,10 @@
         tools:layout="@layout/fragment_planning_products_table"
         >
         <action
-            android:id="@+id/action_planningProductsTableFragment_to_planningProductsAddNewItemFragment"
+            android:id="@+id/action_smobPlanningProductsTableFragment_to_smobPlanningProductsAddNewItemFragment"
             app:destination="@id/smobPlanningProductsAddNewItemFragment" />
         <action
-            android:id="@+id/action_planningProductsTableFragment_to_planningListsTableFragment"
+            android:id="@+id/action_smobPlanningProductsTableFragment_to_smobPlanningListsTableFragment"
             app:destination="@id/smobPlanningListsTableFragment" />
     </fragment>
 
@@ -65,10 +65,10 @@
         tools:layout="@layout/fragment_planning_products_add_new_item"
         >
         <action
-            android:id="@+id/action_planningProductsAddNewItemFragment_to_planningShopsTableFragment"
+            android:id="@+id/action_smobPlanningProductsAddNewItemFragment_to_smobPlanningShopsTableFragment"
             app:destination="@id/smobPlanningShopsTableFragment" />
         <action
-            android:id="@+id/action_planningProductsAddNewItemFragment_to_planningProductsTableFragment"
+            android:id="@+id/action_smobPlanningProductsAddNewItemFragment_to_smobPlanningProductsTableFragment"
             app:destination="@id/smobPlanningProductsTableFragment" />
     </fragment>
 
@@ -79,10 +79,10 @@
         tools:layout="@layout/fragment_planning_shops_table"
         >
         <action
-            android:id="@+id/action_planningShopsTableFragment_to_planningProductsAddNewItemFragment"
+            android:id="@+id/action_smobPlanningShopsTableFragment_to_smobPlanningProductsAddNewItemFragment"
             app:destination="@id/smobPlanningProductsAddNewItemFragment" />
         <action
-            android:id="@+id/action_planningShopsTableFragment_to_planningShopsAddNewItemFragment"
+            android:id="@+id/action_smobPlanningShopsTableFragment_to_smobPlanningShopsAddNewItemFragment"
             app:destination="@id/smobPlanningShopsAddNewItemFragment" />
     </fragment>
 
@@ -93,11 +93,12 @@
         tools:layout="@layout/fragment_planning_shops_add_new_item"
         >
         <action
-            android:id="@+id/action_planningShopsAddNewItemFragment_to_planningShopMapFragment"
+            android:id="@+id/action_smobPlanningShopsAddNewItemFragment_to_smobPlanningShopMapFragment"
             app:destination="@id/smobPlanningShopMapFragment" />
         <action
-            android:id="@+id/action_planningShopsAddNewItemFragment_to_planningShopsTableFragment"
+            android:id="@+id/action_smobPlanningShopsAddNewItemFragment_to_smobPlanningShopsTableFragment"
             app:destination="@id/smobPlanningShopsTableFragment" />
+        <deepLink app:uri="android-app://com.tanfra.shopmob/planningShopsAddNew" />
     </fragment>
 
     <fragment

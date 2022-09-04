@@ -176,6 +176,8 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
                 }
 
                 override fun onMenuItemSelected(item: MenuItem) = when (item.itemId) {
+
+                        // map style menu items
                         R.id.normal_map -> {
                             map.mapType = GoogleMap.MAP_TYPE_NORMAL
                             true
@@ -192,8 +194,17 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
                             map.mapType = GoogleMap.MAP_TYPE_TERRAIN
                             true
                         }
-                        else -> true
-                    }  // when(item...)
+
+                    // back arrow (home button)
+                    android.R.id.home -> {
+                        _viewModel.navigationCommand.postValue(NavigationCommand.Back)
+                        true
+                    }
+
+                    // unhandled...
+                    else -> false
+
+                }  // when(item...)
 
             },
             viewLifecycleOwner,

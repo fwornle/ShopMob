@@ -81,7 +81,7 @@ class PlanningProductsAddNewItemFragment :
             _viewModel.navigationCommand.value =
                 NavigationCommand.To(
                     PlanningProductsAddNewItemFragmentDirections
-                        .actionPlanningProductsAddNewItemFragmentToPlanningShopsTableFragment()
+                        .actionSmobPlanningProductsAddNewItemFragmentToSmobPlanningShopsTableFragment()
                 )
         }
 

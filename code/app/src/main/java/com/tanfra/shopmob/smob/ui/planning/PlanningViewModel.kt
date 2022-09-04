@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class PlanningViewModel(
     val app: Application,
     val listDataSource: SmobListDataSource,  // public, as used (externally) to update the smobList

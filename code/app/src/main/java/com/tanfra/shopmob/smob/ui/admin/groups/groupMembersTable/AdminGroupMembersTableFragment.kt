@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.databinding.FragmentAdminGroupMembersTableBinding
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.utils.setup
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
@@ -27,6 +28,7 @@ class AdminGroupMembersTableFragment : BaseFragment(), KoinComponent {
     // data binding for fragment_admin_group_member_list.xml
     private lateinit var binding: FragmentAdminGroupMembersTableBinding
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

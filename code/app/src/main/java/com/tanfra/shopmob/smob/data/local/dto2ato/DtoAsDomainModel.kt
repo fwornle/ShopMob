@@ -6,6 +6,7 @@ import com.tanfra.shopmob.smob.data.repo.ato.*
 
 
 // DTO --> ATO
+@Suppress("USELESS_CAST", "UNCHECKED_CAST")
 fun <DTO: Dto, ATO: Ato> DTO?._asDomainModel(d: DTO): ATO {
 
     return when (d as Dto) {

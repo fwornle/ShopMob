@@ -5,6 +5,7 @@ import com.tanfra.shopmob.smob.data.net.nto.*
 
 
 // NTO --> DTO
+@Suppress("USELESS_CAST", "UNCHECKED_CAST")
 fun <DTO: Dto, NTO: Nto> NTO._asRepoModel(d: DTO): DTO {
 
     return when (d as Dto) {

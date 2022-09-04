@@ -184,7 +184,7 @@ class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
         _viewModel.navigationCommand.postValue(
             NavigationCommand.To(
                 PlanningProductsTableFragmentDirections
-                    .actionPlanningProductsTableFragmentToPlanningProductsAddNewItemFragment()
+                    .actionSmobPlanningProductsTableFragmentToSmobPlanningProductsAddNewItemFragment()
             )
         )
     }

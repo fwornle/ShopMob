@@ -9,12 +9,15 @@ import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDeepLinkRequest
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentPlanningShopsTableBinding
@@ -144,12 +147,13 @@ class PlanningShopsTableFragment : BaseFragment(), KoinComponent {
 
     // FAB handler --> navigate to SaveSmobItem fragment
     private fun navigateToAddshopmobItem() {
-        // use the navigationCommand live data to navigate between the fragments
+        // use deepLink to reach this fragment
+        val request = NavDeepLinkRequest.Builder
+            .fromUri("android-app://com.tanfra.shopmob/planningShopsAddNew".toUri())
+            .build()
+
         _viewModel.navigationCommand.postValue(
-            NavigationCommand.To(
-                PlanningShopsTableFragmentDirections
-                    .actionPlanningShopsTableFragmentToPlanningShopsAddNewItemFragment()
-            )
+            NavigationCommand.ToDeepLink(request)
         )
     }
 

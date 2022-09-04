@@ -4,6 +4,7 @@ import com.tanfra.shopmob.smob.data.local.dto.*
 import com.tanfra.shopmob.smob.data.net.nto.*
 
 // NTO --> DTO
+@Suppress("USELESS_CAST", "UNCHECKED_CAST")
 fun <DTO: Dto, NTO: Nto> ArrayList<NTO>._asRepoModel(d: DTO): List<DTO> {
 
     return map {

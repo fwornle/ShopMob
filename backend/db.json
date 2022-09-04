@@ -276,13 +276,15 @@
     },
     {
       "id": "NvIH9pZ22ecY0NWYobqsAcksZkC3",
-      "itemStatus": "NEW",
+      "itemStatus": "OPEN",
       "itemPosition": 21,
       "username": "Frank.W",
       "name": "Frank W",
       "email": "fwornle@yahoo.co.uk",
       "imageUrl": "https://s.yimg.com/ag/images/2374a734-431c-4fb7-90bf-a5f63662cfc8_192sq.jpg",
-      "groups": []
+      "groups": [
+        ""
+      ]
     },
     {
       "id": "HYquNiYK62YVlceR2vZYyGPqbUn2",
@@ -292,6 +294,18 @@
       "name": "Smob Dev",
       "email": "smobber77@gmail.com",
       "imageUrl": "https://graph.facebook.com/110999335072115/picture",
+      "groups": [
+        ""
+      ]
+    },
+    {
+      "id": "user-without-firebase-id",
+      "itemStatus": "OPEN",
+      "itemPosition": 23,
+      "username": "user-without-username",
+      "name": "user-without-username",
+      "email": "user-without-email",
+      "imageUrl": "null",
       "groups": [
         ""
       ]
@@ -633,6 +647,30 @@
       "activity": {
         "date": "2022-07-03T01:20:19.651Z",
         "reps": 6
+      }
+    },
+    {
+      "id": "1bb05a07-3ccb-4374-a964-58691c6fb461",
+      "itemStatus": "OPEN",
+      "itemPosition": 8,
+      "name": "A new group",
+      "description": "... for a party",
+      "type": "FRIENDS",
+      "members": [
+        {
+          "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
+          "status": "OPEN",
+          "listPosition": 0
+        },
+        {
+          "id": "631f7ea5-4ae4-4734-9656-ecdbb7f86d3b",
+          "status": "OPEN",
+          "listPosition": 2
+        }
+      ],
+      "activity": {
+        "date": "03/9/2022 01:12:54",
+        "reps": 0
       }
     }
   ],

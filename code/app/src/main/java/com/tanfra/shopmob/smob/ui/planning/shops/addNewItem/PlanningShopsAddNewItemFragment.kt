@@ -151,7 +151,7 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
             _viewModel.navigationCommand.postValue(
                 NavigationCommand.To(
                     PlanningShopsAddNewItemFragmentDirections
-                        .actionPlanningShopsAddNewItemFragmentToPlanningShopMapFragment()
+                        .actionSmobPlanningShopsAddNewItemFragmentToSmobPlanningShopMapFragment()
                 )
             )
         }
@@ -439,7 +439,7 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
         // ... ref-1: https://developer.android.com/training/location/change-location-settings
         // ... ref-2: https://developers.google.com/android/reference/com/google/android/gms/location/SettingsClient
         val locationRequest = LocationRequest.create().apply {
-            priority = LocationRequest.PRIORITY_LOW_POWER
+            priority = Priority.PRIORITY_LOW_POWER
         }
         val builder = LocationSettingsRequest.Builder()
             .addLocationRequest(locationRequest)

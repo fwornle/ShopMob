@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class AdminViewModel(
     private val app: Application,
     val groupDataSource: SmobGroupDataSource,  // public - used in AdminGroupsAdapter
