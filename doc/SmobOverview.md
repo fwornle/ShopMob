@@ -17,6 +17,7 @@ See [Design](./Design.md) for more details about the design aspects of the app.
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
   <img alt="ShopMob Login Screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_login_0.PNG" title="Login Screen"/>
+  <img alt="ShopMob Login Screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_login_1.png" title="Login Screen"/>
   <img alt="ShopMob Login Screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_login.PNG" title="Login Screen"/>
   <img alt="ShopMob Login Screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_login_2fa.PNG" title="Login Screen"/>
 </div>
@@ -35,12 +36,11 @@ as shown below.
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
   <img alt="SmobLists screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_lists.PNG" title="SmobLists"/>
+  <img alt="SmobLists screen" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_lists_empty.png" title="SmobLists"/>
   <img alt="SmobLists screen, no data" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_backend_missing_1.PNG" title="SmobLists, no data"/>
 </div>
 
-When the connection to the backend is established, the app downloads all shopping lists the user has subscribed to. Note that, 
-at the writing of this document (Jan 2022), user groups have yet to be established - at present, all shopping lists are 
-presented to all users on all devices.
+When the connection to the backend is established, the app downloads all shopping lists the user has subscribed to. New users have commonly not been added to any groups yet. This is indicated on the 'empty' list screen. 
 
 ##### SmobShop - the stores defined in ShopMob 
 
@@ -181,6 +181,82 @@ Alexa App (/Skill) does not provide shared access to the shopping list, nor mult
 A future extension of the app will provide an Alexa Skill to be able to "speak to Alexa" in order to control what items go 
 on which list (in the backend). Editing a shopping list via the app is therefore thought as a secondary use case, as it is much 
 more tedious to do so via the app as it will be using Alexa's ability to make sense of the user's utterances.
+
+##### Administration screens
+
+The user can switch to the _administaration_ screens of ShopMop via the drawer menu on the main (Smob lists) screen:
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="SmobProduct list" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_drawer.PNG" title="SmobShop switch to admin mode"/>
+  <img alt="SmobProduct list" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_admin.png" title="SmobAdmin selection screen"/>
+</div>
+
+The main administration screen allows selection of
+
+- Profile (currently logged in User - contact details)
+- Groups (management of SmobGroups)
+- Lists (management of SmobLists - the actual shopping lists)
+- Contacts (import of locally stored Contacts from the device the app runs on)
+
+There are quite a few administration screens, as can be seen from the following _navigration graph_.
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="SmobProduct Administration" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/nav_graph_admin.PNG" title="SmobShop administration screens"/>
+</div>
+
+
+
+###### Profile
+
+The _profile_ menu presents all information about the currently logged-in user. This information is obtained when logging into ShopMob. When employing login via a _federated ID provider_ this information is obtained from the chosen provider (eg. facebook, google, GitHub, ...).
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="SmobProduct list" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_admin_profile.png" title="SmobAdmin Profile"/>
+</div>
+
+Affiliation of the currently logged-in user determines which SmobLists are shown in _planning_ and _shopping_ mode.
+
+###### Groups
+
+The _groups_ management screen displays all known groups (globally) and allows new groups to be created (plus button).
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="SmobProduct list" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_admin_groups.png" title="SmobAdmin Groups"/>
+  <img alt="SmobProduct list" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_admin_groups_new_1.png" title="SmobAdmin Groups"/>
+  <img alt="SmobProduct list" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_admin_groups_new_2.png" title="SmobAdmin Groups"/>
+</div>
+
+Once a group has been selected, members can be added from the list of all users which are known to the app. At present (September 2022), this still presents all users known to ShopMob (globally). For privacy reasons, this will have to be modified in the future.
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="SmobProduct list" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_admin_group_select_member.png" title="SmobAdmin Groups"/>
+  <img alt="SmobProduct list" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_admin_groups_add_member_1.png" title="SmobAdmin Groups"/>
+  <img alt="SmobProduct list" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_admin_groups_add_member_2.png" title="SmobAdmin Groups"/>
+</div>
+
+###### Lists
+
+The _lists_ management screen displays SmobLists of those groups, the currently logged-in user is a member of. 
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="SmobProduct list" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_admin_lists.png" title="SmobAdmin Lists"/>
+  <img alt="SmobProduct list" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_admin_list_groups.png" title="SmobAdmin Lists"/>
+  <img alt="SmobProduct list" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_admin_list_groups_add.png" title="SmobAdmin Lists"/>
+</div>
+
+It allows new lists to be created as well as groups to be added to a list. All groups (globally) are displayed when selecting a group to be added to a list.  
+
+###### Contacts
+
+The _contacts_ management screen retrieves all contacts stored on the device ShopMop is currently running on (eg. phone contacts). The user has to grant permission to access contacts.  
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="SmobProduct contacts" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_admin_contacts_permissions.png" title="SmobAdmin Contacts"/>
+  <img alt="SmobProduct contacts" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_admin_contacts_table.png" title="SmobAdmin Contacts"/>
+</div>
+
+Swiping right on a contact adds them to the database of ShopMop users (September 2022: still needs to be implemented - at present, swiping right does nothing yet). The contact list is searchable.
+
 
 ##### Synchronization with the Backend
 
