@@ -602,29 +602,25 @@ their phone for a more important activity.
 
 #### Background Work
 
-In addition to the above described WorkManager background job for geoFencing, the app also uses two _recurring_ jobs to 
-manage the background sync with the backend:
-
-1. RefreshSmobStaticDataWorkerFast
-2. RefreshSmobStaticDataWorkerSlow
+In addition to the above described WorkManager background job for geoFencing, the app also uses another _recurring_ job to 
+manage the background sync with the backend: RefreshSmobStaticDataWorkerSlow
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
   <img alt="Workspace - WorkManager Services" height="60" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_proj_work.PNG" title="ShopMob Workspace - WorkManager Services"/>
 </div>
 
-The former is actually a one-time background job which fetches all tables from the backend and stores them in the local DB
-of the device. It is called "fast", as it re-triggers itself using a delay of 6 seconds. This means that the "fast" background
-polling job retrieves information from the backend every 6 seconds:
+This job is a one-time background job which fetches all tables from the backend and stores them in the local DB of the device. 
+It is called "slow", as it runs at a relatively slow timing interval of 30 minutes. There is a faster mechanism which is active as long
+as the app is in the foreground. At present, the interval of the 'fast' update job has been set
+to 6 seconds (see Constants.WORK_POLLING_FAST_VALUE):
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
   <img alt="Workspace - background job" height="400" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_system_jobs_fast.PNG" title="ShopMob Workspace - background job"/>
 </div>
 
-This mechanism has been chosen to "undercut" Android's lower limit for WorkManager (15 minutes). The lifecycle methods
-onStart, onResume, onPause, etc. are used to stop this cascade of one-shot jobs as soon as the app is sent to the background,
-thereby avoiding battery resource draining waste. A future revision of the app might replace this job by a simple timer, which
-is only active when the app is in the foreground, or - more likely - by an event-based communication pattern in which the 
-backend sends out notifications to all subscribers when new data is available.
+The lifecycle methods onStart, onResume, onPause, etc. are used to stop (and restart) this polling timer as soon as the app is sent to the background,
+thereby avoiding battery resource draining waste. A future revision of the app might replace the polling mechanism by an event-based communication
+pattern in which the backend sends out notifications to all subscribers when new data is available.
 
 The working of the fast background job can be observed in the Logcat of Android Studio: 
 

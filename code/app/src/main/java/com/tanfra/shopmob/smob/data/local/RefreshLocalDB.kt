@@ -66,7 +66,7 @@ object RefreshLocalDB: KoinComponent {
         }  // netActive
 
         // return 'success' - done
-        Timber.i("Refresh completed successfully")
+        Timber.i("Refresh triggered successfully")
 
     }  // refreshSmobDb
 
