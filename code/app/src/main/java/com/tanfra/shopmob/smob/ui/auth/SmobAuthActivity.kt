@@ -13,9 +13,8 @@ import timber.log.Timber
 import com.google.firebase.auth.FirebaseAuth
 import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.databinding.ActivityAuthBinding
-import com.tanfra.shopmob.smob.work.SmobAppWork
+import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
-import org.koin.android.ext.android.inject
 
 
 /**
@@ -152,17 +151,14 @@ class SmobAuthActivity : AppCompatActivity() {
     }  // onSignInResult
 
 
-    // fetch worker class form service locator
-    private val wManager: SmobAppWork by inject()
-
     override fun onResume() {
         super.onResume()
-        wManager.delayedInitRecurringWorkFast()
+        RefreshLocalDB.timer.start()
     }
 
     override fun onPause() {
         super.onPause()
-        wManager.cancelRecurringWorkFast()
+        RefreshLocalDB.timer.cancel()
     }
 
 }

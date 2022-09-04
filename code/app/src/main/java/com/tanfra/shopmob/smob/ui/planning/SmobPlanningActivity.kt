@@ -16,6 +16,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.databinding.ActivityPlanningBinding
+import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
@@ -32,6 +33,9 @@ import timber.log.Timber
  */
 class SmobPlanningActivity : AppCompatActivity() {
 
+    // fetch worker class form service locator
+    private val wManager: SmobAppWork by inject()
+
     // bind views
     private lateinit var binding: ActivityPlanningBinding
 
@@ -41,6 +45,7 @@ class SmobPlanningActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -209,17 +214,14 @@ class SmobPlanningActivity : AppCompatActivity() {
     }
 
 
-    // fetch worker class form service locator
-    private val wManager: SmobAppWork by inject()
-
     override fun onResume() {
         super.onResume()
-        wManager.delayedInitRecurringWorkFast()
+        RefreshLocalDB.timer.start()
     }
 
     override fun onPause() {
         super.onPause()
-        wManager.cancelRecurringWorkFast()
+        RefreshLocalDB.timer.cancel()
     }
 
 }

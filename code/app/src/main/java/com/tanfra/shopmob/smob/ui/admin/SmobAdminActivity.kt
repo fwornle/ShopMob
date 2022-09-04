@@ -14,8 +14,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.ActivityAdminBinding
-import com.tanfra.shopmob.smob.work.SmobAppWork
-import org.koin.android.ext.android.inject
+import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 
 
 /**
@@ -112,17 +111,15 @@ class SmobAdminActivity : AppCompatActivity() {
         }
     }
 
-    // fetch worker class form service locator
-    private val wManager: SmobAppWork by inject()
 
     override fun onResume() {
         super.onResume()
-        wManager.delayedInitRecurringWorkFast()
+        RefreshLocalDB.timer.start()
     }
 
     override fun onPause() {
         super.onPause()
-        wManager.cancelRecurringWorkFast()
+        RefreshLocalDB.timer.cancel()
     }
 
 }

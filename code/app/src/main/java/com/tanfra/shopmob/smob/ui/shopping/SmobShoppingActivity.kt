@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.ActivityShoppingBinding
+import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 import com.tanfra.shopmob.smob.ui.details.createIntent
-import com.tanfra.shopmob.smob.work.SmobAppWork
-import org.koin.android.ext.android.inject
+
 
 /**
  * The SmobActivity that holds the SmobShopping fragments
@@ -38,17 +38,14 @@ class SmobShoppingActivity : AppCompatActivity() {
     }
 
 
-    // fetch worker class form service locator
-    private val wManager: SmobAppWork by inject()
-
     override fun onResume() {
         super.onResume()
-        wManager.delayedInitRecurringWorkFast()
+        RefreshLocalDB.timer.start()
     }
 
     override fun onPause() {
         super.onPause()
-        wManager.cancelRecurringWorkFast()
+        RefreshLocalDB.timer.cancel()
     }
 
 }

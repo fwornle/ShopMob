@@ -5,6 +5,7 @@ import android.content.Context
 import android.widget.Toast
 import com.google.firebase.messaging.FirebaseMessaging
 import com.tanfra.shopmob.Constants.FCM_TOPIC
+import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 import com.tanfra.shopmob.smob.data.local.dbServices
 import com.tanfra.shopmob.smob.data.net.netServices
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
@@ -24,7 +25,7 @@ class SmobApp : Application(), KoinComponent {
     companion object{
         // details of currently logged-in user
         var currUser: SmobUserATO? = null
-        var currUserGroupIds = listOf<String>()
+
     }
 
     override fun onCreate() {
@@ -32,6 +33,9 @@ class SmobApp : Application(), KoinComponent {
 
         // initialize Timber (logging) lib
         Timber.plant(Timber.DebugTree())
+
+        // start background polling timer
+        RefreshLocalDB.timer.start()
 
         // instantiate viewModels, repos and DBs and inject them as services into consuming classes
         // ... using KOIN framework (as "service locator"): https://insert-koin.io/
@@ -51,9 +55,8 @@ class SmobApp : Application(), KoinComponent {
         // fetch worker class form service locator
         val wManager: SmobAppWork by inject()
 
-        // initialize WorkManager jobs (slow and fast polling)... and start them both
+        // initialize WorkManager job (slow polling)... and start it
         wManager.delayedInitRecurringWorkSlow()
-        wManager.delayedInitRecurringWorkFast()
 
         // subscribe to topic for FCM update messages
         subscribeTopic(wManager.smobAppContext)
@@ -68,8 +71,7 @@ class SmobApp : Application(), KoinComponent {
         // fetch worker class form service locator
         val wManager: SmobAppWork by inject()
 
-        // initialize WorkManager jobs (slow and fast polling)... and start them both
-        wManager.cancelRecurringWorkFast()
+        // cancel WorkManager job (slow polling)
         wManager.cancelRecurringWorkSlow()
 
         // unsubscribe from topic used for FCM update messages

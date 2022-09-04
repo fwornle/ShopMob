@@ -2,7 +2,6 @@ package com.tanfra.shopmob.smob.work
 
 import android.content.Context
 import androidx.work.*
-import com.tanfra.shopmob.Constants
 import com.tanfra.shopmob.smob.geofence.GeofenceTransitionsWorkService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -10,6 +9,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
+@Suppress("SameParameterValue")
 class SmobAppWork(context: Context): Configuration.Provider {
 
     // central point for network status
@@ -47,7 +47,11 @@ class SmobAppWork(context: Context): Configuration.Provider {
     }
 
     // ... check if some job (by TAG) has already been cancelled
-    private fun isWorkCancelled(tag: String): Boolean = WorkManager.getInstance(smobAppContext).getWorkInfosByTag(tag).isCancelled
+    private fun isWorkCancelled(tag: String): Boolean =
+        WorkManager
+            .getInstance(smobAppContext)
+            .getWorkInfosByTag(tag)
+            .isCancelled
 
 
     // ... schedule some work: slow update cycle
@@ -58,21 +62,21 @@ class SmobAppWork(context: Context): Configuration.Provider {
 
     }
 
-    // ... schedule some work: fast update cycle
-    fun delayedInitRecurringWorkFast() = applicationScope.launch {
-
-        // setup the fast polling job and start it
-        scheduleRecurringWorkFast(setupRecurringWorkFast())
-
-    }
-
-    // ... cancel work: fast update cycle
-    fun cancelRecurringWorkFast() = applicationScope.launch {
-        if(!isWorkCancelled(RefreshSmobStaticDataWorkerFast.WORK_NAME_FAST)) {
-            Timber.i("Stopping fast polling work job...")
-            WorkManager.getInstance(smobAppContext).cancelAllWorkByTag(RefreshSmobStaticDataWorkerFast.WORK_NAME_FAST)
-        }
-    }
+//    // ... schedule some work: fast update cycle
+//    fun delayedInitRecurringWorkFast() = applicationScope.launch {
+//
+//        // setup the fast polling job and start it
+//        scheduleRecurringWorkFast(setupRecurringWorkFast())
+//
+//    }
+//
+//    // ... cancel work: fast update cycle
+//    fun cancelRecurringWorkFast() = applicationScope.launch {
+//        if(!isWorkCancelled(RefreshSmobStaticDataWorkerFast.WORK_NAME_FAST)) {
+//            Timber.i("Stopping fast polling work job...")
+//            WorkManager.getInstance(smobAppContext).cancelAllWorkByTag(RefreshSmobStaticDataWorkerFast.WORK_NAME_FAST)
+//        }
+//    }
 
     // ... cancel work: slow update cycle
     fun cancelRecurringWorkSlow() = applicationScope.launch {
@@ -143,40 +147,40 @@ class SmobAppWork(context: Context): Configuration.Provider {
     }
 
 
-    // configure the actual work to be scheduled by WorkManager
-    fun setupRecurringWorkFast(): OneTimeWorkRequest {
-
-        // work scheduling constraints - fast polling
-        val constraintsFast = Constraints.Builder()
-            .setRequiresBatteryNotLow(true)
-            .build()
-
-        // fast polling task - when app is in foreground
-        // ... note: it's fast, as we "sub-schedule" every minute (within "doWork")
-        return OneTimeWorkRequestBuilder<RefreshSmobStaticDataWorkerFast>()
-            .setInitialDelay(Constants.WORK_POLLING_FAST_VALUE, TimeUnit.SECONDS)
-            .setConstraints(constraintsFast)
-            .setBackoffCriteria(
-                BackoffPolicy.LINEAR,
-                OneTimeWorkRequest.MIN_BACKOFF_MILLIS,
-                TimeUnit.MILLISECONDS)
-            .addTag(RefreshSmobStaticDataWorkerFast.WORK_NAME_FAST)
-            .build()
-
-    }  // setupRecurringWorkFast
-
-    // ... now schedule the slow polling job
-    fun scheduleRecurringWorkFast(request: OneTimeWorkRequest) = applicationScope.launch {
-
-        // fast polling job
-        Timber.i("Starting fast polling work job...")
-        WorkManager.getInstance(smobAppContext).enqueueUniqueWork(
-                RefreshSmobStaticDataWorkerFast.WORK_NAME_FAST,
-                ExistingWorkPolicy.REPLACE,
-                request
-            )
-
-    }
+//    // configure the actual work to be scheduled by WorkManager
+//    fun setupRecurringWorkFast(): OneTimeWorkRequest {
+//
+//        // work scheduling constraints - fast polling
+//        val constraintsFast = Constraints.Builder()
+//            .setRequiresBatteryNotLow(true)
+//            .build()
+//
+//        // fast polling task - when app is in foreground
+//        // ... note: it's fast, as we "sub-schedule" every minute (within "doWork")
+//        return OneTimeWorkRequestBuilder<RefreshSmobStaticDataWorkerFast>()
+//            .setInitialDelay(Constants.WORK_POLLING_FAST_VALUE, TimeUnit.SECONDS)
+//            .setConstraints(constraintsFast)
+//            .setBackoffCriteria(
+//                BackoffPolicy.LINEAR,
+//                OneTimeWorkRequest.MIN_BACKOFF_MILLIS,
+//                TimeUnit.MILLISECONDS)
+//            .addTag(RefreshSmobStaticDataWorkerFast.WORK_NAME_FAST)
+//            .build()
+//
+//    }  // setupRecurringWorkFast
+//
+//    // ... now schedule the slow polling job
+//    fun scheduleRecurringWorkFast(request: OneTimeWorkRequest) = applicationScope.launch {
+//
+//        // fast polling job
+//        Timber.i("Starting fast polling work job...")
+//        WorkManager.getInstance(smobAppContext).enqueueUniqueWork(
+//                RefreshSmobStaticDataWorkerFast.WORK_NAME_FAST,
+//                ExistingWorkPolicy.REPLACE,
+//                request
+//            )
+//
+//    }
 
 
     // configure the geoFence notification work (job) to be scheduled by WorkManager

@@ -8,12 +8,11 @@ import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.databinding.ActivityDetailsBinding
+import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductWithListDataATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
-import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.utils.getSerializable
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
@@ -132,17 +131,14 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
     }  // onCreate
 
 
-    // fetch worker class form service locator
-    private val wManager: SmobAppWork by inject()
-
     override fun onResume() {
         super.onResume()
-        wManager.delayedInitRecurringWorkFast()
+        RefreshLocalDB.timer.start()
     }
 
     override fun onPause() {
         super.onPause()
-        wManager.cancelRecurringWorkFast()
+        RefreshLocalDB.timer.cancel()
     }
 
 }
