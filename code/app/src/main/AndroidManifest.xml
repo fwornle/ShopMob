@@ -49,8 +49,18 @@
                    assumes the presence of an environment variable SMOB_FB_CLIENT_TOKEN on the build
                    machine... see https://developers.facebook.com/apps/ -> settings -> advanced
         -->
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_application_id" />
-        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="${SMOB_FB_CLIENT_TOKEN}"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_application_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="${SMOB_FB_CLIENT_TOKEN}"/>
+        <meta-data
+            android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
+            android:value="false"/>
+        <meta-data
+            android:name="com.facebook.sdk.AdvertiserIDCollectionEnabled"
+            android:value="false"/>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

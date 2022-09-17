@@ -1,88 +1,24 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
 
-    // forward declarations (needed in the buildscript dependencies)
-    ext.gradlePluginVersion = '7.2.2'
-    ext.kotlinVersion = '1.7.10'
-    ext.navigationVersion = '2.5.1'
-    ext.googleServicesVersion = "4.3.10"
-
-    repositories {
-        google()
-        mavenCentral()
-    }
-
     dependencies {
-        classpath "com.android.tools.build:gradle:$gradlePluginVersion"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion"
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
-        classpath "com.google.gms:google-services:$googleServicesVersion"
-
+        classpath "com.android.tools.build:gradle:7.2.2"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:1.7.10"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.2"
+        classpath "com.google.gms:google-services:4.3.13"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
+plugins {
+    id 'com.android.application' version '7.2.2' apply false
+    id 'com.android.library' version '7.2.2' apply false
+    id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-// Define versions in a single place
-ext {
-    // Sdk and tools
-    // JetPack permission handling requires API v24 and above.
-    minSdkVersion = 25
-    targetSdkVersion = 33  // needs reduced to below 30 to allow Toast test to run  (see: https://knowledge.udacity.com/questions/608423)
-    compileSdkVersion = 33
-
-    // App dependencies
-    activityVersion = '1.5.1'
-    androidXTestCoreVersion = '1.4.0'
-    androidXTestExtKotlinRunnerVersion = '1.1.3'
-    androidXTestRulesVersion = '1.4.0'
-    androidXAnnotations = '1.4.0'
-    androidXLegacySupport = '1.0.0'
-    appCompatVersion = '1.5.0'
-    archLifecycleVersion = '2.5.1'
-    archLifecycleOldVersion = '2.2.0'
-    archTestingVersion = '2.1.0'
-    cardVersion = '1.0.0'
-    constraintVersion = '2.1.4'
-    coilVersion = '2.2.0'
-    coroutinesVersion = '1.6.4'
-    dexMakerVersion = '2.28.3'
-    espressoVersion = '3.4.0'
-    firebaseBomVersion = '30.3.2'
-    firebaseUiVersion = '8.0.1'
-    fragmentVersion = '1.5.2'
-    gsonVersion = '2.9.1'
-    hamcrestVersion = '1.3'
-    junitVersion = '4.13.2'
-    koinVersion = '3.2.0'
-    materialVersion = '1.6.1'
-    mockitoVersion = '4.7.0'
-    moshiVersion = '1.13.0'
-    playServicesLocationVersion = '20.0.0'
-    playServicesMapsVersion = '18.1.0'
-    recyclerViewVersion = '1.3.0-beta02'
-    retrofitVersion = '2.9.0'
-    retrofitLoggingVersion = '5.0.0-alpha.6'
-    robolectricVersion = '4.8.2'
-    roomVersion = '2.4.3'
-    workVersion = '2.7.1'
-    serializationVersion = '1.4.0'
-    timberVersion = '5.0.1'
-    truthVersion = '1.1.3'
-    uiAutomatorVersion = '2.2.0'
-}
-
