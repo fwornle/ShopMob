@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
@@ -14,7 +15,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.databinding.ActivityAuthBinding
 import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
+import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
+import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 
 /**
@@ -22,6 +30,9 @@ import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
  * redirects the signed in users to the SmobActivity.
  */
 class SmobAuthActivity : AppCompatActivity() {
+
+    // fetch worker class form service locator
+    private val wManager: SmobAppWork by inject()
 
     // bind views
     private lateinit var binding: ActivityAuthBinding
@@ -154,6 +165,17 @@ class SmobAuthActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         RefreshLocalDB.timer.start()
+
+        val networkConnectionManager: NetworkConnectionManager by inject()
+        networkConnectionManager.startListenNetworkState()
+
+        networkConnectionManager.isNetworkConnectedFlow
+            .onEach {
+                Timber.i(if(it) "Connected to the network." else "Disconnected from the network.")
+                wManager.netActive = it
+            }
+            .launchIn(lifecycleScope)
+
     }
 
     override fun onPause() {

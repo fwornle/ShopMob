@@ -1,14 +1,14 @@
 package com.tanfra.shopmob.smob.data.net
 
-import android.app.Application
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tanfra.shopmob.BuildConfig
 import com.tanfra.shopmob.smob.data.net.api.*
 import com.tanfra.shopmob.smob.data.net.nto.*
-import com.tanfra.shopmob.smob.data.net.utils.ArrayListAdapter
-import com.tanfra.shopmob.smob.data.net.utils.AuthInterceptor
-import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionInterceptor
+import com.tanfra.shopmob.smob.data.net.utils.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -20,13 +20,19 @@ import java.util.concurrent.TimeUnit
 // Koin module for network services
 val netServices = module {
 
+    // helper function to provide coroutine context
+    fun provideCoroutineScope() =
+        CoroutineScope(Dispatchers.Default + SupervisorJob())
 
     // helper function to provide a configured OkHttpClient
-    fun provideOkHttpClient(app: Application, authInterceptor: AuthInterceptor): OkHttpClient {
+    fun provideOkHttpClient(
+        networkConnectionInterceptor: NetworkConnectionInterceptor,
+        authInterceptor: AuthInterceptor
+    ): OkHttpClient {
 
         // add connection first, then auth
         val client = OkHttpClient().newBuilder()
-            .addInterceptor(NetworkConnectionInterceptor( app.applicationContext ))
+            .addInterceptor(networkConnectionInterceptor)
             .addInterceptor(authInterceptor)
             .readTimeout(3, TimeUnit.SECONDS)
             .connectTimeout(6, TimeUnit.SECONDS)
@@ -86,14 +92,25 @@ val netServices = module {
     // define instances to be offered as services via the Koin service locator
     // define instances to be offered as services via the Koin service locator
 
+    // instantiate our custom NetworkConnectionManager class (as singleton)
+    single<NetworkConnectionManager> {
+        NetworkConnectionManagerImpl(context = get(), coroutineScope = provideCoroutineScope())
+    }
+
     // consistent handling of network responses/errors
     single { ResponseHandler() }
 
     // authentication middleware
     single { AuthInterceptor() }
 
+    // network connection middleware
+    single { NetworkConnectionInterceptor(networkConnectionManager = get()) }
+
     // HTTP client - allows injection of logger (for debugging... see there)
-    single { provideOkHttpClient(app = get(), authInterceptor = get()) }
+    single { provideOkHttpClient(
+        networkConnectionInterceptor = get(),
+        authInterceptor = get()
+    ) }
 
     // retrofit object
     // ... incl. Moshi JSON adapters for all our data sources (generalized)

@@ -24,38 +24,38 @@ open class ResponseHandler: KoinComponent {
 
     fun <T : Any> handleSuccess(data: T): Resource<T> {
 
-        // re-activate network services
-        if (!wManager.netActive) {
-            Timber.i("Successful net read --> re-activating network.")
-            wManager.netActive = true
-        }
+//        // re-activate network services
+//        if (!wManager.netActive) {
+//            Timber.i("Successful net read --> re-activating network.")
+//            wManager.netActive = true
+//        }
 
         return Resource.success(data)
     }
 
     fun <T : Any> handleException(e: Exception): Resource<T> {
         return when (e) {
-            is HttpException -> Resource.error(getErrorMessage(e.code()), null)
+            is HttpException -> Resource.error(getErrorMessage(e.code(), e.message), null)
             is SocketTimeoutException -> {
 
-                // deactivate network services
-                if (wManager.netActive) {
-                    Timber.i("Timeout --> (temporarily) deactivating network.")
-                    wManager.netActive = false
-                }
+//                // deactivate network services
+//                if (wManager.netActive) {
+//                    Timber.i("Timeout --> (temporarily) deactivating network.")
+//                    wManager.netActive = false
+//                }
 
-                Resource.error(getErrorMessage(ErrorCodes.SocketTimeOut.code), null)
+                Resource.error(getErrorMessage(ErrorCodes.SocketTimeOut.code, e.message), null)
             }
-            else -> Resource.error(getErrorMessage(Int.MAX_VALUE), null)
+            else -> Resource.error(getErrorMessage(Int.MAX_VALUE, e.message), null)
         }
     }
 
-    private fun getErrorMessage(code: Int): String {
+    private fun getErrorMessage(code: Int, expMsg: String?): String {
         return when (code) {
-            ErrorCodes.SocketTimeOut.code -> "Timeout"
-            401 -> "Unauthorised"
-            404 -> "Not found"
-            else -> "Something went wrong"
+            ErrorCodes.SocketTimeOut.code -> "Timeout ($expMsg)"
+            401 -> "Unauthorised ($expMsg)"
+            404 -> "Not found ($expMsg)"
+            else -> "Something went wrong ($expMsg)"
         }
     }
 }

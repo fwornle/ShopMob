@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.smob.data.local.utils.*
+import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.base.BaseViewModel
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
@@ -13,10 +14,14 @@ import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
+import com.tanfra.shopmob.smob.work.SmobAppWork
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -25,7 +30,10 @@ class PlanningViewModel(
     val listDataSource: SmobListDataSource,  // public, as used (externally) to update the smobList
     private val productDataSource: SmobProductDataSource,
     val shopDataSource: SmobShopDataSource,
-    ) : BaseViewModel(app) {
+    ) : BaseViewModel(app), KoinComponent {
+
+    // fetch worker class form service locator
+    val wManager: SmobAppWork by inject()
 
     // navigation source - used to be able to have a "modal" list item click handler
     // ... depending on how we got to the list (and, as such, on how we want to use it)

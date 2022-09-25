@@ -50,13 +50,14 @@ class RefreshSmobStaticDataWorkerSlow(appContext: Context, params: WorkerParamet
                 smobShopDataSource.refreshDataInLocalDB()
                 smobListDataSource.refreshDataInLocalDB()
 
-            } else {
-
-                // tentatively re-activate network services
-                Timber.i("Tentatively re-activating network services.")
-                wManager.netActive = true
-
             }
+//            else {
+//
+//                // tentatively re-activate network services
+//                Timber.i("Tentatively re-activating network services.")
+//                wManager.netActive = true
+//
+//            }
 
             // return 'success' - done
             Timber.i("Scheduled work ($WORK_NAME_SLOW) completed successfully")

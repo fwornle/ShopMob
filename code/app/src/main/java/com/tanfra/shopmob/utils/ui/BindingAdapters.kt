@@ -158,6 +158,21 @@ object BindingAdapters {
     }
 
 
+    /**
+     * Use this binding adapter to control the background color of screen to indicate the
+     * network connectivity status
+     */
+    @BindingAdapter("netConnectBackground")
+    @JvmStatic
+    fun setNetConnectBackground(view: View, netConnected: Boolean) {
+        if(!netConnected) {
+            view.setBackgroundResource(R.color.colorNoNetwork)
+        } else {
+            view.setBackgroundResource(R.color.white)
+        }
+    }
+
+
     // layout properties with attribute <... app:itemImage ...> call upon this code
     @BindingAdapter("itemImage")
     @JvmStatic

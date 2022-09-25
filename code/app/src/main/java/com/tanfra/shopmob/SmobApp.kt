@@ -8,11 +8,14 @@ import com.tanfra.shopmob.Constants.FCM_TOPIC
 import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 import com.tanfra.shopmob.smob.data.local.dbServices
 import com.tanfra.shopmob.smob.data.net.netServices
+import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.repo.repoServices
 import com.tanfra.shopmob.smob.ui.vmServices
 import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.smob.work.wmServices
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -61,6 +64,10 @@ class SmobApp : Application(), KoinComponent {
         // subscribe to topic for FCM update messages
         subscribeTopic(wManager.smobAppContext)
 
+        // start monitoring the network connection
+        val networkConnectionManager: NetworkConnectionManager by inject()
+        networkConnectionManager.startListenNetworkState()
+
     }  // onCreate
 
 
@@ -76,6 +83,10 @@ class SmobApp : Application(), KoinComponent {
 
         // unsubscribe from topic used for FCM update messages
         FirebaseMessaging.getInstance().unsubscribeFromTopic(FCM_TOPIC)
+
+        // stop monitoring the network connection
+        val networkConnectionManager: NetworkConnectionManager by inject()
+        networkConnectionManager.stopListenNetworkState()
 
     }
 
