@@ -1,8 +1,8 @@
 package com.tanfra.shopmob.smob.data.local
 
 import android.os.CountDownTimer
-import com.tanfra.shopmob.Constants
 import com.tanfra.shopmob.Constants.WORK_POLLING_FAST_VALUE
+import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.dataSource.*
 import com.tanfra.shopmob.smob.work.SmobAppWork
 import kotlinx.coroutines.launch
@@ -30,7 +30,8 @@ object RefreshLocalDB: KoinComponent {
 
     }
 
-    // fetch worker class form service locator
+    // fetch NetworkConnectionManager and SmobAppWork form service locator
+    private val networkConnectionManager: NetworkConnectionManager by inject()
     private val wManager: SmobAppWork by inject()
 
     // fetch repositories from Koin service locator
@@ -49,7 +50,7 @@ object RefreshLocalDB: KoinComponent {
 
         // avoid series of timeouts, if network has already been found to be inactive
         // ... see: ResponseHandler
-        if(wManager.netActive) {
+        if(networkConnectionManager.isNetworkConnected) {
 
             // launch polling of all backend tables (parallel coroutines)
             wManager.applicationScope.launch {

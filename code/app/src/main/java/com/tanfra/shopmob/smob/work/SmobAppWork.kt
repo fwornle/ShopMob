@@ -12,9 +12,6 @@ import java.util.concurrent.TimeUnit
 @Suppress("SameParameterValue")
 class SmobAppWork(context: Context): Configuration.Provider {
 
-    // central point for network status
-    var netActive: Boolean = true
-
     // add a coroutine scope to be used with WorkManger scheduled work
     val applicationScope = CoroutineScope(Dispatchers.Default)
 

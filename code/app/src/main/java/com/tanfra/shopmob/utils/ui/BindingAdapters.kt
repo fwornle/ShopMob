@@ -11,13 +11,12 @@ import coil.load
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.utils.fadeIn
 import com.tanfra.shopmob.utils.fadeOut
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -164,12 +163,28 @@ object BindingAdapters {
      */
     @BindingAdapter("netConnectBackground")
     @JvmStatic
-    fun setNetConnectBackground(view: View, netConnected: Boolean) {
-        if(!netConnected) {
-            view.setBackgroundResource(R.color.colorNoNetwork)
-        } else {
-            view.setBackgroundResource(R.color.white)
-        }
+    fun setNetConnectBackground(view: View, networkConnectionManager: NetworkConnectionManager) {
+
+        // determine lifeCycle scope of current view
+        val lifeCycleScope = view.findViewTreeLifecycleOwner()?.lifecycleScope
+
+        lifeCycleScope?.let { lcScope ->
+
+            // collecting flow --> this must be on a coroutine
+            networkConnectionManager.isNetworkConnectedFlow
+                .onEach { netConnected ->
+                    if(netConnected) {
+                        view.setBackgroundResource(R.color.white)
+//                        Timber.i( "Connected to the network.")
+                    } else {
+                        view.setBackgroundResource(R.color.colorNoNetwork)
+//                        Timber.i("Disconnected from the network.")
+                    }
+                }
+                .launchIn(lcScope)
+
+        }  // lcScope valid
+
     }
 
 

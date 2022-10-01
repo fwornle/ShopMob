@@ -10,6 +10,7 @@ import com.tanfra.shopmob.smob.data.net.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.api.SmobUserApi
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
+import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.asResource
@@ -39,8 +40,8 @@ class SmobUserRepository(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : SmobUserDataSource, KoinComponent {
 
-    // fetch worker class form service locator
-    private val wManager: SmobAppWork by inject()
+    // fetch NetworkConnectionManager form service locator
+    private val networkConnectionManager: NetworkConnectionManager by inject()
 
     // --- impl. of public, app facing data interface 'SmobUserDataSource': CRUD, local DB data ---
     // --- impl. of public, app facing data interface 'SmobUserDataSource': CRUD, local DB data ---
@@ -140,7 +141,7 @@ class SmobUserRepository(
 
             // then push to backend DB
             // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
-            if(wManager.netActive) {
+            if(networkConnectionManager.isNetworkConnected) {
                 val testRead = getSmobUserViaApi(dbUser.id)
                 if (testRead.data?.id != dbUser.id) {
                     // item not found in backend --> use POST to create it
@@ -182,7 +183,7 @@ class SmobUserRepository(
 
                 // then push to backend DB
                 // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
-                if(wManager.netActive) {
+                if(networkConnectionManager.isNetworkConnected) {
                     val testRead = getSmobUserViaApi(dbUser.id)
                     if (testRead.data?.id != dbUser.id) {
                         // item not found in backend --> use POST to create it
@@ -216,7 +217,7 @@ class SmobUserRepository(
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
                 smobUserDao.deleteSmobItemById(id)
-                if(wManager.netActive) {
+                if(networkConnectionManager.isNetworkConnected) {
                     smobUserApi.deleteSmobItemById(id)
                 }
             }
@@ -235,7 +236,7 @@ class SmobUserRepository(
                 smobUserDao.deleteAllSmobItems()
 
                 // then delete all shops from backend DB
-                if(wManager.netActive) {
+                if(networkConnectionManager.isNetworkConnected) {
                     getSmobUsersViaApi().let {
                         if (it.status == Status.SUCCESS) {
                             it.data?.map { smobUserApi.deleteSmobItemById(it.id) }

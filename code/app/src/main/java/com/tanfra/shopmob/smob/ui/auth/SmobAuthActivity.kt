@@ -31,9 +31,6 @@ import org.koin.core.component.inject
  */
 class SmobAuthActivity : AppCompatActivity() {
 
-    // fetch worker class form service locator
-    private val wManager: SmobAppWork by inject()
-
     // bind views
     private lateinit var binding: ActivityAuthBinding
 
@@ -168,13 +165,6 @@ class SmobAuthActivity : AppCompatActivity() {
 
         val networkConnectionManager: NetworkConnectionManager by inject()
         networkConnectionManager.startListenNetworkState()
-
-        networkConnectionManager.isNetworkConnectedFlow
-            .onEach {
-                Timber.i(if(it) "Connected to the network." else "Disconnected from the network.")
-                wManager.netActive = it
-            }
-            .launchIn(lifecycleScope)
 
     }
 

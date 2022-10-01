@@ -3,6 +3,7 @@ package com.tanfra.shopmob.smob.work
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.dataSource.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -20,8 +21,8 @@ class RefreshSmobStaticDataWorkerSlow(appContext: Context, params: WorkerParamet
         const val WORK_NAME_SLOW = "SmobStaticDataWorkerSlow"
     }
 
-    // fetch worker class form service locator
-    private val wManager: SmobAppWork by inject()
+    // fetch NetworkConnectionManager form service locator
+    private val networkConnectionManager: NetworkConnectionManager by inject()
 
     // fetch repositories from Koin service locator
     private val smobUserDataSource: SmobUserDataSource by inject()
@@ -41,7 +42,7 @@ class RefreshSmobStaticDataWorkerSlow(appContext: Context, params: WorkerParamet
             Timber.i("Running scheduled work ($WORK_NAME_SLOW) ---------------------------")
 
             // only sync - if the network is up
-            if (wManager.netActive) {
+            if (networkConnectionManager.isNetworkConnected) {
 
                 // update users in local DB from backend DB
                 smobUserDataSource.refreshDataInLocalDB()
@@ -51,13 +52,6 @@ class RefreshSmobStaticDataWorkerSlow(appContext: Context, params: WorkerParamet
                 smobListDataSource.refreshDataInLocalDB()
 
             }
-//            else {
-//
-//                // tentatively re-activate network services
-//                Timber.i("Tentatively re-activating network services.")
-//                wManager.netActive = true
-//
-//            }
 
             // return 'success' - done
             Timber.i("Scheduled work ($WORK_NAME_SLOW) completed successfully")

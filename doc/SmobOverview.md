@@ -182,6 +182,17 @@ A future extension of the app will provide an Alexa Skill to be able to "speak t
 on which list (in the backend). Editing a shopping list via the app is therefore thought as a secondary use case, as it is much 
 more tedious to do so via the app as it will be using Alexa's ability to make sense of the user's utterances.
 
+The background color of the shopping list / product list screens indicates the current network status: A white background 
+indicates that the device is currently connected to the network, i.e. all changes are directly synchronized with the backend. 
+A grey background on the other side indicates that the device is not connected to the network and changes are only persisted 
+in the local database.
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+  <img alt="SmobProduct list - no network" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_no_net_0.png" title="SmobShop with full network access"/>
+  <img alt="SmobProduct list - no network" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_no_net_1.png" title="Disabling the network'"/>
+  <img alt="SmobProduct list - no network" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_no_net_2.png" title="SmobShop with no network access"/>
+</div>
+
 ##### Administration screens
 
 The user can switch to the _administaration_ screens of ShopMop via the drawer menu on the main (Smob lists) screen:

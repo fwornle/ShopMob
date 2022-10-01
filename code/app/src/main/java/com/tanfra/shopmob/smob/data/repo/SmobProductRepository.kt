@@ -12,6 +12,7 @@ import com.tanfra.shopmob.smob.data.net.api.SmobProductApi
 import com.tanfra.shopmob.smob.data.net.nto.SmobProductNTO
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
+import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.asResource
@@ -40,8 +41,8 @@ class SmobProductRepository(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : SmobProductDataSource, KoinComponent {
 
-    // fetch worker class form service locator
-    private val wManager: SmobAppWork by inject()
+    // fetch NetworkConnectionManager form service locator
+    private val networkConnectionManager: NetworkConnectionManager by inject()
 
     // --- impl. of public, app facing data interface 'SmobProductDataSource': CRUD, local DB data ---
     // --- impl. of public, app facing data interface 'SmobProductDataSource': CRUD, local DB data ---
@@ -141,7 +142,7 @@ class SmobProductRepository(
 
             // then push to backend DB
             // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
-            if(wManager.netActive) {
+            if(networkConnectionManager.isNetworkConnected) {
                 val testRead = getSmobProductViaApi(dbProduct.id)
                 if (testRead.data?.id != dbProduct.id) {
                     // item not found in backend --> use POST to create it
@@ -183,7 +184,7 @@ class SmobProductRepository(
 
                 // then push to backend DB
                 // ... use 'update', as product may already exist (equivalent of REPLACE w/h local DB)
-                if(wManager.netActive) {
+                if(networkConnectionManager.isNetworkConnected) {
                     smobProductApi.updateSmobItemById(dbProduct.id, dbProduct.asNetworkModel())
                 }
 
@@ -210,7 +211,7 @@ class SmobProductRepository(
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
                 smobProductDao.deleteSmobItemById(id)
-                if(wManager.netActive) {
+                if(networkConnectionManager.isNetworkConnected) {
                     smobProductApi.deleteSmobItemById(id)
                 }
             }
@@ -229,7 +230,7 @@ class SmobProductRepository(
                 smobProductDao.deleteAllSmobItems()
 
                 // then delete all products from backend DB
-                if(wManager.netActive) {
+                if(networkConnectionManager.isNetworkConnected) {
                     getSmobProductsViaApi().let {
                         if (it.status == Status.SUCCESS) {
                             it.data?.map { smobProductApi.deleteSmobItemById(it.id) }

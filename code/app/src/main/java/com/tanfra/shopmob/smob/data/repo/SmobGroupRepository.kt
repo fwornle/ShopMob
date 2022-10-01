@@ -13,6 +13,7 @@ import com.tanfra.shopmob.smob.data.net.nto.SmobGroupNTO
 import com.tanfra.shopmob.smob.data.net.nto.SmobUserNTO
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
+import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
@@ -44,8 +45,8 @@ class SmobGroupRepository(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : SmobGroupDataSource, KoinComponent {
 
-    // fetch worker class form service locator
-    private val wManager: SmobAppWork by inject()
+    // fetch NetworkConnectionManager form service locator
+    private val networkConnectionManager: NetworkConnectionManager by inject()
 
     // --- impl. of public, app facing data interface 'SmobGroupDataSource': CRUD, local DB data ---
     // --- impl. of public, app facing data interface 'SmobGroupDataSource': CRUD, local DB data ---
@@ -142,7 +143,7 @@ class SmobGroupRepository(
 
             // then push to backend DB
             // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
-            if(wManager.netActive) {
+            if(networkConnectionManager.isNetworkConnected) {
                 val testRead = getSmobGroupViaApi(dbGroup.id)
                 if (testRead.data?.id != dbGroup.id) {
                     // item not found in backend --> use POST to create it
@@ -184,7 +185,7 @@ class SmobGroupRepository(
 
                 // then push to backend DB
                 // ... use 'update', as group may already exist (equivalent of REPLACE w/h local DB)
-                if(wManager.netActive) {
+                if(networkConnectionManager.isNetworkConnected) {
                     smobGroupApi.updateSmobItemById(dbGroup.id, dbGroup.asNetworkModel())
                 }
 
@@ -211,7 +212,7 @@ class SmobGroupRepository(
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
                 smobGroupDao.deleteSmobItemById(id)
-                if(wManager.netActive) {
+                if(networkConnectionManager.isNetworkConnected) {
                     smobGroupApi.deleteSmobItemById(id)
                 }
             }
@@ -230,7 +231,7 @@ class SmobGroupRepository(
                 smobGroupDao.deleteAllSmobItems()
 
                 // then delete all groups from backend DB
-                if(wManager.netActive) {
+                if(networkConnectionManager.isNetworkConnected) {
                     getSmobGroupsViaApi().let {
                         if (it.status == Status.SUCCESS) {
                             it.data?.map { smobGroupApi.deleteSmobItemById(it.id) }

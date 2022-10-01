@@ -12,6 +12,7 @@ import com.tanfra.shopmob.smob.data.net.api.SmobListApi
 import com.tanfra.shopmob.smob.data.net.nto.SmobListNTO
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
+import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.asResource
@@ -41,8 +42,8 @@ class SmobListRepository(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : SmobListDataSource, KoinComponent {
 
-    // fetch worker class form service locator
-    private val wManager: SmobAppWork by inject()
+    // fetch NetworkConnectionManager form service locator
+    private val networkConnectionManager: NetworkConnectionManager by inject()
 
     // --- impl. of public, app facing data interface 'SmobListDataSource': CRUD, local DB data ---
     // --- impl. of public, app facing data interface 'SmobListDataSource': CRUD, local DB data ---
@@ -114,7 +115,7 @@ class SmobListRepository(
 
         // then push to backend DB
         // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
-        if(wManager.netActive) {
+        if(networkConnectionManager.isNetworkConnected) {
             val testRead = getSmobListViaApi(dbList.id)
             if (testRead.data?.id != dbList.id) {
                 // item not found in backend --> use POST to create it
@@ -154,7 +155,7 @@ class SmobListRepository(
 
                 // then push to backend DB
                 // ... use 'update', as list may already exist (equivalent of REPLACE w/h local DB)
-                if(wManager.netActive) {
+                if(networkConnectionManager.isNetworkConnected) {
                     smobListApi.updateSmobItemById(dbList.id, dbList.asNetworkModel())
                 }
 
@@ -181,7 +182,7 @@ class SmobListRepository(
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
                 smobListDao.deleteSmobItemById(id)
-                if(wManager.netActive) {
+                if(networkConnectionManager.isNetworkConnected) {
                     smobListApi.deleteSmobItemById(id)
                 }
             }
@@ -200,7 +201,7 @@ class SmobListRepository(
                 smobListDao.deleteAllSmobItems()
 
                 // then delete all lists from backend DB
-                if(wManager.netActive) {
+                if(networkConnectionManager.isNetworkConnected) {
                     getSmobListsViaApi().let { resList ->
                         if (resList.status.equals(Status.SUCCESS)) {
                             resList.data?.map { smobListApi.deleteSmobItemById(it.id) }

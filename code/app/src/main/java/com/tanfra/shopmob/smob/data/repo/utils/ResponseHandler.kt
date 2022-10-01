@@ -19,17 +19,7 @@ enum class ErrorCodes(val code: Int) {
 
 open class ResponseHandler: KoinComponent {
 
-    // fetch worker class form service locator
-    private val wManager: SmobAppWork by inject()
-
     fun <T : Any> handleSuccess(data: T): Resource<T> {
-
-//        // re-activate network services
-//        if (!wManager.netActive) {
-//            Timber.i("Successful net read --> re-activating network.")
-//            wManager.netActive = true
-//        }
-
         return Resource.success(data)
     }
 
@@ -37,13 +27,6 @@ open class ResponseHandler: KoinComponent {
         return when (e) {
             is HttpException -> Resource.error(getErrorMessage(e.code(), e.message), null)
             is SocketTimeoutException -> {
-
-//                // deactivate network services
-//                if (wManager.netActive) {
-//                    Timber.i("Timeout --> (temporarily) deactivating network.")
-//                    wManager.netActive = false
-//                }
-
                 Resource.error(getErrorMessage(ErrorCodes.SocketTimeOut.code, e.message), null)
             }
             else -> Resource.error(getErrorMessage(Int.MAX_VALUE, e.message), null)
