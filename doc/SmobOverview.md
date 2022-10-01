@@ -185,7 +185,7 @@ more tedious to do so via the app as it will be using Alexa's ability to make se
 The background color of the shopping list / product list screens indicates the current network status: A white background 
 indicates that the device is currently connected to the network, i.e. all changes are directly synchronized with the backend. 
 A grey background on the other side indicates that the device is not connected to the network and changes are only persisted 
-in the local database.
+in the local database. This can be tried by switching the device to _flight mode_:
 
 <div style="display: flex; align-items: center; justify-content: space-around;">
   <img alt="SmobProduct list - no network" height="300" src="https://raw.githubusercontent.com/fwornle/ShopMob/main/doc/images/sm_no_net_0.png" title="SmobShop with full network access"/>
