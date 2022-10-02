@@ -1,9 +1,15 @@
 package com.tanfra.shopmob.smob.ui.planning
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -13,6 +19,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.navigateUp
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.snackbar.Snackbar
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.databinding.ActivityPlanningBinding
@@ -45,6 +52,54 @@ class SmobPlanningActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
+
+    // Subscription to FCM topics requires notification channel --> ask for permissions
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            Toast.makeText(this, getString(R.string.notification_permissions_granted), Toast.LENGTH_SHORT)
+                .show()
+        } else {
+            Toast.makeText(this, getString(R.string.notification_permissions_denied),
+                Toast.LENGTH_LONG).show()
+        }
+    }
+
+    // check for permissions - launches the system permissions requester
+    private fun askNotificationPermission() {
+        // This is only necessary for API level >= 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                // FCM SDK (and your app) can post notifications.
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+
+                // in an educational UI, explain to the user why your app requires this
+                // permission for a specific feature to behave as expected. In this UI,
+                // include a "cancel" or "no thanks" button that allows the user to
+                // continue using your app without granting the permission.
+                Snackbar.make(
+                    binding.navHostFragmentPlanning,
+                    R.string.notification_permission_explanation,
+                    Snackbar.LENGTH_INDEFINITE
+                )
+                    .setAction(R.string.settings) {
+
+                        // displays system dialog (settings) to invite the user to set the
+                        // right permissions
+                        // ... still have to request them one by one from Android 11 on
+                        requestPermissionLauncher
+                            .launch(Manifest.permission.POST_NOTIFICATIONS)
+
+                    }.show()
+            } else {
+                // Directly ask for the permission
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -180,6 +235,9 @@ class SmobPlanningActivity : AppCompatActivity() {
         // configure drawer layout
         binding.navView.setupWithNavController(navController)
         setupActionBarWithNavController(this, navController, drawerLayout)
+
+        // need permissions to let FCM send us notifications (of SmobList item updates, etc.)
+        askNotificationPermission()
 
     }
 
