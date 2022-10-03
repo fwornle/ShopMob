@@ -3,6 +3,7 @@ package com.tanfra.shopmob
 import android.app.Application
 import android.content.Context
 import android.widget.Toast
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.tanfra.shopmob.Constants.FCM_TOPIC
 import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
@@ -14,8 +15,6 @@ import com.tanfra.shopmob.smob.data.repo.repoServices
 import com.tanfra.shopmob.smob.ui.vmServices
 import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.smob.work.wmServices
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -90,12 +89,37 @@ class SmobApp : Application(), KoinComponent {
 
     }
 
+    // Firebase Messaging Service -------------------------------------------------
+    private val fcm by lazy { FirebaseMessaging.getInstance() }
+
+    // debug - ensure that FCM SDK is properly started
+    private fun logRegistrationToken() {
+        fcm.token.addOnCompleteListener(
+            OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Timber.w("Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new FCM registration token
+                val token = task.result
+
+                // Log and toast
+                val msg = getString(R.string.msg_token_fmt, token)
+                Timber.i(msg)
+                // Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
 
     // FCM: subscribe to topic
     private fun subscribeTopic(context: Context) {
 
+        // log the Firebase SDK registration toke to the console (debug only)
+        logRegistrationToken()
+
         // subscribe to topic (for update messaging)
-        FirebaseMessaging.getInstance().subscribeToTopic(FCM_TOPIC)
+        fcm.subscribeToTopic(FCM_TOPIC)
             .addOnCompleteListener { task ->
                 var message = getString(R.string.message_subscribed)
                 if (!task.isSuccessful) {

@@ -77,6 +77,7 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
         return binding.root
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

@@ -102,7 +102,7 @@
 
     <!-- Smob fcm channel ID -->
     <string name="smob_update_notification_channel_id">smob_update_notification_channel_id</string>
-
+    <string name="msg_token_fmt" translatable="false">FCM registration Token: %s</string>
     <!-- buttons -->
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
