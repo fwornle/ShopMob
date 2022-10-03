@@ -147,14 +147,7 @@
                 tools:node="remove" />
         </provider>
 
-        <!-- start FCM service for the reception of broadcast messages -->
-        <receiver
-            android:name=".smob.fcm.FcmBroadcastReceiver"
-            android:enabled="true"
-            android:exported="false">
-        </receiver>
-
-        <!-- start FCM service for sending messages (to selected topic) -->
+        <!-- start FCM service for sending/receiving messages (to/from selected topic) -->
         <service
             android:name=".smob.fcm.SmobFireBaseMessagingService"
             android:exported="false">

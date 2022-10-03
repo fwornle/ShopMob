@@ -164,8 +164,8 @@
     <string name="close">close</string>
     <string name="coming_soon">… coming soon.</string>
     <string name="deepLinkMap">android-app://com.tanfra.shopmob.smob.ui.planning.shopEdit/map</string>
-    <string name="message_subscribed">Successfully subscribed to topic \'ShopMob Update\'.</string>
-    <string name="message_subscribe_failed">Failed to subscribe to topic \'ShopMob Update\'</string>
+    <string name="message_subscribed">Successfully subscribed to topic \'shopmob\'.</string>
+    <string name="message_subscribe_failed">Failed to subscribe to topic \'shopmob\'</string>
     <string name="notification_permissions_granted">Using energy saving FCM driven notifications to update Smob content.</string>
     <string name="notification_permissions_denied">Using battery consuming polling to update Smob content. </string>
 
