@@ -53,16 +53,24 @@ class SmobPlanningActivity : AppCompatActivity() {
 
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
 
-    // Subscription to FCM topics requires notification channel --> ask for permissions
+
+    // Subscription to FCM topics requires Android to be allowed to open a notification channel
+    // --> ask for permissions... only necessary from API level >= 33 (TIRAMISU)
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
-            Toast.makeText(this, getString(R.string.notification_permissions_granted), Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(
+                this,
+                getString(R.string.notification_permissions_granted),
+                Toast.LENGTH_SHORT
+            ).show()
         } else {
-            Toast.makeText(this, getString(R.string.notification_permissions_denied),
-                Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                getString(R.string.notification_permissions_denied),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
@@ -70,34 +78,43 @@ class SmobPlanningActivity : AppCompatActivity() {
     private fun askNotificationPermission() {
         // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
-                PackageManager.PERMISSION_GRANTED
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
             ) {
+
                 // FCM SDK (and your app) can post notifications.
-            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                // ... (nothing special to be done --> proceed invisibly)
 
-                // in an educational UI, explain to the user why your app requires this
-                // permission for a specific feature to behave as expected. In this UI,
-                // include a "cancel" or "no thanks" button that allows the user to
-                // continue using your app without granting the permission.
-                Snackbar.make(
-                    binding.navHostFragmentPlanning,
-                    R.string.notification_permission_explanation,
-                    Snackbar.LENGTH_INDEFINITE
-                )
-                    .setAction(R.string.settings) {
+            } else
+                // ensure we are only asking ONCE (and don't pester the user with repeated checks)
+                if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
 
-                        // displays system dialog (settings) to invite the user to set the
-                        // right permissions
-                        // ... still have to request them one by one from Android 11 on
-                        requestPermissionLauncher
-                            .launch(Manifest.permission.POST_NOTIFICATIONS)
+                    // first time here --> explain, why this permission is required
 
-                    }.show()
-            } else {
-                // Directly ask for the permission
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
+                    // in an educational UI, explain to the user why your app requires this
+                    // permission for a specific feature to behave as expected. In this UI,
+                    // include a "cancel" or "no thanks" button that allows the user to
+                    // continue using your app without granting the permission
+                    Snackbar.make(
+                        binding.navHostFragmentPlanning,  // valid for all "planning" fragments
+                        R.string.notification_permission_explanation,
+                        Snackbar.LENGTH_INDEFINITE
+                    )
+                        .setAction(R.string.settings) {
+                            // displays system dialog (settings) to invite the user to set the
+                            // right permissions
+                            requestPermissionLauncher
+                                .launch(Manifest.permission.POST_NOTIFICATIONS)
+                        }.show()
+
+                } else {
+
+                    // directly ask for the permission (without issuing a rational via the Snackbar)
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+
+                }
         }
     }
 
@@ -109,6 +126,8 @@ class SmobPlanningActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_planning)
         setContentView(binding.root)
 
+        // need permissions to let FCM send us notifications (of SmobList item updates, etc.)
+        askNotificationPermission()
 
         // newly logged in?
         if(SmobApp.currUser == null) {
@@ -235,9 +254,6 @@ class SmobPlanningActivity : AppCompatActivity() {
         // configure drawer layout
         binding.navView.setupWithNavController(navController)
         setupActionBarWithNavController(this, navController, drawerLayout)
-
-        // need permissions to let FCM send us notifications (of SmobList item updates, etc.)
-        askNotificationPermission()
 
     }
 

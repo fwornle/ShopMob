@@ -23,7 +23,7 @@ class GeofenceBroadcastReceiver : BroadcastReceiver(), KoinComponent {
     private val workManager: SmobAppWork by inject()
 
     // adapted from: https://developer.android.com/training/location/geofencing
-    override fun onReceive(context: Context, intent: Intent) {
+    override fun onReceive(context: Context?, intent: Intent) {
 
         // does this Broadcast reception concern "GeoFencing" at all?
         if (intent.action == ACTION_GEOFENCE_EVENT) {
@@ -42,7 +42,6 @@ class GeofenceBroadcastReceiver : BroadcastReceiver(), KoinComponent {
                     Timber.e(errorMessage)
                     return
                 }
-
 
                 // fetch transition type
                 val geofenceTransition = gfEvent.geofenceTransition

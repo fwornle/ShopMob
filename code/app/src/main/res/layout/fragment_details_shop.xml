@@ -5,6 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        
+        <import type="com.tanfra.shopmob.R" />
+
         <variable
             name="viewModel"
             type="com.tanfra.shopmob.smob.ui.details.DetailsViewModel" />
@@ -70,7 +73,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:itemImage="@{viewModel.smobShopDetailsItem.imageUrl}"
-                tools:src="@drawable/smob_1"
+                app:errorImage="@{R.drawable.shop_col}"
+                tools:src="@drawable/shop_col"
                 />
 
 

@@ -189,9 +189,13 @@ object BindingAdapters {
 
 
     // layout properties with attribute <... app:itemImage ...> call upon this code
-    @BindingAdapter("itemImage")
+    @BindingAdapter(value = ["itemImage", "errorImage"], requireAll = false)
     @JvmStatic
-    fun bindItemImage(imgView: ImageView, imgUrl: String?) {
+    fun bindItemImage(
+        imgView: ImageView,
+        imgUrl: String?,
+        errDrawableResId: Int?
+    ) {
         imgUrl?.let {
             // load image using "coil" (https://github.com/coil-kt/coil#readme)
             // REF: https://betterprogramming.pub/how-to-use-coil-kotlins-native-image-loader-d6715dda7d26
@@ -207,7 +211,7 @@ object BindingAdapters {
                 {
                     crossfade(true)
                     placeholder(R.drawable.smob_1)      // during loading of actual image
-                    error(R.drawable.ic_baseline_broken_image_24)  // retrieval of image failed
+                    error(errDrawableResId ?: R.drawable.ic_baseline_broken_image_24)  // retrieval of image failed
                 }
 
         }

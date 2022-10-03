@@ -107,9 +107,19 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
     private val geofencePendingIntent: PendingIntent by lazy {
         val intent = Intent(context, GeofenceBroadcastReceiver::class.java)
         intent.action = ACTION_GEOFENCE_EVENT
+
         // use FLAG_UPDATE_CURRENT so that you get the same pending intent back when calling
         // GeofencingClient.addGeofences() and GeofencingClient.removeGeofences()
-        PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        //
+        // no longer works after API 31 --> fix (stackoverflow): see answer in
+        // https://stackoverflow.com/questions/69615196/in-android-12-api-31-geofence-doesnt-work-with-immutable-pendingintent-why
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getBroadcast(context, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
+        } else {
+            PendingIntent.getBroadcast(context, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT)
+        }
     }
 
 

@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.core.content.getSystemService
@@ -97,8 +98,20 @@ fun NotificationManager.sendNotificationOnGeofenceHit(context: Context, daShop: 
     val stackBuilder = TaskStackBuilder.create(context)
         .addParentStack(SmobDetailsActivity::class.java)
         .addNextIntent(gotoDaShopDetailsIntent)
-    val notificationGeofenceHitPendingIntent = stackBuilder
-        .getPendingIntent(getUniqueId(), PendingIntent.FLAG_UPDATE_CURRENT)
+    val notificationGeofenceHitPendingIntent =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            stackBuilder
+                .getPendingIntent(
+                    getUniqueId(),
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+        } else {
+            stackBuilder
+                .getPendingIntent(
+                    getUniqueId(),
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+        }
 
     // prettify notifications (with the SmobShop logo)
     val smobLogo = BitmapFactory.decodeResource(

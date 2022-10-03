@@ -84,7 +84,7 @@
     <string name="err_enter_catSub">Please enter product sub category (e.g. DAIRY)</string>
     <string name="err_select_shop">Please select shop category (e.g. SUPERMARKET)</string>
 
-    <string name="notification_permission_explanation">Without notification permissions, SmobShop consumes more battery power.</string>
+    <string name="notification_permission_explanation">Allow notifications to enable battery preserving content updates</string>
 
 
     <!-- Smob UI strings -->
@@ -166,7 +166,7 @@
     <string name="deepLinkMap">android-app://com.tanfra.shopmob.smob.ui.planning.shopEdit/map</string>
     <string name="message_subscribed">Successfully subscribed to topic \'ShopMob Update\'.</string>
     <string name="message_subscribe_failed">Failed to subscribe to topic \'ShopMob Update\'</string>
-    <string name="notification_permissions_granted">Notifications permission granted</string>
-    <string name="notification_permissions_denied">FCM can\'t post notifications without POST_NOTIFICATIONS permission</string>
+    <string name="notification_permissions_granted">Using energy saving FCM driven notifications to update Smob content.</string>
+    <string name="notification_permissions_denied">Using battery consuming polling to update Smob content. </string>
 
 </resources>
