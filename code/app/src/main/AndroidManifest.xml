@@ -149,7 +149,7 @@
 
         <!-- start FCM service for the reception of broadcast messages -->
         <receiver
-            android:name=".smob.fcm.FcmUpdateReceiver"
+            android:name=".smob.fcm.FcmBroadcastReceiver"
             android:enabled="true"
             android:exported="false">
         </receiver>

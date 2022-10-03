@@ -23,15 +23,28 @@ class SmobFireBaseMessagingService : FirebaseMessagingService(), KoinComponent {
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Timber.i("From: ${remoteMessage.from}")
 
+//        // Check if message contains a data payload.
+//        if (remoteMessage.data.isNotEmpty()) {
+//            Timber.i("Message data payload: ${remoteMessage.data}")
+//
+//            if (/* Check if data needs to be processed by long running job */ true) {
+//                // For long-running tasks (10 seconds or more) use WorkManager.
+//                scheduleJob()
+//            } else {
+//                // Handle message within 10 seconds
+//                handleNow()
+//            }
+//        }
+
         // Check if message contains a data payload.
         remoteMessage.data.let {
-            Timber.i("Message data payload: " + remoteMessage.data)
+            Timber.i("FCM message data payload: " + remoteMessage.data)
         }
 
         // Check if message contains a notification payload.
-        remoteMessage.notification?.let {
-            Timber.i("Message Notification Body: ${it.body}")
-            sendNotificationOnFcmUpdate(wManager.smobAppContext, it.body!!)
+        remoteMessage.notification?.let { msg ->
+            Timber.i("FCM message notification body: ${msg.body}")
+            msg.body?.let { body -> sendNotificationOnFcmUpdate(wManager.smobAppContext, body) }
         }
     }
     // [END receive_message]
@@ -60,6 +73,7 @@ class SmobFireBaseMessagingService : FirebaseMessagingService(), KoinComponent {
      */
     private fun sendRegistrationToServer(token: String?) {
         // TODO: Implement this method to send token to your app server.
+        Timber.i("TODO: (not yet implemented:) sendRegistrationTokenToServer($token)")
     }
 
 }

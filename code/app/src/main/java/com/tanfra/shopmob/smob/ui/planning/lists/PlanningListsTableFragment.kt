@@ -1,5 +1,6 @@
 package com.tanfra.shopmob.smob.ui.planning.lists
 
+import android.app.PendingIntent
 import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
@@ -9,6 +10,7 @@ import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
+import android.os.Build
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentPlanningListsTableBinding
 import com.tanfra.shopmob.smob.data.repo.utils.Status
+import com.tanfra.shopmob.smob.fcm.FcmBroadcastReceiver
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
@@ -35,6 +38,25 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
 
     // data binding for fragment_planning_lists.xml
     private lateinit var binding: FragmentPlanningListsTableBinding
+
+
+    // create a pending intent for the system to use when receiving FCM messages
+    private val fcmPendingIntent: PendingIntent by lazy {
+        val intent = Intent(context, FcmBroadcastReceiver::class.java)
+        intent.action = ACTION_FCM_EVENT
+
+        // MUTABLE/IMMUTABLE saga... and API 31 --> see (stackoverflow), answers (still unclear)
+        // https://stackoverflow.com/questions/69615196/in-android-12-api-31-geofence-doesnt-work-with-immutable-pendingintent-why
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getBroadcast(context, 1, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
+        } else {
+            PendingIntent.getBroadcast(context, 1, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        }
+
+    }
+
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
@@ -214,6 +236,13 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
         val itemTouchHelper = ItemTouchHelper(PlanningListsTableSwipeActionHandler(adapter))
         itemTouchHelper.attachToRecyclerView(binding.smobItemsRecyclerView)
 
+    }
+
+
+    // define internally used constants (PendingIntent ID)
+    companion object {
+        internal const val ACTION_FCM_EVENT =
+            "PlanningListTableFragment.ACTION_FCM_EVENT"
     }
 
 }

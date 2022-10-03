@@ -20,17 +20,27 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.tanfra.shopmob.R
+import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsTableFragment.Companion.ACTION_FCM_EVENT
 import com.tanfra.shopmob.utils.notificationManager
 import com.tanfra.shopmob.utils.sendNotificationOnFcmUpdate
 
-class FcmUpdateReceiver: BroadcastReceiver() {
+// class to handle the reception of events when android receives an FCM message
+// and broadcasts it to all apps/listeners
+class FcmBroadcastReceiver: BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        // update prompt received (FCM) --> notify application via associated channel
-        context.notificationManager?.sendNotificationOnFcmUpdate(
-            context,
-            context.getText(R.string.smob_list_name).toString(),
-        )
-    }
+
+        // does this Broadcast reception concern "FCM" at all?
+        if (intent.action == ACTION_FCM_EVENT) {
+
+            // update prompt received (FCM) --> notify application via associated channel
+            context.notificationManager?.sendNotificationOnFcmUpdate(
+                context,
+                context.getText(R.string.smob_list_name).toString(),
+            )
+
+        }  // if (ACTION_FCM_EVENT)
+
+    }  // onReceive
 
 }
