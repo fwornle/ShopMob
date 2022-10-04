@@ -4,7 +4,7 @@
 
         <item
             android:id="@id/smobPlanningShopsTableFragment"
-            android:icon="@drawable/ic_baseline_shopping_cart_24"
+            android:icon="@drawable/shop_bw"
             android:title="@string/shop_list" />
 
         <!-- using NavComponents to navigate to new activity (see 'planning' nav_graph) -->
