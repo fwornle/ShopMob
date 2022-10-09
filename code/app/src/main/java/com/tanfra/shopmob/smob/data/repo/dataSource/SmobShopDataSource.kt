@@ -1,6 +1,5 @@
 package com.tanfra.shopmob.smob.data.repo.dataSource
 
-import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import kotlinx.coroutines.flow.Flow
@@ -25,5 +24,6 @@ interface SmobShopDataSource : SmobItemDataSource<SmobShopATO>{
     override suspend fun deleteSmobItem(id: String)
     override suspend fun deleteAllSmobItems()
     override suspend fun refreshDataInLocalDB()
+    override suspend fun refreshSmobItemInLocalDB(id: String)
 
 }

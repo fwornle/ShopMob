@@ -24,7 +24,8 @@ interface SmobListDataSource: SmobItemDataSource<SmobListATO> {
     override suspend fun deleteSmobItem(id: String)
     override suspend fun deleteAllSmobItems()
     override suspend fun refreshDataInLocalDB()
-    suspend fun refreshSmobListInLocalDB(id: String)
+    override suspend fun refreshSmobItemInLocalDB(id: String)
+
     suspend fun refreshSmobListInRemoteDB(smobItemATO: SmobListATO)
 
 }

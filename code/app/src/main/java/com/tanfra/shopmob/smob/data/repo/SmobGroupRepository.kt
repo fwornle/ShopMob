@@ -4,22 +4,16 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobGroupDataSource
 import com.tanfra.shopmob.smob.data.local.dto.SmobGroupDTO
 import com.tanfra.shopmob.smob.data.local.dao.SmobGroupDao
-import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
 import com.tanfra.shopmob.smob.data.net.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.api.SmobGroupApi
-import com.tanfra.shopmob.smob.data.net.nto.SmobGroupNTO
-import com.tanfra.shopmob.smob.data.net.nto.SmobUserNTO
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
 import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
-import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.asResource
-import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -251,10 +245,10 @@ class SmobGroupRepository(
      */
     override suspend fun refreshDataInLocalDB() {
 
+        // initiate the (HTTP) GET request using the provided query parameters
         // send GET request to server - coroutine to avoid blocking the main (UI) thread
         withContext(Dispatchers.IO) {
 
-            // initiate the (HTTP) GET request using the provided query parameters
             Timber.i("Sending GET request for SmobGroup data...")
             val response: Resource<List<SmobGroupDTO>> = getSmobGroupsViaApi()
 
@@ -277,9 +271,9 @@ class SmobGroupRepository(
     }  // refreshSmobGroupsInDB()
 
     /**
-     * Synchronize an individual smob groups in the db by retrieval from the backend DB (API call)
+     * Synchronize an individual smob group in the db by retrieval from the backend DB (API call)
      */
-    suspend fun refreshSmobGroupInLocalDB(id: String) {
+    override suspend fun refreshSmobItemInLocalDB(id: String) {
 
         // initiate the (HTTP) GET request using the provided query parameters
         Timber.i("Sending GET request for SmobGroup data...")

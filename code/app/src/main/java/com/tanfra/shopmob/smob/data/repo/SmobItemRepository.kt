@@ -15,7 +15,6 @@ import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.asResource
-import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -259,7 +258,7 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
     /**
      * Synchronize an individual smob groups in the db by retrieval from the backend DB (API call)
      */
-    suspend fun refreshSmobItemInLocalDB(id: String) {
+    override suspend fun refreshSmobItemInLocalDB(id: String) {
 
         // initiate the (HTTP) GET request using the provided query parameters
         Timber.i("Sending GET request for SmobItem data...")

@@ -8,14 +8,12 @@ import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
 import com.tanfra.shopmob.smob.data.net.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.api.SmobShopApi
-import com.tanfra.shopmob.smob.data.net.nto.SmobShopNTO
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
 import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.asResource
-import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -250,9 +248,9 @@ class SmobShopRepository(
     }  // refreshSmobShopsInDB()
 
     /**
-     * Synchronize an individual smob shops in the db by retrieval from the backend DB (API call)
+     * Synchronize an individual smob shop in the db by retrieval from the backend DB (API call)
      */
-    suspend fun refreshSmobShopInLocalDB(id: String) {
+    override suspend fun refreshSmobItemInLocalDB(id: String) {
 
         // initiate the (HTTP) GET request using the provided query parameters
         Timber.i("Sending GET request for SmobShop data...")

@@ -10,6 +10,7 @@ import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -43,9 +44,7 @@ class AdminGroupMembersTableAdapter(rootView: View, callBack: (selectedSmobATO: 
         return items
             .filter { item -> validMemberIds.contains(item.id) }
             .sortedWith(
-                compareBy(
-                    { it.memberName },
-                )
+                compareBy { it.memberName }
             )
     }
 
@@ -54,7 +53,16 @@ class AdminGroupMembersTableAdapter(rootView: View, callBack: (selectedSmobATO: 
 
     // called, when the user action has been confirmed and the local DB / backend needs updated
     // ... this is the point where the list can be consolidated, if needed (eg. aggregate status)
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun uiActionConfirmed(item: SmobGroupMemberWithGroupDataATO, rootView: View) {
+
+        // last "touched" item = the swiped item (= group member)
+        _viewModel.currGroupMemberWithGroupData = item
+        _viewModel.currGroupMember = item.member().apply {
+            // for "DELETED" items --> reset status to OPEN
+            // (as this action handler only purges users from group lists)
+            if(itemStatus == SmobItemStatus.DELETED) itemStatus = SmobItemStatus.OPEN
+        }
 
         // collect current list from smobList (flow)
         rootView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
@@ -83,9 +91,36 @@ class AdminGroupMembersTableAdapter(rootView: View, callBack: (selectedSmobATO: 
                 item.groupActivity,
             )
 
+            // sort and re-number adjusted member list (in place)
+            updatedGroup.members.toMutableList().sortBy { it.listPosition }
+            updatedGroup.members
+                .forEachIndexed { idx, member -> member.listPosition = (idx + 1).toLong() }
+
+
             // store updated smobGroup in local DB
             // ... this also triggers an immediate push to the backend (once stored locally)
             _viewModel.groupDataSource.updateSmobItem(updatedGroup)
+
+            // also update swiped user's groups (in case the user just got thrown of a group)
+            _viewModel.currGroupMember?.let { daMember ->
+
+                val updatedGroupMemberIds =
+                    daMember.groups
+                    // hygiene: remove accidental empty entries
+                    .filter { groupId -> groupId != "" }
+                    // remove this group's ID from (purged) member's group list
+                    .filter { groupId -> groupId != item.groupId }
+
+                // update purged member's group list
+                daMember.groups = updatedGroupMemberIds
+
+                // update smob User in DB
+                _viewModel.updateSmobUserItem(daMember)
+
+                // ensure this is updated too
+                _viewModel.currGroupMember = daMember
+
+            }
 
         }  // coroutine scope (lifecycleScope)
 

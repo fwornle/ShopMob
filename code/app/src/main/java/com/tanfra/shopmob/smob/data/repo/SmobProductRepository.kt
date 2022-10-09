@@ -6,17 +6,14 @@ import com.tanfra.shopmob.smob.data.local.dto.SmobProductDTO
 import com.tanfra.shopmob.smob.data.local.dao.SmobProductDao
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
-import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.net.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.api.SmobProductApi
-import com.tanfra.shopmob.smob.data.net.nto.SmobProductNTO
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
 import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.asResource
-import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -276,9 +273,9 @@ class SmobProductRepository(
     }  // refreshSmobProductsInDB()
 
     /**
-     * Synchronize an individual smob products in the db by retrieval from the backend DB (API call)
+     * Synchronize an individual smob product in the db by retrieval from the backend DB (API call)
      */
-    suspend fun refreshSmobProductInLocalDB(id: String) {
+    override suspend fun refreshSmobItemInLocalDB(id: String) {
 
         // initiate the (HTTP) GET request using the provided query parameters
         Timber.i("Sending GET request for SmobProduct data...")

@@ -2,6 +2,7 @@ package com.tanfra.shopmob.smob.data.local
 
 import android.os.CountDownTimer
 import com.tanfra.shopmob.Constants.WORK_POLLING_FAST_VALUE
+import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.dataSource.*
 import com.tanfra.shopmob.smob.work.SmobAppWork
@@ -23,10 +24,14 @@ object RefreshLocalDB: KoinComponent {
         object: CountDownTimer(WORK_POLLING_FAST_VALUE, WORK_POLLING_FAST_VALUE) {
             override fun onTick(millisUntilFinished: Long) { /* do nothing on 'tick' */ }
             override fun onFinish() {
-                refreshSmobDb() // doWork
-                this.start()    // restart to make recurrent
-            }
-        }
+                // this mechanism should only be active in 'polling mode'
+                // (= fallback, if FCM 'push notification mode' unavailable)
+                if(SmobApp.backendPollingActive) {
+                    refreshSmobDb() // doWork
+                    this.start()    // restart to make recurrent
+                }
+            }  // onFinish
+        }  // CountDownTimer
 
     }
 

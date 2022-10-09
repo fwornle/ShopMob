@@ -10,15 +10,10 @@ import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
 import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
-import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.ItemTouchHelper
-import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentAdminListsTableBinding
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
-import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import com.tanfra.shopmob.utils.setup

@@ -29,7 +29,7 @@ class AdminViewModel(
     private val app: Application,
     val groupDataSource: SmobGroupDataSource,  // public - used in AdminGroupsAdapter
     val listDataSource: SmobListDataSource,    // public - used in AdminListsAdapter
-    private val userDataSource: SmobUserDataSource,
+    val userDataSource: SmobUserDataSource,    // public - used in AdminGroupMemberAdapter
     ) : BaseViewModel(app) {
 
 
@@ -307,6 +307,17 @@ class AdminViewModel(
 
         // check if the "no data" symbol has to be shown (empty list)
         updateShowNoSmobItemsData(_smobGroupsSF.value)
+    }
+
+    // update the smobUser item in the data source
+    @ExperimentalCoroutinesApi
+    fun updateSmobUserItem(smobUserData: SmobUserATO) {
+        showLoading.value = true
+        viewModelScope.launch {
+            // update in local DB (and sync to server)
+            userDataSource.updateSmobItem(smobUserData)
+        }
+        showLoading.value = false
     }
 
     // validate the entered data and show error to the user if there's any invalid data
@@ -619,8 +630,7 @@ class AdminViewModel(
     // AdminListGroupsTable -----------------------------------------------------------------
     // AdminListGroupsTable -----------------------------------------------------------------
 
-    // current list ID and snapshot of current list flow (collected in AdminListsTableFragment)
-    var currListId: String? = null      // set/valid at creation of 'AdminListGroupsTableFragment'
+    // snapshot of current list flow (collected in AdminListsTableFragment)
     var currList: SmobListATO? = null   // set when the user clicks a list in the SmobList table
 
 

@@ -25,5 +25,6 @@ interface SmobUserDataSource: SmobItemDataSource<SmobUserATO> {
     override suspend fun deleteSmobItem(id: String)
     override suspend fun deleteAllSmobItems()
     override suspend fun refreshDataInLocalDB()
+    override suspend fun refreshSmobItemInLocalDB(id: String)
 
 }

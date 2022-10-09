@@ -94,8 +94,6 @@ router.render = (req, res) => {
 
             const incoming = req.originalUrl.split('/').filter(n => n)
 
-            console.log("sending FCM update message")
-
             // The topic name can be optionally prefixed with "/topics/".
             const topic = 'shopmob';
 
@@ -112,10 +110,10 @@ router.render = (req, res) => {
             messaging.send(message)
             .then((response) => {
                 // Response is a message ID string.
-                console.log('Successfully sent message:', response);
+                console.log('Successfully sent message to FCM:', response);
             })
             .catch((error) => {
-                console.log('Error sending message:', error);
+                console.log('Error sending message to FCM:', error);
             });
 
             break

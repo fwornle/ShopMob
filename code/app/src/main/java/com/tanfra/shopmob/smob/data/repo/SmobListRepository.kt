@@ -7,16 +7,13 @@ import com.tanfra.shopmob.smob.data.local.dao.SmobListDao
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
 import com.tanfra.shopmob.smob.data.net.ResponseHandler
-import com.tanfra.shopmob.smob.data.net.api.SmobItemApi
 import com.tanfra.shopmob.smob.data.net.api.SmobListApi
-import com.tanfra.shopmob.smob.data.net.nto.SmobListNTO
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
 import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.asResource
-import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -250,7 +247,7 @@ class SmobListRepository(
     /**
      * Update an individual smob list in the local db by retrieving it from the backend (API call)
      */
-    override suspend fun refreshSmobListInLocalDB(id: String) {
+    override suspend fun refreshSmobItemInLocalDB(id: String) {
 
         // initiate the (HTTP) GET request using the provided query parameters
         Timber.i("Sending GET request for SmobList data...")

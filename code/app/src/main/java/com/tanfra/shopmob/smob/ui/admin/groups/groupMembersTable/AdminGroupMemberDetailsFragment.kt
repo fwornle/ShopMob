@@ -68,16 +68,21 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
             _viewModel.currGroup?.let { daGroup ->
 
                 // append member ID to list of members
-                _viewModel.currGroupMember?.id?.let {
+                _viewModel.currGroupMember?.id?.let { newMemberId ->
 
-                    // new member list
-                    val updatedMemberList = daGroup.members.toMutableList().apply {
-                        add(SmobMemberItem(
-                            it,
-                            SmobItemStatus.OPEN,
-                            daGroup.members.size.toLong() + 1)
-                        )
-                    }
+                    // create new member list (adding newMemberId)
+                    val updatedMemberList = daGroup.members
+                        // filter out previously "DELETED" entries of this member
+                        .filter { member -> member.id != newMemberId }
+                        // now add new member (as "OPEN")
+                        .toMutableList()
+                        .apply {
+                            add(SmobMemberItem(
+                                newMemberId,
+                                SmobItemStatus.OPEN,
+                                this.size.toLong() + 1)
+                            )
+                        }
 
                     // update group with new member list
                     daGroup.members = updatedMemberList

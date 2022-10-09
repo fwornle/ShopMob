@@ -27,6 +27,9 @@ class SmobApp : Application(), KoinComponent {
     companion object{
         // details of currently logged-in user
         var currUser: SmobUserATO? = null
+        // default: using FCM to obtain data from the backend (= 'push notification' mode)
+        // fallback: timer driven polling of backend DB (every 5 seconds, when app in foreground)
+        var backendPollingActive = false
 
     }
 
@@ -36,8 +39,6 @@ class SmobApp : Application(), KoinComponent {
         // initialize Timber (logging) lib
         Timber.plant(Timber.DebugTree())
 
-        // start background polling timer
-        RefreshLocalDB.timer.start()
 
         // instantiate viewModels, repos and DBs and inject them as services into consuming classes
         // ... using KOIN framework (as "service locator"): https://insert-koin.io/
@@ -61,6 +62,7 @@ class SmobApp : Application(), KoinComponent {
         wManager.delayedInitRecurringWorkSlow()
 
         // subscribe to topic for FCM update messages
+        // ... note: unsuccessful subscription to topic 'shopmob' starts polling timer (fallback)
         subscribeTopic(wManager.smobAppContext)
 
         // start monitoring the network connection
@@ -81,7 +83,7 @@ class SmobApp : Application(), KoinComponent {
         wManager.cancelRecurringWorkSlow()
 
         // unsubscribe from topic used for FCM update messages
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(FCM_TOPIC)
+        fcm.unsubscribeFromTopic(FCM_TOPIC)
 
         // stop monitoring the network connection
         val networkConnectionManager: NetworkConnectionManager by inject()
@@ -119,11 +121,16 @@ class SmobApp : Application(), KoinComponent {
         logRegistrationToken()
 
         // subscribe to topic (for update messaging)
+        backendPollingActive = false
         fcm.subscribeToTopic(FCM_TOPIC)
             .addOnCompleteListener { task ->
                 var message = getString(R.string.message_subscribed)
                 if (!task.isSuccessful) {
                     message = getString(R.string.message_subscribe_failed)
+
+                    // failed to subscribe to topic 'shopmob' --> activate backend polling mode
+                    backendPollingActive = true
+                    RefreshLocalDB.timer.start()
                 }
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             }

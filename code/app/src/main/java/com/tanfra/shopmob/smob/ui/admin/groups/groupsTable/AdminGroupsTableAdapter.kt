@@ -35,14 +35,14 @@ class AdminGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobGr
         // take out all items which have been deleted by swiping
         return items
             .filter { item ->
-                item.members.map { member -> member.id }.contains(SmobApp.currUser?.id)
+                item.members
+                    .map { member -> if(member.status != SmobItemStatus.DELETED) member.id else "" }
+                    .contains(SmobApp.currUser?.id)
             }
             .filter { item -> item.itemStatus != SmobItemStatus.DELETED }
             //.map { item -> consolidateListItem(item) }
             .sortedWith(
-                compareBy(
-                    { it.itemPosition },
-                )
+                compareBy { it.itemPosition }
             )
     }
 
