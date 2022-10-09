@@ -75,8 +75,7 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
                         // filter out previously "DELETED" entries of this member
                         .filter { member -> member.id != newMemberId }
                         // now add new member (as "OPEN")
-                        .toMutableList()
-                        .apply {
+                        .toMutableList().apply {
                             add(SmobMemberItem(
                                 newMemberId,
                                 SmobItemStatus.OPEN,
@@ -89,6 +88,32 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
 
                     // update smob Group in DB
                     _viewModel.updateSmobGroupItem(daGroup)
+
+                    // ensure consistency in the _viewModel snapshots
+                    _viewModel.currGroup = daGroup
+
+                    // also update newly added user's group list
+                    _viewModel.currGroupMember?.let { daMember ->
+
+                        val updatedGroupMemberIds =
+                            daMember.groups
+                                // hygiene: remove accidental empty entries
+                                .filter { groupId -> groupId != "" }
+                                // remove all occurrences of this group ID from member's group list
+                                .filter { groupId -> groupId != daGroup.id }
+                                // now re-add this group ID (guarantees that it is there only once)
+                                .toMutableList().apply { add(daGroup.id) }
+
+                        // update purged member's group list
+                        daMember.groups = updatedGroupMemberIds
+
+                        // update smob User in DB
+                        _viewModel.updateSmobUserItem(daMember)
+
+                        // ensure this is updated too
+                        _viewModel.currGroupMember = daMember
+
+                    }
 
                 }  // currGroupMember?
 

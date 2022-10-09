@@ -110,10 +110,10 @@ router.render = (req, res) => {
             messaging.send(message)
             .then((response) => {
                 // Response is a message ID string.
-                console.log('Successfully sent message to FCM:', response);
+                console.log(`Successfully sent message to FCM (${message.data.method}/${message.data.table}):`, response);
             })
             .catch((error) => {
-                console.log('Error sending message to FCM:', error);
+                console.log(`Error sending message to FCM (${message.data.method}/${message.data.table}):`, error);
             });
 
             break

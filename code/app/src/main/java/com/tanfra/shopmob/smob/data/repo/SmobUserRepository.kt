@@ -1,9 +1,11 @@
 package com.tanfra.shopmob.smob.data.repo
 
+import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
 import com.tanfra.shopmob.smob.data.local.dao.SmobUserDao
+import com.tanfra.shopmob.smob.data.local.dto2ato._asDomainModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
 import com.tanfra.shopmob.smob.data.net.ResponseHandler
@@ -294,7 +296,6 @@ class SmobUserRepository(
 
             Timber.i("SmobUser data GET request complete (success)")
 
-
             // send POST request to server - coroutine to avoid blocking the main (UI) thread
             withContext(Dispatchers.IO) {
 
@@ -302,6 +303,11 @@ class SmobUserRepository(
                 response.data?.let {
                     smobUserDao.saveSmobItem(it)
                     Timber.i("SmobUser data items stored in local DB")
+
+                    // modified user = "me"? --> if so, update "currUser"
+                    // ... this normally only updates the groups a user is affiliated with
+                    if(it.id == SmobApp.currUser?.id) SmobApp.currUser = it._asDomainModel(it)
+
                 }
 
             }  // coroutine scope (IO)
