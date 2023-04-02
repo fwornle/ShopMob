@@ -9,11 +9,15 @@
   "author": "fw",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.303.0",
+    "aws-sdk": "^2.1348.0",
     "axios": "^0.24.0",
+    "dynamodb-data-types": "^4.0.1",
     "express": "^4.17.2",
     "faker": "^5.5.3",
     "firebase": "^9.6.11",
     "firebase-admin": "^10.3.0",
+    "fs": "^0.0.1-security",
     "json-server": "^0.17.0"
   }
 }

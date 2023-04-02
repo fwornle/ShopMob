@@ -23,8 +23,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-.idea
+../.idea/*
+.venv
 .history
 
 # firestore service account creds
 shopmob_serviceAccountKey*
+shopmob-335809-firebase-adminsdk-u9glb-e694b132f2.json

@@ -265,13 +265,13 @@
       "imageUrl": "https://lh3.googleusercontent.com/a/AATXAJx9nYtfUiFXPg2JABf1OWUMGasy_szkM1PSvfiT=s96-c",
       "groups": [
         "cfdf16aa-96a4-4016-8b42-6920f017ad7e",
-        "c42851f1-ed56-47a9-b031-0a02bee67769",
         "5a49fe0f-a805-4c93-911a-0bea803497f4",
         "669b9326-1db2-4ced-bf6c-4cee8dc6d4ef",
         "fc1d315a-274e-4cc8-90ef-d9d0ea6642b9",
         "ae038bd2-9924-48dc-a14d-e25856c33ae0",
         "f56de9ac-d5d2-4fab-bccb-79db0b0008bc",
-        "a87070cb-0b1f-48e7-b2af-7c356c1aa839"
+        "a87070cb-0b1f-48e7-b2af-7c356c1aa839",
+        "c42851f1-ed56-47a9-b031-0a02bee67769"
       ]
     },
     {
@@ -283,7 +283,7 @@
       "email": "fwornle@yahoo.co.uk",
       "imageUrl": "https://s.yimg.com/ag/images/2374a734-431c-4fb7-90bf-a5f63662cfc8_192sq.jpg",
       "groups": [
-        ""
+        "c42851f1-ed56-47a9-b031-0a02bee67769"
       ]
     },
     {
@@ -355,11 +355,6 @@
       "type": "WORK",
       "members": [
         {
-          "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
-          "status": "DONE",
-          "listPosition": 0
-        },
-        {
           "id": "19a3ba83-841b-498a-998b-b1ef9131b8c7",
           "status": "OPEN",
           "listPosition": 1
@@ -393,6 +388,16 @@
           "id": "e858a057-eeb3-410b-ae58-df07e0a8e899",
           "status": "DONE",
           "listPosition": 7
+        },
+        {
+          "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
+          "status": "OPEN",
+          "listPosition": 8
+        },
+        {
+          "id": "NvIH9pZ22ecY0NWYobqsAcksZkC3",
+          "status": "OPEN",
+          "listPosition": 9
         }
       ],
       "activity": {
@@ -593,7 +598,7 @@
     },
     {
       "id": "f56de9ac-d5d2-4fab-bccb-79db0b0008bc",
-      "itemStatus": "OPEN",
+      "itemStatus": "DELETED",
       "itemPosition": 6,
       "name": "minus",
       "description": "et nam laudantium",
@@ -606,7 +611,7 @@
         },
         {
           "id": "1d21d940-8b10-4915-b5ea-558b9a3f94a3",
-          "status": "IN_PROGRESS",
+          "status": "DELETED",
           "listPosition": 1
         },
         {
@@ -941,6 +946,70 @@
       },
       "type": "INDIVIDUAL",
       "category": "DRUGSTORE",
+      "business": []
+    },
+    {
+      "id": "0efe077d-dd93-4631-8769-5365147f9680",
+      "itemStatus": "DELETED",
+      "itemPosition": -1,
+      "name": "Edeka - test",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.187831015213895,
+        "longitude": 11.46811455488205
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPERMARKET",
+      "business": [
+        ""
+      ]
+    },
+    {
+      "id": "9bbddad7-16c4-4366-a262-7354c8b7443d",
+      "itemStatus": "DELETED",
+      "itemPosition": -1,
+      "name": "Aldi-neu",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.193043364896596,
+        "longitude": 11.46634429693222
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPERMARKET",
+      "business": [
+        ""
+      ]
+    },
+    {
+      "id": "d82a0d2c-b7e0-4b86-8924-4e23888d99f8",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "LidlLidl",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.1944755506327,
+        "longitude": 11.465469896793365
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPERMARKET",
+      "business": []
+    },
+    {
+      "id": "628c165b-2eb5-438d-a731-37219ef17e7d",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "BittlBittl",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19142696736853,
+        "longitude": 11.466827094554901
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPERMARKET",
       "business": []
     }
   ],
@@ -1525,7 +1594,7 @@
   "lists": [
     {
       "id": "7b595ebc-cad6-4dec-85ab-3f8eaf601993",
-      "itemStatus": "OPEN",
+      "itemStatus": "IN_PROGRESS",
       "itemPosition": 0,
       "name": "Groceries",
       "description": "numquam quidem earum",
@@ -1737,7 +1806,7 @@
     },
     {
       "id": "398ba810-5cdf-45b8-8cdf-f44174872e70",
-      "itemStatus": "OPEN",
+      "itemStatus": "IN_PROGRESS",
       "itemPosition": 3,
       "name": "Road trip",
       "description": "voluptatem a qui",
@@ -1826,7 +1895,7 @@
     },
     {
       "id": "45d9581c-00db-4d6e-9196-063d9424bb52",
-      "itemStatus": "OPEN",
+      "itemStatus": "IN_PROGRESS",
       "itemPosition": 4,
       "name": "Redecoration",
       "description": "odio incidunt nobis",
@@ -1845,7 +1914,7 @@
         },
         {
           "id": "5157a70d-c56e-4687-b747-d5a776e82983",
-          "status": "OPEN",
+          "status": "DONE",
           "listPosition": 2,
           "mainCategory": "CLOTHING"
         },
@@ -1857,7 +1926,7 @@
         },
         {
           "id": "cb73d415-7076-44df-ae67-c1836477d51c",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
           "listPosition": 4,
           "mainCategory": "FOODS"
         }
