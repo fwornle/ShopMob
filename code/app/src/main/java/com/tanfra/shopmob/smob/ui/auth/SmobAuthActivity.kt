@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.lifecycleScope
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
@@ -16,13 +15,9 @@ import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.databinding.ActivityAuthBinding
 import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
-import com.tanfra.shopmob.smob.work.SmobAppWork
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+
 
 
 /**

@@ -138,7 +138,7 @@ class SmobAppWork(context: Context): Configuration.Provider {
         Timber.i("Starting slow polling work job...")
         WorkManager.getInstance(smobAppContext).enqueueUniquePeriodicWork(
                 RefreshSmobStaticDataWorkerSlow.WORK_NAME_SLOW,
-                ExistingPeriodicWorkPolicy.REPLACE,
+                ExistingPeriodicWorkPolicy.UPDATE,
                 request
             )
     }
@@ -173,7 +173,7 @@ class SmobAppWork(context: Context): Configuration.Provider {
 //        Timber.i("Starting fast polling work job...")
 //        WorkManager.getInstance(smobAppContext).enqueueUniqueWork(
 //                RefreshSmobStaticDataWorkerFast.WORK_NAME_FAST,
-//                ExistingWorkPolicy.REPLACE,
+//                ExistingWorkPolicy.UPDATE,
 //                request
 //            )
 //

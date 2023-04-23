@@ -309,6 +309,19 @@
       "groups": [
         ""
       ]
+    },
+    {
+      "id": "eu-central-1:b52b8b72-82c9-4e46-bcb5-72f57286579d",
+      "itemStatus": "OPEN",
+      "itemPosition": 24,
+      "username": "admin",
+      "name": "admin for DynamoDB",
+      "email": "admin@example.com",
+      "imageUrl": "null",
+      "groups": [
+        "cfdf16aa-96a4-4016-8b42-6920f017ad7e",
+        "5a49fe0f-a805-4c93-911a-0bea803497f4"
+      ]
     }
   ],
   "groups": [
@@ -326,7 +339,7 @@
           "listPosition": 0
         },
         {
-          "id": "0c4e6054-5fd8-48a8-817c-f6611278f755",
+          "id": "eu-central-1:b52b8b72-82c9-4e46-bcb5-72f57286579d",
           "status": "OPEN",
           "listPosition": 1
         },
@@ -419,7 +432,7 @@
           "listPosition": 0
         },
         {
-          "id": "39fbaadf-0e40-4861-9f23-9553f193a46a",
+          "id": "eu-central-1:9a96a937-33b0-4c31-a16e-40f1ea93360f",
           "status": "OPEN",
           "listPosition": 1
         },
@@ -1011,6 +1024,36 @@
       "type": "INDIVIDUAL",
       "category": "SUPERMARKET",
       "business": []
+    },
+    {
+      "id": "4a52be13-a560-4e82-a445-19328ecb8b9b",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Schmidt's Baeckerei",
+      "description": "Da best",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.18492688958116,
+        "longitude": 11.47435873746872
+      },
+      "type": "INDIVIDUAL",
+      "category": "BAKERY",
+      "business": []
+    },
+    {
+      "id": "78096390-295e-4b2f-9b99-56622ba89827",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Lidl again",
+      "description": "",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.1944755506327,
+        "longitude": 11.46547257900238
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPERMARKET",
+      "business": []
     }
   ],
   "products": [
@@ -1589,6 +1632,78 @@
           "longitude": 42500
         }
       }
+    },
+    {
+      "id": "fe05e8bf-2550-4cab-af1f-57acd26115fc",
+      "itemStatus": "OPEN",
+      "itemPosition": 6,
+      "name": "Comb",
+      "description": "For pretty hair",
+      "imageUrl": "",
+      "category": {
+        "main": "FOODS",
+        "sub": "TOOLS"
+      },
+      "activity": {
+        "date": "23/4/2023 02:12:40",
+        "reps": 0
+      },
+      "inShop": {
+        "category": "BAKERY",
+        "name": "Schmidt's Baeckerei",
+        "location": {
+          "latitude": 48.18492688958116,
+          "longitude": 11.47435873746872
+        }
+      }
+    },
+    {
+      "id": "f0166367-6e7b-4028-ab3c-198aeb118630",
+      "itemStatus": "OPEN",
+      "itemPosition": 3,
+      "name": "Comb",
+      "description": "Second service",
+      "imageUrl": "",
+      "category": {
+        "main": "FOODS",
+        "sub": "TOOLS"
+      },
+      "activity": {
+        "date": "23/4/2023 02:13:08",
+        "reps": 0
+      },
+      "inShop": {
+        "category": "BAKERY",
+        "name": "Schmidt's Baeckerei",
+        "location": {
+          "latitude": 48.18492688958116,
+          "longitude": 11.47435873746872
+        }
+      }
+    },
+    {
+      "id": "494c224d-231b-4cda-92fd-6801f145e1cc",
+      "itemStatus": "OPEN",
+      "itemPosition": 4,
+      "name": "Dings",
+      "description": "Bums",
+      "imageUrl": "",
+      "category": {
+        "main": "FOODS",
+        "sub": "BEVERAGES"
+      },
+      "activity": {
+        "date": "23/4/2023 02:56:22",
+        "reps": 0
+      },
+      "inShop": {
+        "category": "SUPERMARKET",
+        "name": "Lidl",
+        "location": {
+          "latitude": 48.19446661077098,
+          "longitude": 11.465429663658142
+        }
+      }
     }
   ],
   "lists": [
@@ -1607,9 +1722,27 @@
         },
         {
           "id": "9c9b61f8-08eb-46ed-9265-bfa9895e312d",
-          "status": "OPEN",
+          "status": "DONE",
           "listPosition": 1,
           "mainCategory": "SUPPLIES"
+        },
+        {
+          "id": "7348100b-7be9-4b9a-b01f-6002df2ffd54",
+          "status": "OPEN",
+          "listPosition": 2,
+          "mainCategory": "OTHER"
+        },
+        {
+          "id": "f0166367-6e7b-4028-ab3c-198aeb118630",
+          "status": "IN_PROGRESS",
+          "listPosition": 3,
+          "mainCategory": "FOODS"
+        },
+        {
+          "id": "494c224d-231b-4cda-92fd-6801f145e1cc",
+          "status": "OPEN",
+          "listPosition": 4,
+          "mainCategory": "FOODS"
         }
       ],
       "groups": [
@@ -1636,7 +1769,7 @@
       ],
       "lifecycle": {
         "status": "OPEN",
-        "completion": 0
+        "completion": 25
       }
     },
     {
@@ -1654,7 +1787,7 @@
         },
         {
           "id": "3a9a93af-2deb-4970-8a93-3088ddbd215a",
-          "status": "IN_PROGRESS",
+          "status": "DONE",
           "listPosition": 1,
           "mainCategory": "FOODS"
         },
@@ -1672,7 +1805,7 @@
         },
         {
           "id": "b9499f7a-f9b8-4dc7-9103-fc7c5955c862",
-          "status": "DONE",
+          "status": "IN_PROGRESS",
           "listPosition": 4,
           "mainCategory": "FOODS"
         },
@@ -1681,6 +1814,12 @@
           "status": "IN_PROGRESS",
           "listPosition": 5,
           "mainCategory": "SUPPLIES"
+        },
+        {
+          "id": "fe05e8bf-2550-4cab-af1f-57acd26115fc",
+          "status": "OPEN",
+          "listPosition": 6,
+          "mainCategory": "FOODS"
         }
       ],
       "groups": [
@@ -1781,7 +1920,7 @@
         },
         {
           "id": "e3765e4f-191a-4fdc-a263-4abcac72dfe3",
-          "status": "OPEN",
+          "status": "DONE",
           "listPosition": 12,
           "mainCategory": "FOODS"
         },

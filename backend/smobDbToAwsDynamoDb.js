@@ -90,7 +90,7 @@ const seedDynamoDb = function() {
         let jData = json_data[tName];
 
         // form DynamoDB table name
-        let tNameDynDb = 'smob' + tName[0].toUpperCase() + tName.slice(1, tName.length)
+        let tNameDynDb = 'fw-smobbe-Smob' + tName[0].toUpperCase() + tName.slice(1, tName.length)
 
         // define async lambda for seeding of next table
         const seedTable = async (jD, tN) => {
