@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.planning.utils
+package com.tanfra.shopmob.utils.ui
 
 import android.os.VibrationEffect
 import android.os.Vibrator

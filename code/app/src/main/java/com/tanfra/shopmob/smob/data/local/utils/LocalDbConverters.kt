@@ -16,13 +16,6 @@ class LocalDbConverters {
     @TypeConverter
     fun jsonToLocation(value: String) = Json.decodeFromString<ShopLocation>(value)
 
-    // ActivityStatus converter
-    @TypeConverter
-    fun activityToJson(value: ActivityStatus?) = Json.encodeToString(value)
-
-    @TypeConverter
-    fun jsonToActivity(value: String) = Json.decodeFromString<ActivityStatus>(value)
-
     // SmobMemberItem converter - List
     @TypeConverter
     fun listOfMemberEntryToJson(value: List<SmobMemberItem?>) = Json.encodeToString(value)
@@ -43,13 +36,6 @@ class LocalDbConverters {
 
     @TypeConverter
     fun jsonToListofListEntry(value: String) = Json.decodeFromString<Array<SmobListItem>>(value).toList()
-
-    // SmobListLifecycle converter
-    @TypeConverter
-    fun listLifecycleToJson(value: SmobListLifecycle?) = Json.encodeToString(value)
-
-    @TypeConverter
-    fun jsonToListLifecycle(value: String) = Json.decodeFromString<SmobListLifecycle>(value)
 
     // (general) List<String> converter
     @TypeConverter

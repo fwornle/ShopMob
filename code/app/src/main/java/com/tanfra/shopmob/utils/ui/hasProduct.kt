@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.utils
+package com.tanfra.shopmob.utils.ui
 
 import com.tanfra.shopmob.smob.data.local.utils.ProductMainCategory
 import com.tanfra.shopmob.smob.data.local.utils.ShopCategory

@@ -776,17 +776,6 @@ class AdminViewModel(
     }
 
     /**
-     * Validate the entered data then saves the smobList to the DataSource
-     */
-    @ExperimentalCoroutinesApi
-    fun validateAndSaveSmobList(shopMobData: SmobListATO) {
-        if (validateEnteredListData(shopMobData)) {
-            saveSmobListItem(shopMobData)
-            navigationCommand.value = NavigationCommand.Back
-        }
-    }
-
-    /**
      * Save the smobGroup item to the data source
      */
     @ExperimentalCoroutinesApi
@@ -857,21 +846,11 @@ class AdminViewModel(
     // flow and StateFlow of groups referenced in the upstream selected smobList
     // ... lateinit, as this can only be done once the fragment is created (currListId has been set)
     lateinit var allSmobGroupsF: Flow<Resource<List<SmobGroupATO>?>>
-    lateinit var allSmobGroupsSF: StateFlow<Resource<List<SmobGroupATO>?>>
 
     // fetch the flow of the groups referred to by the upstream list the user just selected
     @ExperimentalCoroutinesApi
     fun registerAllSmobGroupsFlow(): Flow<Resource<List<SmobGroupATO>?>> =
         groupDataSource.getAllSmobItems()
-
-    // convert to StateFlow
-    fun allSmobGroupsFlowAsSF(inFlow: Flow<Resource<List<SmobGroupATO>?>>):
-            StateFlow<Resource<List<SmobGroupATO>?>> =
-        inFlow.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = Resource.loading(null)
-        )
 
     // -------------------------------------------------------------------------------------------
     // combined StateFlow of all groups with selected list data
@@ -913,7 +892,7 @@ class AdminViewModel(
 
 
                             // fetch all groups which are not yet referred to by the selected list
-                            val daOtherGroups = allGroups.subtract(daListGroups)
+                            val daOtherGroups = allGroups.subtract(daListGroups.toSet())
 
                             // return all groups associated with daList, incl. the list details
                             daOtherGroups.map { group ->

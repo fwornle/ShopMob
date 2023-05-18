@@ -178,7 +178,7 @@ class SmobPlanningActivity : AppCompatActivity() {
                             isNewUser = true
 
                             // determine highest user position (plus one)
-                            allUsers?.maxOf { it -> it.itemPosition + 1 } ?: -1
+                            allUsers?.maxOf { it.itemPosition + 1 } ?: -1
 
                         } else {
                             // user already in ShopMob DB --> use current position

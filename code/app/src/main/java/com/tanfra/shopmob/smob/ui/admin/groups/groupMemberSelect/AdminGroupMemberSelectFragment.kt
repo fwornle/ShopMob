@@ -13,15 +13,14 @@ import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setup
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
-import timber.log.Timber
 
 
 class AdminGroupMemberSelectFragment : BaseFragment(), KoinComponent {
 
     // get the view model (from Koin service locator) ... shared with PlanningListsFragment
-    override val _viewModel: AdminViewModel by sharedViewModel()
+    override val _viewModel: AdminViewModel by activityViewModel()
 
     // data binding of underlying layout
     private lateinit var binding: FragmentAdminGroupMemberSelectBinding

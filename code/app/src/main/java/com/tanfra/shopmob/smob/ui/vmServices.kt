@@ -53,8 +53,8 @@ val vmServices = module {
     viewModel {
         DetailsViewModel(
             get(),  // app (context)
-            get() as SmobProductDataSource,  // repo as data source
-            get() as SmobShopDataSource,  // repo as data source
+//            get() as SmobProductDataSource,  // repo as data source
+//            get() as SmobShopDataSource,  // repo as data source
         )
     }
 
@@ -65,8 +65,8 @@ val vmServices = module {
     viewModel {
         SmobShoppingViewModel(
             get(),  // app (context)
-            get() as SmobProductDataSource,  // repo as data source
-            get() as SmobShopDataSource,  // repo as data source
+//            get() as SmobProductDataSource,  // repo as data source
+//            get() as SmobShopDataSource,  // repo as data source
         )
     }
 

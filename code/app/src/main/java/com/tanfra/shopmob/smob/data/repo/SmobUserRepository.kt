@@ -8,7 +8,7 @@ import com.tanfra.shopmob.smob.data.local.dao.SmobUserDao
 import com.tanfra.shopmob.smob.data.local.dto2ato._asDomainModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
-import com.tanfra.shopmob.smob.data.net.ResponseHandler
+import com.tanfra.shopmob.smob.data.repo.utils.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.api.SmobUserApi
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel

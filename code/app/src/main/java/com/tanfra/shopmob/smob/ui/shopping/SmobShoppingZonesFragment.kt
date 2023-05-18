@@ -1,29 +1,33 @@
 package com.tanfra.shopmob.smob.ui.shopping
 
-import android.os.Bundle
-import android.view.*
-import androidx.databinding.DataBindingUtil
-import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.ui.base.BaseFragment
-import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
-import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import com.firebase.ui.auth.AuthUI
+import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentShoppingZonesBinding
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
-import com.tanfra.shopmob.smob.ui.base.NavigationCommand
+import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.smob.ui.details.DetailsViewModel
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
+import com.tanfra.shopmob.utils.setTitle
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
 
 class SmobShoppingZonesFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the shared ViewModel instance
-    override val _viewModel: DetailsViewModel by sharedViewModel()
+    override val _viewModel: DetailsViewModel by activityViewModel()
 
     // data binding for fragment_planning_lists.xml
     private lateinit var binding: FragmentShoppingZonesBinding

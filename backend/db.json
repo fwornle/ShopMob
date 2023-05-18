@@ -1054,6 +1054,21 @@
       "type": "INDIVIDUAL",
       "category": "SUPERMARKET",
       "business": []
+    },
+    {
+      "id": "62c37c75-d9bd-44fb-92e6-f7b2d2160de1",
+      "itemStatus": "NEW",
+      "itemPosition": -1,
+      "name": "Da Bittel",
+      "description": "Sports gear",
+      "imageUrl": "",
+      "location": {
+        "latitude": 48.19142517928992,
+        "longitude": 11.466829776763916
+      },
+      "type": "INDIVIDUAL",
+      "category": "SUPERMARKET",
+      "business": []
     }
   ],
   "products": [
@@ -1704,6 +1719,30 @@
           "longitude": 11.465429663658142
         }
       }
+    },
+    {
+      "id": "8060fa57-4026-49f7-a29c-148774434352",
+      "itemStatus": "OPEN",
+      "itemPosition": 5,
+      "name": "Test Item",
+      "description": "Da shit",
+      "imageUrl": "",
+      "category": {
+        "main": "FOODS",
+        "sub": "BEVERAGES"
+      },
+      "activity": {
+        "date": "18/5/2023 10:15:03",
+        "reps": 0
+      },
+      "inShop": {
+        "category": "BAKERY",
+        "name": "Schmidt's Baeckerei",
+        "location": {
+          "latitude": 48.18492688958116,
+          "longitude": 11.47435873746872
+        }
+      }
     }
   ],
   "lists": [
@@ -1716,7 +1755,7 @@
       "items": [
         {
           "id": "77bd9f13-b98d-49f9-8eb4-05ea1cb2f58a",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
           "listPosition": 0,
           "mainCategory": "FOODS"
         },
@@ -1914,7 +1953,7 @@
         },
         {
           "id": "cf908097-c58a-4eaf-9e3c-5386244a55cc",
-          "status": "DONE",
+          "status": "IN_PROGRESS",
           "listPosition": 11,
           "mainCategory": "FOODS"
         },
@@ -1964,13 +2003,13 @@
         },
         {
           "id": "319cd9dd-9619-4f8a-bac6-882ce038a0e7",
-          "status": "IN_PROGRESS",
+          "status": "OPEN",
           "listPosition": 2,
           "mainCategory": "HARDWARE"
         },
         {
           "id": "4b54cff4-0178-44b8-bc5e-95eeb238468d",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
           "listPosition": 3,
           "mainCategory": "FOODS"
         },
@@ -2068,6 +2107,12 @@
           "status": "IN_PROGRESS",
           "listPosition": 4,
           "mainCategory": "FOODS"
+        },
+        {
+          "id": "8060fa57-4026-49f7-a29c-148774434352",
+          "status": "OPEN",
+          "listPosition": 5,
+          "mainCategory": "FOODS"
         }
       ],
       "groups": [
@@ -2104,7 +2149,7 @@
       ],
       "lifecycle": {
         "status": "OPEN",
-        "completion": 40
+        "completion": 60
       }
     }
   ]

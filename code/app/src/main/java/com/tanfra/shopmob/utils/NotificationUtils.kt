@@ -218,10 +218,3 @@ fun NotificationManager.sendNotificationOnFcmUpdate(context: Context, messageBod
 }
 
 
-/**
- * Cancels all notifications.
- *
- */
-fun NotificationManager.cancelNotifications() {
-    cancelAll()
-}

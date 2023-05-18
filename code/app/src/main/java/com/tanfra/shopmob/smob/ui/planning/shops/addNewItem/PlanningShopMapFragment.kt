@@ -19,7 +19,6 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
-import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -34,11 +33,10 @@ import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.databinding.FragmentPlanningShopMapBinding
 import com.tanfra.shopmob.smob.data.local.utils.ShopLocation
-import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
-import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
-import com.tanfra.shopmob.smob.ui.planning.utils.openSoftKeyboard
+import com.tanfra.shopmob.utils.ui.closeSoftKeyboard
+import com.tanfra.shopmob.utils.ui.openSoftKeyboard
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
 import java.util.*
@@ -47,7 +45,7 @@ import java.util.*
 class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallback {
 
     // use Koin to get the view model of the SaveSmobItem
-    override val _viewModel: PlanningShopsAddNewItemViewModel by sharedViewModel()
+    override val _viewModel: PlanningShopsAddNewItemViewModel by activityViewModel()
 
     // access to fragment views
     private lateinit var binding: FragmentPlanningShopMapBinding

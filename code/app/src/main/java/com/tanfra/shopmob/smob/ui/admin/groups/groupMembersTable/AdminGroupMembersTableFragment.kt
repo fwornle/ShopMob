@@ -17,13 +17,13 @@ import com.tanfra.shopmob.databinding.FragmentAdminGroupMembersTableBinding
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.utils.setup
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 
 class AdminGroupMembersTableFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
-    override val _viewModel: AdminViewModel by sharedViewModel()
+    override val _viewModel: AdminViewModel by activityViewModel()
 
     // data binding for fragment_admin_group_member_list.xml
     private lateinit var binding: FragmentAdminGroupMembersTableBinding

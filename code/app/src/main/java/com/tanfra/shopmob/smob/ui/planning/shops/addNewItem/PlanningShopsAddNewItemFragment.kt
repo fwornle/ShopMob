@@ -34,8 +34,8 @@ import com.google.android.gms.location.LocationServices
 import com.tanfra.shopmob.databinding.FragmentPlanningShopsAddNewItemBinding
 import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
-import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import com.tanfra.shopmob.utils.ui.closeSoftKeyboard
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 import java.util.*
 
@@ -44,7 +44,7 @@ import java.util.*
 class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelectedListener, KoinComponent {
 
     // get the view model (from Koin) this time as a singleton to be shared with another fragment
-    override val _viewModel: PlanningShopsAddNewItemViewModel by sharedViewModel()
+    override val _viewModel: PlanningShopsAddNewItemViewModel by activityViewModel()
 
     // data binding of underlying layout
     private lateinit var binding: FragmentPlanningShopsAddNewItemBinding
@@ -448,9 +448,15 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
         // check current location settings - install callback handlers for 'location on/off'
         // ... ref-1: https://developer.android.com/training/location/change-location-settings
         // ... ref-2: https://developers.google.com/android/reference/com/google/android/gms/location/SettingsClient
-        val locationRequest = LocationRequest.create().apply {
-            priority = Priority.PRIORITY_LOW_POWER
-        }
+        val locationRequest = LocationRequest.Builder(
+            Priority.PRIORITY_HIGH_ACCURACY,
+            5000
+        ).apply {
+            setMinUpdateDistanceMeters(5F)
+            setGranularity(Granularity.GRANULARITY_PERMISSION_LEVEL)
+            setWaitForAccurateLocation(true)
+        }.build()
+
         val builder = LocationSettingsRequest.Builder()
             .addLocationRequest(locationRequest)
 
@@ -464,7 +470,7 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
         // register listener to handle the case that user location settings are not satisfied
         task.addOnFailureListener { exception ->
 
-            // showing the user a dialog to fix incorrec settings
+            // showing the user a dialog to fix incorrect settings
             // ... this can be bypassed by setting 'resolve' to 'false' when calling this method
             if (exception is ResolvableApiException && resolve) {
 

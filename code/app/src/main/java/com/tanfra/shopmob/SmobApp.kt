@@ -3,6 +3,7 @@ package com.tanfra.shopmob
 import android.app.Application
 import android.content.Context
 import android.widget.Toast
+import androidx.work.Configuration
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.tanfra.shopmob.Constants.FCM_TOPIC
@@ -22,7 +23,13 @@ import org.koin.core.context.startKoin
 import timber.log.Timber
 
 
-class SmobApp : Application(), KoinComponent {
+class SmobApp : Application(), KoinComponent, Configuration.Provider {
+
+    // workmanager config
+    override fun getWorkManagerConfiguration() =
+        Configuration.Builder()
+            .setMinimumLoggingLevel(android.util.Log.INFO)
+            .build()
 
     companion object{
         // details of currently logged-in user

@@ -2,29 +2,28 @@ package com.tanfra.shopmob.smob.ui.admin.lists.listGroupsTable
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.R
+import com.tanfra.shopmob.databinding.FragmentAdminListGroupsTableBinding
+import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
-import android.widget.Toast
-import androidx.core.os.bundleOf
-import org.koin.core.component.KoinComponent
-import timber.log.Timber
-import androidx.recyclerview.widget.ItemTouchHelper
-import com.tanfra.shopmob.databinding.FragmentAdminListGroupsTableBinding
-import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
-import com.tanfra.shopmob.smob.ui.admin.groups.groupsTable.AdminGroupsTableFragmentDirections
 import com.tanfra.shopmob.utils.setup
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import org.koin.core.component.KoinComponent
+import timber.log.Timber
 
 
 class AdminListGroupsTableFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
-    override val _viewModel: AdminViewModel by sharedViewModel()
+    override val _viewModel: AdminViewModel by activityViewModel()
 
     // data binding for fragment_admin_group_member_list.xml
     private lateinit var binding: FragmentAdminListGroupsTableBinding

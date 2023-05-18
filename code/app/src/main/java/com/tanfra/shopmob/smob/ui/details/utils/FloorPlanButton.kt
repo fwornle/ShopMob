@@ -10,7 +10,6 @@ import android.view.View
 import androidx.core.content.withStyledAttributes
 import com.tanfra.shopmob.R
 import timber.log.Timber
-import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
 
@@ -72,9 +71,9 @@ class FloorPlanButton @JvmOverloads constructor(
     // --> provided lambda is called everytime buttonState is changed
     // --> see: https://kotlinlang.org/docs/delegated-properties.html#delegating-to-another-property
     private var buttonState: ButtonState by Delegates
-        .observable<ButtonState>(ButtonState.Active) { _, old, new ->
+        .observable(ButtonState.Active) { _, old, new ->
 
-            Timber.i("buttonState observer: state changed from ${old} to ${new}")
+            Timber.i("buttonState observer: state changed from $old to $new")
 
             // animation state machine
             when (new) {

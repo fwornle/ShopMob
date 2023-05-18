@@ -104,7 +104,7 @@ dependencies {
     //
     // https://firebase.google.com/docs/android/setup
     // ... when using the BoM, you don't specify versions in the associated library dependencies
-    implementation platform('com.google.firebase:firebase-bom:31.5.0')
+    implementation platform('com.google.firebase:firebase-bom:32.0.0')
     implementation "com.google.firebase:firebase-common-ktx"
     implementation "com.google.firebase:firebase-storage-ktx"
     implementation "com.google.firebase:firebase-messaging-ktx"

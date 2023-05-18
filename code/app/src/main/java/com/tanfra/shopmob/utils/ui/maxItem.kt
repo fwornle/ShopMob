@@ -1,7 +1,7 @@
-package com.tanfra.shopmob.utils
+package com.tanfra.shopmob.utils.ui
 
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
 
 fun maxItem(items: List<Ato>): Long {
-    return items.maxOf { it -> it.itemPosition }
+    return items.maxOf { it.itemPosition }
 }

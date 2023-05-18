@@ -16,9 +16,9 @@ import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
-import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
+import com.tanfra.shopmob.utils.ui.closeSoftKeyboard
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
 import java.util.*
@@ -27,7 +27,7 @@ import java.util.*
 class AdminListsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelectedListener, KoinComponent {
 
     // get the view model (from Koin service locator) ... shared with PlanningListsFragment
-    override val _viewModel: AdminViewModel by sharedViewModel()
+    override val _viewModel: AdminViewModel by activityViewModel()
 
     // data binding of underlying layout
     private lateinit var binding: FragmentAdminGroupsAddNewItemBinding

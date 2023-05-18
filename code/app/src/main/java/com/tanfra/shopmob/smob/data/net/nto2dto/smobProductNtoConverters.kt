@@ -1,12 +1,10 @@
 package com.tanfra.shopmob.smob.data.net.nto2dto
 
 import com.tanfra.shopmob.smob.data.local.dto.SmobProductDTO
-import com.tanfra.shopmob.smob.data.net.nto.SmobProductNTO
 import com.tanfra.shopmob.smob.data.local.utils.ActivityStatus
 import com.tanfra.shopmob.smob.data.local.utils.InShop
 import com.tanfra.shopmob.smob.data.local.utils.ProductCategory
-import com.tanfra.shopmob.smob.data.local.utils.ShopLocation
-import kotlinx.serialization.Contextual
+import com.tanfra.shopmob.smob.data.net.nto.SmobProductNTO
 
 // extension functions to convert between database types and domain data types (both directions)
 

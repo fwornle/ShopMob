@@ -1,10 +1,10 @@
 package com.tanfra.shopmob.smob.data.repo
 
-import com.tanfra.shopmob.smob.data.local.dao.SmobItemDao
-import com.tanfra.shopmob.smob.data.local.dto.*
-import com.tanfra.shopmob.smob.data.net.nto.*
-import com.tanfra.shopmob.smob.data.repo.ato.*
-import com.tanfra.shopmob.smob.data.repo.dataSource.*
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobGroupDataSource
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import org.koin.dsl.module
 
 // Koin module for repository services - abstracts DB and NET

@@ -10,7 +10,6 @@ import java.lang.reflect.Type
 //
 // also see: https://bladecoder.medium.com/advanced-json-parsing-techniques-using-moshi-and-kotlin-daf56a7b963d
 // (explains the mechanics behind the above code)
-@Suppress("UNCHECKED_CAST")
 class ArrayListAdapter<T>(private val adapter: JsonAdapter<T>) : JsonAdapter<ArrayList<T>>() {
 
     @Throws(IOException::class)

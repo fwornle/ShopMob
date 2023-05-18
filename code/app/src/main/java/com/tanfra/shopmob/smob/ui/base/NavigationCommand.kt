@@ -1,6 +1,5 @@
 package com.tanfra.shopmob.smob.ui.base
 
-import android.net.Uri
 import android.os.Bundle
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.NavDirections

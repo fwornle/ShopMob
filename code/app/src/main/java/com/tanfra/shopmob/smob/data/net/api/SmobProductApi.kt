@@ -1,7 +1,6 @@
 package com.tanfra.shopmob.smob.data.net.api
 
 import com.tanfra.shopmob.Constants
-import com.tanfra.shopmob.smob.data.net.nto.SmobGroupNTO
 import com.tanfra.shopmob.smob.data.net.nto.SmobProductNTO
 import retrofit2.Response
 import retrofit2.http.*

@@ -195,7 +195,7 @@ abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callba
                 Snackbar.LENGTH_LONG
             )
             .apply {
-                setAction(R.string.undo) { _ -> undoDelete() }
+                setAction(R.string.undo) { undoDelete() }
                 addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
                     override fun onShown(transientBottomBar: Snackbar?) {
                         super.onShown(transientBottomBar)

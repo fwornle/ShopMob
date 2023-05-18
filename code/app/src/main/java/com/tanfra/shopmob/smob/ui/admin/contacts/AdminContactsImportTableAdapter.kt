@@ -10,18 +10,13 @@ import com.tanfra.shopmob.databinding.RowContactDataBinding
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.SmobContactATO
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
-import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.util.*
 
 
 // use data binding to show the smob item on the RV item
 class AdminContactsImportTableAdapter(rootView: View, callBack: (selectedSmobContactATO: SmobContactATO) -> Unit) :
     BaseRecyclerViewAdapter<SmobContactATO>(rootView, callBack), KoinComponent {
-
-    // inject _viewModel from Koin service locator
-    private val _viewModel: AdminViewModel by inject()
 
     // SearchView widget can be used to preFilter the list using user input
     override fun getSearchViewItems(items: List<SmobContactATO>, charSearch: String)

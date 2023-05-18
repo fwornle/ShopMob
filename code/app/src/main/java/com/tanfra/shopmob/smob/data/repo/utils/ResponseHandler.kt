@@ -1,11 +1,7 @@
-package com.tanfra.shopmob.smob.data.net
+package com.tanfra.shopmob.smob.data.repo.utils
 
-import com.tanfra.shopmob.smob.data.repo.utils.Resource
-import com.tanfra.shopmob.smob.work.SmobAppWork
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import retrofit2.HttpException
-import timber.log.Timber
 import java.lang.Exception
 import java.net.SocketTimeoutException
 

@@ -1,15 +1,17 @@
 package com.tanfra.shopmob.smob.geofence
 
 import android.content.Context
-import androidx.work.*
+import androidx.work.CoroutineWorker
+import androidx.work.WorkerParameters
 import com.tanfra.shopmob.smob.data.local.utils.ProductMainCategory
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
-import com.tanfra.shopmob.utils.hasProduct
+import com.tanfra.shopmob.utils.ui.hasProduct
 import com.tanfra.shopmob.utils.sendNotificationOnGeofenceHit
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber

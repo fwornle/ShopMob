@@ -8,9 +8,8 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 import com.tanfra.shopmob.smob.data.local.utils.SmobListItem
-import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupWithListDataATO
-import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
+import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -38,7 +37,7 @@ class PlanningListsTableAdapter(rootView: View, callBack: (selectedSmobATO: Smob
         // take out all items which have been deleted by swiping
         return items
                 //
-            .filter { item -> item.groups.map { group -> group.id }.intersect(SmobApp.currUser?.groups ?: listOf()).any() }
+            .filter { item -> item.groups.map { group -> group.id }.intersect((SmobApp.currUser?.groups ?: listOf()).toSet()).any() }
             .filter { item -> item.itemStatus != SmobItemStatus.DELETED  }
             .map { item -> consolidateListItem(item) }
             .sortedWith(

@@ -1,38 +1,37 @@
 package com.tanfra.shopmob.smob.ui.planning.products
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import androidx.databinding.DataBindingUtil
-import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.ui.base.BaseFragment
-import com.tanfra.shopmob.smob.ui.base.NavigationCommand
-import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
-import com.tanfra.shopmob.utils.setTitle
-import android.content.Intent
 import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.firebase.ui.auth.AuthUI
+import com.tanfra.shopmob.R
+import com.tanfra.shopmob.databinding.FragmentPlanningProductsTableBinding
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
+import com.tanfra.shopmob.smob.ui.base.BaseFragment
+import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsSources
+import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
+import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
+import com.tanfra.shopmob.utils.setTitle
+import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
-import androidx.recyclerview.widget.ItemTouchHelper
-import com.google.android.gms.maps.GoogleMap
-import com.tanfra.shopmob.databinding.FragmentPlanningProductsTableBinding
-import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
-import com.tanfra.shopmob.utils.setup
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
-    override val _viewModel: PlanningViewModel by sharedViewModel()
+    override val _viewModel: PlanningViewModel by activityViewModel()
 
     // data binding for fragment_smob_planning_lists.xml
     private lateinit var binding: FragmentPlanningProductsTableBinding

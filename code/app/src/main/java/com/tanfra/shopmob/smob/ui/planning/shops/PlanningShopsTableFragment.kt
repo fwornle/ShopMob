@@ -1,36 +1,35 @@
 package com.tanfra.shopmob.smob.ui.planning.shops
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import androidx.databinding.DataBindingUtil
-import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.ui.base.BaseFragment
-import com.tanfra.shopmob.smob.ui.base.NavigationCommand
-import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
-import com.tanfra.shopmob.utils.setTitle
-import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDeepLinkRequest
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.firebase.ui.auth.AuthUI
+import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentPlanningShopsTableBinding
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
+import com.tanfra.shopmob.smob.ui.base.BaseFragment
+import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsSources
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
+import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
+import com.tanfra.shopmob.utils.setTitle
 import com.tanfra.shopmob.utils.setup
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
 
@@ -38,7 +37,7 @@ import timber.log.Timber
 class PlanningShopsTableFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the (shared) ViewModel instance
-    override val _viewModel: PlanningViewModel by sharedViewModel()
+    override val _viewModel: PlanningViewModel by activityViewModel()
 
     // data binding for fragment_planning_shop_list.xml
     private lateinit var binding: FragmentPlanningShopsTableBinding

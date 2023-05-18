@@ -45,7 +45,7 @@ class PlanningViewModel(
     lateinit var _smobList: Flow<Resource<SmobListATO?>>
     lateinit var smobList: StateFlow<Resource<SmobListATO?>>
 
-    val _smobList2 = MutableStateFlow<Resource<SmobListATO?>>(Resource.loading(null))
+    private val _smobList2 = MutableStateFlow<Resource<SmobListATO?>>(Resource.loading(null))
     val smobList2 = _smobList2.asStateFlow()
 
     lateinit var _smobListItems: Flow<Resource<List<SmobProductATO>?>>
@@ -59,8 +59,7 @@ class PlanningViewModel(
      */
     @ExperimentalCoroutinesApi
     fun fetchSmobListFlow(id: String): Flow<Resource<SmobListATO?>> {
-        val fetchFlow = listDataSource.getSmobItem(id)
-        return fetchFlow
+        return listDataSource.getSmobItem(id)
     }
 
     // convert to StateFlow
@@ -77,8 +76,7 @@ class PlanningViewModel(
      */
     @ExperimentalCoroutinesApi
     fun fetchSmobListItemsFlow(id: String): Flow<Resource<List<SmobProductATO>?>> {
-        val fetchFlow = productDataSource.getSmobProductsByListId(id)
-        return fetchFlow
+        return productDataSource.getSmobProductsByListId(id)
     }
 
     // convert to StateFlow
@@ -191,7 +189,7 @@ class PlanningViewModel(
                         // previously unhandled exception (= not handled at Room level)
                         // --> catch it here and represent in Resource status
                         _smobList2.value = Resource.error(e.toString(), null)
-                        showSnackBar.value = _smobList2.value.message
+                        showSnackBar.value = _smobList2.value.message ?: "(no message)"
                     }
                     .collectLatest {
                         // no exception during flow collection
@@ -202,7 +200,7 @@ class PlanningViewModel(
                             }
                             Status.ERROR -> {
                                 // these are errors handled at Room level --> display
-                                showSnackBar.value = it.message
+                                showSnackBar.value = it.message ?: "(no message)"
                                 _smobList2.value = it  // still return Resource value (w/h error)
                             }
                             Status.LOADING -> {
@@ -529,7 +527,7 @@ class PlanningViewModel(
                 // previously unhandled exception (= not handled at Room level)
                 // --> catch it here and represent in Resource status
                 _smobShopList.value = Resource.error(e.toString(), null)
-                showSnackBar.value = _smobShopList.value.message
+                showSnackBar.value = _smobShopList.value.message ?: "(no message)"
             }
             .take(1)
             .onEach {
@@ -542,7 +540,7 @@ class PlanningViewModel(
                     }
                     Status.ERROR -> {
                         // these are errors handled at Room level --> display
-                        showSnackBar.value = it.message
+                        showSnackBar.value = it.message ?: "(no message)"
                         _smobShopList.value = it  // still return Resource value (w/h error)
                     }
                     Status.LOADING -> {
@@ -557,44 +555,7 @@ class PlanningViewModel(
 
 
     // fetch an individual smobShop (flow --> StateFlow)
-    private val _smobShop = MutableStateFlow<Resource<SmobShopATO?>>(Resource.loading(null))
-    val smobShop = _smobShop.asStateFlow()
-
-    /**
-     * collect the flow of an individual SmobShop
-     */
-    @ExperimentalCoroutinesApi
-    fun fetchSmobShop(id: String) {
-
-        // collect flow
-        shopDataSource.getSmobItem(id)
-            .catch { e ->
-                // previously unhandled exception (= not handled at Room level)
-                // --> catch it here and represent in Resource status
-                _smobShop.value = Resource.error(e.toString(), null)
-                showSnackBar.value = _smobShop.value.message
-            }
-            .take(1)
-            .onEach {
-                // no exception during flow collection
-                when(it.status) {
-                    Status.SUCCESS -> {
-                        // --> store successfully received data in StateFlow value
-                        _smobShop.value = it
-                    }
-                    Status.ERROR -> {
-                        // these are errors handled at Room level --> display
-                        showSnackBar.value = it.message
-                        _smobShop.value = it  // still return Resource value (w/h error)
-                    }
-                    Status.LOADING -> {
-                        // could control visibility of progress bar here
-                    }
-                }
-            }
-            .launchIn(viewModelScope)  // co-routine scope
-
-    }  // fetchSmobShop
+//    private val _smobShop = MutableStateFlow<Resource<SmobShopATO?>>(Resource.loading(null))
 
 
     /**
@@ -686,7 +647,7 @@ class PlanningViewModel(
     // Detailed investigation of Flow vs. LiveData: LD seems the better fit for UI layer
     // see: https://bladecoder.medium.com/kotlins-flow-in-viewmodels-it-s-complicated-556b472e281a
     //
-    // --> reverting back to LiveData at ViewModel layer (collection point) and benefitting of the
+    // --> reverting back to LiveData at ViewModel layer (collection point) and benefiting of the
     //     much less cumbersome handling of the data incl. the better "lifecycle optimized" behavior
     //
     // --> using ".asLiveData()", as the incoming flow is not based on "suspendable" operations
@@ -708,7 +669,7 @@ class PlanningViewModel(
                 // previously unhandled exception (= not handled at Room level)
                 // --> catch it here and represent in Resource status
                 _smobLists.value = Resource.error(e.toString(), null)
-                showSnackBar.value = _smobLists.value.message
+                showSnackBar.value = _smobLists.value.message ?: "(no message)"
             }
             .take(1)
             .onEach {
@@ -721,7 +682,7 @@ class PlanningViewModel(
                     }
                     Status.ERROR -> {
                         // these are errors handled at Room level --> display
-                        showSnackBar.value = it.message
+                        showSnackBar.value = it.message ?: "(no message)"
                         _smobLists.value = it  // still return Resource value (w/h error)
                     }
                     Status.LOADING -> {
@@ -764,7 +725,7 @@ class PlanningViewModel(
 
     val smobListName = MutableLiveData<String?>()
     val smobListDescription = MutableLiveData<String?>()
-    val smobListImageUrl = MutableLiveData<String?>()
+    private val smobListImageUrl = MutableLiveData<String?>()
 
     init {
         onClearList()
@@ -773,7 +734,7 @@ class PlanningViewModel(
     /**
      * Clear the live data objects to start fresh next time the view model gets instantiated
      */
-    fun onClearList() {
+    private fun onClearList() {
         // viewModel is initiated in background "doWork" job (coroutine)
         smobListName.postValue(null)
         smobListDescription.postValue(null)

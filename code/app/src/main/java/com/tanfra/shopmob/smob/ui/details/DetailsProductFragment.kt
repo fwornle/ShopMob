@@ -14,14 +14,14 @@ import androidx.lifecycle.Lifecycle
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentDetailsProductBinding
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
 
 class DetailsProductFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the shared ViewModel instance
-    override val _viewModel: DetailsViewModel by sharedViewModel()
+    override val _viewModel: DetailsViewModel by activityViewModel()
 
     // data binding for fragment_planning_lists.xml
     private lateinit var binding: FragmentDetailsProductBinding

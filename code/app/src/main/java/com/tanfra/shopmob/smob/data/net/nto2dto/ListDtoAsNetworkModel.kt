@@ -1,9 +1,22 @@
 package com.tanfra.shopmob.smob.data.net.nto2dto
 
-import com.tanfra.shopmob.smob.data.local.dto.*
-import com.tanfra.shopmob.smob.data.local.utils.*
-import com.tanfra.shopmob.smob.data.net.nto.*
-import com.tanfra.shopmob.smob.data.repo.ato.*
+import com.tanfra.shopmob.smob.data.local.dto.Dto
+import com.tanfra.shopmob.smob.data.local.dto.SmobGroupDTO
+import com.tanfra.shopmob.smob.data.local.dto.SmobListDTO
+import com.tanfra.shopmob.smob.data.local.dto.SmobProductDTO
+import com.tanfra.shopmob.smob.data.local.dto.SmobShopDTO
+import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
+import com.tanfra.shopmob.smob.data.local.utils.ActivityStatus
+import com.tanfra.shopmob.smob.data.local.utils.InShop
+import com.tanfra.shopmob.smob.data.local.utils.ProductCategory
+import com.tanfra.shopmob.smob.data.local.utils.ShopLocation
+import com.tanfra.shopmob.smob.data.local.utils.SmobListLifecycle
+import com.tanfra.shopmob.smob.data.net.nto.Nto
+import com.tanfra.shopmob.smob.data.net.nto.SmobGroupNTO
+import com.tanfra.shopmob.smob.data.net.nto.SmobListNTO
+import com.tanfra.shopmob.smob.data.net.nto.SmobProductNTO
+import com.tanfra.shopmob.smob.data.net.nto.SmobShopNTO
+import com.tanfra.shopmob.smob.data.net.nto.SmobUserNTO
 
 // DTO --> NTO
 @Suppress("USELESS_CAST", "UNCHECKED_CAST")

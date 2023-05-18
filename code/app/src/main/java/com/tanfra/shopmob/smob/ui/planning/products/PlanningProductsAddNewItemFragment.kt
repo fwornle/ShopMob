@@ -20,10 +20,10 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
-import com.tanfra.shopmob.smob.ui.planning.utils.closeSoftKeyboard
+import com.tanfra.shopmob.utils.ui.closeSoftKeyboard
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
 import java.util.*
@@ -35,7 +35,7 @@ class PlanningProductsAddNewItemFragment :
     BaseFragment(), AdapterView.OnItemSelectedListener, KoinComponent {
 
     // get the view model (from Koin) this time as a singleton to be shared with another fragment
-    override val _viewModel: PlanningViewModel by sharedViewModel()
+    override val _viewModel: PlanningViewModel by activityViewModel()
 
     // data binding of underlying layout
     private lateinit var binding: FragmentPlanningProductsAddNewItemBinding

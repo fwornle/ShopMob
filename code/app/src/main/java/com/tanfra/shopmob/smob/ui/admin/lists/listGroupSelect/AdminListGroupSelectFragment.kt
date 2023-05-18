@@ -5,7 +5,6 @@ import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentAdminListGroupSelectBinding
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
@@ -14,7 +13,7 @@ import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setup
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
 
@@ -22,7 +21,7 @@ import timber.log.Timber
 class AdminListGroupSelectFragment : BaseFragment(), KoinComponent {
 
     // get the view model (from Koin service locator) ... shared with PlanningListsFragment
-    override val _viewModel: AdminViewModel by sharedViewModel()
+    override val _viewModel: AdminViewModel by activityViewModel()
 
     // data binding of underlying layout
     private lateinit var binding: FragmentAdminListGroupSelectBinding

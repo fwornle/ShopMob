@@ -24,13 +24,13 @@ import com.tanfra.shopmob.databinding.FragmentAdminContactsImportTableBinding
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.utils.hasPermission
 import com.tanfra.shopmob.utils.setup
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 
 class AdminContactsImportTableFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
-    override val _viewModel: AdminViewModel by sharedViewModel()
+    override val _viewModel: AdminViewModel by activityViewModel()
 
     // data binding for fragment_admin_contacts_import_table.xml
     private lateinit var binding: FragmentAdminContactsImportTableBinding

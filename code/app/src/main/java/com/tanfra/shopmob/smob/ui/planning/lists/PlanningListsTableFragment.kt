@@ -24,14 +24,14 @@ import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
 import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 
 
 class PlanningListsTableFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance(s)
-    override val _viewModel: PlanningViewModel by sharedViewModel()
+    override val _viewModel: PlanningViewModel by activityViewModel()
 
     // data binding for fragment_planning_lists.xml
     private lateinit var binding: FragmentPlanningListsTableBinding
@@ -78,7 +78,6 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
         return binding.root
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
