@@ -169,7 +169,7 @@ class SmobPlanningActivity : AppCompatActivity() {
                         Timber.i("Number of users: ${allUsers?.size ?: -1}")
 
                         val userItemPos: Long
-                        val daUser: SmobUserATO? = allUsers?.find { it.id == userId }
+                        val daUser: SmobUserATO? = allUsers?.find { it.itemId == userId }
 
                         // determine position of user item in DB
                         userItemPos = if(daUser == null) {

@@ -19,7 +19,7 @@ fun <DTO: Dto, ATO: Ato> Flow<List<DTO?>>._asDomainModel(d: DTO): Flow<List<ATO>
                         when (d as Dto) {
                             is SmobGroupDTO -> {
                                 SmobGroupATO(
-                                    id = (it as SmobGroupDTO).itemId,
+                                    itemId = (it as SmobGroupDTO).itemId,
                                     itemStatus = it.itemStatus,
                                     itemPosition = it.itemPosition,
                                     name = it.name,
@@ -31,7 +31,7 @@ fun <DTO: Dto, ATO: Ato> Flow<List<DTO?>>._asDomainModel(d: DTO): Flow<List<ATO>
                             }
                             is SmobListDTO -> {
                                 SmobListATO(
-                                    id = (it as SmobListDTO).itemId,
+                                    itemId = (it as SmobListDTO).itemId,
                                     itemStatus = it.itemStatus,
                                     itemPosition = it.itemPosition,
                                     name = it.name,
@@ -43,7 +43,7 @@ fun <DTO: Dto, ATO: Ato> Flow<List<DTO?>>._asDomainModel(d: DTO): Flow<List<ATO>
                             }
                             is SmobProductDTO -> {
                                 SmobProductATO (
-                                    id = (it as SmobProductDTO).itemId,
+                                    itemId = (it as SmobProductDTO).itemId,
                                     itemStatus = it.itemStatus,
                                     itemPosition = it.itemPosition,
                                     name = it.name,
@@ -56,7 +56,7 @@ fun <DTO: Dto, ATO: Ato> Flow<List<DTO?>>._asDomainModel(d: DTO): Flow<List<ATO>
                             }
                             is SmobShopDTO -> {
                                 SmobShopATO (
-                                    id = (it as SmobShopDTO).itemId,
+                                    itemId = (it as SmobShopDTO).itemId,
                                     itemStatus = it.itemStatus,
                                     itemPosition = it.itemPosition,
                                     name = it.name,
@@ -70,7 +70,7 @@ fun <DTO: Dto, ATO: Ato> Flow<List<DTO?>>._asDomainModel(d: DTO): Flow<List<ATO>
                             }
                             is SmobUserDTO -> {
                                 SmobUserATO (
-                                    id = (it as SmobUserDTO).itemId,
+                                    itemId = (it as SmobUserDTO).itemId,
                                     itemStatus = it.itemStatus,
                                     itemPosition = it.itemPosition,
                                     username = it.username,

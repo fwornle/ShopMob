@@ -175,7 +175,7 @@ class PlanningProductsAddNewItemFragment :
                 val newItems = it.items.toMutableList()
                 newItems.add(
                     SmobListItem(
-                        daSmobProductATO.id,
+                        daSmobProductATO.itemId,
                         daSmobProductATO.itemStatus,
                         daSmobProductATO.itemPosition,
                         daSmobProductATO.category.main,
@@ -184,7 +184,7 @@ class PlanningProductsAddNewItemFragment :
 
                 // create updated smobList (to be sent to the DB/backend)
                 val newList = SmobListATO(
-                        it.id,
+                        it.itemId,
                         it.itemStatus,
                         it.itemPosition,
                         it.name,

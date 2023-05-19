@@ -281,7 +281,7 @@ class SmobListRepository(
 
         // initiate the (HTTP) PUT request
         Timber.i("Sending PUT request for SmobList data...")
-        updateSmobListViaApi(smobItemATO.id, smobItemATO.asDatabaseModel())
+        updateSmobListViaApi(smobItemATO.itemId, smobItemATO.asDatabaseModel())
 
     }  // refreshSmobListInLocalDB()
 

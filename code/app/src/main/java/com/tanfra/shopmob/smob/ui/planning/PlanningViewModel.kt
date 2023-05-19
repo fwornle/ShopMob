@@ -114,10 +114,10 @@ class PlanningViewModel(
                             // output merged data type (with product item status)
 
                             // fetch product details from 'items' list on the smobList
-                            val productOnList = rawList.items.first { item -> item.id == product.id }
+                            val productOnList = rawList.items.first { item -> item.id == product.itemId }
 
                             SmobProductWithListDataATO(
-                                id = product.id,
+                                itemId = product.itemId,
                                 itemStatus = productOnList.status,
                                 itemPosition = productOnList.listPosition,
                                 productName = product.name,
@@ -126,7 +126,7 @@ class PlanningViewModel(
                                 productCategory = product.category,
                                 productActivity = product.activity,
                                 productInShop = product.inShop,
-                                listId = rawList.id,
+                                listId = rawList.itemId,
                                 listStatus = rawList.itemStatus,
                                 listPosition = rawList.itemPosition,
                                 listName = rawList.name,

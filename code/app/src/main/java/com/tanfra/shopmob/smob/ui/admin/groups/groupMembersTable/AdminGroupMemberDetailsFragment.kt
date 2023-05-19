@@ -68,7 +68,7 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
             _viewModel.currGroup?.let { daGroup ->
 
                 // append member ID to list of members
-                _viewModel.currGroupMember?.id?.let { newMemberId ->
+                _viewModel.currGroupMember?.itemId?.let { newMemberId ->
 
                     // create new member list (adding newMemberId)
                     val updatedMemberList = daGroup.members
@@ -100,9 +100,9 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
                                 // hygiene: remove accidental empty entries
                                 .filter { groupId -> groupId != "" }
                                 // remove all occurrences of this group ID from member's group list
-                                .filter { groupId -> groupId != daGroup.id }
+                                .filter { groupId -> groupId != daGroup.itemId }
                                 // now re-add this group ID (guarantees that it is there only once)
-                                .toMutableList().apply { add(daGroup.id) }
+                                .toMutableList().apply { add(daGroup.itemId) }
 
                         // update purged member's group list
                         daMember.groups = updatedGroupMemberIds

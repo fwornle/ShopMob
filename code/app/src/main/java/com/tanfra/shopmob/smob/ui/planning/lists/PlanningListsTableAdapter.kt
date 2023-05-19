@@ -69,14 +69,14 @@ class PlanningListsTableAdapter(rootView: View, callBack: (selectedSmobATO: Smob
 
             // collect SmobList flow
             val updatedList = SmobListATO(
-                itemAdjusted.id,
+                itemAdjusted.itemId,
                 itemAdjusted.itemStatus,
                 itemAdjusted.itemPosition,
                 itemAdjusted.name,
                 itemAdjusted.description,
                 // replace list of products on smob list with updated list of products
                 itemAdjusted.items.map { product ->
-                    if(product.id == itemAdjusted.id) {
+                    if(product.id == itemAdjusted.itemId) {
                         // set new status (list property)
                         SmobListItem(
                             product.id,

@@ -63,7 +63,7 @@ class PlanningProductsTableAdapter(rootView: View, callBack: (selectedSmobATO: S
                 item.listDescription,
                 // replace list of products on smob list with updated list of products
                 item.listItems.map { product ->
-                    if(product.id == item.id) {
+                    if(product.id == item.itemId) {
                         // set new status (list property)
                         SmobListItem(
                             product.id,

@@ -37,7 +37,7 @@ class AdminGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobGr
             .filter { item ->
                 item.members
                     .map { member -> if(member.status != SmobItemStatus.DELETED) member.id else "" }
-                    .contains(SmobApp.currUser?.id)
+                    .contains(SmobApp.currUser?.itemId)
             }
             .filter { item -> item.itemStatus != SmobItemStatus.DELETED }
             //.map { item -> consolidateListItem(item) }
@@ -68,7 +68,7 @@ class AdminGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobGr
 
             // collect SmobGroup flow
             val updatedList = SmobGroupATO(
-                itemAdjusted.id,
+                itemAdjusted.itemId,
                 itemAdjusted.itemStatus,
                 itemAdjusted.itemPosition,
                 itemAdjusted.name,

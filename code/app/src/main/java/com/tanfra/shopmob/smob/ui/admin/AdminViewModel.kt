@@ -57,10 +57,10 @@ class AdminViewModel(
 
             // add numbers & emails to contacts
             contacts.forEach { contact ->
-                contactNumbers[contact.id]?.let { numbers ->
+                contactNumbers[contact.itemId]?.let { numbers ->
                     numbers.map { number -> contact.numbers.add(number) }
                 }
-                contactEmails[contact.id]?.let { emails ->
+                contactEmails[contact.itemId]?.let { emails ->
                     emails.map { email -> contact.emails.add(email) }
                 }
             }
@@ -440,7 +440,7 @@ class AdminViewModel(
 
                             // fetch all users as defined by the member list of the selected group
                             val daGroupUsers = allUsers.filter { user ->
-                                daGroup.members.map { member -> member.id }.contains(user.id)
+                                daGroup.members.map { member -> member.id }.contains(user.itemId)
                             }
 
                             // return all (other) users, except those from daGroup member list
@@ -448,7 +448,7 @@ class AdminViewModel(
 
                                 // extend user record by group data
                                 SmobGroupMemberWithGroupDataATO(
-                                    id = member.id,
+                                    itemId = member.itemId,
                                     itemStatus = member.itemStatus,
                                     itemPosition = member.itemPosition,
                                     memberUsername = member.username,
@@ -456,7 +456,7 @@ class AdminViewModel(
                                     memberEmail = member.email,
                                     memberImageUrl = member.imageUrl,
                                     memberGroups = member.groups,
-                                    groupId = daGroup.id,
+                                    groupId = daGroup.itemId,
                                     groupStatus = daGroup.itemStatus,
                                     groupPosition = daGroup.itemPosition,
                                     groupName = daGroup.name,
@@ -703,7 +703,7 @@ class AdminViewModel(
                             // fetch all groups who refer to any of the groups associated with the
                             // selected list (daList.groups)
                             val daListGroups = allGroups.filter { group ->
-                                daList.groups.map { listGroup -> listGroup.id }.contains(group.id)
+                                daList.groups.map { listGroup -> listGroup.id }.contains(group.itemId)
                             }
 
                             // return all groups associated with daList, incl. the list details
@@ -711,7 +711,7 @@ class AdminViewModel(
 
                                 // extend user record by group data
                                 SmobGroupWithListDataATO(
-                                    id = group.id,
+                                    itemId = group.itemId,
                                     itemStatus = group.itemStatus,
                                     itemPosition = group.itemPosition,
                                     groupName = group.name,
@@ -719,7 +719,7 @@ class AdminViewModel(
                                     groupType = group.type,
                                     groupMembers = group.members,
                                     groupActivity = group.activity,
-                                    listId = daList.id,
+                                    listId = daList.itemId,
                                     listStatus = daList.itemStatus,
                                     listPosition = daList.itemPosition,
                                     listName = daList.name,
@@ -887,7 +887,7 @@ class AdminViewModel(
                                             else
                                                 ""
                                         }
-                                        .contains(group.id)
+                                        .contains(group.itemId)
                                 }
 
 
@@ -899,7 +899,7 @@ class AdminViewModel(
 
                                 // extend user record by group data
                                 SmobGroupWithListDataATO(
-                                    id = group.id,
+                                    itemId = group.itemId,
                                     itemStatus = group.itemStatus,
                                     itemPosition = group.itemPosition,
                                     groupName = group.name,
@@ -907,7 +907,7 @@ class AdminViewModel(
                                     groupType = group.type,
                                     groupMembers = group.members,
                                     groupActivity = group.activity,
-                                    listId = daList.id,
+                                    listId = daList.itemId,
                                     listStatus = daList.itemStatus,
                                     listPosition = daList.itemPosition,
                                     listName = daList.name,

@@ -43,7 +43,7 @@ class AdminListGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: Sm
 
         // take out all items which have been deleted by swiping
         return items
-            .filter { item -> validGroupIds.contains(item.id) }
+            .filter { item -> validGroupIds.contains(item.itemId) }
             .sortedWith(
                 compareBy(
                     { it.itemPosition },
@@ -71,7 +71,7 @@ class AdminListGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: Sm
                 item.listItems,
                 // replace list of Smob groups with updated list of Smob groups
                 item.listGroups.map { groupItem ->
-                    if(groupItem.id == item.id) {
+                    if(groupItem.id == item.itemId) {
                         // set new status (list property)
                         SmobGroupItem(
                             groupItem.id,

@@ -13,7 +13,7 @@ fun <DTO: Dto, ATO: Ato> DTO?._asDomainModel(d: DTO): ATO {
 
             is SmobGroupDTO -> {
                 SmobGroupATO(
-                    id = (this as SmobGroupDTO).itemId,
+                    itemId = (this as SmobGroupDTO).itemId,
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
                     name = this.name,
@@ -25,7 +25,7 @@ fun <DTO: Dto, ATO: Ato> DTO?._asDomainModel(d: DTO): ATO {
             }
             is SmobListDTO -> {
                 SmobListATO(
-                    id = (this as SmobListDTO).itemId,
+                    itemId = (this as SmobListDTO).itemId,
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
                     name = this.name,
@@ -37,7 +37,7 @@ fun <DTO: Dto, ATO: Ato> DTO?._asDomainModel(d: DTO): ATO {
             }
             is SmobProductDTO -> {
                 SmobProductATO (
-                    id = (this as SmobProductDTO).itemId,
+                    itemId = (this as SmobProductDTO).itemId,
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
                     name = this.name,
@@ -50,7 +50,7 @@ fun <DTO: Dto, ATO: Ato> DTO?._asDomainModel(d: DTO): ATO {
             }
             is SmobShopDTO -> {
                 SmobShopATO (
-                    id = (this as SmobShopDTO).itemId,
+                    itemId = (this as SmobShopDTO).itemId,
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
                     name = this.name,
@@ -64,7 +64,7 @@ fun <DTO: Dto, ATO: Ato> DTO?._asDomainModel(d: DTO): ATO {
             }
             is SmobUserDTO -> {
                 SmobUserATO (
-                    id = (this as SmobUserDTO).itemId,
+                    itemId = (this as SmobUserDTO).itemId,
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
                     username = this.username,

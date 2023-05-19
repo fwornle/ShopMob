@@ -30,7 +30,7 @@ class AdminListGroupsTableSwipeActionHandler(adapter: AdminListGroupsTableAdapte
         // cast to actual item of this instance
         // ... by reference --> changes on these objects affect the original object (item)
         val daList: SmobListATO = (item as SmobGroupWithListDataATO).list()
-        val daGroupItem = daList.groups.find { group -> group.id == item.id }
+        val daGroupItem = daList.groups.find { group -> group.id == item.itemId }
         val daItemStatus = daGroupItem?.status
 
         // avoid "null" status (should never happen)

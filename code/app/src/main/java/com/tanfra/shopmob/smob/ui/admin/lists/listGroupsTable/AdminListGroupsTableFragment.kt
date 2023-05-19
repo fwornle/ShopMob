@@ -48,7 +48,7 @@ class AdminListGroupsTableFragment : BaseFragment(), KoinComponent {
         _viewModel.backDestinationId = null
 
         // fetch list ID of the (clicked) list that got us here
-        val listId = _viewModel.currList?.id
+        val listId = _viewModel.currList?.itemId
         val listName = _viewModel.currList?.name
 
         // console
