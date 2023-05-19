@@ -1,6 +1,6 @@
 package com.tanfra.shopmob.smob.data.repo.ato
 
-import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
+import com.tanfra.shopmob.smob.data.types.ItemStatus
 
 /**
  * Sealed interface of all ATO types - generic part of the i/f

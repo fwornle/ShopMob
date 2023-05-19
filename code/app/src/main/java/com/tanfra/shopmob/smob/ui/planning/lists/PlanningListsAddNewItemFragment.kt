@@ -9,8 +9,8 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentPlanningListsAddNewItemBinding
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
-import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
-import com.tanfra.shopmob.smob.data.local.utils.SmobListLifecycle
+import com.tanfra.shopmob.smob.data.types.ItemStatus
+import com.tanfra.shopmob.smob.data.types.SmobListLifecycle
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.utils.ui.closeSoftKeyboard

@@ -1,6 +1,10 @@
 package com.tanfra.shopmob.smob.data.local.utils
 
 import androidx.room.TypeConverter
+import com.tanfra.shopmob.smob.data.types.ShopLocation
+import com.tanfra.shopmob.smob.data.types.SmobGroupItem
+import com.tanfra.shopmob.smob.data.types.SmobListItem
+import com.tanfra.shopmob.smob.data.types.SmobMemberItem
 import kotlinx.serialization.json.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString

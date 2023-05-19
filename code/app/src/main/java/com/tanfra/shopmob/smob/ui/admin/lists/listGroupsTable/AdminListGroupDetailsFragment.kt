@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentAdminListGroupDetailsBinding
-import com.tanfra.shopmob.smob.data.local.utils.SmobGroupItem
-import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
+import com.tanfra.shopmob.smob.data.types.SmobGroupItem
+import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel

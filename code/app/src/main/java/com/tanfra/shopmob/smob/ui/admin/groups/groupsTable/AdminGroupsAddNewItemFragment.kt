@@ -11,6 +11,10 @@ import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.databinding.FragmentAdminGroupsAddNewItemBinding
+import com.tanfra.shopmob.smob.data.types.ActivityStatus
+import com.tanfra.shopmob.smob.data.types.GroupType
+import com.tanfra.shopmob.smob.data.types.ItemStatus
+import com.tanfra.shopmob.smob.data.types.SmobMemberItem
 import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled

@@ -1,6 +1,6 @@
 package com.tanfra.shopmob.smob.data.net.nto
 
-import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
+import com.tanfra.shopmob.smob.data.types.ItemStatus
 
 /**
  * Sealed interface of all NTO types - generic part of the i/f

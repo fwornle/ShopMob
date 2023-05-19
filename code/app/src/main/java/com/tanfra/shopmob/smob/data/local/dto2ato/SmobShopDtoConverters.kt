@@ -2,7 +2,7 @@ package com.tanfra.shopmob.smob.data.local.dto2ato
 
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.local.dto.SmobShopDTO
-import com.tanfra.shopmob.smob.data.local.utils.ShopLocation
+import com.tanfra.shopmob.smob.data.types.ShopLocation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 

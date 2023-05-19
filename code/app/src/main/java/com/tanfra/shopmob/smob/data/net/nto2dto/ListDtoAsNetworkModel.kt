@@ -6,11 +6,11 @@ import com.tanfra.shopmob.smob.data.local.dto.SmobListDTO
 import com.tanfra.shopmob.smob.data.local.dto.SmobProductDTO
 import com.tanfra.shopmob.smob.data.local.dto.SmobShopDTO
 import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
-import com.tanfra.shopmob.smob.data.local.utils.ActivityStatus
-import com.tanfra.shopmob.smob.data.local.utils.InShop
-import com.tanfra.shopmob.smob.data.local.utils.ProductCategory
-import com.tanfra.shopmob.smob.data.local.utils.ShopLocation
-import com.tanfra.shopmob.smob.data.local.utils.SmobListLifecycle
+import com.tanfra.shopmob.smob.data.types.ActivityStatus
+import com.tanfra.shopmob.smob.data.types.InShop
+import com.tanfra.shopmob.smob.data.types.ProductCategory
+import com.tanfra.shopmob.smob.data.types.ShopLocation
+import com.tanfra.shopmob.smob.data.types.SmobListLifecycle
 import com.tanfra.shopmob.smob.data.net.nto.Nto
 import com.tanfra.shopmob.smob.data.net.nto.SmobGroupNTO
 import com.tanfra.shopmob.smob.data.net.nto.SmobListNTO

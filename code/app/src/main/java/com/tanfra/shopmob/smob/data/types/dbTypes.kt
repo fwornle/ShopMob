@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.data.local.utils
+package com.tanfra.shopmob.smob.data.types
 
 import kotlinx.serialization.Serializable
 
@@ -43,21 +43,6 @@ enum class ProductSubCategory {
     BUSINESS,
     LEISURE,
     SHOES,
-}
-
-enum class GroupType {
-    OTHER,
-    FAMILY,
-    FRIENDS,
-    WORK,
-}
-
-enum class ItemStatus {
-    NEW,
-    OPEN,
-    IN_PROGRESS,
-    DONE,
-    DELETED,
 }
 
 @Serializable

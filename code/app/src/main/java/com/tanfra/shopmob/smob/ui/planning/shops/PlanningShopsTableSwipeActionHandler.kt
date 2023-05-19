@@ -5,7 +5,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
+import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.utils.ui.BaseSwipeActionHandler
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter

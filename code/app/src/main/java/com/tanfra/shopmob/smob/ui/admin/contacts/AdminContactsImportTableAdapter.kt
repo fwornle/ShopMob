@@ -7,7 +7,7 @@ import androidx.databinding.ViewDataBinding
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.RowContactBinding
 import com.tanfra.shopmob.databinding.RowContactDataBinding
-import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
+import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.SmobContactATO
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import org.koin.core.component.KoinComponent

@@ -6,8 +6,8 @@ import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.SmobApp
-import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
-import com.tanfra.shopmob.smob.data.local.utils.SmobListItem
+import com.tanfra.shopmob.smob.data.types.ItemStatus
+import com.tanfra.shopmob.smob.data.types.SmobListItem
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel

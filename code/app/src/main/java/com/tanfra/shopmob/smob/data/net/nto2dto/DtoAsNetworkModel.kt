@@ -1,7 +1,11 @@
 package com.tanfra.shopmob.smob.data.net.nto2dto
 
 import com.tanfra.shopmob.smob.data.local.dto.*
-import com.tanfra.shopmob.smob.data.local.utils.*
+import com.tanfra.shopmob.smob.data.types.ActivityStatus
+import com.tanfra.shopmob.smob.data.types.InShop
+import com.tanfra.shopmob.smob.data.types.ProductCategory
+import com.tanfra.shopmob.smob.data.types.ShopLocation
+import com.tanfra.shopmob.smob.data.types.SmobListLifecycle
 import com.tanfra.shopmob.smob.data.net.nto.*
 
 // DTO --> NTO

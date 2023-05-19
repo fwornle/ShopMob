@@ -1,9 +1,9 @@
 package com.tanfra.shopmob.smob.data.local.dto
 
 import androidx.room.*
-import com.tanfra.shopmob.smob.data.local.utils.GroupType
-import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
-import com.tanfra.shopmob.smob.data.local.utils.SmobMemberItem
+import com.tanfra.shopmob.smob.data.types.GroupType
+import com.tanfra.shopmob.smob.data.types.ItemStatus
+import com.tanfra.shopmob.smob.data.types.SmobMemberItem
 
 /**
  * Immutable model class for a SmobGroup. In order to compile with Room

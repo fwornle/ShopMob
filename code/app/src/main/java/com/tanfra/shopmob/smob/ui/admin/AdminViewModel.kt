@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.data.local.utils.GroupType
-import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
+import com.tanfra.shopmob.smob.data.types.GroupType
+import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.base.BaseViewModel
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobGroupDataSource

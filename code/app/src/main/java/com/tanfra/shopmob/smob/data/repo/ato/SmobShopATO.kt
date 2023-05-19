@@ -1,9 +1,9 @@
 package com.tanfra.shopmob.smob.data.repo.ato
 
-import com.tanfra.shopmob.smob.data.local.utils.ShopCategory
-import com.tanfra.shopmob.smob.data.local.utils.ShopLocation
-import com.tanfra.shopmob.smob.data.local.utils.ShopType
-import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
+import com.tanfra.shopmob.smob.data.types.ShopCategory
+import com.tanfra.shopmob.smob.data.types.ShopLocation
+import com.tanfra.shopmob.smob.data.types.ShopType
+import com.tanfra.shopmob.smob.data.types.ItemStatus
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 

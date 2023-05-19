@@ -24,7 +24,7 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.databinding.ActivityPlanningBinding
 import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
-import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
+import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.work.SmobAppWork

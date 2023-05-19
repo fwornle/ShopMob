@@ -1,6 +1,6 @@
 package com.tanfra.shopmob.smob.data.local.dto
 
-import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
+import com.tanfra.shopmob.smob.data.types.ItemStatus
 
 /**
  * supertype, common to all DTO types - generic part of any DTO class

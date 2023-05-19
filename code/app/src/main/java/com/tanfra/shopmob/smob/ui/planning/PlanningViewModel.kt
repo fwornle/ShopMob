@@ -4,6 +4,13 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.SmobApp
+import com.tanfra.shopmob.smob.data.types.ItemStatus
+import com.tanfra.shopmob.smob.data.types.ProductCategory
+import com.tanfra.shopmob.smob.data.types.ProductMainCategory
+import com.tanfra.shopmob.smob.data.types.ProductSubCategory
+import com.tanfra.shopmob.smob.data.types.ShopCategory
+import com.tanfra.shopmob.smob.data.types.ShopLocation
+import com.tanfra.shopmob.smob.data.types.ShopType
 import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.ato.*

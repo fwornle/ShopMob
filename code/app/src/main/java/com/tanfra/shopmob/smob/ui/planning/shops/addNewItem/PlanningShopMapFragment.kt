@@ -32,7 +32,7 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.databinding.FragmentPlanningShopMapBinding
-import com.tanfra.shopmob.smob.data.local.utils.ShopLocation
+import com.tanfra.shopmob.smob.data.types.ShopLocation
 import com.tanfra.shopmob.utils.ui.closeSoftKeyboard
 import com.tanfra.shopmob.utils.ui.openSoftKeyboard
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled

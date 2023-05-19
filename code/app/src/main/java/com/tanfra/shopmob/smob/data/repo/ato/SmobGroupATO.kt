@@ -1,6 +1,9 @@
 package com.tanfra.shopmob.smob.data.repo.ato
 
-import com.tanfra.shopmob.smob.data.local.utils.*
+import com.tanfra.shopmob.smob.data.types.ActivityStatus
+import com.tanfra.shopmob.smob.data.types.GroupType
+import com.tanfra.shopmob.smob.data.types.ItemStatus
+import com.tanfra.shopmob.smob.data.types.SmobMemberItem
 import kotlinx.serialization.*
 
 // domain independent data type (Application Transfer Object)

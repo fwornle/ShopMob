@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
-import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
+import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status

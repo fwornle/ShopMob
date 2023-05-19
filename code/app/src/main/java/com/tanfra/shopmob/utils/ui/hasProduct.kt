@@ -1,7 +1,7 @@
 package com.tanfra.shopmob.utils.ui
 
-import com.tanfra.shopmob.smob.data.local.utils.ProductMainCategory
-import com.tanfra.shopmob.smob.data.local.utils.ShopCategory
+import com.tanfra.shopmob.smob.data.types.ProductMainCategory
+import com.tanfra.shopmob.smob.data.types.ShopCategory
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 
 // extension function of class SmobShopATO to establish, if a shop sells a particular item

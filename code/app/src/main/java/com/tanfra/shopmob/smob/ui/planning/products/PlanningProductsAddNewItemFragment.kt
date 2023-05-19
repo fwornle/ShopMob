@@ -12,6 +12,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentPlanningProductsAddNewItemBinding
+import com.tanfra.shopmob.smob.data.types.ActivityStatus
+import com.tanfra.shopmob.smob.data.types.InShop
+import com.tanfra.shopmob.smob.data.types.ItemStatus
+import com.tanfra.shopmob.smob.data.types.ProductCategory
+import com.tanfra.shopmob.smob.data.types.ProductMainCategory
+import com.tanfra.shopmob.smob.data.types.ProductSubCategory
+import com.tanfra.shopmob.smob.data.types.ShopCategory
+import com.tanfra.shopmob.smob.data.types.ShopLocation
+import com.tanfra.shopmob.smob.data.types.SmobListItem
+import com.tanfra.shopmob.smob.data.types.SmobListLifecycle
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.smob.data.local.utils.*

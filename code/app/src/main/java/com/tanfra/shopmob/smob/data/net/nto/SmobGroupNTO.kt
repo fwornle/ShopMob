@@ -1,9 +1,9 @@
 package com.tanfra.shopmob.smob.data.net.nto
 
-import com.tanfra.shopmob.smob.data.local.utils.ActivityStatus
-import com.tanfra.shopmob.smob.data.local.utils.GroupType
-import com.tanfra.shopmob.smob.data.local.utils.SmobMemberItem
-import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
+import com.tanfra.shopmob.smob.data.types.ActivityStatus
+import com.tanfra.shopmob.smob.data.types.GroupType
+import com.tanfra.shopmob.smob.data.types.SmobMemberItem
+import com.tanfra.shopmob.smob.data.types.ItemStatus
 
 // network data type
 data class SmobGroupNTO(

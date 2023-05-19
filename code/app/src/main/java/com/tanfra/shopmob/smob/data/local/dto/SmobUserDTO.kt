@@ -1,7 +1,7 @@
 package com.tanfra.shopmob.smob.data.local.dto
 
 import androidx.room.*
-import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
+import com.tanfra.shopmob.smob.data.types.ItemStatus
 
 /**
  * Immutable model class for a SmobUser. In order to compile with Room

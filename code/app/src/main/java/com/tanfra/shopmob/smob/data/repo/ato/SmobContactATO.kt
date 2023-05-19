@@ -1,7 +1,7 @@
 package com.tanfra.shopmob.smob.data.repo.ato
 // adapted from: https://medium.com/@kednaik/android-contacts-fetching-using-coroutines-aa0129bffdc4
 
-import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
+import com.tanfra.shopmob.smob.data.types.ItemStatus
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 

@@ -32,6 +32,10 @@ import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import timber.log.Timber
 import com.google.android.gms.location.LocationServices
 import com.tanfra.shopmob.databinding.FragmentPlanningShopsAddNewItemBinding
+import com.tanfra.shopmob.smob.data.types.ItemStatus
+import com.tanfra.shopmob.smob.data.types.ShopCategory
+import com.tanfra.shopmob.smob.data.types.ShopLocation
+import com.tanfra.shopmob.smob.data.types.ShopType
 import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.utils.ui.closeSoftKeyboard

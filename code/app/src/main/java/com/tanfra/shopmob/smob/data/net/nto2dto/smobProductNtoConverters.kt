@@ -1,9 +1,9 @@
 package com.tanfra.shopmob.smob.data.net.nto2dto
 
 import com.tanfra.shopmob.smob.data.local.dto.SmobProductDTO
-import com.tanfra.shopmob.smob.data.local.utils.ActivityStatus
-import com.tanfra.shopmob.smob.data.local.utils.InShop
-import com.tanfra.shopmob.smob.data.local.utils.ProductCategory
+import com.tanfra.shopmob.smob.data.types.ActivityStatus
+import com.tanfra.shopmob.smob.data.types.InShop
+import com.tanfra.shopmob.smob.data.types.ProductCategory
 import com.tanfra.shopmob.smob.data.net.nto.SmobProductNTO
 
 // extension functions to convert between database types and domain data types (both directions)

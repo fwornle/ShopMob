@@ -3,7 +3,7 @@ package com.tanfra.shopmob.smob.geofence
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.tanfra.shopmob.smob.data.local.utils.ProductMainCategory
+import com.tanfra.shopmob.smob.data.types.ProductMainCategory
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.repo.utils.Status

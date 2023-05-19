@@ -2,7 +2,7 @@ package com.tanfra.shopmob.smob.data.local.dto2ato
 
 import com.tanfra.shopmob.smob.data.local.dto.SmobGroupDTO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
-import com.tanfra.shopmob.smob.data.local.utils.ActivityStatus
+import com.tanfra.shopmob.smob.data.types.ActivityStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 

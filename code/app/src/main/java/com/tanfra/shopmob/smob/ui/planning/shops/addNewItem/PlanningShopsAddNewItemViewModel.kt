@@ -4,9 +4,12 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.R
+import com.tanfra.shopmob.smob.data.types.ItemStatus
+import com.tanfra.shopmob.smob.data.types.ShopCategory
+import com.tanfra.shopmob.smob.data.types.ShopLocation
+import com.tanfra.shopmob.smob.data.types.ShopType
 import com.tanfra.shopmob.smob.ui.base.BaseViewModel
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
-import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
 import kotlinx.coroutines.launch
