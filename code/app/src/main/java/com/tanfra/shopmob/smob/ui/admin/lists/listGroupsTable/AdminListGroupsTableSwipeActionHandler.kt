@@ -4,7 +4,7 @@ import android.os.Vibrator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 import com.tanfra.shopmob.utils.ui.BaseSwipeActionHandler
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupWithListDataATO
@@ -44,11 +44,11 @@ class AdminListGroupsTableSwipeActionHandler(adapter: AdminListGroupsTableAdapte
                     when (it) {
 
                         // delete
-                        SmobItemStatus.NEW, SmobItemStatus.OPEN,
-                        SmobItemStatus.IN_PROGRESS, SmobItemStatus.DONE -> {
+                        ItemStatus.NEW, ItemStatus.OPEN,
+                        ItemStatus.IN_PROGRESS, ItemStatus.DONE -> {
                             // mark smobGroup as 'deleted'
-                            daGroupItem.status = SmobItemStatus.DELETED
-                            item.itemStatus = SmobItemStatus.DELETED  //  (item filtering in RV)
+                            daGroupItem.status = ItemStatus.DELETED
+                            item.itemStatus = ItemStatus.DELETED  //  (item filtering in RV)
                             adapter.setItem(position, item)
 
                             // throw item off the list
@@ -56,11 +56,11 @@ class AdminListGroupsTableSwipeActionHandler(adapter: AdminListGroupsTableAdapte
                             adapter.deleteItem(position, R.string.undo_delete)
                         }
 
-                        // SmobItemStatus.DELETE (--> never reached, as DEL items are filtered out)
+                        // ItemStatus.DELETE (--> never reached, as DEL items are filtered out)
                         else -> {
                             // return to 'group inactive'
-                            daGroupItem.status = SmobItemStatus.OPEN
-                            item.itemStatus = SmobItemStatus.OPEN  //  (item filtering in RV)
+                            daGroupItem.status = ItemStatus.OPEN
+                            item.itemStatus = ItemStatus.OPEN  //  (item filtering in RV)
                             adapter.setItem(position, item)
 
                             // restore RV item view (removing the animation effects)

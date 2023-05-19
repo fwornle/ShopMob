@@ -6,7 +6,7 @@ import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.local.utils.SmobGroupItem
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
@@ -43,7 +43,7 @@ class AdminListGroupSelectAdapter(rootView: View, callBack: (selectedSmobGroupWi
 
         // take out all items which have been deleted by swiping
         return items
-            .filter { item -> item.itemStatus != SmobItemStatus.DELETED  }
+            .filter { item -> item.itemStatus != ItemStatus.DELETED  }
             //.map { item -> consolidateListItem(item) }
             .sortedWith(
                 compareBy(

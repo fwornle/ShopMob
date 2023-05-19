@@ -2,7 +2,7 @@ package com.tanfra.shopmob.smob.data.local.dto
 
 import androidx.room.*
 import com.tanfra.shopmob.smob.data.local.utils.SmobGroupItem
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 import com.tanfra.shopmob.smob.data.local.utils.SmobListItem
 
 /**
@@ -22,12 +22,12 @@ import com.tanfra.shopmob.smob.data.local.utils.SmobListItem
 @RewriteQueriesToDropUnusedColumns
 data class SmobListDTO(
     @PrimaryKey @ColumnInfo(name = "listId") override var itemId: String = "invalid smob list id",
-    @ColumnInfo(name = "listItemStatus") override var itemStatus: SmobItemStatus = SmobItemStatus.NEW,
+    @ColumnInfo(name = "listItemStatus") override var itemStatus: ItemStatus = ItemStatus.NEW,
     @ColumnInfo(name = "listItemPosition") override var itemPosition: Long = -1L,
     @ColumnInfo(name = "listName") var name: String = "",
     @ColumnInfo(name = "listDescription") var description: String? = "",
     @ColumnInfo(name = "listItems") var items: List<SmobListItem> = listOf(),
     @ColumnInfo(name = "listGroups") var groups: List<SmobGroupItem> = listOf(),
-    @ColumnInfo(name = "listLifecycleStatus") var lcStatus: SmobItemStatus = SmobItemStatus.OPEN,
+    @ColumnInfo(name = "listLifecycleStatus") var lcStatus: ItemStatus = ItemStatus.OPEN,
     @ColumnInfo(name = "listLifecycleCompletion") var lcCompletion: Double = -1.0,
 ) : Dto()

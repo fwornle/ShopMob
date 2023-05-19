@@ -6,7 +6,7 @@ import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.local.utils.SmobMemberItem
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
@@ -36,7 +36,7 @@ class AdminGroupMembersTableAdapter(rootView: View, callBack: (selectedSmobATO: 
         // figure out who hasn't been deleted yet
         val validMemberIds =
             if (items.isNotEmpty()) items.first().groupMembers
-                .filter { member -> member.status != SmobItemStatus.DELETED }
+                .filter { member -> member.status != ItemStatus.DELETED }
                 .map { member -> member.id }
             else listOf()
 
@@ -61,7 +61,7 @@ class AdminGroupMembersTableAdapter(rootView: View, callBack: (selectedSmobATO: 
         _viewModel.currGroupMember = item.member().apply {
             // for "DELETED" items --> reset status to OPEN
             // (as this action handler only purges users from group lists)
-            if(itemStatus == SmobItemStatus.DELETED) itemStatus = SmobItemStatus.OPEN
+            if(itemStatus == ItemStatus.DELETED) itemStatus = ItemStatus.OPEN
         }
 
         // collect current list from smobList (flow)

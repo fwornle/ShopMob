@@ -9,7 +9,7 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentPlanningListsAddNewItemBinding
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 import com.tanfra.shopmob.smob.data.local.utils.SmobListLifecycle
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
@@ -71,13 +71,13 @@ class PlanningListsAddNewItemFragment : BaseFragment(), KoinComponent {
             //     is going to be the data record written to the DB
             daSmobListATO = SmobListATO(
                 UUID.randomUUID().toString(),
-                SmobItemStatus.NEW,
+                ItemStatus.NEW,
                 listPosMax + 1,
                 _viewModel.smobListName.value ?: "mystery list",
                 _viewModel.smobListDescription.value ?: "something exciting",
                 listOf(),
                 listOf(),
-                SmobListLifecycle(SmobItemStatus.NEW, 0.0),
+                SmobListLifecycle(ItemStatus.NEW, 0.0),
             )
 
             // store smob List in DB

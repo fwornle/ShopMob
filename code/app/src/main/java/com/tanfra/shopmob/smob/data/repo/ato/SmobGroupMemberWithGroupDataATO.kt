@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SmobGroupMemberWithGroupDataATO(
     override val itemId: String,
-    override var itemStatus: @Contextual SmobItemStatus,
+    override var itemStatus: @Contextual ItemStatus,
     override var itemPosition: Long,
     var memberUsername: String,
     var memberName: String,
@@ -16,7 +16,7 @@ data class SmobGroupMemberWithGroupDataATO(
     var memberImageUrl: String?,
     var memberGroups: List<String>,
     val groupId: String,
-    val groupStatus: @Contextual SmobItemStatus,
+    val groupStatus: @Contextual ItemStatus,
     val groupPosition: Long,
     var groupName: String,
     var groupDescription: String?,

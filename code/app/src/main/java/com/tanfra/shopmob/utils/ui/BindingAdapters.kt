@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
@@ -145,12 +145,12 @@ object BindingAdapters {
      */
     @BindingAdapter("statusColor")
     @JvmStatic
-    fun setStatusColor(view: View, status: SmobItemStatus = SmobItemStatus.OPEN) {
+    fun setStatusColor(view: View, status: ItemStatus = ItemStatus.OPEN) {
         when(status) {
-            SmobItemStatus.NEW -> view.setBackgroundResource(R.color.swipeSecondaryLightColor)
-            SmobItemStatus.OPEN -> view.setBackgroundResource(R.color.swipeSecondaryLightColor)
-            SmobItemStatus.IN_PROGRESS -> view.setBackgroundResource(R.color.swipePrimaryColor)
-            SmobItemStatus.DONE -> view.setBackgroundResource(R.color.swipeSecondaryColor)
+            ItemStatus.NEW -> view.setBackgroundResource(R.color.swipeSecondaryLightColor)
+            ItemStatus.OPEN -> view.setBackgroundResource(R.color.swipeSecondaryLightColor)
+            ItemStatus.IN_PROGRESS -> view.setBackgroundResource(R.color.swipePrimaryColor)
+            ItemStatus.DONE -> view.setBackgroundResource(R.color.swipeSecondaryColor)
             else -> view.setBackgroundResource(R.color.white) // should not happen
         }
 

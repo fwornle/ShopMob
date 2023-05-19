@@ -6,7 +6,7 @@ import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.SmobApp
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 import com.tanfra.shopmob.smob.data.local.utils.SmobListItem
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
@@ -38,7 +38,7 @@ class PlanningListsTableAdapter(rootView: View, callBack: (selectedSmobATO: Smob
         return items
                 //
             .filter { item -> item.groups.map { group -> group.id }.intersect((SmobApp.currUser?.groups ?: listOf()).toSet()).any() }
-            .filter { item -> item.itemStatus != SmobItemStatus.DELETED  }
+            .filter { item -> item.itemStatus != ItemStatus.DELETED  }
             .map { item -> consolidateListItem(item) }
             .sortedWith(
                 compareBy(
@@ -55,7 +55,7 @@ class PlanningListsTableAdapter(rootView: View, callBack: (selectedSmobATO: Smob
     override fun uiActionConfirmed(item: SmobListATO, rootView: View) {
 
         // consolidate list item data (prior to writing to the DB)
-        val itemAdjusted = if(item.itemStatus != SmobItemStatus.DELETED) {
+        val itemAdjusted = if(item.itemStatus != ItemStatus.DELETED) {
             // user swiped right --> marking all sub-entries as "IN_PROGRESS" + aggregating here
             consolidateListItem(item)
         } else {
@@ -105,23 +105,23 @@ class PlanningListsTableAdapter(rootView: View, callBack: (selectedSmobATO: Smob
     private fun consolidateListItem(item: SmobListATO): SmobListATO {
 
         // consolidate smobList...
-        val valItems = item.items.filter { itm -> itm.status != SmobItemStatus.DELETED }
+        val valItems = item.items.filter { itm -> itm.status != ItemStatus.DELETED }
         val nValItems = valItems.size
 
         // ... status
         val aggListStatus =
             valItems.fold(0) { sum, daItem -> sum + daItem.status.ordinal }
         item.itemStatus = when (aggListStatus) {
-            in 0..nValItems -> SmobItemStatus.OPEN
-            nValItems * SmobItemStatus.DONE.ordinal -> SmobItemStatus.DONE
-            else -> SmobItemStatus.IN_PROGRESS
+            in 0..nValItems -> ItemStatus.OPEN
+            nValItems * ItemStatus.DONE.ordinal -> ItemStatus.DONE
+            else -> ItemStatus.IN_PROGRESS
         }
 
         // ... completion rate (= nDONE/nTOTAL)
         item.lifecycle.completion = when(nValItems) {
             0 -> 0.0
             else -> {
-                val doneItems = valItems.filter { daItem -> daItem.status == SmobItemStatus.DONE }.size
+                val doneItems = valItems.filter { daItem -> daItem.status == ItemStatus.DONE }.size
                 (100.0 * doneItems / nValItems).roundToInt().toDouble()
             }
         }

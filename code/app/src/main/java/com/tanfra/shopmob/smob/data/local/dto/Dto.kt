@@ -1,6 +1,6 @@
 package com.tanfra.shopmob.smob.data.local.dto
 
-import com.tanfra.shopmob.smob.data.local.utils.*
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 
 /**
  * supertype, common to all DTO types - generic part of any DTO class
@@ -8,6 +8,6 @@ import com.tanfra.shopmob.smob.data.local.utils.*
  */
 sealed class Dto {
     abstract var itemId: String
-    abstract var itemStatus: SmobItemStatus
+    abstract var itemStatus: ItemStatus
     abstract var itemPosition: Long
 }

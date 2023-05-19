@@ -5,7 +5,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 import com.tanfra.shopmob.utils.ui.BaseSwipeActionHandler
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
@@ -32,7 +32,7 @@ class PlanningShopsTableSwipeActionHandler(adapter: PlanningShopsTableAdapter):
             ItemTouchHelper.LEFT -> {
 
                 // mark smobList as 'deleted'
-                item.itemStatus = SmobItemStatus.DELETED
+                item.itemStatus = ItemStatus.DELETED
                 adapter.setItem(position, item)
 
                 // throw item off the list
@@ -54,8 +54,8 @@ class PlanningShopsTableSwipeActionHandler(adapter: PlanningShopsTableAdapter):
 
                 // mark all items on smobList as 'IN_PROGRESS' (only relevant on NEW/OPEN lists)
                 when (item.itemStatus) {
-                    SmobItemStatus.NEW, SmobItemStatus.OPEN -> {
-                        item.itemStatus = SmobItemStatus.IN_PROGRESS
+                    ItemStatus.NEW, ItemStatus.OPEN -> {
+                        item.itemStatus = ItemStatus.IN_PROGRESS
                         adapter.setItem(position, item)
                     }
                     else -> {

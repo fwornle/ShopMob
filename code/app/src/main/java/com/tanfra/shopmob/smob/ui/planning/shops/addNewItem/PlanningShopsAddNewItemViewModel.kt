@@ -29,7 +29,7 @@ class PlanningShopsAddNewItemViewModel(
     init {
         locatedShop.value = SmobShopATO(
             "invalid-id-shop",
-            SmobItemStatus.NEW,
+            ItemStatus.NEW,
             -1L,
             "",
             "",

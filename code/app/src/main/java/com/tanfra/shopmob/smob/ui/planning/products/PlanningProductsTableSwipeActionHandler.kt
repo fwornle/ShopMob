@@ -4,7 +4,7 @@ import android.os.Vibrator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 import com.tanfra.shopmob.utils.ui.BaseSwipeActionHandler
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
@@ -31,10 +31,10 @@ class PlanningProductsTableSwipeActionHandler(adapter: PlanningProductsTableAdap
                 // swipe left ("un-purchase" item)
                 when (item.itemStatus) {
 
-                    SmobItemStatus.DONE -> {
+                    ItemStatus.DONE -> {
 
                         // change item status
-                        item.itemStatus = SmobItemStatus.IN_PROGRESS
+                        item.itemStatus = ItemStatus.IN_PROGRESS
                         adapter.setItem(position, item)
 
                         // restore RV item view (removing the animation effects)
@@ -44,10 +44,10 @@ class PlanningProductsTableSwipeActionHandler(adapter: PlanningProductsTableAdap
                         adapter.uiActionConfirmed(item, viewHolder.itemView)
 
                     }
-                    SmobItemStatus.IN_PROGRESS -> {
+                    ItemStatus.IN_PROGRESS -> {
 
                         // change item status
-                        item.itemStatus = SmobItemStatus.OPEN
+                        item.itemStatus = ItemStatus.OPEN
                         adapter.setItem(position, item)
 
                         // restore RV item view (removing the animation effects)
@@ -60,7 +60,7 @@ class PlanningProductsTableSwipeActionHandler(adapter: PlanningProductsTableAdap
                     else -> {
 
                         // mark item as 'deleted'
-                        item.itemStatus = SmobItemStatus.DELETED
+                        item.itemStatus = ItemStatus.DELETED
                         adapter.setItem(position, item)
 
                         // throw item off the list
@@ -76,12 +76,12 @@ class PlanningProductsTableSwipeActionHandler(adapter: PlanningProductsTableAdap
 
                 // swipe right (purchase item)
                 when (item.itemStatus) {
-                    SmobItemStatus.NEW, SmobItemStatus.OPEN -> {
-                        item.itemStatus = SmobItemStatus.IN_PROGRESS
+                    ItemStatus.NEW, ItemStatus.OPEN -> {
+                        item.itemStatus = ItemStatus.IN_PROGRESS
                         adapter.setItem(position, item)
                     }
-                    SmobItemStatus.IN_PROGRESS -> {
-                        item.itemStatus = SmobItemStatus.DONE
+                    ItemStatus.IN_PROGRESS -> {
+                        item.itemStatus = ItemStatus.DONE
                         adapter.setItem(position, item)
                     }
                     else -> {

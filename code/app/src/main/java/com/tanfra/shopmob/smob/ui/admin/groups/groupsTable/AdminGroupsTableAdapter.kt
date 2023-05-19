@@ -6,7 +6,7 @@ import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.SmobApp
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
@@ -36,10 +36,10 @@ class AdminGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobGr
         return items
             .filter { item ->
                 item.members
-                    .map { member -> if(member.status != SmobItemStatus.DELETED) member.id else "" }
+                    .map { member -> if(member.status != ItemStatus.DELETED) member.id else "" }
                     .contains(SmobApp.currUser?.itemId)
             }
-            .filter { item -> item.itemStatus != SmobItemStatus.DELETED }
+            .filter { item -> item.itemStatus != ItemStatus.DELETED }
             //.map { item -> consolidateListItem(item) }
             .sortedWith(
                 compareBy { it.itemPosition }
@@ -54,7 +54,7 @@ class AdminGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobGr
     override fun uiActionConfirmed(item: SmobGroupATO, rootView: View) {
 
         // consolidate list item data (prior to writing to the DB)
-        val itemAdjusted = if (item.itemStatus != SmobItemStatus.DELETED) {
+        val itemAdjusted = if (item.itemStatus != ItemStatus.DELETED) {
             // user swiped right --> marking all sub-entries as "IN_PROGRESS" + aggregating here
             consolidateListItem(item)
         } else {

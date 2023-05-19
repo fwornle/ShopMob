@@ -6,7 +6,7 @@ import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.local.utils.SmobGroupItem
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
@@ -37,7 +37,7 @@ class AdminListGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: Sm
             if (items.isNotEmpty()) {
                 items
                     .first().listGroups
-                    .filter { group -> group.status != SmobItemStatus.DELETED }
+                    .filter { group -> group.status != ItemStatus.DELETED }
                     .map { group -> group.id }
             } else listOf()
 

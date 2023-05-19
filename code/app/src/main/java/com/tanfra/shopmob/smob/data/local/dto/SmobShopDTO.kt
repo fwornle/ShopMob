@@ -3,7 +3,7 @@ package com.tanfra.shopmob.smob.data.local.dto
 import androidx.room.*
 import com.tanfra.shopmob.smob.data.local.utils.ShopCategory
 import com.tanfra.shopmob.smob.data.local.utils.ShopType
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 
 /**
  * Immutable model class for a SmobShop. In order to compile with Room
@@ -24,7 +24,7 @@ import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 @RewriteQueriesToDropUnusedColumns
 data class SmobShopDTO(
     @PrimaryKey @ColumnInfo(name = "shopId") override var itemId: String = "invalid smob shop id",
-    @ColumnInfo(name = "shopItemStatus") override var itemStatus: SmobItemStatus = SmobItemStatus.NEW,
+    @ColumnInfo(name = "shopItemStatus") override var itemStatus: ItemStatus = ItemStatus.NEW,
     @ColumnInfo(name = "shopItemPosition") override var itemPosition: Long = -1L,
     @ColumnInfo(name = "shopName") var name: String = "",
     @ColumnInfo(name = "shopDescription") var description: String? = "",

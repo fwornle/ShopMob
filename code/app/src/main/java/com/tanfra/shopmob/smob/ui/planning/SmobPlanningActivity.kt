@@ -24,7 +24,7 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.databinding.ActivityPlanningBinding
 import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.work.SmobAppWork
@@ -189,7 +189,7 @@ class SmobPlanningActivity : AppCompatActivity() {
                         // define user object
                         SmobApp.currUser = SmobUserATO(
                             userId,
-                            if(isNewUser) SmobItemStatus.NEW else SmobItemStatus.OPEN,
+                            if(isNewUser) ItemStatus.NEW else ItemStatus.OPEN,
                             userItemPos,
                             userName.trim().replace(" ", "."),
                             userName,

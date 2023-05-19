@@ -7,7 +7,7 @@ import androidx.databinding.ViewDataBinding
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.RowContactBinding
 import com.tanfra.shopmob.databinding.RowContactDataBinding
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.SmobContactATO
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import org.koin.core.component.KoinComponent
@@ -40,7 +40,7 @@ class AdminContactsImportTableAdapter(rootView: View, callBack: (selectedSmobCon
 
         // take out all items which have been deleted by swiping
         return items
-            .filter { item -> item.itemStatus != SmobItemStatus.DELETED }
+            .filter { item -> item.itemStatus != ItemStatus.DELETED }
             .sortedWith(
                 compareBy(
                     { it.name },

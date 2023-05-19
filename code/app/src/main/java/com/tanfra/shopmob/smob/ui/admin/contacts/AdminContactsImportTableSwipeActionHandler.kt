@@ -4,7 +4,7 @@ import android.os.Vibrator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 import com.tanfra.shopmob.utils.ui.BaseSwipeActionHandler
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
@@ -30,9 +30,9 @@ class AdminContactsImportTableSwipeActionHandler(adapter: AdminContactsImportTab
 
                 when (item.itemStatus) {
 
-                    SmobItemStatus.NEW, SmobItemStatus.OPEN -> {
+                    ItemStatus.NEW, ItemStatus.OPEN -> {
                         // mark smobGroup as 'deleted'
-                        item.itemStatus = SmobItemStatus.DELETED
+                        item.itemStatus = ItemStatus.DELETED
                         adapter.setItem(position, item)
 
                         // throw item off the list
@@ -42,7 +42,7 @@ class AdminContactsImportTableSwipeActionHandler(adapter: AdminContactsImportTab
 
                     else -> {
                         // return to 'group inactive'
-                        item.itemStatus = SmobItemStatus.OPEN
+                        item.itemStatus = ItemStatus.OPEN
                         adapter.setItem(position, item)
 
                         // restore RV item view (removing the animation effects)
@@ -60,8 +60,8 @@ class AdminContactsImportTableSwipeActionHandler(adapter: AdminContactsImportTab
 
                 // activate group ('IN_PROGRESS')
                 when (item.itemStatus) {
-                    SmobItemStatus.NEW, SmobItemStatus.OPEN -> {
-                        item.itemStatus = SmobItemStatus.IN_PROGRESS
+                    ItemStatus.NEW, ItemStatus.OPEN -> {
+                        item.itemStatus = ItemStatus.IN_PROGRESS
                         adapter.setItem(position, item)
                     }
                     else -> {

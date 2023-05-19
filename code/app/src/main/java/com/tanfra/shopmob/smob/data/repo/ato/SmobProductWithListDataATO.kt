@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SmobProductWithListDataATO(
     override val itemId: String,
-    override var itemStatus: @Contextual SmobItemStatus,
+    override var itemStatus: @Contextual ItemStatus,
     override var itemPosition: Long,
     var productName: String,
     var productDescription: String?,
@@ -17,7 +17,7 @@ data class SmobProductWithListDataATO(
     var productActivity: @Contextual ActivityStatus,
     var productInShop: @Contextual InShop,
     val listId: String,
-    val listStatus: @Contextual SmobItemStatus,
+    val listStatus: @Contextual ItemStatus,
     val listPosition: Long,
     var listName: String,
     var listDescription: String?,

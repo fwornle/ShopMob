@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentAdminGroupMemberDetailsBinding
 import com.tanfra.shopmob.smob.data.local.utils.SmobMemberItem
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
@@ -78,7 +78,7 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
                         .toMutableList().apply {
                             add(SmobMemberItem(
                                 newMemberId,
-                                SmobItemStatus.OPEN,
+                                ItemStatus.OPEN,
                                 this.size.toLong() + 1)
                             )
                         }

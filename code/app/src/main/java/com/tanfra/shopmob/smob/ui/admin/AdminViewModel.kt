@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.local.utils.GroupType
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.base.BaseViewModel
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobGroupDataSource
@@ -86,7 +86,7 @@ class AdminViewModel(
                 if (name != null) {
                     contactsList.add(SmobContactATO(
                         id,
-                        SmobItemStatus.NEW,
+                        ItemStatus.NEW,
                         idx,
                         name
                     ))
@@ -240,7 +240,7 @@ class AdminViewModel(
         showNoData.value = (
             smobItemsNewest.status == Status.SUCCESS && smobItemsNewest.data!!.isEmpty() ||
                     smobItemsNewest.status == Status.SUCCESS && smobItemsNewest.data!!.all {
-                    (it as Ato).itemStatus == SmobItemStatus.DELETED
+                    (it as Ato).itemStatus == ItemStatus.DELETED
                 }
             )
     }
@@ -427,7 +427,7 @@ class AdminViewModel(
 //                                .filter { user ->
 //                                    daGroup.members
 //                                        .map { groupMember ->
-//                                            if (groupMember.status != SmobItemStatus.DELETED)
+//                                            if (groupMember.status != ItemStatus.DELETED)
 //                                                groupMember.id
 //                                            else
 //                                                ""
@@ -759,7 +759,7 @@ class AdminViewModel(
 
     val smobListName = MutableLiveData<String?>()
     val smobListDescription = MutableLiveData<String?>()
-    val smobListStatus = MutableLiveData<SmobItemStatus?>()
+    val smobListStatus = MutableLiveData<ItemStatus?>()
 
     init {
         onClearList()
@@ -882,7 +882,7 @@ class AdminViewModel(
                                 .filter { group ->
                                     daList.groups
                                         .map { listGroup ->
-                                            if (listGroup.status != SmobItemStatus.DELETED)
+                                            if (listGroup.status != ItemStatus.DELETED)
                                                 listGroup.id
                                             else
                                                 ""

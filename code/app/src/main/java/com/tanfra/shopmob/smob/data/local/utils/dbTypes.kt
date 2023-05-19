@@ -52,7 +52,7 @@ enum class GroupType {
     WORK,
 }
 
-enum class SmobItemStatus {
+enum class ItemStatus {
     NEW,
     OPEN,
     IN_PROGRESS,
@@ -88,7 +88,7 @@ data class ShopLocation(
 @Serializable
 data class SmobListItem(
     val id: String,
-    var status: SmobItemStatus,
+    var status: ItemStatus,
     val listPosition: Long,
     val mainCategory: ProductMainCategory,
 ) : java.io.Serializable
@@ -96,19 +96,19 @@ data class SmobListItem(
 @Serializable
 data class SmobMemberItem(
     val id: String,
-    var status: SmobItemStatus,
+    var status: ItemStatus,
     var listPosition: Long,
 ) : java.io.Serializable
 
 @Serializable
 data class SmobGroupItem(
     val id: String,
-    var status: SmobItemStatus,
+    var status: ItemStatus,
     val listPosition: Long,
 ) : java.io.Serializable
 
 @Serializable
 data class SmobListLifecycle(
-    val status: SmobItemStatus,
+    val status: ItemStatus,
     var completion: Double
 ) : java.io.Serializable

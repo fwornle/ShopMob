@@ -343,7 +343,7 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
         // ... this is useless here --> but needs to be done like this in the viewModel
 //        val dummySmobItemDTO = DTO(
 //            "DUMMY",
-//            SmobItemStatus.NEW,
+//            ItemStatus.NEW,
 //            -1L,
 //            "",
 //            "",

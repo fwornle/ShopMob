@@ -5,7 +5,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
+import com.tanfra.shopmob.smob.data.local.utils.ItemStatus
 import com.tanfra.shopmob.smob.data.local.utils.SmobListItem
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductWithListDataATO
@@ -35,7 +35,7 @@ class PlanningProductsTableAdapter(rootView: View, callBack: (selectedSmobATO: S
 
         // take out all items which have been deleted by swiping
         return items
-            .filter { item -> item.itemStatus != SmobItemStatus.DELETED  }
+            .filter { item -> item.itemStatus != ItemStatus.DELETED  }
             .sortedWith(
                 compareBy(
                     { it.productCategory.main },

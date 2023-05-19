@@ -80,13 +80,13 @@ class AdminGroupsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelected
             //     is going to be the data record written to the DB
             daSmobGroupATO = SmobGroupATO(
                 UUID.randomUUID().toString(),
-                SmobItemStatus.OPEN,
+                ItemStatus.OPEN,
                 listPosMax + 1,
                 _viewModel.smobGroupName.value ?: "mystery group",
                 _viewModel.smobGroupDescription.value ?: "something exciting",
                 _viewModel.smobGroupType.value ?: GroupType.OTHER,
                 SmobApp.currUser?.let {
-                    listOf(SmobMemberItem(it.itemId, SmobItemStatus.OPEN, 0))
+                    listOf(SmobMemberItem(it.itemId, ItemStatus.OPEN, 0))
                 } ?: listOf(), // members
                 ActivityStatus(currentDate, 0)
             )

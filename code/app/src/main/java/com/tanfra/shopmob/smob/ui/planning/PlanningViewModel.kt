@@ -376,7 +376,7 @@ class PlanningViewModel(
         showNoData.value = (
                 smobListNewest.status == Status.SUCCESS && smobListNewest.data!!.isEmpty() ||
                 smobListNewest.status == Status.SUCCESS && smobListNewest.data!!.all {
-                    (it as Ato).itemStatus == SmobItemStatus.DELETED
+                    (it as Ato).itemStatus == ItemStatus.DELETED
                 } ||
                 // show 'no data', if the currently logged in user is not affiliated with any groups
                 SmobApp.currUser?.hasGroupRefs()?.not() ?: false
@@ -404,7 +404,7 @@ class PlanningViewModel(
         selectedShop.postValue(
             SmobShopATO(
                 "no product selected yet (id)",
-                SmobItemStatus.NEW,
+                ItemStatus.NEW,
                 -1L,
                 "",
                 "",

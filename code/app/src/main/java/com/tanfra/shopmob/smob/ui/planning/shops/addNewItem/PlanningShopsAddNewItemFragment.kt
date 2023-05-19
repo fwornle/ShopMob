@@ -181,7 +181,7 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
             //     is going to be the data record written to the DB
             daSmobShopATO = SmobShopATO(
                 UUID.randomUUID().toString(),
-                SmobItemStatus.NEW,
+                ItemStatus.NEW,
                 -1L,
                 _viewModel.locatedShop.value?.name ?: "mystery shop",
                 _viewModel.locatedShop.value?.description ?: "something strange",

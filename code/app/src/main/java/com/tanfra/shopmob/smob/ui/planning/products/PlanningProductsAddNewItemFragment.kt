@@ -118,7 +118,7 @@ class PlanningProductsAddNewItemFragment :
                         currList = it.data
 
                         valItems =
-                            it.data?.items?.filter { itm -> itm.status != SmobItemStatus.DELETED }
+                            it.data?.items?.filter { itm -> itm.status != ItemStatus.DELETED }
                         nValItems = valItems?.size ?: 0
                         itemMaxPosition = currList?.items?.fold(0L) { max, item ->
                             if (item.listPosition > max) {
@@ -139,7 +139,7 @@ class PlanningProductsAddNewItemFragment :
             //     is going to be the data record written to the DB
             daSmobProductATO = SmobProductATO(
                 UUID.randomUUID().toString(),
-                SmobItemStatus.OPEN,
+                ItemStatus.OPEN,
                 itemMaxPosition + 1,
                 _viewModel.smobProductName.value ?: "",
                 _viewModel.smobProductDescription.value ?: "",
@@ -192,8 +192,8 @@ class PlanningProductsAddNewItemFragment :
                         newItems,
                         it.groups,
                         SmobListLifecycle(
-                            if (it.lifecycle.status.ordinal <= SmobItemStatus.OPEN.ordinal) {
-                                SmobItemStatus.OPEN
+                            if (it.lifecycle.status.ordinal <= ItemStatus.OPEN.ordinal) {
+                                ItemStatus.OPEN
                             } else {
                                 it.lifecycle.status
                             },
@@ -201,7 +201,7 @@ class PlanningProductsAddNewItemFragment :
                                 0 -> 0.0
                                 else -> {
                                     val doneItems = valItems
-                                        ?.filter { daItem -> daItem.status == SmobItemStatus.DONE }?.size
+                                        ?.filter { daItem -> daItem.status == ItemStatus.DONE }?.size
                                         ?: 0
                                     (100.0 * doneItems / nValItems).roundToInt().toDouble()
                                 }
