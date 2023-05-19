@@ -2,49 +2,6 @@ package com.tanfra.shopmob.smob.data.types
 
 import kotlinx.serialization.Serializable
 
-// define data types to be used with the Room DB (possibly w/h conversion)
-enum class ShopCategory {
-    OTHER,
-    SUPERMARKET,
-    DRUGSTORE,
-    HARDWARE,
-    CLOTHING,
-    ACCESSORIES,
-    SUPPLIES,
-    FURNITURE,
-    BAKERY,
-}
-
-enum class ShopType {
-    INDIVIDUAL,
-    CHAIN,
-}
-
-enum class ProductMainCategory {
-    OTHER,
-    FOODS,
-    HARDWARE,
-    SUPPLIES,
-    CLOTHING,
-}
-
-enum class ProductSubCategory {
-    OTHER,
-    DAIRY,
-    BREAD,
-    BREKKY,
-    FRUIT_VEGETABLE,
-    CANNED_FOOD,
-    BEVERAGES,
-    DIY,
-    TOOLS,
-    OFFICE,
-    POSTAL,
-    BUSINESS,
-    LEISURE,
-    SHOES,
-}
-
 @Serializable
 data class InShop(
     val category: ShopCategory,
