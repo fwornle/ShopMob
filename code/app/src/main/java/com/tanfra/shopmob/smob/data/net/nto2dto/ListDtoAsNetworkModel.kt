@@ -28,7 +28,7 @@ fun <DTO: Dto, NTO: Nto> List<DTO?>._asNetworkModel(d: DTO): ArrayList<NTO> {
                 ArrayList(
                     map {
                         SmobGroupNTO(
-                            id = (it as SmobGroupDTO).id,
+                            id = (it as SmobGroupDTO).itemId,
                             itemStatus = it.itemStatus,
                             itemPosition = it.itemPosition,
                             name = it.name,
@@ -44,7 +44,7 @@ fun <DTO: Dto, NTO: Nto> List<DTO?>._asNetworkModel(d: DTO): ArrayList<NTO> {
                 ArrayList(
                     map {
                         SmobListNTO(
-                            id = (it as SmobListDTO).id,
+                            id = (it as SmobListDTO).itemId,
                             itemStatus = it.itemStatus,
                             itemPosition = it.itemPosition,
                             name = it.name,
@@ -60,7 +60,7 @@ fun <DTO: Dto, NTO: Nto> List<DTO?>._asNetworkModel(d: DTO): ArrayList<NTO> {
                 ArrayList(
                     map {
                         SmobProductNTO(
-                            id = (it as SmobProductDTO).id,
+                            id = (it as SmobProductDTO).itemId,
                             itemStatus = it.itemStatus,
                             itemPosition = it.itemPosition,
                             name = it.name,
@@ -77,7 +77,7 @@ fun <DTO: Dto, NTO: Nto> List<DTO?>._asNetworkModel(d: DTO): ArrayList<NTO> {
                 ArrayList(
                     map {
                         SmobShopNTO(
-                            id = (it as SmobShopDTO).id,
+                            id = (it as SmobShopDTO).itemId,
                             itemStatus = it.itemStatus,
                             itemPosition = it.itemPosition,
                             name = it.name,
@@ -95,7 +95,7 @@ fun <DTO: Dto, NTO: Nto> List<DTO?>._asNetworkModel(d: DTO): ArrayList<NTO> {
                 ArrayList(
                     map {
                         SmobUserNTO(
-                            id = (it as SmobUserDTO).id,
+                            id = (it as SmobUserDTO).itemId,
                             itemStatus = it.itemStatus,
                             itemPosition = it.itemPosition,
                             username = it.username,

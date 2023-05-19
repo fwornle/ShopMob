@@ -140,13 +140,13 @@ class SmobProductRepository(
             // then push to backend DB
             // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
             if(networkConnectionManager.isNetworkConnected) {
-                val testRead = getSmobProductViaApi(dbProduct.id)
-                if (testRead.data?.id != dbProduct.id) {
+                val testRead = getSmobProductViaApi(dbProduct.itemId)
+                if (testRead.data?.itemId != dbProduct.itemId) {
                     // item not found in backend --> use POST to create it
                     saveSmobProductViaApi(dbProduct)
                 } else {
                     // item already exists in backend DB --> use PUT to update it
-                    smobProductApi.updateSmobItemById(dbProduct.id, dbProduct.asNetworkModel())
+                    smobProductApi.updateSmobItemById(dbProduct.itemId, dbProduct.asNetworkModel())
                 }
             }
 
@@ -182,7 +182,7 @@ class SmobProductRepository(
                 // then push to backend DB
                 // ... use 'update', as product may already exist (equivalent of REPLACE w/h local DB)
                 if(networkConnectionManager.isNetworkConnected) {
-                    smobProductApi.updateSmobItemById(dbProduct.id, dbProduct.asNetworkModel())
+                    smobProductApi.updateSmobItemById(dbProduct.itemId, dbProduct.asNetworkModel())
                 }
 
             }
@@ -230,7 +230,7 @@ class SmobProductRepository(
                 if(networkConnectionManager.isNetworkConnected) {
                     getSmobProductsViaApi().let {
                         if (it.status == Status.SUCCESS) {
-                            it.data?.map { smobProductApi.deleteSmobItemById(it.id) }
+                            it.data?.map { smobProductApi.deleteSmobItemById(it.itemId) }
                         } else {
                             Timber.w("Unable to get SmobProduct IDs from backend DB (via API) - not deleting anything.")
                         }

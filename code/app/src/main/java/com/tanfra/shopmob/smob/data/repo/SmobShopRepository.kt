@@ -108,13 +108,13 @@ class SmobShopRepository(
             // then push to backend DB
             // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
             if(networkConnectionManager.isNetworkConnected) {
-                val testRead = getSmobShopViaApi(dbShop.id)
-                if (testRead.data?.id != dbShop.id) {
+                val testRead = getSmobShopViaApi(dbShop.itemId)
+                if (testRead.data?.itemId != dbShop.itemId) {
                     // item not found in backend --> use POST to create it
                     saveSmobShopViaApi(dbShop)
                 } else {
                     // item already exists in backend DB --> use PUT to update it
-                    smobShopApi.updateSmobItemById(dbShop.id, dbShop.asNetworkModel())
+                    smobShopApi.updateSmobItemById(dbShop.itemId, dbShop.asNetworkModel())
                 }
             }
 
@@ -150,13 +150,13 @@ class SmobShopRepository(
                 // then push to backend DB
                 // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
                 if(networkConnectionManager.isNetworkConnected) {
-                    val testRead = getSmobShopViaApi(dbShop.id)
-                    if (testRead.data?.id != dbShop.id) {
+                    val testRead = getSmobShopViaApi(dbShop.itemId)
+                    if (testRead.data?.itemId != dbShop.itemId) {
                         // item not found in backend --> use POST to create it
                         saveSmobShopViaApi(dbShop)
                     } else {
                         // item already exists in backend DB --> use PUT to update it
-                        smobShopApi.updateSmobItemById(dbShop.id, dbShop.asNetworkModel())
+                        smobShopApi.updateSmobItemById(dbShop.itemId, dbShop.asNetworkModel())
                     }
                 }
 
@@ -205,7 +205,7 @@ class SmobShopRepository(
                 if(networkConnectionManager.isNetworkConnected) {
                     getSmobShopsViaApi().let {
                         if (it.status == Status.SUCCESS) {
-                            it.data?.map { smobShopApi.deleteSmobItemById(it.id) }
+                            it.data?.map { smobShopApi.deleteSmobItemById(it.itemId) }
                         } else {
                             Timber.w("Unable to get SmobShop IDs from backend DB (via API) - not deleting anything.")
                         }

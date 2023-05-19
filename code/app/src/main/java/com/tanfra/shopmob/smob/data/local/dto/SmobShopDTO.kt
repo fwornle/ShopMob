@@ -8,7 +8,7 @@ import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 /**
  * Immutable model class for a SmobShop. In order to compile with Room
  *
- * @param id             id of the smobShop
+ * @param itemId         itemId of the smobShop
  * @param itemStatus     status of an item of the smobShop (in a list)
  * @param itemPosition   position of an item of the smobShop (in a list)
  * @param name           name of the smobShop
@@ -23,7 +23,7 @@ import com.tanfra.shopmob.smob.data.local.utils.SmobItemStatus
 @Entity(tableName = "smobShops")
 @RewriteQueriesToDropUnusedColumns
 data class SmobShopDTO(
-    @PrimaryKey @ColumnInfo(name = "shopId") override var id: String = "invalid smob shop id",
+    @PrimaryKey @ColumnInfo(name = "shopId") override var itemId: String = "invalid smob shop id",
     @ColumnInfo(name = "shopItemStatus") override var itemStatus: SmobItemStatus = SmobItemStatus.NEW,
     @ColumnInfo(name = "shopItemPosition") override var itemPosition: Long = -1L,
     @ColumnInfo(name = "shopName") var name: String = "",

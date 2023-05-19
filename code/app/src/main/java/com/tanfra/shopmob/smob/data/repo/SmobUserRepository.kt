@@ -143,13 +143,13 @@ class SmobUserRepository(
             // then push to backend DB
             // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
             if(networkConnectionManager.isNetworkConnected) {
-                val testRead = getSmobUserViaApi(dbUser.id)
-                if (testRead.data?.id != dbUser.id) {
+                val testRead = getSmobUserViaApi(dbUser.itemId)
+                if (testRead.data?.itemId != dbUser.itemId) {
                     // item not found in backend --> use POST to create it
                     saveSmobUserViaApi(dbUser)
                 } else {
                     // item already exists in backend DB --> use PUT to update it
-                    smobUserApi.updateSmobItemById(dbUser.id, dbUser.asNetworkModel())
+                    smobUserApi.updateSmobItemById(dbUser.itemId, dbUser.asNetworkModel())
                 }
             }
 
@@ -185,13 +185,13 @@ class SmobUserRepository(
                 // then push to backend DB
                 // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
                 if(networkConnectionManager.isNetworkConnected) {
-                    val testRead = getSmobUserViaApi(dbUser.id)
-                    if (testRead.data?.id != dbUser.id) {
+                    val testRead = getSmobUserViaApi(dbUser.itemId)
+                    if (testRead.data?.itemId != dbUser.itemId) {
                         // item not found in backend --> use POST to create it
                         saveSmobUserViaApi(dbUser)
                     } else {
                         // item already exists in backend DB --> use PUT to update it
-                        smobUserApi.updateSmobItemById(dbUser.id, dbUser.asNetworkModel())
+                        smobUserApi.updateSmobItemById(dbUser.itemId, dbUser.asNetworkModel())
                     }
                 }
 
@@ -240,7 +240,7 @@ class SmobUserRepository(
                 if(networkConnectionManager.isNetworkConnected) {
                     getSmobUsersViaApi().let {
                         if (it.status == Status.SUCCESS) {
-                            it.data?.map { smobUserApi.deleteSmobItemById(it.id) }
+                            it.data?.map { smobUserApi.deleteSmobItemById(it.itemId) }
                         } else {
                             Timber.w("Unable to get smobItem IDs from backend DB (via API) - not deleting anything.")
                         }
@@ -306,7 +306,7 @@ class SmobUserRepository(
 
                     // modified user = "me"? --> if so, update "currUser"
                     // ... this normally only updates the groups a user is affiliated with
-                    if(it.id == SmobApp.currUser?.id) SmobApp.currUser = it._asDomainModel(it)
+                    if(it.itemId == SmobApp.currUser?.id) SmobApp.currUser = it._asDomainModel(it)
 
                 }
 

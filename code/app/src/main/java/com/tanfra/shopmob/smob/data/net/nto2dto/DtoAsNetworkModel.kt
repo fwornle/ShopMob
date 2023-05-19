@@ -12,7 +12,7 @@ fun <DTO: Dto, NTO: Nto> DTO?._asNetworkModel(d: DTO): NTO {
 
             is SmobGroupDTO -> {
                 SmobGroupNTO(
-                    id = (this as SmobGroupDTO).id,
+                    id = (this as SmobGroupDTO).itemId,
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
                     name = this.name,
@@ -24,7 +24,7 @@ fun <DTO: Dto, NTO: Nto> DTO?._asNetworkModel(d: DTO): NTO {
             }
             is SmobListDTO -> {
                 SmobListNTO(
-                    id = (this as SmobListDTO).id,
+                    id = (this as SmobListDTO).itemId,
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
                     name = this.name,
@@ -36,7 +36,7 @@ fun <DTO: Dto, NTO: Nto> DTO?._asNetworkModel(d: DTO): NTO {
             }
             is SmobProductDTO -> {
                 SmobProductNTO (
-                    id = (this as SmobProductDTO).id,
+                    id = (this as SmobProductDTO).itemId,
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
                     name = this.name,
@@ -49,7 +49,7 @@ fun <DTO: Dto, NTO: Nto> DTO?._asNetworkModel(d: DTO): NTO {
             }
             is SmobShopDTO -> {
                 SmobShopNTO (
-                    id = (this as SmobShopDTO).id,
+                    id = (this as SmobShopDTO).itemId,
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
                     name = this.name,
@@ -63,7 +63,7 @@ fun <DTO: Dto, NTO: Nto> DTO?._asNetworkModel(d: DTO): NTO {
             }
             is SmobUserDTO -> {
                 SmobUserNTO (
-                    id = (this as SmobUserDTO).id,
+                    id = (this as SmobUserDTO).itemId,
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
                     username = this.username,

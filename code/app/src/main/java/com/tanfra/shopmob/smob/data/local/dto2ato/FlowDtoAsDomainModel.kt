@@ -16,7 +16,7 @@ fun <DTO: Dto, ATO: Ato> Flow<DTO?>._asDomainModel(d: DTO): Flow<ATO> {
             when (d as Dto) {
                 is SmobGroupDTO -> {
                     SmobGroupATO(
-                        id = (it as SmobGroupDTO).id,
+                        id = (it as SmobGroupDTO).itemId,
                         itemStatus = it.itemStatus,
                         itemPosition = it.itemPosition,
                         name = it.name,
@@ -28,7 +28,7 @@ fun <DTO: Dto, ATO: Ato> Flow<DTO?>._asDomainModel(d: DTO): Flow<ATO> {
                 }
                 is SmobListDTO -> {
                     SmobListATO(
-                        id = (it as SmobListDTO).id,
+                        id = (it as SmobListDTO).itemId,
                         itemStatus = it.itemStatus,
                         itemPosition = it.itemPosition,
                         name = it.name,
@@ -40,7 +40,7 @@ fun <DTO: Dto, ATO: Ato> Flow<DTO?>._asDomainModel(d: DTO): Flow<ATO> {
                 }
                 is SmobProductDTO -> {
                     SmobProductATO (
-                        id = (it as SmobProductDTO).id,
+                        id = (it as SmobProductDTO).itemId,
                         itemStatus = it.itemStatus,
                         itemPosition = it.itemPosition,
                         name = it.name,
@@ -53,7 +53,7 @@ fun <DTO: Dto, ATO: Ato> Flow<DTO?>._asDomainModel(d: DTO): Flow<ATO> {
                 }
                 is SmobShopDTO -> {
                     SmobShopATO (
-                        id = (it as SmobShopDTO).id,
+                        id = (it as SmobShopDTO).itemId,
                         itemStatus = it.itemStatus,
                         itemPosition = it.itemPosition,
                         name = it.name,
@@ -67,7 +67,7 @@ fun <DTO: Dto, ATO: Ato> Flow<DTO?>._asDomainModel(d: DTO): Flow<ATO> {
                 }
                 is SmobUserDTO -> {
                     SmobUserATO (
-                        id = (it as SmobUserDTO).id,
+                        id = (it as SmobUserDTO).itemId,
                         itemStatus = it.itemStatus,
                         itemPosition = it.itemPosition,
                         username = it.username,

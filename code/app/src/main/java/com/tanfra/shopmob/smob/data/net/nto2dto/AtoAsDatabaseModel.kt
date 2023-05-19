@@ -14,7 +14,7 @@ fun <DTO: Dto, ATO: Ato> ATO._asDatabaseModel(d: DTO): DTO {
     return when (d as Dto) {
             is SmobGroupDTO -> {
                 SmobGroupDTO(
-                    id = (this as SmobGroupNTO).id,
+                    itemId = (this as SmobGroupNTO).id,
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
                     name = this.name,
@@ -27,7 +27,7 @@ fun <DTO: Dto, ATO: Ato> ATO._asDatabaseModel(d: DTO): DTO {
             }
         is SmobListDTO -> {
             SmobListDTO(
-                id = (this as SmobListNTO).id,
+                itemId = (this as SmobListNTO).id,
                 itemStatus = this.itemStatus,
                 itemPosition = this.itemPosition,
                 name = this.name,
@@ -40,7 +40,7 @@ fun <DTO: Dto, ATO: Ato> ATO._asDatabaseModel(d: DTO): DTO {
         }
         is SmobProductDTO -> {
             SmobProductDTO(
-                id = (this as SmobProductNTO).id,
+                itemId = (this as SmobProductNTO).id,
                 itemStatus = this.itemStatus,
                 itemPosition = this.itemPosition,
                 name = this.name,
@@ -57,7 +57,7 @@ fun <DTO: Dto, ATO: Ato> ATO._asDatabaseModel(d: DTO): DTO {
         }
         is SmobShopDTO -> {
             SmobShopDTO(
-                id = (this as SmobShopNTO).id,
+                itemId = (this as SmobShopNTO).id,
                 itemStatus = this.itemStatus,
                 itemPosition = this.itemPosition,
                 name = this.name,
@@ -72,7 +72,7 @@ fun <DTO: Dto, ATO: Ato> ATO._asDatabaseModel(d: DTO): DTO {
         }
         is SmobUserDTO -> {
             SmobUserDTO(
-                id = (this as SmobUserNTO).id,
+                itemId = (this as SmobUserNTO).id,
                 itemStatus = this.itemStatus,
                 itemPosition = this.itemPosition,
                 username = this.username,
