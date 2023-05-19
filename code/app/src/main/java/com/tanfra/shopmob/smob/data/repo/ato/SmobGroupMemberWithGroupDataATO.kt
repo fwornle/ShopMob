@@ -3,6 +3,7 @@ package com.tanfra.shopmob.smob.data.repo.ato
 import com.tanfra.shopmob.smob.data.types.ActivityStatus
 import com.tanfra.shopmob.smob.data.types.GroupType
 import com.tanfra.shopmob.smob.data.types.ItemStatus
+import com.tanfra.shopmob.smob.data.types.SmobItemId
 import com.tanfra.shopmob.smob.data.types.SmobMemberItem
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
@@ -10,7 +11,7 @@ import kotlinx.serialization.Serializable
 // domain independent data type (Application Transfer Object)
 @Serializable
 data class SmobGroupMemberWithGroupDataATO(
-    override val itemId: String,
+    override val itemId: @Contextual SmobItemId,
     override var itemStatus: @Contextual ItemStatus,
     override var itemPosition: Long,
     var memberUsername: String,
@@ -43,7 +44,7 @@ data class SmobGroupMemberWithGroupDataATO(
 
     // extract group
     fun group() = SmobGroupATO(
-        this.groupId,
+        SmobItemId(this.groupId),
         this.groupStatus,
         this.groupPosition,
         this.groupName,

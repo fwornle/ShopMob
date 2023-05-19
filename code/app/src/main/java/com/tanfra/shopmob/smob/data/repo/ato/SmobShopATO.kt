@@ -4,13 +4,14 @@ import com.tanfra.shopmob.smob.data.types.ShopCategory
 import com.tanfra.shopmob.smob.data.types.ShopLocation
 import com.tanfra.shopmob.smob.data.types.ShopType
 import com.tanfra.shopmob.smob.data.types.ItemStatus
+import com.tanfra.shopmob.smob.data.types.SmobItemId
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 // domain independent data type (Application Transfer Object)
 @Serializable
 data class SmobShopATO(
-    override val itemId: String,
+    override val itemId: @Contextual SmobItemId,
     override var itemStatus: @Contextual ItemStatus,
     override var itemPosition: Long,
     var name: String,

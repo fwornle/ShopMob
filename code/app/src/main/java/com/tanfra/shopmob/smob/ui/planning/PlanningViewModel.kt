@@ -20,6 +20,7 @@ import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
+import com.tanfra.shopmob.smob.data.types.SmobItemId
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -121,7 +122,7 @@ class PlanningViewModel(
                             // output merged data type (with product item status)
 
                             // fetch product details from 'items' list on the smobList
-                            val productOnList = rawList.items.first { item -> item.id == product.itemId }
+                            val productOnList = rawList.items.first { item -> item.id == product.itemId.value }
 
                             SmobProductWithListDataATO(
                                 itemId = product.itemId,
@@ -133,7 +134,7 @@ class PlanningViewModel(
                                 productCategory = product.category,
                                 productActivity = product.activity,
                                 productInShop = product.inShop,
-                                listId = rawList.itemId,
+                                listId = rawList.itemId.value,
                                 listStatus = rawList.itemStatus,
                                 listPosition = rawList.itemPosition,
                                 listName = rawList.name,
@@ -410,7 +411,7 @@ class PlanningViewModel(
     init {
         selectedShop.postValue(
             SmobShopATO(
-                "no product selected yet (id)",
+                SmobItemId("no product selected yet (id)"),
                 ItemStatus.NEW,
                 -1L,
                 "",

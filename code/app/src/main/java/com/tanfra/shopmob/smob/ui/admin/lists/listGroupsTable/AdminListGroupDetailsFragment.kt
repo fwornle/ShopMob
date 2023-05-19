@@ -74,7 +74,7 @@ class AdminListGroupDetailsFragment : BaseFragment(), KoinComponent {
                     val updatedMemberList = daList.groups.toMutableList().apply {
                         add(
                             SmobGroupItem(
-                                currGroupId,
+                                currGroupId.value,
                                 ItemStatus.OPEN,
                                 daList.groups.size.toLong() + 1
                             )

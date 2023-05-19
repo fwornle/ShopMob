@@ -181,7 +181,7 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
                                 geoFenceIdList.map { geoFenceItem ->
 
                                     // fetch shop details
-                                    val smobShoppe = smobShops?.find { it.itemId == geoFenceItem }
+                                    val smobShoppe = smobShops?.find { it.itemId.value == geoFenceItem }
                                     smobShoppe?.let { daShop ->
 
                                         if(uniqueMainCategories.any { daShop.hasProduct(it) }) {

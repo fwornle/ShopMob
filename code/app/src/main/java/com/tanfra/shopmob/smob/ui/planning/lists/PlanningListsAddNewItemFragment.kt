@@ -12,6 +12,7 @@ import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.types.SmobListLifecycle
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
+import com.tanfra.shopmob.smob.data.types.SmobItemId
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.utils.ui.closeSoftKeyboard
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
@@ -70,7 +71,7 @@ class PlanningListsAddNewItemFragment : BaseFragment(), KoinComponent {
             // ... if no better values have been provided by the user (taken from viewModel), this
             //     is going to be the data record written to the DB
             daSmobListATO = SmobListATO(
-                UUID.randomUUID().toString(),
+                SmobItemId(UUID.randomUUID().toString()),
                 ItemStatus.NEW,
                 listPosMax + 1,
                 _viewModel.smobListName.value ?: "mystery list",

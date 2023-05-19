@@ -193,7 +193,7 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
 
             // communicate the ID and name of the selected item (= shopping list)
             val bundle = bundleOf(
-                "listId" to it.itemId,
+                "listId" to it.itemId.value,
                 "listName" to it.name,
             )
 

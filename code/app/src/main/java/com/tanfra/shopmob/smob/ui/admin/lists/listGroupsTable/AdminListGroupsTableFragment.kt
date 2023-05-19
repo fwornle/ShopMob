@@ -60,12 +60,12 @@ class AdminListGroupsTableFragment : BaseFragment(), KoinComponent {
 
             // register (not yet collected) flow / StateFlow in viewModel:
             // --> selected SmobList
-            _viewModel.smobListF = _viewModel.registerSmobListFlow(it)
+            _viewModel.smobListF = _viewModel.registerSmobListFlow(it.value)
             _viewModel.smobListSF = _viewModel.registerSmobListFlowAsStateFlow(_viewModel.smobListF)
 
             // register (not yet collected) flow / StateFlow in viewModel:
             // --> referenced Groups of selected SmobList
-            _viewModel.smobListGroupsF = _viewModel.registerSmobListGroupsFlow(it)
+            _viewModel.smobListGroupsF = _viewModel.registerSmobListGroupsFlow(it.value)
             _viewModel.smobListGroupsSF = _viewModel.smobListGroupsFlowAsSF(_viewModel.smobListGroupsF)
 
             // combine the flows and turn into StateFlow

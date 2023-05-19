@@ -38,6 +38,7 @@ import com.tanfra.shopmob.smob.data.types.ShopLocation
 import com.tanfra.shopmob.smob.data.types.ShopType
 import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
+import com.tanfra.shopmob.smob.data.types.SmobItemId
 import com.tanfra.shopmob.utils.ui.closeSoftKeyboard
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
@@ -184,7 +185,7 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
             // ... if no better values have been provided by the user (taken from viewModel), this
             //     is going to be the data record written to the DB
             daSmobShopATO = SmobShopATO(
-                UUID.randomUUID().toString(),
+                SmobItemId(UUID.randomUUID().toString()),
                 ItemStatus.NEW,
                 -1L,
                 _viewModel.locatedShop.value?.name ?: "mystery shop",
@@ -564,7 +565,7 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
             val geoFenceObj = Geofence.Builder()
 
                 // Set the request ID of the geofence - use SmobShop name as ID (string)
-                .setRequestId(daSmobShopATO.itemId)
+                .setRequestId(daSmobShopATO.itemId.value)
 
                 // Set the circular region of this geofence
                 .setCircularRegion(

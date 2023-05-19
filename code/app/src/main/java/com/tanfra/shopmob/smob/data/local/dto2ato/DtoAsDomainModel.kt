@@ -7,6 +7,7 @@ import com.tanfra.shopmob.smob.data.types.ProductCategory
 import com.tanfra.shopmob.smob.data.types.ShopLocation
 import com.tanfra.shopmob.smob.data.types.SmobListLifecycle
 import com.tanfra.shopmob.smob.data.repo.ato.*
+import com.tanfra.shopmob.smob.data.types.SmobItemId
 
 
 // DTO --> ATO
@@ -17,7 +18,7 @@ fun <DTO: Dto, ATO: Ato> DTO?._asDomainModel(d: DTO): ATO {
 
             is SmobGroupDTO -> {
                 SmobGroupATO(
-                    itemId = (this as SmobGroupDTO).itemId,
+                    itemId = SmobItemId((this as SmobGroupDTO).itemId),
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
                     name = this.name,
@@ -29,7 +30,7 @@ fun <DTO: Dto, ATO: Ato> DTO?._asDomainModel(d: DTO): ATO {
             }
             is SmobListDTO -> {
                 SmobListATO(
-                    itemId = (this as SmobListDTO).itemId,
+                    itemId = SmobItemId((this as SmobListDTO).itemId),
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
                     name = this.name,
@@ -41,7 +42,7 @@ fun <DTO: Dto, ATO: Ato> DTO?._asDomainModel(d: DTO): ATO {
             }
             is SmobProductDTO -> {
                 SmobProductATO (
-                    itemId = (this as SmobProductDTO).itemId,
+                    itemId = SmobItemId((this as SmobProductDTO).itemId),
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
                     name = this.name,
@@ -54,7 +55,7 @@ fun <DTO: Dto, ATO: Ato> DTO?._asDomainModel(d: DTO): ATO {
             }
             is SmobShopDTO -> {
                 SmobShopATO (
-                    itemId = (this as SmobShopDTO).itemId,
+                    itemId = SmobItemId((this as SmobShopDTO).itemId),
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
                     name = this.name,
@@ -68,7 +69,7 @@ fun <DTO: Dto, ATO: Ato> DTO?._asDomainModel(d: DTO): ATO {
             }
             is SmobUserDTO -> {
                 SmobUserATO (
-                    itemId = (this as SmobUserDTO).itemId,
+                    itemId = SmobItemId((this as SmobUserDTO).itemId),
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
                     username = this.username,

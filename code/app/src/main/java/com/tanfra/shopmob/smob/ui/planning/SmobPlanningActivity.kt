@@ -27,6 +27,7 @@ import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
+import com.tanfra.shopmob.smob.data.types.SmobItemId
 import com.tanfra.shopmob.smob.work.SmobAppWork
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.take
@@ -169,7 +170,7 @@ class SmobPlanningActivity : AppCompatActivity() {
                         Timber.i("Number of users: ${allUsers?.size ?: -1}")
 
                         val userItemPos: Long
-                        val daUser: SmobUserATO? = allUsers?.find { it.itemId == userId }
+                        val daUser: SmobUserATO? = allUsers?.find { it.itemId.value == userId }
 
                         // determine position of user item in DB
                         userItemPos = if(daUser == null) {
@@ -188,7 +189,7 @@ class SmobPlanningActivity : AppCompatActivity() {
 
                         // define user object
                         SmobApp.currUser = SmobUserATO(
-                            userId,
+                            SmobItemId(userId),
                             if(isNewUser) ItemStatus.NEW else ItemStatus.OPEN,
                             userItemPos,
                             userName.trim().replace(" ", "."),

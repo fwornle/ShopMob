@@ -28,6 +28,7 @@ import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.utils.Status
+import com.tanfra.shopmob.smob.data.types.SmobItemId
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.utils.ui.closeSoftKeyboard
@@ -148,7 +149,7 @@ class PlanningProductsAddNewItemFragment :
             // ... if no better values have been provided by the user (taken from viewModel), this
             //     is going to be the data record written to the DB
             daSmobProductATO = SmobProductATO(
-                UUID.randomUUID().toString(),
+                SmobItemId(UUID.randomUUID().toString()),
                 ItemStatus.OPEN,
                 itemMaxPosition + 1,
                 _viewModel.smobProductName.value ?: "",
@@ -185,7 +186,7 @@ class PlanningProductsAddNewItemFragment :
                 val newItems = it.items.toMutableList()
                 newItems.add(
                     SmobListItem(
-                        daSmobProductATO.itemId,
+                        daSmobProductATO.itemId.value,
                         daSmobProductATO.itemStatus,
                         daSmobProductATO.itemPosition,
                         daSmobProductATO.category.main,

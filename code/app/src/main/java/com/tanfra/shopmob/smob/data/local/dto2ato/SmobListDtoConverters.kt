@@ -2,6 +2,7 @@ package com.tanfra.shopmob.smob.data.local.dto2ato
 
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.local.dto.SmobListDTO
+import com.tanfra.shopmob.smob.data.types.SmobItemId
 import com.tanfra.shopmob.smob.data.types.SmobListLifecycle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
@@ -14,7 +15,7 @@ fun Flow<List<SmobListDTO>>.asDomainModel(): Flow<List<SmobListATO>> = transform
     emit(
         value.map {
             SmobListATO (
-                itemId = it.itemId,
+                itemId = SmobItemId(it.itemId),
                 itemStatus = it.itemStatus,
                 itemPosition = it.itemPosition,
                 name = it.name,
@@ -31,7 +32,7 @@ fun Flow<List<SmobListDTO>>.asDomainModel(): Flow<List<SmobListATO>> = transform
 fun List<SmobListATO>.asDatabaseModel(): List<SmobListDTO> {
     return map {
         SmobListDTO (
-            itemId = it.itemId,
+            itemId = it.itemId.value,
             itemStatus = it.itemStatus,
             itemPosition = it.itemPosition,
             name = it.name,
@@ -52,7 +53,7 @@ fun Flow<SmobListDTO?>.asDomainModel(): Flow<SmobListATO?> = transform {
     emit(
         value?.let {
             SmobListATO(
-                itemId = it.itemId,
+                itemId = SmobItemId(it.itemId),
                 itemStatus = it.itemStatus,
                 itemPosition = it.itemPosition,
                 name = it.name,
@@ -69,7 +70,7 @@ fun Flow<SmobListDTO?>.asDomainModel(): Flow<SmobListATO?> = transform {
 fun SmobListATO.asDatabaseModel(): SmobListDTO {
     return this.let {
         SmobListDTO(
-            itemId = it.itemId,
+            itemId = it.itemId.value,
             itemStatus = it.itemStatus,
             itemPosition = it.itemPosition,
             name = it.name,

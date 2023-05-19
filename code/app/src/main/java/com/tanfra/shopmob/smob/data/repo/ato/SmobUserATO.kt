@@ -1,13 +1,14 @@
 package com.tanfra.shopmob.smob.data.repo.ato
 
 import com.tanfra.shopmob.smob.data.types.ItemStatus
+import com.tanfra.shopmob.smob.data.types.SmobItemId
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 // domain independent data type (Application Transfer Object)
 @Serializable
 data class SmobUserATO(
-    override val itemId: String,
+    override val itemId: @Contextual SmobItemId,
     override var itemStatus: @Contextual ItemStatus,
     override var itemPosition: Long,
     var username: String,

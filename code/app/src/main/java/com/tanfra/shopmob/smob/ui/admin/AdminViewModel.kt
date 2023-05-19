@@ -17,6 +17,7 @@ import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.ato.SmobContactATO
+import com.tanfra.shopmob.smob.data.types.SmobItemId
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
@@ -57,10 +58,10 @@ class AdminViewModel(
 
             // add numbers & emails to contacts
             contacts.forEach { contact ->
-                contactNumbers[contact.itemId]?.let { numbers ->
+                contactNumbers[contact.itemId.value]?.let { numbers ->
                     numbers.map { number -> contact.numbers.add(number) }
                 }
-                contactEmails[contact.itemId]?.let { emails ->
+                contactEmails[contact.itemId.value]?.let { emails ->
                     emails.map { email -> contact.emails.add(email) }
                 }
             }
@@ -85,7 +86,7 @@ class AdminViewModel(
                 val name = contactsCursor.getString(nameIndex)
                 if (name != null) {
                     contactsList.add(SmobContactATO(
-                        id,
+                        SmobItemId(id),
                         ItemStatus.NEW,
                         idx,
                         name
@@ -440,7 +441,7 @@ class AdminViewModel(
 
                             // fetch all users as defined by the member list of the selected group
                             val daGroupUsers = allUsers.filter { user ->
-                                daGroup.members.map { member -> member.id }.contains(user.itemId)
+                                daGroup.members.map { member -> member.id }.contains(user.itemId.value)
                             }
 
                             // return all (other) users, except those from daGroup member list
@@ -456,7 +457,7 @@ class AdminViewModel(
                                     memberEmail = member.email,
                                     memberImageUrl = member.imageUrl,
                                     memberGroups = member.groups,
-                                    groupId = daGroup.itemId,
+                                    groupId = daGroup.itemId.value,
                                     groupStatus = daGroup.itemStatus,
                                     groupPosition = daGroup.itemPosition,
                                     groupName = daGroup.name,
@@ -703,7 +704,7 @@ class AdminViewModel(
                             // fetch all groups who refer to any of the groups associated with the
                             // selected list (daList.groups)
                             val daListGroups = allGroups.filter { group ->
-                                daList.groups.map { listGroup -> listGroup.id }.contains(group.itemId)
+                                daList.groups.map { listGroup -> listGroup.id }.contains(group.itemId.value)
                             }
 
                             // return all groups associated with daList, incl. the list details
@@ -719,7 +720,7 @@ class AdminViewModel(
                                     groupType = group.type,
                                     groupMembers = group.members,
                                     groupActivity = group.activity,
-                                    listId = daList.itemId,
+                                    listId = daList.itemId.value,
                                     listStatus = daList.itemStatus,
                                     listPosition = daList.itemPosition,
                                     listName = daList.name,
@@ -887,7 +888,7 @@ class AdminViewModel(
                                             else
                                                 ""
                                         }
-                                        .contains(group.itemId)
+                                        .contains(group.itemId.value)
                                 }
 
 
@@ -907,7 +908,7 @@ class AdminViewModel(
                                     groupType = group.type,
                                     groupMembers = group.members,
                                     groupActivity = group.activity,
-                                    listId = daList.itemId,
+                                    listId = daList.itemId.value,
                                     listStatus = daList.itemStatus,
                                     listPosition = daList.itemPosition,
                                     listName = daList.name,

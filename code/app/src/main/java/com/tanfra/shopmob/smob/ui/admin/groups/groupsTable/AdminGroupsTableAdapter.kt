@@ -37,7 +37,7 @@ class AdminGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobGr
             .filter { item ->
                 item.members
                     .map { member -> if(member.status != ItemStatus.DELETED) member.id else "" }
-                    .contains(SmobApp.currUser?.itemId)
+                    .contains(SmobApp.currUser?.itemId?.value)
             }
             .filter { item -> item.itemStatus != ItemStatus.DELETED }
             //.map { item -> consolidateListItem(item) }

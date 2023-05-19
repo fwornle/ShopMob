@@ -66,13 +66,13 @@ class AdminListGroupSelectAdapter(rootView: View, callBack: (selectedSmobGroupWi
             _viewModel.currGroupWithListData?.let {
 
                 // check if selected group is already part of the list
-                if(!it.listGroups.map { group -> group.id }.contains(item.itemId)) {
+                if(!it.listGroups.map { group -> group.id }.contains(item.itemId.value)) {
 
                     // nope --> append new group ID
                     val newGroupListItem = it.listGroups.toMutableList()
                     newGroupListItem.add(
                         SmobGroupItem(
-                            item.itemId,
+                            item.itemId.value,
                             item.itemStatus,  // update list item status (from status set by user)
                             (it.listGroups.size + 1).toLong(),
                         )

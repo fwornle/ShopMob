@@ -2003,7 +2003,7 @@
         },
         {
           "id": "319cd9dd-9619-4f8a-bac6-882ce038a0e7",
-          "status": "OPEN",
+          "status": "DONE",
           "listPosition": 2,
           "mainCategory": "HARDWARE"
         },
@@ -2110,7 +2110,7 @@
         },
         {
           "id": "8060fa57-4026-49f7-a29c-148774434352",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
           "listPosition": 5,
           "mainCategory": "FOODS"
         }

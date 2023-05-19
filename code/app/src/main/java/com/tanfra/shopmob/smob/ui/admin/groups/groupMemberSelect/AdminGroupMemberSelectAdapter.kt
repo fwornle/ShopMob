@@ -67,13 +67,13 @@ class AdminGroupMemberSelectAdapter(rootView: View, callBack: (selectedSmobUserA
             _viewModel.currGroup?.let { daGroup ->
 
                 // check if selected user is already part of the list
-                if(!daGroup.members.map { member -> member.id }.contains(item.itemId)) {
+                if(!daGroup.members.map { member -> member.id }.contains(item.itemId.value)) {
 
                     // nope --> append member
                     val newMemberList = daGroup.members.toMutableList()
                     newMemberList.add(
                         SmobMemberItem(
-                            item.itemId,
+                            item.itemId.value,
                             item.itemStatus,  // update list item status (from status set by user)
                             (daGroup.members.size).toLong(),
                         )
@@ -106,7 +106,7 @@ class AdminGroupMemberSelectAdapter(rootView: View, callBack: (selectedSmobUserA
                             // hygiene: filter out empty group entries
                             .filter { groupId -> groupId != "" }
                             // filter out this group (no longer a member of it)
-                            .filter { groupId -> groupId != daGroup.itemId }
+                            .filter { groupId -> groupId != daGroup.itemId.value }
 
                         // replace member's own groups list with updated list
                         newGroupMember.groups = updatedMemberGroups
