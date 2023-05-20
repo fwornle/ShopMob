@@ -1,8 +1,12 @@
 package com.tanfra.shopmob.smob.data.net.nto2dto
 
 import com.tanfra.shopmob.smob.data.local.dto.*
-import com.tanfra.shopmob.smob.data.net.nto.*
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
+import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 
 
 // ATO --> DTO
@@ -14,7 +18,7 @@ fun <DTO: Dto, ATO: Ato> ATO._asDatabaseModel(d: DTO): DTO {
     return when (d as Dto) {
             is SmobGroupDTO -> {
                 SmobGroupDTO(
-                    itemId = (this as SmobGroupNTO).id,
+                    itemId = (this as SmobGroupATO).itemId.value,
                     itemStatus = this.itemStatus,
                     itemPosition = this.itemPosition,
                     name = this.name,
@@ -27,7 +31,7 @@ fun <DTO: Dto, ATO: Ato> ATO._asDatabaseModel(d: DTO): DTO {
             }
         is SmobListDTO -> {
             SmobListDTO(
-                itemId = (this as SmobListNTO).id,
+                itemId = (this as SmobListATO).itemId.value,
                 itemStatus = this.itemStatus,
                 itemPosition = this.itemPosition,
                 name = this.name,
@@ -40,7 +44,7 @@ fun <DTO: Dto, ATO: Ato> ATO._asDatabaseModel(d: DTO): DTO {
         }
         is SmobProductDTO -> {
             SmobProductDTO(
-                itemId = (this as SmobProductNTO).id,
+                itemId = (this as SmobProductATO).itemId.value,
                 itemStatus = this.itemStatus,
                 itemPosition = this.itemPosition,
                 name = this.name,
@@ -57,7 +61,7 @@ fun <DTO: Dto, ATO: Ato> ATO._asDatabaseModel(d: DTO): DTO {
         }
         is SmobShopDTO -> {
             SmobShopDTO(
-                itemId = (this as SmobShopNTO).id,
+                itemId = (this as SmobShopATO).itemId.value,
                 itemStatus = this.itemStatus,
                 itemPosition = this.itemPosition,
                 name = this.name,
@@ -72,7 +76,7 @@ fun <DTO: Dto, ATO: Ato> ATO._asDatabaseModel(d: DTO): DTO {
         }
         is SmobUserDTO -> {
             SmobUserDTO(
-                itemId = (this as SmobUserNTO).id,
+                itemId = (this as SmobUserATO).itemId.value,
                 itemStatus = this.itemStatus,
                 itemPosition = this.itemPosition,
                 username = this.username,

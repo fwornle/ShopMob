@@ -1,8 +1,12 @@
 package com.tanfra.shopmob.smob.data.net.nto2dto
 
 import com.tanfra.shopmob.smob.data.local.dto.*
-import com.tanfra.shopmob.smob.data.net.nto.*
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
+import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 
 // ATO --> DTO
 @Suppress("USELESS_CAST", "UNCHECKED_CAST")
@@ -13,7 +17,7 @@ fun <DTO: Dto, ATO: Ato> ArrayList<ATO>._asDatabaseModel(d: DTO): List<DTO> {
         when (d as Dto) {
             is SmobGroupDTO -> {
                 SmobGroupDTO(
-                    itemId = (it as SmobGroupNTO).id,
+                    itemId = (it as SmobGroupATO).itemId.value,
                     itemStatus = it.itemStatus,
                     itemPosition = it.itemPosition,
                     name = it.name,
@@ -26,7 +30,7 @@ fun <DTO: Dto, ATO: Ato> ArrayList<ATO>._asDatabaseModel(d: DTO): List<DTO> {
             }
             is SmobListDTO -> {
                 SmobListDTO(
-                    itemId = (it as SmobListNTO).id,
+                    itemId = (it as SmobListATO).itemId.value,
                     itemStatus = it.itemStatus,
                     itemPosition = it.itemPosition,
                     name = it.name,
@@ -39,7 +43,7 @@ fun <DTO: Dto, ATO: Ato> ArrayList<ATO>._asDatabaseModel(d: DTO): List<DTO> {
             }
             is SmobProductDTO -> {
                 SmobProductDTO (
-                    itemId = (it as SmobProductNTO).id,
+                    itemId = (it as SmobProductATO).itemId.value,
                     itemStatus = it.itemStatus,
                     itemPosition = it.itemPosition,
                     name = it.name,
@@ -56,7 +60,7 @@ fun <DTO: Dto, ATO: Ato> ArrayList<ATO>._asDatabaseModel(d: DTO): List<DTO> {
             }
             is SmobShopDTO -> {
                 SmobShopDTO (
-                    itemId = (it as SmobShopNTO).id,
+                    itemId = (it as SmobShopATO).itemId.value,
                     itemStatus = it.itemStatus,
                     itemPosition = it.itemPosition,
                     name = it.name,
@@ -71,7 +75,7 @@ fun <DTO: Dto, ATO: Ato> ArrayList<ATO>._asDatabaseModel(d: DTO): List<DTO> {
             }
             is SmobUserDTO -> {
                 SmobUserDTO (
-                    itemId = (it as SmobUserNTO).id,
+                    itemId = (it as SmobUserATO).itemId.value,
                     itemStatus = it.itemStatus,
                     itemPosition = it.itemPosition,
                     username = it.username,
@@ -82,7 +86,7 @@ fun <DTO: Dto, ATO: Ato> ArrayList<ATO>._asDatabaseModel(d: DTO): List<DTO> {
                 ) as DTO
             }
 
-        }  // when(NTO) ... resolving generic type to concrete type
+        }  // when(ATO) ... resolving generic type to concrete type
 
     } // return the transformed list
 
