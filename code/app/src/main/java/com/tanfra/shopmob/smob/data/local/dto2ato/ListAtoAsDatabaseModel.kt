@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.data.net.nto2dto
+package com.tanfra.shopmob.smob.data.local.dto2ato
 
 import com.tanfra.shopmob.smob.data.local.dto.*
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
@@ -10,7 +10,7 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 
 // ATO --> DTO
 @Suppress("USELESS_CAST", "UNCHECKED_CAST")
-fun <DTO: Dto, ATO: Ato> ArrayList<ATO>._asDatabaseModel(d: DTO): List<DTO> {
+fun <DTO: Dto, ATO: Ato> List<ATO>._asDatabaseModel(d: DTO): List<DTO> {
 
     return map {
 
@@ -19,7 +19,7 @@ fun <DTO: Dto, ATO: Ato> ArrayList<ATO>._asDatabaseModel(d: DTO): List<DTO> {
                 SmobGroupDTO(
                     itemId = (it as SmobGroupATO).itemId.value,
                     itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    itemPosition = it.itemPosition.value,
                     name = it.name,
                     description = it.description,
                     type = it.type,
@@ -32,7 +32,7 @@ fun <DTO: Dto, ATO: Ato> ArrayList<ATO>._asDatabaseModel(d: DTO): List<DTO> {
                 SmobListDTO(
                     itemId = (it as SmobListATO).itemId.value,
                     itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    itemPosition = it.itemPosition.value,
                     name = it.name,
                     description = it.description,
                     items = it.items,
@@ -45,7 +45,7 @@ fun <DTO: Dto, ATO: Ato> ArrayList<ATO>._asDatabaseModel(d: DTO): List<DTO> {
                 SmobProductDTO (
                     itemId = (it as SmobProductATO).itemId.value,
                     itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    itemPosition = it.itemPosition.value,
                     name = it.name,
                     description = it.description,
                     imageUrl = it.imageUrl,
@@ -62,7 +62,7 @@ fun <DTO: Dto, ATO: Ato> ArrayList<ATO>._asDatabaseModel(d: DTO): List<DTO> {
                 SmobShopDTO (
                     itemId = (it as SmobShopATO).itemId.value,
                     itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    itemPosition = it.itemPosition.value,
                     name = it.name,
                     description = it.description,
                     imageUrl = it.imageUrl,
@@ -77,7 +77,7 @@ fun <DTO: Dto, ATO: Ato> ArrayList<ATO>._asDatabaseModel(d: DTO): List<DTO> {
                 SmobUserDTO (
                     itemId = (it as SmobUserATO).itemId.value,
                     itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    itemPosition = it.itemPosition.value,
                     username = it.username,
                     name = it.name,
                     email = it.email,

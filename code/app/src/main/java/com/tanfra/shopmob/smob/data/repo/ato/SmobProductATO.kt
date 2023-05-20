@@ -5,6 +5,7 @@ import com.tanfra.shopmob.smob.data.types.InShop
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.types.ProductCategory
 import com.tanfra.shopmob.smob.data.types.SmobItemId
+import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
@@ -13,7 +14,7 @@ import kotlinx.serialization.Serializable
 data class SmobProductATO(
     override val itemId: @Contextual SmobItemId,
     override var itemStatus: @Contextual ItemStatus,
-    override var itemPosition: Long,
+    override var itemPosition: @Contextual SmobItemPosition,
     var name: String,
     var description: String?,
     var imageUrl: String?,

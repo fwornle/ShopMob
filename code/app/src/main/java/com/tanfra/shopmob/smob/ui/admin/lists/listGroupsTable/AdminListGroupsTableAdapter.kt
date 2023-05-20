@@ -9,6 +9,7 @@ import com.tanfra.shopmob.smob.data.types.SmobGroupItem
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.data.types.SmobItemId
+import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import kotlinx.coroutines.launch
@@ -47,7 +48,7 @@ class AdminListGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: Sm
             .filter { item -> validGroupIds.contains(item.itemId.value) }
             .sortedWith(
                 compareBy(
-                    { it.itemPosition },
+                    { it.itemPosition.value },
                 )
             )
     }
@@ -66,7 +67,7 @@ class AdminListGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: Sm
             val updatedList = SmobListATO(
                 SmobItemId(item.listId),
                 item.listStatus,
-                item.listPosition,
+                SmobItemPosition(item.listPosition),
                 item.listName,
                 item.listDescription,
                 item.listItems,

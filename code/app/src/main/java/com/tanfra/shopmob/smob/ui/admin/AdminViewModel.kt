@@ -18,6 +18,7 @@ import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.ato.SmobContactATO
 import com.tanfra.shopmob.smob.data.types.SmobItemId
+import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
@@ -30,7 +31,7 @@ class AdminViewModel(
     private val app: Application,
     val groupDataSource: SmobGroupDataSource,  // public - used in AdminGroupsAdapter
     val listDataSource: SmobListDataSource,    // public - used in AdminListsAdapter
-    val userDataSource: SmobUserDataSource,    // public - used in AdminGroupMemberAdapter
+    private val userDataSource: SmobUserDataSource,    // public - used in AdminGroupMemberAdapter
     ) : BaseViewModel(app) {
 
 
@@ -88,10 +89,10 @@ class AdminViewModel(
                     contactsList.add(SmobContactATO(
                         SmobItemId(id),
                         ItemStatus.NEW,
-                        idx,
+                        SmobItemPosition(idx),
                         name
                     ))
-                    idx = idx + 1
+                    idx += 1
                 }
             }
             contactsCursor.close()
@@ -363,7 +364,7 @@ class AdminViewModel(
         userDataSource.getAllSmobItems()
 
     // convert to StateFlow
-    fun smobUsersFlowAsSF(inFlow: Flow<Resource<List<SmobUserATO>?>>):
+    private fun smobUsersFlowAsSF(inFlow: Flow<Resource<List<SmobUserATO>?>>):
             StateFlow<Resource<List<SmobUserATO>?>> =
         inFlow.stateIn(
             scope = viewModelScope,
@@ -459,7 +460,7 @@ class AdminViewModel(
                                     memberGroups = member.groups,
                                     groupId = daGroup.itemId.value,
                                     groupStatus = daGroup.itemStatus,
-                                    groupPosition = daGroup.itemPosition,
+                                    groupPosition = daGroup.itemPosition.value,
                                     groupName = daGroup.name,
                                     groupDescription = daGroup.description,
                                     groupType = daGroup.type,
@@ -549,7 +550,7 @@ class AdminViewModel(
         listDataSource.getAllSmobItems()
 
     // convert flow to StateFlow (SF, not yet collected --> for direct collection in UI)
-    fun smobListsFlowAsSF(inFlow: Flow<Resource<List<SmobListATO>?>>):
+    private fun smobListsFlowAsSF(inFlow: Flow<Resource<List<SmobListATO>?>>):
             StateFlow<Resource<List<SmobListATO>?>> =
         inFlow.stateIn(
             scope = viewModelScope,
@@ -562,7 +563,7 @@ class AdminViewModel(
     // alternative formulation: directly define Stateflow (SF) of all SmobLists
     // ... ref: https://medium.com/androiddevelopers/migrating-from-livedata-to-kotlins-flow-379292f419fb
     private val _smobListsAltSF = MutableStateFlow<Resource<List<SmobListATO>>>(Resource.loading(null))
-    val smobListsAltSF = _smobListsAltSF.asStateFlow()  // read-only
+    private val smobListsAltSF = _smobListsAltSF.asStateFlow()  // read-only
 
     // collect the flow of all SmobLists (--> lists table) into _smobListSF / smobListsSF
     @ExperimentalCoroutinesApi
@@ -722,7 +723,7 @@ class AdminViewModel(
                                     groupActivity = group.activity,
                                     listId = daList.itemId.value,
                                     listStatus = daList.itemStatus,
-                                    listPosition = daList.itemPosition,
+                                    listPosition = daList.itemPosition.value,
                                     listName = daList.name,
                                     listDescription = daList.description,
                                     listItems = daList.items,
@@ -760,7 +761,7 @@ class AdminViewModel(
 
     val smobListName = MutableLiveData<String?>()
     val smobListDescription = MutableLiveData<String?>()
-    val smobListStatus = MutableLiveData<ItemStatus?>()
+    private val smobListStatus = MutableLiveData<ItemStatus?>()
 
     init {
         onClearList()
@@ -910,7 +911,7 @@ class AdminViewModel(
                                     groupActivity = group.activity,
                                     listId = daList.itemId.value,
                                     listStatus = daList.itemStatus,
-                                    listPosition = daList.itemPosition,
+                                    listPosition = daList.itemPosition.value,
                                     listName = daList.name,
                                     listDescription = daList.description,
                                     listItems = daList.items,

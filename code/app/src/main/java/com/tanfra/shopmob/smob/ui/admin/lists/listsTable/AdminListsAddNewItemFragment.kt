@@ -20,6 +20,7 @@ import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
 import com.tanfra.shopmob.smob.data.types.SmobItemId
+import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.utils.ui.closeSoftKeyboard
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -86,7 +87,7 @@ class AdminListsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelectedL
             daSmobGroupATO = SmobGroupATO(
                 SmobItemId(UUID.randomUUID().toString()),
                 ItemStatus.OPEN,
-                listPosMax + 1,
+                SmobItemPosition(listPosMax + 1),
                 _viewModel.smobGroupName.value ?: "mystery group",
                 _viewModel.smobGroupDescription.value ?: "something exciting",
                 _viewModel.smobGroupType.value ?: GroupType.OTHER,

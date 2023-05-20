@@ -42,7 +42,7 @@ class PlanningListsTableAdapter(rootView: View, callBack: (selectedSmobATO: Smob
             .map { item -> consolidateListItem(item) }
             .sortedWith(
                 compareBy(
-                    { it.itemPosition },
+                    { it.itemPosition.value },
                 )
             )
     }

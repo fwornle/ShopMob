@@ -29,6 +29,7 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.types.SmobItemId
+import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.utils.ui.closeSoftKeyboard
@@ -151,7 +152,7 @@ class PlanningProductsAddNewItemFragment :
             daSmobProductATO = SmobProductATO(
                 SmobItemId(UUID.randomUUID().toString()),
                 ItemStatus.OPEN,
-                itemMaxPosition + 1,
+                SmobItemPosition(itemMaxPosition + 1),
                 _viewModel.smobProductName.value ?: "",
                 _viewModel.smobProductDescription.value ?: "",
                 _viewModel.smobProductImageUrl.value ?: "",
@@ -188,7 +189,7 @@ class PlanningProductsAddNewItemFragment :
                     SmobListItem(
                         daSmobProductATO.itemId.value,
                         daSmobProductATO.itemStatus,
-                        daSmobProductATO.itemPosition,
+                        daSmobProductATO.itemPosition.value,
                         daSmobProductATO.category.main,
                     )
                 )

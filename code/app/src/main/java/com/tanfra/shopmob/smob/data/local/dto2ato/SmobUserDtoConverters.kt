@@ -3,6 +3,7 @@ package com.tanfra.shopmob.smob.data.local.dto2ato
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
 import com.tanfra.shopmob.smob.data.types.SmobItemId
+import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 
@@ -16,7 +17,7 @@ fun Flow<List<SmobUserDTO>>.asDomainModel(): Flow<List<SmobUserATO>> = transform
             SmobUserATO (
                 itemId = SmobItemId(it.itemId),
                 itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                itemPosition = SmobItemPosition(it.itemPosition),
                 username = it.username,
                 name = it.name,
                 email = it.email,
@@ -33,7 +34,7 @@ fun List<SmobUserATO>.asDatabaseModel(): List<SmobUserDTO> {
             SmobUserDTO (
                 itemId = it.itemId.value,
                 itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                itemPosition = it.itemPosition.value,
                 username = it.username,
                 name = it.name,
                 email = it.email,
@@ -53,7 +54,7 @@ fun Flow<SmobUserDTO?>.asDomainModel(): Flow<SmobUserATO?> = transform {
             SmobUserATO(
                 itemId = SmobItemId(it.itemId),
                 itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                itemPosition = SmobItemPosition(it.itemPosition),
                 username = it.username,
                 name = it.name,
                 email = it.email,
@@ -70,7 +71,7 @@ fun SmobUserATO.asDatabaseModel(): SmobUserDTO {
             SmobUserDTO(
                 itemId = it.itemId.value,
                 itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                itemPosition = it.itemPosition.value,
                 username = it.username,
                 name = it.name,
                 email = it.email,

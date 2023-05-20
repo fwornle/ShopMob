@@ -9,6 +9,7 @@ import com.tanfra.shopmob.smob.data.types.SmobMemberItem
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.data.types.SmobItemId
+import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -72,7 +73,7 @@ class AdminGroupMembersTableAdapter(rootView: View, callBack: (selectedSmobATO: 
             val updatedGroup = SmobGroupATO(
                 SmobItemId(item.groupId),
                 item.groupStatus,
-                item.groupPosition,
+                SmobItemPosition(item.groupPosition),
                 item.groupName,
                 item.groupDescription,
                 item.groupType,

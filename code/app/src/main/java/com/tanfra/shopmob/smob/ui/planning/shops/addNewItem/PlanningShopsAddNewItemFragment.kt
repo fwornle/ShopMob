@@ -39,6 +39,7 @@ import com.tanfra.shopmob.smob.data.types.ShopType
 import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.types.SmobItemId
+import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import com.tanfra.shopmob.utils.ui.closeSoftKeyboard
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
@@ -187,7 +188,7 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
             daSmobShopATO = SmobShopATO(
                 SmobItemId(UUID.randomUUID().toString()),
                 ItemStatus.NEW,
-                -1L,
+                SmobItemPosition(-1L),
                 _viewModel.locatedShop.value?.name ?: "mystery shop",
                 _viewModel.locatedShop.value?.description ?: "something strange",
                 _viewModel.locatedShop.value?.imageUrl ?: "some mystery picture",

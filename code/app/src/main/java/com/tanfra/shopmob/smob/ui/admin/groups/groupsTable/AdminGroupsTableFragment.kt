@@ -197,7 +197,9 @@ class AdminGroupsTableFragment : BaseFragment(), KoinComponent {
         val highPos = _viewModel.smobGroupsSF.value.let {
             if (it.status == Status.SUCCESS) {
                 // return  highest index
-                it.data?.fold(0L) { max, list -> if (list.itemPosition > max) list.itemPosition else max } ?: 0L
+                it.data?.fold(0L) { max, list ->
+                    if (list.itemPosition.value > max) list.itemPosition.value else max
+                } ?: 0L
             } else {
                 0L
             }

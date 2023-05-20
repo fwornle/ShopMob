@@ -28,6 +28,7 @@ import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
 import com.tanfra.shopmob.smob.data.types.SmobItemId
+import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import com.tanfra.shopmob.smob.work.SmobAppWork
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.take
@@ -179,11 +180,11 @@ class SmobPlanningActivity : AppCompatActivity() {
                             isNewUser = true
 
                             // determine highest user position (plus one)
-                            allUsers?.maxOf { it.itemPosition + 1 } ?: -1
+                            allUsers?.maxOf { it.itemPosition.value + 1 } ?: -1
 
                         } else {
                             // user already in ShopMob DB --> use current position
-                            daUser.itemPosition
+                            daUser.itemPosition.value
                         }
 
 
@@ -191,7 +192,7 @@ class SmobPlanningActivity : AppCompatActivity() {
                         SmobApp.currUser = SmobUserATO(
                             SmobItemId(userId),
                             if(isNewUser) ItemStatus.NEW else ItemStatus.OPEN,
-                            userItemPos,
+                            SmobItemPosition(userItemPos),
                             userName.trim().replace(" ", "."),
                             userName,
                             userEmail,

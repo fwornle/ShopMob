@@ -42,7 +42,7 @@ class AdminGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobGr
             .filter { item -> item.itemStatus != ItemStatus.DELETED }
             //.map { item -> consolidateListItem(item) }
             .sortedWith(
-                compareBy { it.itemPosition }
+                compareBy { it.itemPosition.value }
             )
     }
 

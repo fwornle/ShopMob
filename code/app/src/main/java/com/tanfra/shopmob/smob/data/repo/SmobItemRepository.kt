@@ -7,7 +7,7 @@ import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.api.SmobItemApi
 import com.tanfra.shopmob.smob.data.net.nto.Nto
-import com.tanfra.shopmob.smob.data.net.nto2dto._asDatabaseModel
+import com.tanfra.shopmob.smob.data.local.dto2ato._asDatabaseModel
 import com.tanfra.shopmob.smob.data.net.nto2dto._asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto._asRepoModel
 import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager

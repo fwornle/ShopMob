@@ -4,6 +4,7 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.local.dto.SmobShopDTO
 import com.tanfra.shopmob.smob.data.types.ShopLocation
 import com.tanfra.shopmob.smob.data.types.SmobItemId
+import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 
@@ -17,7 +18,7 @@ fun Flow<List<SmobShopDTO>>.asDomainModel(): Flow<List<SmobShopATO>> = transform
             SmobShopATO (
                 itemId = SmobItemId(it.itemId),
                 itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                itemPosition = SmobItemPosition(it.itemPosition),
                 name = it.name,
                 description = it.description,
                 imageUrl = it.imageUrl,
@@ -36,7 +37,7 @@ fun List<SmobShopATO>.asDatabaseModel(): List<SmobShopDTO> {
         SmobShopDTO (
             itemId = it.itemId.value,
             itemStatus = it.itemStatus,
-            itemPosition = it.itemPosition,
+            itemPosition = it.itemPosition.value,
             name = it.name,
             description = it.description,
             imageUrl = it.imageUrl,
@@ -59,7 +60,7 @@ fun Flow<SmobShopDTO?>.asDomainModel(): Flow<SmobShopATO?> = transform {
             SmobShopATO(
                 itemId = SmobItemId(it.itemId),
                 itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                itemPosition = SmobItemPosition(it.itemPosition),
                 name = it.name,
                 description = it.description,
                 imageUrl = it.imageUrl,
@@ -78,7 +79,7 @@ fun SmobShopATO.asDatabaseModel(): SmobShopDTO {
         SmobShopDTO(
             itemId = it.itemId.value,
             itemStatus = it.itemStatus,
-            itemPosition = it.itemPosition,
+            itemPosition = it.itemPosition.value,
             name = it.name,
             description = it.description,
             imageUrl = it.imageUrl,

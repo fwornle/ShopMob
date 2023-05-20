@@ -8,7 +8,7 @@ import com.tanfra.shopmob.smob.data.types.ShopLocation
 import com.tanfra.shopmob.smob.data.types.SmobListLifecycle
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.data.types.SmobItemId
-
+import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 
 // DTO --> ATO
 @Suppress("USELESS_CAST", "UNCHECKED_CAST")
@@ -22,7 +22,7 @@ fun <DTO: Dto, ATO: Ato> List<DTO?>._asDomainModel(d: DTO): List<ATO> {
                 SmobGroupATO(
                     itemId = SmobItemId((it as SmobGroupDTO).itemId),
                     itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    itemPosition = SmobItemPosition(it.itemPosition),
                     name = it.name,
                     description = it.description,
                     type = it.type,
@@ -34,7 +34,7 @@ fun <DTO: Dto, ATO: Ato> List<DTO?>._asDomainModel(d: DTO): List<ATO> {
                 SmobListATO(
                     itemId = SmobItemId((it as SmobListDTO).itemId),
                     itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    itemPosition = SmobItemPosition(it.itemPosition),
                     name = it.name,
                     description = it.description,
                     items = it.items,
@@ -46,7 +46,7 @@ fun <DTO: Dto, ATO: Ato> List<DTO?>._asDomainModel(d: DTO): List<ATO> {
                 SmobProductATO (
                     itemId = SmobItemId((it as SmobProductDTO).itemId),
                     itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    itemPosition = SmobItemPosition(it.itemPosition),
                     name = it.name,
                     description = it.description,
                     imageUrl = it.imageUrl,
@@ -59,7 +59,7 @@ fun <DTO: Dto, ATO: Ato> List<DTO?>._asDomainModel(d: DTO): List<ATO> {
                 SmobShopATO (
                     itemId = SmobItemId((it as SmobShopDTO).itemId),
                     itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    itemPosition = SmobItemPosition(it.itemPosition),
                     name = it.name,
                     description = it.description,
                     imageUrl = it.imageUrl,
@@ -73,7 +73,7 @@ fun <DTO: Dto, ATO: Ato> List<DTO?>._asDomainModel(d: DTO): List<ATO> {
                 SmobUserATO (
                     itemId = SmobItemId((it as SmobUserDTO).itemId),
                     itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    itemPosition = SmobItemPosition(it.itemPosition),
                     username = it.username,
                     name = it.name,
                     email = it.email,

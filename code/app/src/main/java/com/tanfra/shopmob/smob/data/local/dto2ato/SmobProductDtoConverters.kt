@@ -6,6 +6,7 @@ import com.tanfra.shopmob.smob.data.types.ActivityStatus
 import com.tanfra.shopmob.smob.data.types.InShop
 import com.tanfra.shopmob.smob.data.types.ProductCategory
 import com.tanfra.shopmob.smob.data.types.SmobItemId
+import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 
@@ -19,7 +20,7 @@ fun Flow<List<SmobProductDTO>>.asDomainModel(): Flow<List<SmobProductATO>> = tra
             SmobProductATO (
                 itemId = SmobItemId(it.itemId),
                 itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                itemPosition = SmobItemPosition(it.itemPosition),
                 name = it.name,
                 description = it.description,
                 imageUrl = it.imageUrl,
@@ -37,7 +38,7 @@ fun List<SmobProductATO>.asDatabaseModel(): List<SmobProductDTO> {
         SmobProductDTO (
             itemId = it.itemId.value,
             itemStatus = it.itemStatus,
-            itemPosition = it.itemPosition,
+            itemPosition = it.itemPosition.value,
             name = it.name,
             description = it.description,
             imageUrl = it.imageUrl,
@@ -62,7 +63,7 @@ fun Flow<SmobProductDTO?>.asDomainModel(): Flow<SmobProductATO?> = transform {
             SmobProductATO(
                 itemId = SmobItemId(it.itemId),
                 itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                itemPosition = SmobItemPosition(it.itemPosition),
                 name = it.name,
                 description = it.description,
                 imageUrl = it.imageUrl,
@@ -80,7 +81,7 @@ fun SmobProductATO.asDatabaseModel(): SmobProductDTO {
         SmobProductDTO(
             itemId = it.itemId.value,
             itemStatus = it.itemStatus,
-            itemPosition = it.itemPosition,
+            itemPosition = it.itemPosition.value,
             name = it.name,
             description = it.description,
             imageUrl = it.imageUrl,

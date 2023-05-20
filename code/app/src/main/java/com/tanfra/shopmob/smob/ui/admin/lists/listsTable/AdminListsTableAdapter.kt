@@ -39,7 +39,7 @@ class AdminListsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobLis
             .filter { item -> item.itemStatus != ItemStatus.DELETED  }
             //.map { item -> consolidateListItem(item) }
             .sortedWith(
-                compareBy { it.itemPosition }
+                compareBy { it.itemPosition.value }
             )
     }
 

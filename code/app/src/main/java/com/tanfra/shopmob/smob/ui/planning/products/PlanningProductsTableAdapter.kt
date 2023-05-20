@@ -10,6 +10,7 @@ import com.tanfra.shopmob.smob.data.types.SmobListItem
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductWithListDataATO
 import com.tanfra.shopmob.smob.data.types.SmobItemId
+import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import kotlinx.coroutines.launch
@@ -41,7 +42,7 @@ class PlanningProductsTableAdapter(rootView: View, callBack: (selectedSmobATO: S
                 compareBy(
                     { it.productCategory.main },
                     { it.productCategory.sub },
-                    { it.itemPosition },
+                    { it.itemPosition.value },
                     )
             )
     }
@@ -59,7 +60,7 @@ class PlanningProductsTableAdapter(rootView: View, callBack: (selectedSmobATO: S
             val updatedList = SmobListATO(
                 SmobItemId(item.listId),
                 item.listStatus,
-                item.listPosition,
+                SmobItemPosition(item.listPosition),
                 item.listName,
                 item.listDescription,
                 // replace list of products on smob list with updated list of products

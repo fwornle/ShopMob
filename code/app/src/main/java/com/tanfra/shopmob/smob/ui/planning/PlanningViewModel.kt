@@ -21,6 +21,7 @@ import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.types.SmobItemId
+import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -127,7 +128,7 @@ class PlanningViewModel(
                             SmobProductWithListDataATO(
                                 itemId = product.itemId,
                                 itemStatus = productOnList.status,
-                                itemPosition = productOnList.listPosition,
+                                itemPosition = SmobItemPosition(productOnList.listPosition),
                                 productName = product.name,
                                 productDescription = product.description,
                                 productImageUrl = product.imageUrl,
@@ -136,7 +137,7 @@ class PlanningViewModel(
                                 productInShop = product.inShop,
                                 listId = rawList.itemId.value,
                                 listStatus = rawList.itemStatus,
-                                listPosition = rawList.itemPosition,
+                                listPosition = rawList.itemPosition.value,
                                 listName = rawList.name,
                                 listDescription = rawList.description,
                                 listItems = rawList.items,
@@ -413,7 +414,7 @@ class PlanningViewModel(
             SmobShopATO(
                 SmobItemId("no product selected yet (id)"),
                 ItemStatus.NEW,
-                -1L,
+                SmobItemPosition(-1L),
                 "",
                 "",
                 "",

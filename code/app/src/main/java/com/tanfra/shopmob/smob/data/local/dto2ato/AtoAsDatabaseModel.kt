@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.data.net.nto2dto
+package com.tanfra.shopmob.smob.data.local.dto2ato
 
 import com.tanfra.shopmob.smob.data.local.dto.*
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
@@ -7,7 +7,6 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
-
 
 // ATO --> DTO
 @Suppress("USELESS_CAST", "UNCHECKED_CAST")
@@ -20,7 +19,7 @@ fun <DTO: Dto, ATO: Ato> ATO._asDatabaseModel(d: DTO): DTO {
                 SmobGroupDTO(
                     itemId = (this as SmobGroupATO).itemId.value,
                     itemStatus = this.itemStatus,
-                    itemPosition = this.itemPosition,
+                    itemPosition = this.itemPosition.value,
                     name = this.name,
                     description = this.description,
                     type = this.type,
@@ -33,7 +32,7 @@ fun <DTO: Dto, ATO: Ato> ATO._asDatabaseModel(d: DTO): DTO {
             SmobListDTO(
                 itemId = (this as SmobListATO).itemId.value,
                 itemStatus = this.itemStatus,
-                itemPosition = this.itemPosition,
+                itemPosition = this.itemPosition.value,
                 name = this.name,
                 description = this.description,
                 items = this.items,
@@ -46,7 +45,7 @@ fun <DTO: Dto, ATO: Ato> ATO._asDatabaseModel(d: DTO): DTO {
             SmobProductDTO(
                 itemId = (this as SmobProductATO).itemId.value,
                 itemStatus = this.itemStatus,
-                itemPosition = this.itemPosition,
+                itemPosition = this.itemPosition.value,
                 name = this.name,
                 description = this.description,
                 imageUrl = this.imageUrl,
@@ -63,7 +62,7 @@ fun <DTO: Dto, ATO: Ato> ATO._asDatabaseModel(d: DTO): DTO {
             SmobShopDTO(
                 itemId = (this as SmobShopATO).itemId.value,
                 itemStatus = this.itemStatus,
-                itemPosition = this.itemPosition,
+                itemPosition = this.itemPosition.value,
                 name = this.name,
                 description = this.description,
                 imageUrl = this.imageUrl,
@@ -78,7 +77,7 @@ fun <DTO: Dto, ATO: Ato> ATO._asDatabaseModel(d: DTO): DTO {
             SmobUserDTO(
                 itemId = (this as SmobUserATO).itemId.value,
                 itemStatus = this.itemStatus,
-                itemPosition = this.itemPosition,
+                itemPosition = this.itemPosition.value,
                 username = this.username,
                 name = this.name,
                 email = this.email,

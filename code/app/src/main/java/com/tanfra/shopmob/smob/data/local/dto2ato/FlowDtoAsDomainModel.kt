@@ -8,6 +8,7 @@ import com.tanfra.shopmob.smob.data.types.ShopLocation
 import com.tanfra.shopmob.smob.data.types.SmobListLifecycle
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.data.types.SmobItemId
+import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -23,7 +24,7 @@ fun <DTO: Dto, ATO: Ato> Flow<DTO?>._asDomainModel(d: DTO): Flow<ATO> {
                     SmobGroupATO(
                         itemId = SmobItemId((it as SmobGroupDTO).itemId),
                         itemStatus = it.itemStatus,
-                        itemPosition = it.itemPosition,
+                        itemPosition = SmobItemPosition(it.itemPosition),
                         name = it.name,
                         description = it.description,
                         type = it.type,
@@ -35,7 +36,7 @@ fun <DTO: Dto, ATO: Ato> Flow<DTO?>._asDomainModel(d: DTO): Flow<ATO> {
                     SmobListATO(
                         itemId = SmobItemId((it as SmobListDTO).itemId),
                         itemStatus = it.itemStatus,
-                        itemPosition = it.itemPosition,
+                        itemPosition = SmobItemPosition(it.itemPosition),
                         name = it.name,
                         description = it.description,
                         items = it.items,
@@ -47,7 +48,7 @@ fun <DTO: Dto, ATO: Ato> Flow<DTO?>._asDomainModel(d: DTO): Flow<ATO> {
                     SmobProductATO (
                         itemId = SmobItemId((it as SmobProductDTO).itemId),
                         itemStatus = it.itemStatus,
-                        itemPosition = it.itemPosition,
+                        itemPosition = SmobItemPosition(it.itemPosition),
                         name = it.name,
                         description = it.description,
                         imageUrl = it.imageUrl,
@@ -60,7 +61,7 @@ fun <DTO: Dto, ATO: Ato> Flow<DTO?>._asDomainModel(d: DTO): Flow<ATO> {
                     SmobShopATO (
                         itemId = SmobItemId((it as SmobShopDTO).itemId),
                         itemStatus = it.itemStatus,
-                        itemPosition = it.itemPosition,
+                        itemPosition = SmobItemPosition(it.itemPosition),
                         name = it.name,
                         description = it.description,
                         imageUrl = it.imageUrl,
@@ -74,7 +75,7 @@ fun <DTO: Dto, ATO: Ato> Flow<DTO?>._asDomainModel(d: DTO): Flow<ATO> {
                     SmobUserATO (
                         itemId = SmobItemId((it as SmobUserDTO).itemId),
                         itemStatus = it.itemStatus,
-                        itemPosition = it.itemPosition,
+                        itemPosition = SmobItemPosition(it.itemPosition),
                         username = it.username,
                         name = it.name,
                         email = it.email,
