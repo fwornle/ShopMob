@@ -7,7 +7,7 @@ import com.tanfra.shopmob.smob.data.types.SmobListLifecycle
 
 // network data type
 data class SmobListNTO(
-    override val id: String,
+    override val itemId: String,
     override var itemStatus: ItemStatus,
     override var itemPosition: Long,
     var name: String,

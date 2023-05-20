@@ -12,7 +12,7 @@ fun <DTO: Dto, NTO: Nto> ArrayList<NTO>._asRepoModel(d: DTO): List<DTO> {
         when (d as Dto) {
             is SmobGroupDTO -> {
                 SmobGroupDTO(
-                    itemId = (it as SmobGroupNTO).id,
+                    itemId = (it as SmobGroupNTO).itemId,
                     itemStatus = it.itemStatus,
                     itemPosition = it.itemPosition,
                     name = it.name,
@@ -25,7 +25,7 @@ fun <DTO: Dto, NTO: Nto> ArrayList<NTO>._asRepoModel(d: DTO): List<DTO> {
             }
             is SmobListDTO -> {
                 SmobListDTO(
-                    itemId = (it as SmobListNTO).id,
+                    itemId = (it as SmobListNTO).itemId,
                     itemStatus = it.itemStatus,
                     itemPosition = it.itemPosition,
                     name = it.name,
@@ -38,7 +38,7 @@ fun <DTO: Dto, NTO: Nto> ArrayList<NTO>._asRepoModel(d: DTO): List<DTO> {
             }
             is SmobProductDTO -> {
                 SmobProductDTO (
-                    itemId = (it as SmobProductNTO).id,
+                    itemId = (it as SmobProductNTO).itemId,
                     itemStatus = it.itemStatus,
                     itemPosition = it.itemPosition,
                     name = it.name,
@@ -55,7 +55,7 @@ fun <DTO: Dto, NTO: Nto> ArrayList<NTO>._asRepoModel(d: DTO): List<DTO> {
             }
             is SmobShopDTO -> {
                 SmobShopDTO (
-                    itemId = (it as SmobShopNTO).id,
+                    itemId = (it as SmobShopNTO).itemId,
                     itemStatus = it.itemStatus,
                     itemPosition = it.itemPosition,
                     name = it.name,
@@ -70,7 +70,7 @@ fun <DTO: Dto, NTO: Nto> ArrayList<NTO>._asRepoModel(d: DTO): List<DTO> {
             }
             is SmobUserDTO -> {
                 SmobUserDTO (
-                    itemId = (it as SmobUserNTO).id,
+                    itemId = (it as SmobUserNTO).itemId,
                     itemStatus = it.itemStatus,
                     itemPosition = it.itemPosition,
                     username = it.username,
