@@ -36,7 +36,7 @@ class PlanningShopsTableAdapter(rootView: View, callBack: (selectedSmobATO: Smob
             .filter { item -> item.itemStatus != ItemStatus.DELETED  }
             .sortedWith(
                 compareBy(
-                    { it.itemPosition.value },
+                    { it.itemPosition },
                 )
             )
     }

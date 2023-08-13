@@ -322,6 +322,26 @@
         "cfdf16aa-96a4-4016-8b42-6920f017ad7e",
         "5a49fe0f-a805-4c93-911a-0bea803497f4"
       ]
+    },
+    {
+      "itemId": "BTwLBEmaoWfQKbooBguh0x84bV52",
+      "itemStatus": "OPEN",
+      "itemPosition": 20,
+      "username": "Frank.Douvre",
+      "name": "Frank Douvre",
+      "email": "fradou7@gmail.com",
+      "imageUrl": "https://lh3.googleusercontent.com/a/AATXAJx9nYtfUiFXPg2JABf1OWUMGasy_szkM1PSvfiT=s96-c",
+      "groups": [
+        "cfdf16aa-96a4-4016-8b42-6920f017ad7e",
+        "5a49fe0f-a805-4c93-911a-0bea803497f4",
+        "669b9326-1db2-4ced-bf6c-4cee8dc6d4ef",
+        "fc1d315a-274e-4cc8-90ef-d9d0ea6642b9",
+        "ae038bd2-9924-48dc-a14d-e25856c33ae0",
+        "f56de9ac-d5d2-4fab-bccb-79db0b0008bc",
+        "a87070cb-0b1f-48e7-b2af-7c356c1aa839",
+        "c42851f1-ed56-47a9-b031-0a02bee67769"
+      ],
+      "id": "lOCmdyE"
     }
   ],
   "groups": [
@@ -2003,7 +2023,7 @@
         },
         {
           "id": "319cd9dd-9619-4f8a-bac6-882ce038a0e7",
-          "status": "DONE",
+          "status": "OPEN",
           "listPosition": 2,
           "mainCategory": "HARDWARE"
         },
@@ -2072,7 +2092,7 @@
       }
     },
     {
-      "id": "45d9581c-00db-4d6e-9196-063d9424bb52",
+      "itemId": "45d9581c-00db-4d6e-9196-063d9424bb52",
       "itemStatus": "IN_PROGRESS",
       "itemPosition": 4,
       "name": "Redecoration",
@@ -2080,7 +2100,7 @@
       "items": [
         {
           "id": "0df216f3-133a-4a79-9517-8f59684d6b88",
-          "status": "DONE",
+          "status": "IN_PROGRESS",
           "listPosition": 0,
           "mainCategory": "HARDWARE"
         },
@@ -2150,7 +2170,8 @@
       "lifecycle": {
         "status": "OPEN",
         "completion": 60
-      }
+      },
+      "id": "45d9581c-00db-4d6e-9196-063d9424bb52"
     }
   ]
 }

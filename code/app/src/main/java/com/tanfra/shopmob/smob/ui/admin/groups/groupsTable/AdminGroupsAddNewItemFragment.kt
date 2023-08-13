@@ -19,8 +19,6 @@ import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
-import com.tanfra.shopmob.smob.data.types.SmobItemId
-import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.utils.ui.closeSoftKeyboard
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -85,14 +83,14 @@ class AdminGroupsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelected
             // ... if no better values have been provided by the user (taken from viewModel), this
             //     is going to be the data record written to the DB
             daSmobGroupATO = SmobGroupATO(
-                SmobItemId(UUID.randomUUID().toString()),
+                UUID.randomUUID().toString(),
                 ItemStatus.OPEN,
-                SmobItemPosition(listPosMax + 1),
+                listPosMax + 1,
                 _viewModel.smobGroupName.value ?: "mystery group",
                 _viewModel.smobGroupDescription.value ?: "something exciting",
                 _viewModel.smobGroupType.value ?: GroupType.OTHER,
                 SmobApp.currUser?.let {
-                    listOf(SmobMemberItem(it.itemId.value, ItemStatus.OPEN, 0))
+                    listOf(SmobMemberItem(it.itemId, ItemStatus.OPEN, 0))
                 } ?: listOf(), // members
                 ActivityStatus(currentDate, 0)
             )

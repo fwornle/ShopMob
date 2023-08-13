@@ -5,8 +5,6 @@ import com.tanfra.shopmob.smob.data.local.dto.SmobProductDTO
 import com.tanfra.shopmob.smob.data.types.ActivityStatus
 import com.tanfra.shopmob.smob.data.types.InShop
 import com.tanfra.shopmob.smob.data.types.ProductCategory
-import com.tanfra.shopmob.smob.data.types.SmobItemId
-import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 
@@ -18,9 +16,9 @@ fun Flow<List<SmobProductDTO>>.asDomainModel(): Flow<List<SmobProductATO>> = tra
     emit(
         value.map {
             SmobProductATO (
-                itemId = SmobItemId(it.itemId),
+                itemId = it.itemId,
                 itemStatus = it.itemStatus,
-                itemPosition = SmobItemPosition(it.itemPosition),
+                itemPosition = it.itemPosition,
                 name = it.name,
                 description = it.description,
                 imageUrl = it.imageUrl,
@@ -36,9 +34,9 @@ fun Flow<List<SmobProductDTO>>.asDomainModel(): Flow<List<SmobProductATO>> = tra
 fun List<SmobProductATO>.asDatabaseModel(): List<SmobProductDTO> {
     return map {
         SmobProductDTO (
-            itemId = it.itemId.value,
+            itemId = it.itemId,
             itemStatus = it.itemStatus,
-            itemPosition = it.itemPosition.value,
+            itemPosition = it.itemPosition,
             name = it.name,
             description = it.description,
             imageUrl = it.imageUrl,
@@ -61,9 +59,9 @@ fun Flow<SmobProductDTO?>.asDomainModel(): Flow<SmobProductATO?> = transform {
     emit(
         value?.let {
             SmobProductATO(
-                itemId = SmobItemId(it.itemId),
+                itemId = it.itemId,
                 itemStatus = it.itemStatus,
-                itemPosition = SmobItemPosition(it.itemPosition),
+                itemPosition = it.itemPosition,
                 name = it.name,
                 description = it.description,
                 imageUrl = it.imageUrl,
@@ -79,9 +77,9 @@ fun Flow<SmobProductDTO?>.asDomainModel(): Flow<SmobProductATO?> = transform {
 fun SmobProductATO.asDatabaseModel(): SmobProductDTO {
     return this.let {
         SmobProductDTO(
-            itemId = it.itemId.value,
+            itemId = it.itemId,
             itemStatus = it.itemStatus,
-            itemPosition = it.itemPosition.value,
+            itemPosition = it.itemPosition,
             name = it.name,
             description = it.description,
             imageUrl = it.imageUrl,

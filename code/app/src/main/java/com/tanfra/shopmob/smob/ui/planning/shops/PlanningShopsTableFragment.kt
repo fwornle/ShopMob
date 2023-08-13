@@ -186,7 +186,7 @@ class PlanningShopsTableFragment : BaseFragment(), KoinComponent {
                     _viewModel.navSource = "navDrawer"
 
                     // clicks should select the shop and return to the product edit screen
-                    val daFlow = _viewModel.shopDataSource.getSmobItem(it.itemId.value)
+                    val daFlow = _viewModel.shopDataSource.getSmobItem(it.itemId)
                     daFlow
                         .take(1)
                         .onEach {

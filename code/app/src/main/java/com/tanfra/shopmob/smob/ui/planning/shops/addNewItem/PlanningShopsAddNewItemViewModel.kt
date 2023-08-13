@@ -12,8 +12,6 @@ import com.tanfra.shopmob.smob.ui.base.BaseViewModel
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
-import com.tanfra.shopmob.smob.data.types.SmobItemId
-import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import kotlinx.coroutines.launch
 
 class PlanningShopsAddNewItemViewModel(
@@ -33,9 +31,9 @@ class PlanningShopsAddNewItemViewModel(
     // default values
     init {
         locatedShop.value = SmobShopATO(
-            SmobItemId("invalid-id-shop"),
+            "invalid-id-shop",
             ItemStatus.NEW,
-            SmobItemPosition(-1L),
+            -1L,
             "",
             "",
             "",

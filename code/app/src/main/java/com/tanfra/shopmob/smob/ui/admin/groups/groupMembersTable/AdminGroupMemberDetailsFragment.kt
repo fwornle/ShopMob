@@ -73,12 +73,12 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
                     // create new member list (adding newMemberId)
                     val updatedMemberList = daGroup.members
                         // filter out previously "DELETED" entries of this member
-                        .filter { member -> member.id != newMemberId.value }
+                        .filter { member -> member.id != newMemberId }
                         // now add new member (as "OPEN")
                         .toMutableList().apply {
                             add(
                                 SmobMemberItem(
-                                newMemberId.value,
+                                newMemberId,
                                 ItemStatus.OPEN,
                                 this.size.toLong() + 1)
                             )
@@ -101,9 +101,9 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
                                 // hygiene: remove accidental empty entries
                                 .filter { groupId -> groupId != "" }
                                 // remove all occurrences of this group ID from member's group list
-                                .filter { groupId -> groupId != daGroup.itemId.value }
+                                .filter { groupId -> groupId != daGroup.itemId }
                                 // now re-add this group ID (guarantees that it is there only once)
-                                .toMutableList().apply { add(daGroup.itemId.value) }
+                                .toMutableList().apply { add(daGroup.itemId) }
 
                         // update purged member's group list
                         daMember.groups = updatedGroupMemberIds

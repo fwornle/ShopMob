@@ -2,8 +2,6 @@ package com.tanfra.shopmob.smob.data.local.dto2ato
 
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.local.dto.SmobListDTO
-import com.tanfra.shopmob.smob.data.types.SmobItemId
-import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import com.tanfra.shopmob.smob.data.types.SmobListLifecycle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
@@ -16,9 +14,9 @@ fun Flow<List<SmobListDTO>>.asDomainModel(): Flow<List<SmobListATO>> = transform
     emit(
         value.map {
             SmobListATO (
-                itemId = SmobItemId(it.itemId),
+                itemId = it.itemId,
                 itemStatus = it.itemStatus,
-                itemPosition = SmobItemPosition(it.itemPosition),
+                itemPosition = it.itemPosition,
                 name = it.name,
                 description = it.description,
                 items = it.items,
@@ -33,9 +31,9 @@ fun Flow<List<SmobListDTO>>.asDomainModel(): Flow<List<SmobListATO>> = transform
 fun List<SmobListATO>.asDatabaseModel(): List<SmobListDTO> {
     return map {
         SmobListDTO (
-            itemId = it.itemId.value,
+            itemId = it.itemId,
             itemStatus = it.itemStatus,
-            itemPosition = it.itemPosition.value,
+            itemPosition = it.itemPosition,
             name = it.name,
             description = it.description,
             items = it.items,
@@ -54,9 +52,9 @@ fun Flow<SmobListDTO?>.asDomainModel(): Flow<SmobListATO?> = transform {
     emit(
         value?.let {
             SmobListATO(
-                itemId = SmobItemId(it.itemId),
+                itemId = it.itemId,
                 itemStatus = it.itemStatus,
-                itemPosition = SmobItemPosition(it.itemPosition),
+                itemPosition = it.itemPosition,
                 name = it.name,
                 description = it.description,
                 items = it.items,
@@ -71,9 +69,9 @@ fun Flow<SmobListDTO?>.asDomainModel(): Flow<SmobListATO?> = transform {
 fun SmobListATO.asDatabaseModel(): SmobListDTO {
     return this.let {
         SmobListDTO(
-            itemId = it.itemId.value,
+            itemId = it.itemId,
             itemStatus = it.itemStatus,
-            itemPosition = it.itemPosition.value,
+            itemPosition = it.itemPosition,
             name = it.name,
             description = it.description,
             items = it.items,

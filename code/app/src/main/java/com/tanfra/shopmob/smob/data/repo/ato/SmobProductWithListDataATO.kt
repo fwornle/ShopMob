@@ -5,8 +5,6 @@ import com.tanfra.shopmob.smob.data.types.InShop
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.types.ProductCategory
 import com.tanfra.shopmob.smob.data.types.SmobGroupItem
-import com.tanfra.shopmob.smob.data.types.SmobItemId
-import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import com.tanfra.shopmob.smob.data.types.SmobListItem
 import com.tanfra.shopmob.smob.data.types.SmobListLifecycle
 import kotlinx.serialization.Contextual
@@ -15,9 +13,9 @@ import kotlinx.serialization.Serializable
 // domain independent data type (Application Transfer Object)
 @Serializable
 data class SmobProductWithListDataATO(
-    override val itemId: @Contextual SmobItemId,
+    override val itemId: String,
     override var itemStatus: @Contextual ItemStatus,
-    override var itemPosition: @Contextual SmobItemPosition,
+    override var itemPosition: Long,
     var productName: String,
     var productDescription: String?,
     var productImageUrl: String?,
@@ -49,9 +47,9 @@ data class SmobProductWithListDataATO(
 
     // extract list
     fun list() = SmobListATO(
-        SmobItemId(this.listId),
+        this.listId,
         this.listStatus,
-        SmobItemPosition(this.listPosition),
+        this.listPosition,
         this.listName,
         this.listDescription,
         this.listItems,

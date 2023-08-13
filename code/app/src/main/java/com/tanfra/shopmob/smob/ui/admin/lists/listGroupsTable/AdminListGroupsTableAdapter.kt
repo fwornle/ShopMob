@@ -8,8 +8,6 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.types.SmobGroupItem
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.*
-import com.tanfra.shopmob.smob.data.types.SmobItemId
-import com.tanfra.shopmob.smob.data.types.SmobItemPosition
 import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import kotlinx.coroutines.launch
@@ -45,10 +43,10 @@ class AdminListGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: Sm
 
         // take out all items which have been deleted by swiping
         return items
-            .filter { item -> validGroupIds.contains(item.itemId.value) }
+            .filter { item -> validGroupIds.contains(item.itemId) }
             .sortedWith(
                 compareBy(
-                    { it.itemPosition.value },
+                    { it.itemPosition },
                 )
             )
     }
@@ -65,15 +63,15 @@ class AdminListGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: Sm
 
             // collect SmobList flow
             val updatedList = SmobListATO(
-                SmobItemId(item.listId),
+                item.listId,
                 item.listStatus,
-                SmobItemPosition(item.listPosition),
+                item.listPosition,
                 item.listName,
                 item.listDescription,
                 item.listItems,
                 // replace list of Smob groups with updated list of Smob groups
                 item.listGroups.map { groupItem ->
-                    if(groupItem.id == item.itemId.value) {
+                    if(groupItem.id == item.itemId) {
                         // set new status (list property)
                         SmobGroupItem(
                             groupItem.id,

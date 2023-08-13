@@ -306,7 +306,7 @@ class SmobUserRepository(
 
                     // modified user = "me"? --> if so, update "currUser"
                     // ... this normally only updates the groups a user is affiliated with
-                    if(it.itemId == SmobApp.currUser?.itemId?.value) SmobApp.currUser = it._asDomainModel(it)
+                    if(it.itemId == SmobApp.currUser?.itemId) SmobApp.currUser = it._asDomainModel(it)
 
                 }
 
