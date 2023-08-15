@@ -49,8 +49,8 @@ function smob () {
 
         smobUsers.push({
             "id": uuid,
-            "itemStatus": listItemStatus,
-            "itemPosition": listItemPosition,
+            "status": listItemStatus,
+            "position": listItemPosition,
             "username": username,
             "name": name,
             "email": email,
@@ -66,8 +66,8 @@ function smob () {
     // manually add "myself" (own user: BTwLBEmaoWfQKbooBguh0x84bV52)
     smobUsers.push({
         "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
-        "itemStatus": "OPEN",
-        "itemPosition": 20,
+        "status": "OPEN",
+        "position": 20,
         "username": "Frank.Douvre",
         "name": "Frank Douvre",
         "email": "fradou7@gmail.com",
@@ -81,7 +81,7 @@ function smob () {
     // ----------------------------------------------------------------------------------
     var smobGroups = []
     var groupIds = []
-    const itemStatus = ['OPEN', 'IN_PROGRESS', 'DONE']
+    const status = ['OPEN', 'IN_PROGRESS', 'DONE']
     const groupTypes = ['OTHER', 'FAMILY', 'FRIENDS', 'WORK']
     for (let id = 0; id < 8; id++) {
 
@@ -107,7 +107,7 @@ function smob () {
                 // return member as tuple of ID and status and list position
                 return { 
                     "id": userId, 
-                    "status": faker.helpers.randomize(itemStatus), 
+                    "status": faker.helpers.randomize(status), 
                     "listPosition": idx,
                 } 
             }
@@ -118,8 +118,8 @@ function smob () {
 
         smobGroups.push({
             "id": uuid,
-            "itemStatus": listItemStatus,
-            "itemPosition": listItemPosition,
+            "status": listItemStatus,
+            "position": listItemPosition,
             "name": name,
             "description": description,
             "type": type,
@@ -191,8 +191,8 @@ function smob () {
 
         smobProducts.push({
             "id": uuid,
-            "itemStatus": listItemStatus,
-            "itemPosition": listItemPosition,
+            "status": listItemStatus,
+            "position": listItemPosition,
             "name": name,
             "description": description,
             "imageUrl": imageUrl,
@@ -254,8 +254,8 @@ function smob () {
 
         // {
         //     "id": "UUID-store",
-        //     "itemStatus": "NEW",
-        //     "itemPosition": 0,
+        //     "status": "NEW",
+        //     "position": 0,
         //     "name": "store name",
         //     "description": "it's a good-e store",
         //     "imageUrl": "some URL",
@@ -276,8 +276,8 @@ function smob () {
 
         smobShops.push({
             "id": uuid,
-            "itemStatus": listItemStatus,
-            "itemPosition": listItemPosition,
+            "status": listItemStatus,
+            "position": listItemPosition,
             "name": name,
             "description": description,
             "imageUrl": imageUrl,
@@ -321,7 +321,7 @@ function smob () {
         var items = itemsOnList.map(
             (prodId, idx) => { return { 
                 "id": prodId, 
-                "status": faker.helpers.randomize(itemStatus), 
+                "status": faker.helpers.randomize(status), 
                 "listPosition": idx,
                 "mainCategory": daProducts.find(prod => prod.id == prodId).catMain,
             } 
@@ -333,7 +333,7 @@ function smob () {
         var groups = groupsOnList.map(
             (groupId, idx) => { return { 
                 "id": groupId, 
-                "status": faker.helpers.randomize(itemStatus), 
+                "status": faker.helpers.randomize(status), 
                 "listPosition": idx,
             } 
         })
@@ -358,8 +358,8 @@ function smob () {
 
         // {
         //     "id": "UUID-list",
-        //     "itemStatus": "NEW",
-        //     "itemPosition": 0,
+        //     "status": "NEW",
+        //     "position": 0,
         //     "name": "smob list name",
         //     "description": "our daily groceries",
         //     "items": [
@@ -382,8 +382,8 @@ function smob () {
 
         smobLists.push({
             "id": uuid,
-            "itemStatus": listItemStatus,
-            "itemPosition": listItemPosition,
+            "status": listItemStatus,
+            "position": listItemPosition,
             "name": name,
             "description": description,
             "items": items,

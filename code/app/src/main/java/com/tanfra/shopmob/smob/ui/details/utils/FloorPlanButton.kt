@@ -163,7 +163,7 @@ class FloorPlanButton @JvmOverloads constructor(
     }
 
     // draw da custom button
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         // compute these only once
@@ -174,17 +174,17 @@ class FloorPlanButton @JvmOverloads constructor(
 
         // draw 'FloorPlan' rectangle
         paint.color = btnAlternativeColor
-        canvas?.drawRect(0.0f, 0.0f, widthFloorPlanBarInv, heightButton, paint)
-        canvas?.drawRect(0.0f, 0.0f, widthFloorPlanBar, heightButton, paint)
+        canvas.drawRect(0.0f, 0.0f, widthFloorPlanBarInv, heightButton, paint)
+        canvas.drawRect(0.0f, 0.0f, widthFloorPlanBar, heightButton, paint)
 
         // draw rectangle with full width of the button and primary color
         paint.color = btnDefaultColor
-        canvas?.drawRect(widthFloorPlanBar, 0.0f, widthFloorPlanBarInv, heightButton, paint)
-        canvas?.drawRect(widthFloorPlanBar, 0.0f, widthFloorPlanBar, heightButton, paint)
+        canvas.drawRect(widthFloorPlanBar, 0.0f, widthFloorPlanBarInv, heightButton, paint)
+        canvas.drawRect(widthFloorPlanBar, 0.0f, widthFloorPlanBar, heightButton, paint)
 
         // display title (as per layout xml - custom attribute 'defaultTitle')
         paint.color = Color.WHITE
-        canvas?.drawText(btnTitle, (widthSize/2).toFloat(), (heightSize/2 + 20).toFloat(), paint)
+        canvas.drawText(btnTitle, (widthSize/2).toFloat(), (heightSize/2 + 20).toFloat(), paint)
 
     }
 
