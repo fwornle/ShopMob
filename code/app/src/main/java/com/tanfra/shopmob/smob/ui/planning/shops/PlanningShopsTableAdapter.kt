@@ -33,10 +33,10 @@ class PlanningShopsTableAdapter(rootView: View, callBack: (selectedSmobATO: Smob
 
         // take out all items which have been deleted by swiping
         return items
-            .filter { item -> item.itemStatus != ItemStatus.DELETED  }
+            .filter { item -> item.status != ItemStatus.DELETED  }
             .sortedWith(
                 compareBy(
-                    { it.itemPosition },
+                    { it.position },
                 )
             )
     }

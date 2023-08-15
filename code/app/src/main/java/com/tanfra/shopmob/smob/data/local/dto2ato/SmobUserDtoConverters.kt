@@ -13,9 +13,9 @@ fun Flow<List<SmobUserDTO>>.asDomainModel(): Flow<List<SmobUserATO>> = transform
     emit(
         value.map {
             SmobUserATO (
-                itemId = it.itemId,
-                itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                id = it.id,
+                status = it.status,
+                position = it.position,
                 username = it.username,
                 name = it.name,
                 email = it.email,
@@ -30,9 +30,9 @@ fun Flow<List<SmobUserDTO>>.asDomainModel(): Flow<List<SmobUserATO>> = transform
 fun List<SmobUserATO>.asDatabaseModel(): List<SmobUserDTO> {
     return map {
             SmobUserDTO (
-                itemId = it.itemId,
-                itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                id = it.id,
+                status = it.status,
+                position = it.position,
                 username = it.username,
                 name = it.name,
                 email = it.email,
@@ -50,9 +50,9 @@ fun Flow<SmobUserDTO?>.asDomainModel(): Flow<SmobUserATO?> = transform {
     emit(
         value?.let {
             SmobUserATO(
-                itemId = it.itemId,
-                itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                id = it.id,
+                status = it.status,
+                position = it.position,
                 username = it.username,
                 name = it.name,
                 email = it.email,
@@ -67,9 +67,9 @@ fun Flow<SmobUserDTO?>.asDomainModel(): Flow<SmobUserATO?> = transform {
 fun SmobUserATO.asDatabaseModel(): SmobUserDTO {
     return this.let {
             SmobUserDTO(
-                itemId = it.itemId,
-                itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                id = it.id,
+                status = it.status,
+                position = it.position,
                 username = it.username,
                 name = it.name,
                 email = it.email,

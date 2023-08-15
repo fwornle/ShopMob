@@ -28,11 +28,11 @@ class AdminContactsImportTableSwipeActionHandler(adapter: AdminContactsImportTab
 
             ItemTouchHelper.LEFT -> {
 
-                when (item.itemStatus) {
+                when (item.status) {
 
                     ItemStatus.NEW, ItemStatus.OPEN -> {
                         // mark smobGroup as 'deleted'
-                        item.itemStatus = ItemStatus.DELETED
+                        item.status = ItemStatus.DELETED
                         adapter.setItem(position, item)
 
                         // throw item off the list
@@ -42,7 +42,7 @@ class AdminContactsImportTableSwipeActionHandler(adapter: AdminContactsImportTab
 
                     else -> {
                         // return to 'group inactive'
-                        item.itemStatus = ItemStatus.OPEN
+                        item.status = ItemStatus.OPEN
                         adapter.setItem(position, item)
 
                         // restore RV item view (removing the animation effects)
@@ -59,9 +59,9 @@ class AdminContactsImportTableSwipeActionHandler(adapter: AdminContactsImportTab
             ItemTouchHelper.RIGHT -> {
 
                 // activate group ('IN_PROGRESS')
-                when (item.itemStatus) {
+                when (item.status) {
                     ItemStatus.NEW, ItemStatus.OPEN -> {
-                        item.itemStatus = ItemStatus.IN_PROGRESS
+                        item.status = ItemStatus.IN_PROGRESS
                         adapter.setItem(position, item)
                     }
                     else -> {

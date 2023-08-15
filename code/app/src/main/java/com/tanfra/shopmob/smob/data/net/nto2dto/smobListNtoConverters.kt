@@ -11,9 +11,9 @@ fun ArrayList<SmobListNTO>.asRepoModel(): List<SmobListDTO> {
     return this.let {
         it.map {
             SmobListDTO(
-                itemId = it.itemId,
-                itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                id = it.id,
+                status = it.status,
+                position = it.position,
                 name = it.name,
                 description = it.description,
                 items = it.items,
@@ -30,9 +30,9 @@ fun List<SmobListDTO>.asNetworkModel(): ArrayList<SmobListNTO> {
     return ArrayList(
         map {
             SmobListNTO(
-                itemId = it.itemId,
-                itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                id = it.id,
+                status = it.status,
+                position = it.position,
                 name = it.name,
                 description = it.description,
                 items = it.items,
@@ -46,9 +46,9 @@ fun List<SmobListDTO>.asNetworkModel(): ArrayList<SmobListNTO> {
 // SmobListNTO --> SmobListDTO
 fun SmobListNTO.asRepoModel(): SmobListDTO {
     return SmobListDTO (
-        itemId = this.itemId,
-        itemStatus = this.itemStatus,
-        itemPosition = this.itemPosition,
+        id = this.id,
+        status = this.status,
+        position = this.position,
         name = this.name,
         description = this.description,
         items = this.items,
@@ -61,9 +61,9 @@ fun SmobListNTO.asRepoModel(): SmobListDTO {
 // SmobListDTO --> SmobListNTO
 fun SmobListDTO.asNetworkModel(): SmobListNTO {
     return SmobListNTO (
-        itemId = this.itemId,
-        itemStatus = this.itemStatus,
-        itemPosition = this.itemPosition,
+        id = this.id,
+        status = this.status,
+        position = this.position,
         name = this.name,
         description = this.description,
         items = this.items,

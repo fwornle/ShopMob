@@ -564,7 +564,7 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
             val geoFenceObj = Geofence.Builder()
 
                 // Set the request ID of the geofence - use SmobShop name as ID (string)
-                .setRequestId(daSmobShopATO.itemId)
+                .setRequestId(daSmobShopATO.id)
 
                 // Set the circular region of this geofence
                 .setCircularRegion(

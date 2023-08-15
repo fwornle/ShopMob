@@ -113,13 +113,13 @@ class SmobListRepository(
         // then push to backend DB
         // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
         if(networkConnectionManager.isNetworkConnected) {
-            val testRead = getSmobListViaApi(dbList.itemId)
-            if (testRead.data?.itemId != dbList.itemId) {
+            val testRead = getSmobListViaApi(dbList.id)
+            if (testRead.data?.id != dbList.id) {
                 // item not found in backend --> use POST to create it
                 saveSmobListViaApi(dbList)
             } else {
                 // item already exists in backend DB --> use PUT to update it
-                smobListApi.updateSmobItemById(dbList.itemId, dbList.asNetworkModel())
+                smobListApi.updateSmobItemById(dbList.id, dbList.asNetworkModel())
             }
         }
 
@@ -153,7 +153,7 @@ class SmobListRepository(
                 // then push to backend DB
                 // ... use 'update', as list may already exist (equivalent of REPLACE w/h local DB)
                 if(networkConnectionManager.isNetworkConnected) {
-                    smobListApi.updateSmobItemById(dbList.itemId, dbList.asNetworkModel())
+                    smobListApi.updateSmobItemById(dbList.id, dbList.asNetworkModel())
                 }
 
             }
@@ -201,7 +201,7 @@ class SmobListRepository(
                 if(networkConnectionManager.isNetworkConnected) {
                     getSmobListsViaApi().let { resList ->
                         if (resList.status.equals(Status.SUCCESS)) {
-                            resList.data?.map { smobListApi.deleteSmobItemById(it.itemId) }
+                            resList.data?.map { smobListApi.deleteSmobItemById(it.id) }
                         } else {
                             Timber.w("Unable to get SmobList IDs from backend DB (via API) - not deleting anything.")
                         }
@@ -281,7 +281,7 @@ class SmobListRepository(
 
         // initiate the (HTTP) PUT request
         Timber.i("Sending PUT request for SmobList data...")
-        updateSmobListViaApi(smobItemATO.itemId, smobItemATO.asDatabaseModel())
+        updateSmobListViaApi(smobItemATO.id, smobItemATO.asDatabaseModel())
 
     }  // refreshSmobListInLocalDB()
 

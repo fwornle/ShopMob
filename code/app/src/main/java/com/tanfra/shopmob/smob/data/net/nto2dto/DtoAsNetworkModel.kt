@@ -16,9 +16,9 @@ fun <DTO: Dto, NTO: Nto> DTO?._asNetworkModel(d: DTO): NTO {
 
             is SmobGroupDTO -> {
                 SmobGroupNTO(
-                    itemId = (this as SmobGroupDTO).itemId,
-                    itemStatus = this.itemStatus,
-                    itemPosition = this.itemPosition,
+                    id = (this as SmobGroupDTO).id,
+                    status = this.status,
+                    position = this.position,
                     name = this.name,
                     description = this.description,
                     type = this.type,
@@ -28,9 +28,9 @@ fun <DTO: Dto, NTO: Nto> DTO?._asNetworkModel(d: DTO): NTO {
             }
             is SmobListDTO -> {
                 SmobListNTO(
-                    itemId = (this as SmobListDTO).itemId,
-                    itemStatus = this.itemStatus,
-                    itemPosition = this.itemPosition,
+                    id = (this as SmobListDTO).id,
+                    status = this.status,
+                    position = this.position,
                     name = this.name,
                     description = this.description,
                     items = this.items,
@@ -40,9 +40,9 @@ fun <DTO: Dto, NTO: Nto> DTO?._asNetworkModel(d: DTO): NTO {
             }
             is SmobProductDTO -> {
                 SmobProductNTO (
-                    itemId = (this as SmobProductDTO).itemId,
-                    itemStatus = this.itemStatus,
-                    itemPosition = this.itemPosition,
+                    id = (this as SmobProductDTO).id,
+                    status = this.status,
+                    position = this.position,
                     name = this.name,
                     description = this.description,
                     imageUrl = this.imageUrl,
@@ -53,9 +53,9 @@ fun <DTO: Dto, NTO: Nto> DTO?._asNetworkModel(d: DTO): NTO {
             }
             is SmobShopDTO -> {
                 SmobShopNTO (
-                    itemId = (this as SmobShopDTO).itemId,
-                    itemStatus = this.itemStatus,
-                    itemPosition = this.itemPosition,
+                    id = (this as SmobShopDTO).id,
+                    status = this.status,
+                    position = this.position,
                     name = this.name,
                     description = this.description,
                     imageUrl = this.imageUrl,
@@ -67,9 +67,9 @@ fun <DTO: Dto, NTO: Nto> DTO?._asNetworkModel(d: DTO): NTO {
             }
             is SmobUserDTO -> {
                 SmobUserNTO (
-                    itemId = (this as SmobUserDTO).itemId,
-                    itemStatus = this.itemStatus,
-                    itemPosition = this.itemPosition,
+                    id = (this as SmobUserDTO).id,
+                    status = this.status,
+                    position = this.position,
                     username = this.username,
                     name = this.name,
                     email = this.email,

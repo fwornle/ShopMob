@@ -11,9 +11,9 @@ fun <DTO: Dto, NTO: Nto> NTO._asRepoModel(d: DTO): DTO {
     return when (d as Dto) {
             is SmobGroupDTO -> {
                 SmobGroupDTO(
-                    itemId = (this as SmobGroupNTO).itemId,
-                    itemStatus = this.itemStatus,
-                    itemPosition = this.itemPosition,
+                    id = (this as SmobGroupNTO).id,
+                    status = this.status,
+                    position = this.position,
                     name = this.name,
                     description = this.description,
                     type = this.type,
@@ -24,9 +24,9 @@ fun <DTO: Dto, NTO: Nto> NTO._asRepoModel(d: DTO): DTO {
             }
         is SmobListDTO -> {
             SmobListDTO(
-                itemId = (this as SmobListNTO).itemId,
-                itemStatus = this.itemStatus,
-                itemPosition = this.itemPosition,
+                id = (this as SmobListNTO).id,
+                status = this.status,
+                position = this.position,
                 name = this.name,
                 description = this.description,
                 items = this.items,
@@ -37,9 +37,9 @@ fun <DTO: Dto, NTO: Nto> NTO._asRepoModel(d: DTO): DTO {
         }
         is SmobProductDTO -> {
             SmobProductDTO(
-                itemId = (this as SmobProductNTO).itemId,
-                itemStatus = this.itemStatus,
-                itemPosition = this.itemPosition,
+                id = (this as SmobProductNTO).id,
+                status = this.status,
+                position = this.position,
                 name = this.name,
                 description = this.description,
                 imageUrl = this.imageUrl,
@@ -54,9 +54,9 @@ fun <DTO: Dto, NTO: Nto> NTO._asRepoModel(d: DTO): DTO {
         }
         is SmobShopDTO -> {
             SmobShopDTO(
-                itemId = (this as SmobShopNTO).itemId,
-                itemStatus = this.itemStatus,
-                itemPosition = this.itemPosition,
+                id = (this as SmobShopNTO).id,
+                status = this.status,
+                position = this.position,
                 name = this.name,
                 description = this.description,
                 imageUrl = this.imageUrl,
@@ -69,9 +69,9 @@ fun <DTO: Dto, NTO: Nto> NTO._asRepoModel(d: DTO): DTO {
         }
         is SmobUserDTO -> {
             SmobUserDTO(
-                itemId = (this as SmobUserNTO).itemId,
-                itemStatus = this.itemStatus,
-                itemPosition = this.itemPosition,
+                id = (this as SmobUserNTO).id,
+                status = this.status,
+                position = this.position,
                 username = this.username,
                 name = this.name,
                 email = this.email,

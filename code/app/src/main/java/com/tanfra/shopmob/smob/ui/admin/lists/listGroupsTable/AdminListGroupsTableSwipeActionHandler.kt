@@ -30,7 +30,7 @@ class AdminListGroupsTableSwipeActionHandler(adapter: AdminListGroupsTableAdapte
         // cast to actual item of this instance
         // ... by reference --> changes on these objects affect the original object (item)
         val daList: SmobListATO = (item as SmobGroupWithListDataATO).list()
-        val daGroupItem = daList.groups.find { group -> group.id == item.itemId }
+        val daGroupItem = daList.groups.find { group -> group.id == item.id }
         val daItemStatus = daGroupItem?.status
 
         // avoid "null" status (should never happen)
@@ -48,7 +48,7 @@ class AdminListGroupsTableSwipeActionHandler(adapter: AdminListGroupsTableAdapte
                         ItemStatus.IN_PROGRESS, ItemStatus.DONE -> {
                             // mark smobGroup as 'deleted'
                             daGroupItem.status = ItemStatus.DELETED
-                            item.itemStatus = ItemStatus.DELETED  //  (item filtering in RV)
+                            item.status = ItemStatus.DELETED  //  (item filtering in RV)
                             adapter.setItem(position, item)
 
                             // throw item off the list
@@ -60,7 +60,7 @@ class AdminListGroupsTableSwipeActionHandler(adapter: AdminListGroupsTableAdapte
                         else -> {
                             // return to 'group inactive'
                             daGroupItem.status = ItemStatus.OPEN
-                            item.itemStatus = ItemStatus.OPEN  //  (item filtering in RV)
+                            item.status = ItemStatus.OPEN  //  (item filtering in RV)
                             adapter.setItem(position, item)
 
                             // restore RV item view (removing the animation effects)

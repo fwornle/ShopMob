@@ -90,7 +90,7 @@ class AdminListsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelectedL
                 _viewModel.smobGroupDescription.value ?: "something exciting",
                 _viewModel.smobGroupType.value ?: GroupType.OTHER,
                 SmobApp.currUser?.let {
-                    listOf(SmobMemberItem(it.itemId, ItemStatus.OPEN, 0))
+                    listOf(SmobMemberItem(it.id, ItemStatus.OPEN, 0))
                 } ?: listOf(), // members
                 ActivityStatus(currentDate, 0)
             )

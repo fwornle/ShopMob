@@ -18,9 +18,9 @@ fun <DTO: Dto, ATO: Ato> List<DTO?>._asDomainModel(d: DTO): List<ATO> {
         when (d as Dto) {
             is SmobGroupDTO -> {
                 SmobGroupATO(
-                    itemId = (it as SmobGroupDTO).itemId,
-                    itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    id = (it as SmobGroupDTO).id,
+                    status = it.status,
+                    position = it.position,
                     name = it.name,
                     description = it.description,
                     type = it.type,
@@ -30,9 +30,9 @@ fun <DTO: Dto, ATO: Ato> List<DTO?>._asDomainModel(d: DTO): List<ATO> {
             }
             is SmobListDTO -> {
                 SmobListATO(
-                    itemId = (it as SmobListDTO).itemId,
-                    itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    id = (it as SmobListDTO).id,
+                    status = it.status,
+                    position = it.position,
                     name = it.name,
                     description = it.description,
                     items = it.items,
@@ -42,9 +42,9 @@ fun <DTO: Dto, ATO: Ato> List<DTO?>._asDomainModel(d: DTO): List<ATO> {
             }
             is SmobProductDTO -> {
                 SmobProductATO (
-                    itemId = (it as SmobProductDTO).itemId,
-                    itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    id = (it as SmobProductDTO).id,
+                    status = it.status,
+                    position = it.position,
                     name = it.name,
                     description = it.description,
                     imageUrl = it.imageUrl,
@@ -55,9 +55,9 @@ fun <DTO: Dto, ATO: Ato> List<DTO?>._asDomainModel(d: DTO): List<ATO> {
             }
             is SmobShopDTO -> {
                 SmobShopATO (
-                    itemId = (it as SmobShopDTO).itemId,
-                    itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    id = (it as SmobShopDTO).id,
+                    status = it.status,
+                    position = it.position,
                     name = it.name,
                     description = it.description,
                     imageUrl = it.imageUrl,
@@ -69,9 +69,9 @@ fun <DTO: Dto, ATO: Ato> List<DTO?>._asDomainModel(d: DTO): List<ATO> {
             }
             is SmobUserDTO -> {
                 SmobUserATO (
-                    itemId = (it as SmobUserDTO).itemId,
-                    itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    id = (it as SmobUserDTO).id,
+                    status = it.status,
+                    position = it.position,
                     username = it.username,
                     name = it.name,
                     email = it.email,

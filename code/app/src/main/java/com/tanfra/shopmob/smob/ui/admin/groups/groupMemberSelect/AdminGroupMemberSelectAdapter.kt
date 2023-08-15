@@ -45,7 +45,7 @@ class AdminGroupMemberSelectAdapter(rootView: View, callBack: (selectedSmobUserA
 
         // take out all items which have been deleted by swiping
         return items
-            .filter { item -> item.itemStatus != ItemStatus.DELETED  }
+            .filter { item -> item.status != ItemStatus.DELETED  }
             //.map { item -> consolidateListItem(item) }
             .sortedWith(
                 compareBy { it.name }
@@ -67,23 +67,23 @@ class AdminGroupMemberSelectAdapter(rootView: View, callBack: (selectedSmobUserA
             _viewModel.currGroup?.let { daGroup ->
 
                 // check if selected user is already part of the list
-                if(!daGroup.members.map { member -> member.id }.contains(item.itemId)) {
+                if(!daGroup.members.map { member -> member.id }.contains(item.id)) {
 
                     // nope --> append member
                     val newMemberList = daGroup.members.toMutableList()
                     newMemberList.add(
                         SmobMemberItem(
-                            item.itemId,
-                            item.itemStatus,  // update list item status (from status set by user)
+                            item.id,
+                            item.status,  // update list item status (from status set by user)
                             (daGroup.members.size).toLong(),
                         )
                     )
 
                     // assemble updated SmobGroup item
                     val updatedGroup = SmobGroupATO(
-                        daGroup.itemId,
-                        daGroup.itemStatus,
-                        daGroup.itemPosition,
+                        daGroup.id,
+                        daGroup.status,
+                        daGroup.position,
                         daGroup.name,
                         daGroup.description,
                         daGroup.type,
@@ -106,7 +106,7 @@ class AdminGroupMemberSelectAdapter(rootView: View, callBack: (selectedSmobUserA
                             // hygiene: filter out empty group entries
                             .filter { groupId -> groupId != "" }
                             // filter out this group (no longer a member of it)
-                            .filter { groupId -> groupId != daGroup.itemId }
+                            .filter { groupId -> groupId != daGroup.id }
 
                         // replace member's own groups list with updated list
                         newGroupMember.groups = updatedMemberGroups

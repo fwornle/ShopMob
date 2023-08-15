@@ -4,9 +4,9 @@ import com.tanfra.shopmob.smob.data.types.ItemStatus
 
 // network data type
 data class SmobUserNTO(
-    override val itemId: String,
-    override var itemStatus: ItemStatus,
-    override var itemPosition: Long,
+    override val id: String,
+    override var status: ItemStatus,
+    override var position: Long,
     var username: String,
     var name: String,
     var email: String,

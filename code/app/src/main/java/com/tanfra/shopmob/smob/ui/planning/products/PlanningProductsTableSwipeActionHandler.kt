@@ -29,12 +29,12 @@ class PlanningProductsTableSwipeActionHandler(adapter: PlanningProductsTableAdap
             ItemTouchHelper.LEFT -> {
 
                 // swipe left ("un-purchase" item)
-                when (item.itemStatus) {
+                when (item.status) {
 
                     ItemStatus.DONE -> {
 
                         // change item status
-                        item.itemStatus = ItemStatus.IN_PROGRESS
+                        item.status = ItemStatus.IN_PROGRESS
                         adapter.setItem(position, item)
 
                         // restore RV item view (removing the animation effects)
@@ -47,7 +47,7 @@ class PlanningProductsTableSwipeActionHandler(adapter: PlanningProductsTableAdap
                     ItemStatus.IN_PROGRESS -> {
 
                         // change item status
-                        item.itemStatus = ItemStatus.OPEN
+                        item.status = ItemStatus.OPEN
                         adapter.setItem(position, item)
 
                         // restore RV item view (removing the animation effects)
@@ -60,7 +60,7 @@ class PlanningProductsTableSwipeActionHandler(adapter: PlanningProductsTableAdap
                     else -> {
 
                         // mark item as 'deleted'
-                        item.itemStatus = ItemStatus.DELETED
+                        item.status = ItemStatus.DELETED
                         adapter.setItem(position, item)
 
                         // throw item off the list
@@ -75,13 +75,13 @@ class PlanningProductsTableSwipeActionHandler(adapter: PlanningProductsTableAdap
             ItemTouchHelper.RIGHT -> {
 
                 // swipe right (purchase item)
-                when (item.itemStatus) {
+                when (item.status) {
                     ItemStatus.NEW, ItemStatus.OPEN -> {
-                        item.itemStatus = ItemStatus.IN_PROGRESS
+                        item.status = ItemStatus.IN_PROGRESS
                         adapter.setItem(position, item)
                     }
                     ItemStatus.IN_PROGRESS -> {
-                        item.itemStatus = ItemStatus.DONE
+                        item.status = ItemStatus.DONE
                         adapter.setItem(position, item)
                     }
                     else -> {

@@ -147,7 +147,7 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
             if (it.status == Status.SUCCESS) {
                 // return  highest index
                 it.data?.fold(0L) { max, list ->
-                    if (list?.itemPosition!! > max) list.itemPosition else max
+                    if (list?.position!! > max) list.position else max
                 } ?: 0L
             } else {
                 0L
@@ -195,7 +195,7 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
 
             // communicate the ID and name of the selected item (= shopping list)
             val bundle = bundleOf(
-                "listId" to it.itemId,
+                "listId" to it.id,
                 "listName" to it.name,
             )
 

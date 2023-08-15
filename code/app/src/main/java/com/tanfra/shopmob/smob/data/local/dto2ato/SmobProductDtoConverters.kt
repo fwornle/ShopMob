@@ -16,9 +16,9 @@ fun Flow<List<SmobProductDTO>>.asDomainModel(): Flow<List<SmobProductATO>> = tra
     emit(
         value.map {
             SmobProductATO (
-                itemId = it.itemId,
-                itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                id = it.id,
+                status = it.status,
+                position = it.position,
                 name = it.name,
                 description = it.description,
                 imageUrl = it.imageUrl,
@@ -34,9 +34,9 @@ fun Flow<List<SmobProductDTO>>.asDomainModel(): Flow<List<SmobProductATO>> = tra
 fun List<SmobProductATO>.asDatabaseModel(): List<SmobProductDTO> {
     return map {
         SmobProductDTO (
-            itemId = it.itemId,
-            itemStatus = it.itemStatus,
-            itemPosition = it.itemPosition,
+            id = it.id,
+            status = it.status,
+            position = it.position,
             name = it.name,
             description = it.description,
             imageUrl = it.imageUrl,
@@ -59,9 +59,9 @@ fun Flow<SmobProductDTO?>.asDomainModel(): Flow<SmobProductATO?> = transform {
     emit(
         value?.let {
             SmobProductATO(
-                itemId = it.itemId,
-                itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                id = it.id,
+                status = it.status,
+                position = it.position,
                 name = it.name,
                 description = it.description,
                 imageUrl = it.imageUrl,
@@ -77,9 +77,9 @@ fun Flow<SmobProductDTO?>.asDomainModel(): Flow<SmobProductATO?> = transform {
 fun SmobProductATO.asDatabaseModel(): SmobProductDTO {
     return this.let {
         SmobProductDTO(
-            itemId = it.itemId,
-            itemStatus = it.itemStatus,
-            itemPosition = it.itemPosition,
+            id = it.id,
+            status = it.status,
+            position = it.position,
             name = it.name,
             description = it.description,
             imageUrl = it.imageUrl,

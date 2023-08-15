@@ -40,7 +40,7 @@ class AdminContactsImportTableAdapter(rootView: View, callBack: (selectedSmobCon
 
         // take out all items which have been deleted by swiping
         return items
-            .filter { item -> item.itemStatus != ItemStatus.DELETED }
+            .filter { item -> item.status != ItemStatus.DELETED }
             .sortedWith(
                 compareBy(
                     { it.name },

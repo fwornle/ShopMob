@@ -68,7 +68,7 @@ class AdminListGroupDetailsFragment : BaseFragment(), KoinComponent {
             _viewModel.currList?.let { daList ->
 
                 // append group ID (and status / position) to list of groups
-                _viewModel.currGroupWithListData?.itemId?.let { currGroupId ->
+                _viewModel.currGroupWithListData?.id?.let { currGroupId ->
 
                     // assemble new groups list
                     val updatedMemberList = daList.groups.toMutableList().apply {

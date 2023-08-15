@@ -35,12 +35,12 @@ class PlanningProductsTableAdapter(rootView: View, callBack: (selectedSmobATO: S
 
         // take out all items which have been deleted by swiping
         return items
-            .filter { item -> item.itemStatus != ItemStatus.DELETED  }
+            .filter { item -> item.status != ItemStatus.DELETED  }
             .sortedWith(
                 compareBy(
                     { it.productCategory.main },
                     { it.productCategory.sub },
-                    { it.itemPosition },
+                    { it.position },
                     )
             )
     }
@@ -63,11 +63,11 @@ class PlanningProductsTableAdapter(rootView: View, callBack: (selectedSmobATO: S
                 item.listDescription,
                 // replace list of products on smob list with updated list of products
                 item.listItems.map { product ->
-                    if(product.id == item.itemId) {
+                    if(product.id == item.id) {
                         // set new status (list property)
                         SmobListItem(
                             product.id,
-                            item.itemStatus,  // update list item status (from status set by user)
+                            item.status,  // update list item status (from status set by user)
                             product.listPosition,
                             product.mainCategory,
                         )

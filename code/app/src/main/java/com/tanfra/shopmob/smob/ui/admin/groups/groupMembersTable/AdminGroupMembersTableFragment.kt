@@ -49,7 +49,7 @@ class AdminGroupMembersTableFragment : BaseFragment(), KoinComponent {
 //        val groupName = arguments?.getString("groupName")
 
         // fetch group ID of the (clicked) group that got us here
-        val groupId = _viewModel.currGroup?.itemId
+        val groupId = _viewModel.currGroup?.id
         val groupName = _viewModel.currGroup?.name
 
         // console

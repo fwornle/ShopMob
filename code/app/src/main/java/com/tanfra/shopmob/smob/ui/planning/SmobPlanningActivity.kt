@@ -169,7 +169,7 @@ class SmobPlanningActivity : AppCompatActivity() {
                         Timber.i("Number of users: ${allUsers?.size ?: -1}")
 
                         val userItemPos: Long
-                        val daUser: SmobUserATO? = allUsers?.find { it.itemId == userId }
+                        val daUser: SmobUserATO? = allUsers?.find { it.id == userId }
 
                         // determine position of user item in DB
                         userItemPos = if(daUser == null) {
@@ -178,11 +178,11 @@ class SmobPlanningActivity : AppCompatActivity() {
                             isNewUser = true
 
                             // determine highest user position (plus one)
-                            allUsers?.maxOf { it.itemPosition + 1 } ?: -1
+                            allUsers?.maxOf { it.position + 1 } ?: -1
 
                         } else {
                             // user already in ShopMob DB --> use current position
-                            daUser.itemPosition
+                            daUser.position
                         }
 
 

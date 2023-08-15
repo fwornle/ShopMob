@@ -7,7 +7,7 @@ import com.tanfra.shopmob.smob.data.types.ItemStatus
  * (properties declared abstract --> implementation delegated to inheriting concrete class)
  */
 sealed class Dto {
-    abstract var itemId: String
-    abstract var itemStatus: ItemStatus
-    abstract var itemPosition: Long
+    abstract var id: String
+    abstract var status: ItemStatus
+    abstract var position: Long
 }

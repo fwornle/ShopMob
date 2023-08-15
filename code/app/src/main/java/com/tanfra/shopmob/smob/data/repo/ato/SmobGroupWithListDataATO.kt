@@ -13,9 +13,9 @@ import kotlinx.serialization.Serializable
 // domain independent data type (Application Transfer Object)
 @Serializable
 data class SmobGroupWithListDataATO(
-    override val itemId: String,
-    override var itemStatus: @Contextual ItemStatus,
-    override var itemPosition: Long,
+    override val id: String,
+    override var status: @Contextual ItemStatus,
+    override var position: Long,
     var groupName: String,
     var groupDescription: String?,
     var groupType: GroupType,
@@ -35,9 +35,9 @@ data class SmobGroupWithListDataATO(
 
     // extract group
     fun group() = SmobGroupATO(
-        this.itemId,
-        this.itemStatus,
-        this.itemPosition,
+        this.id,
+        this.status,
+        this.position,
         this.groupName,
         this.groupDescription,
         this.groupType,

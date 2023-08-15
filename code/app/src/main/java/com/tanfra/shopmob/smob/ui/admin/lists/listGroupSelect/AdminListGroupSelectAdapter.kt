@@ -43,7 +43,7 @@ class AdminListGroupSelectAdapter(rootView: View, callBack: (selectedSmobGroupWi
 
         // take out all items which have been deleted by swiping
         return items
-            .filter { item -> item.itemStatus != ItemStatus.DELETED  }
+            .filter { item -> item.status != ItemStatus.DELETED  }
             //.map { item -> consolidateListItem(item) }
             .sortedWith(
                 compareBy(
@@ -66,23 +66,23 @@ class AdminListGroupSelectAdapter(rootView: View, callBack: (selectedSmobGroupWi
             _viewModel.currGroupWithListData?.let {
 
                 // check if selected group is already part of the list
-                if(!it.listGroups.map { group -> group.id }.contains(item.itemId)) {
+                if(!it.listGroups.map { group -> group.id }.contains(item.id)) {
 
                     // nope --> append new group ID
                     val newGroupListItem = it.listGroups.toMutableList()
                     newGroupListItem.add(
                         SmobGroupItem(
-                            item.itemId,
-                            item.itemStatus,  // update list item status (from status set by user)
+                            item.id,
+                            item.status,  // update list item status (from status set by user)
                             (it.listGroups.size + 1).toLong(),
                         )
                     )
 
                     // assemble updated SmobList item
                     val updatedList = SmobListATO(
-                        it.itemId,
-                        it.itemStatus,
-                        it.itemPosition,
+                        it.id,
+                        it.status,
+                        it.position,
                         it.listName,
                         it.listDescription,
                         it.listItems,

@@ -50,7 +50,7 @@ class AdminListGroupSelectFragment : BaseFragment(), KoinComponent {
         listPosMax = arguments?.getLong("listPosMax") ?: 0L
 
         // fetch list ID of the (clicked) list that got us here
-        val listId = _viewModel.currList?.itemId
+        val listId = _viewModel.currList?.id
         val listName = _viewModel.currList?.name
 
         // console

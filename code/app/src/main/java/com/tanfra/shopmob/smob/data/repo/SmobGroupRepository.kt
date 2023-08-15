@@ -138,13 +138,13 @@ class SmobGroupRepository(
             // then push to backend DB
             // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
             if(networkConnectionManager.isNetworkConnected) {
-                val testRead = getSmobGroupViaApi(dbGroup.itemId)
-                if (testRead.data?.itemId != dbGroup.itemId) {
+                val testRead = getSmobGroupViaApi(dbGroup.id)
+                if (testRead.data?.id != dbGroup.id) {
                     // item not found in backend --> use POST to create it
                     saveSmobGroupViaApi(dbGroup)
                 } else {
                     // item already exists in backend DB --> use PUT to update it
-                    smobGroupApi.updateSmobItemById(dbGroup.itemId, dbGroup.asNetworkModel())
+                    smobGroupApi.updateSmobItemById(dbGroup.id, dbGroup.asNetworkModel())
                 }
             }
 
@@ -180,7 +180,7 @@ class SmobGroupRepository(
                 // then push to backend DB
                 // ... use 'update', as group may already exist (equivalent of REPLACE w/h local DB)
                 if(networkConnectionManager.isNetworkConnected) {
-                    smobGroupApi.updateSmobItemById(dbGroup.itemId, dbGroup.asNetworkModel())
+                    smobGroupApi.updateSmobItemById(dbGroup.id, dbGroup.asNetworkModel())
                 }
 
             }
@@ -228,7 +228,7 @@ class SmobGroupRepository(
                 if(networkConnectionManager.isNetworkConnected) {
                     getSmobGroupsViaApi().let {
                         if (it.status == Status.SUCCESS) {
-                            it.data?.map { smobGroupApi.deleteSmobItemById(it.itemId) }
+                            it.data?.map { smobGroupApi.deleteSmobItemById(it.id) }
                         } else {
                             Timber.w("Unable to get SmobGroup IDs from backend DB (via API) - not deleting anything.")
                         }

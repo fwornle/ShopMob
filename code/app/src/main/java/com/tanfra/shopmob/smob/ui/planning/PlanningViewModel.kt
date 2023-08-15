@@ -121,21 +121,21 @@ class PlanningViewModel(
                             // output merged data type (with product item status)
 
                             // fetch product details from 'items' list on the smobList
-                            val productOnList = rawList.items.first { item -> item.id == product.itemId }
+                            val productOnList = rawList.items.first { item -> item.id == product.id }
 
                             SmobProductWithListDataATO(
-                                itemId = product.itemId,
-                                itemStatus = productOnList.status,
-                                itemPosition = productOnList.listPosition,
+                                id = product.id,
+                                status = productOnList.status,
+                                position = productOnList.listPosition,
                                 productName = product.name,
                                 productDescription = product.description,
                                 productImageUrl = product.imageUrl,
                                 productCategory = product.category,
                                 productActivity = product.activity,
                                 productInShop = product.inShop,
-                                listId = rawList.itemId,
-                                listStatus = rawList.itemStatus,
-                                listPosition = rawList.itemPosition,
+                                listId = rawList.id,
+                                listStatus = rawList.status,
+                                listPosition = rawList.position,
                                 listName = rawList.name,
                                 listDescription = rawList.description,
                                 listItems = rawList.items,
@@ -306,8 +306,8 @@ class PlanningViewModel(
 //
 //                                    SmobProductOnListATO(
 //                                        id = product.id,
-//                                        itemStatus = productOnList.status,
-//                                        itemPosition = productOnList.listPosition,
+//                                        status = productOnList.status,
+//                                        position = productOnList.listPosition,
 //                                        productName = product.name,
 //                                        productDescription = product.description,
 //                                        productImageUrl = product.imageUrl,
@@ -383,7 +383,7 @@ class PlanningViewModel(
         showNoData.value = (
                 smobListNewest.status == Status.SUCCESS && smobListNewest.data!!.isEmpty() ||
                 smobListNewest.status == Status.SUCCESS && smobListNewest.data!!.all {
-                    (it as Ato).itemStatus == ItemStatus.DELETED
+                    (it as Ato).status == ItemStatus.DELETED
                 } ||
                 // show 'no data', if the currently logged in user is not affiliated with any groups
                 SmobApp.currUser?.hasGroupRefs()?.not() ?: false

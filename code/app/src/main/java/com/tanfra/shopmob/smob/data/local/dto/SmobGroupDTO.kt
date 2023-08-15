@@ -8,9 +8,9 @@ import com.tanfra.shopmob.smob.data.types.SmobMemberItem
 /**
  * Immutable model class for a SmobGroup. In order to compile with Room
  *
- * @param itemId         itemId of the smobGroup
- * @param itemStatus     status of an item of the smobGroup (in a list)
- * @param itemPosition   position of an item of the smobGroup (in a list)
+ * @param id         id of the smobGroup
+ * @param status     status of an item of the smobGroup (in a list)
+ * @param position   position of an item of the smobGroup (in a list)
  * @param name           name of the smobGroup
  * @param description    optional description
  * @param type           (default)other|family|friends|work
@@ -21,9 +21,9 @@ import com.tanfra.shopmob.smob.data.types.SmobMemberItem
 @Entity(tableName = "smobGroups")
 @RewriteQueriesToDropUnusedColumns
 data class SmobGroupDTO(
-    @PrimaryKey @ColumnInfo(name = "groupId") override var itemId: String = "invalid smob group entry",
-    @ColumnInfo(name = "groupItemStatus") override var itemStatus: ItemStatus = ItemStatus.NEW,
-    @ColumnInfo(name = "groupItemPosition") override var itemPosition: Long = -1L,
+    @PrimaryKey @ColumnInfo(name = "groupId") override var id: String = "invalid smob group entry",
+    @ColumnInfo(name = "groupItemStatus") override var status: ItemStatus = ItemStatus.NEW,
+    @ColumnInfo(name = "groupItemPosition") override var position: Long = -1L,
     @ColumnInfo(name = "groupName") var name: String = "",
     @ColumnInfo(name = "groupDescription") var description: String? = "",
     @ColumnInfo(name = "groupType") var type: GroupType = GroupType.OTHER,

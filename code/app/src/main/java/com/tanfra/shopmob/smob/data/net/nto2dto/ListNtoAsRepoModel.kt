@@ -12,9 +12,9 @@ fun <DTO: Dto, NTO: Nto> ArrayList<NTO>._asRepoModel(d: DTO): List<DTO> {
         when (d as Dto) {
             is SmobGroupDTO -> {
                 SmobGroupDTO(
-                    itemId = (it as SmobGroupNTO).itemId,
-                    itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    id = (it as SmobGroupNTO).id,
+                    status = it.status,
+                    position = it.position,
                     name = it.name,
                     description = it.description,
                     type = it.type,
@@ -25,9 +25,9 @@ fun <DTO: Dto, NTO: Nto> ArrayList<NTO>._asRepoModel(d: DTO): List<DTO> {
             }
             is SmobListDTO -> {
                 SmobListDTO(
-                    itemId = (it as SmobListNTO).itemId,
-                    itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    id = (it as SmobListNTO).id,
+                    status = it.status,
+                    position = it.position,
                     name = it.name,
                     description = it.description,
                     items = it.items,
@@ -38,9 +38,9 @@ fun <DTO: Dto, NTO: Nto> ArrayList<NTO>._asRepoModel(d: DTO): List<DTO> {
             }
             is SmobProductDTO -> {
                 SmobProductDTO (
-                    itemId = (it as SmobProductNTO).itemId,
-                    itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    id = (it as SmobProductNTO).id,
+                    status = it.status,
+                    position = it.position,
                     name = it.name,
                     description = it.description,
                     imageUrl = it.imageUrl,
@@ -55,9 +55,9 @@ fun <DTO: Dto, NTO: Nto> ArrayList<NTO>._asRepoModel(d: DTO): List<DTO> {
             }
             is SmobShopDTO -> {
                 SmobShopDTO (
-                    itemId = (it as SmobShopNTO).itemId,
-                    itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    id = (it as SmobShopNTO).id,
+                    status = it.status,
+                    position = it.position,
                     name = it.name,
                     description = it.description,
                     imageUrl = it.imageUrl,
@@ -70,9 +70,9 @@ fun <DTO: Dto, NTO: Nto> ArrayList<NTO>._asRepoModel(d: DTO): List<DTO> {
             }
             is SmobUserDTO -> {
                 SmobUserDTO (
-                    itemId = (it as SmobUserNTO).itemId,
-                    itemStatus = it.itemStatus,
-                    itemPosition = it.itemPosition,
+                    id = (it as SmobUserNTO).id,
+                    status = it.status,
+                    position = it.position,
                     username = it.username,
                     name = it.name,
                     email = it.email,

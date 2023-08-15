@@ -57,10 +57,10 @@ class AdminViewModel(
 
             // add numbers & emails to contacts
             contacts.forEach { contact ->
-                contactNumbers[contact.itemId]?.let { numbers ->
+                contactNumbers[contact.id]?.let { numbers ->
                     numbers.map { number -> contact.numbers.add(number) }
                 }
-                contactEmails[contact.itemId]?.let { emails ->
+                contactEmails[contact.id]?.let { emails ->
                     emails.map { email -> contact.emails.add(email) }
                 }
             }
@@ -240,7 +240,7 @@ class AdminViewModel(
         showNoData.value = (
             smobItemsNewest.status == Status.SUCCESS && smobItemsNewest.data!!.isEmpty() ||
                     smobItemsNewest.status == Status.SUCCESS && smobItemsNewest.data!!.all {
-                    (it as Ato).itemStatus == ItemStatus.DELETED
+                    (it as Ato).status == ItemStatus.DELETED
                 }
             )
     }
@@ -440,7 +440,7 @@ class AdminViewModel(
 
                             // fetch all users as defined by the member list of the selected group
                             val daGroupUsers = allUsers.filter { user ->
-                                daGroup.members.map { member -> member.id }.contains(user.itemId)
+                                daGroup.members.map { member -> member.id }.contains(user.id)
                             }
 
                             // return all (other) users, except those from daGroup member list
@@ -448,17 +448,17 @@ class AdminViewModel(
 
                                 // extend user record by group data
                                 SmobGroupMemberWithGroupDataATO(
-                                    itemId = member.itemId,
-                                    itemStatus = member.itemStatus,
-                                    itemPosition = member.itemPosition,
+                                    id = member.id,
+                                    status = member.status,
+                                    position = member.position,
                                     memberUsername = member.username,
                                     memberName = member.name,
                                     memberEmail = member.email,
                                     memberImageUrl = member.imageUrl,
                                     memberGroups = member.groups,
-                                    groupId = daGroup.itemId,
-                                    groupStatus = daGroup.itemStatus,
-                                    groupPosition = daGroup.itemPosition,
+                                    groupId = daGroup.id,
+                                    groupStatus = daGroup.status,
+                                    groupPosition = daGroup.position,
                                     groupName = daGroup.name,
                                     groupDescription = daGroup.description,
                                     groupType = daGroup.type,
@@ -703,7 +703,7 @@ class AdminViewModel(
                             // fetch all groups who refer to any of the groups associated with the
                             // selected list (daList.groups)
                             val daListGroups = allGroups.filter { group ->
-                                daList.groups.map { listGroup -> listGroup.id }.contains(group.itemId)
+                                daList.groups.map { listGroup -> listGroup.id }.contains(group.id)
                             }
 
                             // return all groups associated with daList, incl. the list details
@@ -711,17 +711,17 @@ class AdminViewModel(
 
                                 // extend user record by group data
                                 SmobGroupWithListDataATO(
-                                    itemId = group.itemId,
-                                    itemStatus = group.itemStatus,
-                                    itemPosition = group.itemPosition,
+                                    id = group.id,
+                                    status = group.status,
+                                    position = group.position,
                                     groupName = group.name,
                                     groupDescription = group.description,
                                     groupType = group.type,
                                     groupMembers = group.members,
                                     groupActivity = group.activity,
-                                    listId = daList.itemId,
-                                    listStatus = daList.itemStatus,
-                                    listPosition = daList.itemPosition,
+                                    listId = daList.id,
+                                    listStatus = daList.status,
+                                    listPosition = daList.position,
                                     listName = daList.name,
                                     listDescription = daList.description,
                                     listItems = daList.items,
@@ -887,7 +887,7 @@ class AdminViewModel(
                                             else
                                                 ""
                                         }
-                                        .contains(group.itemId)
+                                        .contains(group.id)
                                 }
 
 
@@ -899,17 +899,17 @@ class AdminViewModel(
 
                                 // extend user record by group data
                                 SmobGroupWithListDataATO(
-                                    itemId = group.itemId,
-                                    itemStatus = group.itemStatus,
-                                    itemPosition = group.itemPosition,
+                                    id = group.id,
+                                    status = group.status,
+                                    position = group.position,
                                     groupName = group.name,
                                     groupDescription = group.description,
                                     groupType = group.type,
                                     groupMembers = group.members,
                                     groupActivity = group.activity,
-                                    listId = daList.itemId,
-                                    listStatus = daList.itemStatus,
-                                    listPosition = daList.itemPosition,
+                                    listId = daList.id,
+                                    listStatus = daList.status,
+                                    listPosition = daList.position,
                                     listName = daList.name,
                                     listDescription = daList.description,
                                     listItems = daList.items,

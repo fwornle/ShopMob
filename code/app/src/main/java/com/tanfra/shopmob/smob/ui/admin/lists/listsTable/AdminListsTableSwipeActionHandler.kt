@@ -28,11 +28,11 @@ class AdminListsTableSwipeActionHandler(adapter: AdminListsTableAdapter):
 
             ItemTouchHelper.LEFT -> {
 
-                when (item.itemStatus) {
+                when (item.status) {
 
                     ItemStatus.NEW, ItemStatus.OPEN -> {
                         // mark smobGroup as 'deleted'
-                        item.itemStatus = ItemStatus.DELETED
+                        item.status = ItemStatus.DELETED
                         adapter.setItem(position, item)
 
                         // throw item off the list
@@ -42,7 +42,7 @@ class AdminListsTableSwipeActionHandler(adapter: AdminListsTableAdapter):
 
                     else -> {
                         // return to 'list inactive'
-                        item.itemStatus = ItemStatus.OPEN
+                        item.status = ItemStatus.OPEN
                         adapter.setItem(position, item)
                     }
 
@@ -53,9 +53,9 @@ class AdminListsTableSwipeActionHandler(adapter: AdminListsTableAdapter):
             ItemTouchHelper.RIGHT -> {
 
                 // activate list ('IN_PROGRESS')
-                when (item.itemStatus) {
+                when (item.status) {
                     ItemStatus.NEW, ItemStatus.OPEN -> {
-                        item.itemStatus = ItemStatus.IN_PROGRESS
+                        item.status = ItemStatus.IN_PROGRESS
                         adapter.setItem(position, item)
                     }
                     else -> {

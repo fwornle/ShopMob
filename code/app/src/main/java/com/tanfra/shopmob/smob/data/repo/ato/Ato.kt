@@ -6,7 +6,7 @@ import com.tanfra.shopmob.smob.data.types.ItemStatus
  * Sealed interface of all ATO types - generic part of the i/f
  */
 sealed interface Ato {
-    val itemId: String
-    var itemStatus: ItemStatus
-    var itemPosition: Long
+    val id: String
+    var status: ItemStatus
+    var position: Long
 }

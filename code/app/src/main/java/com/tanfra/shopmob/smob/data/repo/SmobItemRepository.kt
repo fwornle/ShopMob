@@ -118,13 +118,13 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
                 // then push to backend DB
                 // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
                 if(networkConnectionManager.isNetworkConnected) {
-                    val testRead = getSmobItemViaApi(it.itemId)
-                    if (testRead.data?.itemId != it.itemId) {
+                    val testRead = getSmobItemViaApi(it.id)
+                    if (testRead.data?.id != it.id) {
                         // item not found in backend --> use POST to create it
                         saveSmobItemViaApi(it)
                     } else {
                         // item already exists in backend DB --> use PUT to update it
-                        smobItemApi.updateSmobItemById(it.itemId, it._asNetworkModel(dummySmobItemDTO))
+                        smobItemApi.updateSmobItemById(it.id, it._asNetworkModel(dummySmobItemDTO))
                     }
                 }
 
@@ -163,7 +163,7 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
                         // then push to backend DB
                         // ... use 'update', as item may already exist (equivalent of REPLACE w/h local DB)
                         if(networkConnectionManager.isNetworkConnected) {
-                            smobItemApi.updateSmobItemById(it.itemId, it._asNetworkModel(dummySmobItemDTO))
+                            smobItemApi.updateSmobItemById(it.id, it._asNetworkModel(dummySmobItemDTO))
                     }
 
                 }
@@ -213,7 +213,7 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
                 if(networkConnectionManager.isNetworkConnected) {
                     getSmobItemsViaApi().let { resList ->
                         if (resList.status == Status.SUCCESS) {
-                            resList.data?.map { smobItemApi.deleteSmobItemById(it!!.itemId) }
+                            resList.data?.map { smobItemApi.deleteSmobItemById(it!!.id) }
                         } else {
                             Timber.w("Unable to get SmobItem IDs from backend DB (via API) - not deleting anything.")
                         }

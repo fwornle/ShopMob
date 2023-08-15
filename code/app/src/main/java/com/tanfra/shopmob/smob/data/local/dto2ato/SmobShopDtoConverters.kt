@@ -14,9 +14,9 @@ fun Flow<List<SmobShopDTO>>.asDomainModel(): Flow<List<SmobShopATO>> = transform
     emit(
         value.map {
             SmobShopATO (
-                itemId = it.itemId,
-                itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                id = it.id,
+                status = it.status,
+                position = it.position,
                 name = it.name,
                 description = it.description,
                 imageUrl = it.imageUrl,
@@ -33,9 +33,9 @@ fun Flow<List<SmobShopDTO>>.asDomainModel(): Flow<List<SmobShopATO>> = transform
 fun List<SmobShopATO>.asDatabaseModel(): List<SmobShopDTO> {
     return map {
         SmobShopDTO (
-            itemId = it.itemId,
-            itemStatus = it.itemStatus,
-            itemPosition = it.itemPosition,
+            id = it.id,
+            status = it.status,
+            position = it.position,
             name = it.name,
             description = it.description,
             imageUrl = it.imageUrl,
@@ -56,9 +56,9 @@ fun Flow<SmobShopDTO?>.asDomainModel(): Flow<SmobShopATO?> = transform {
     emit(
         value?.let {
             SmobShopATO(
-                itemId = it.itemId,
-                itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                id = it.id,
+                status = it.status,
+                position = it.position,
                 name = it.name,
                 description = it.description,
                 imageUrl = it.imageUrl,
@@ -75,9 +75,9 @@ fun Flow<SmobShopDTO?>.asDomainModel(): Flow<SmobShopATO?> = transform {
 fun SmobShopATO.asDatabaseModel(): SmobShopDTO {
     return this.let {
         SmobShopDTO(
-            itemId = it.itemId,
-            itemStatus = it.itemStatus,
-            itemPosition = it.itemPosition,
+            id = it.id,
+            status = it.status,
+            position = it.position,
             name = it.name,
             description = it.description,
             imageUrl = it.imageUrl,

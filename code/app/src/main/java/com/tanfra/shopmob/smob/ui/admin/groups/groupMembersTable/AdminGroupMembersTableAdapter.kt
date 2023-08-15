@@ -42,7 +42,7 @@ class AdminGroupMembersTableAdapter(rootView: View, callBack: (selectedSmobATO: 
 
         // take out all items which have been deleted by swiping
         return items
-            .filter { item -> validMemberIds.contains(item.itemId) }
+            .filter { item -> validMemberIds.contains(item.id) }
             .sortedWith(
                 compareBy { it.memberName }
             )
@@ -61,7 +61,7 @@ class AdminGroupMembersTableAdapter(rootView: View, callBack: (selectedSmobATO: 
         _viewModel.currGroupMember = item.member().apply {
             // for "DELETED" items --> reset status to OPEN
             // (as this action handler only purges users from group lists)
-            if(itemStatus == ItemStatus.DELETED) itemStatus = ItemStatus.OPEN
+            if(status == ItemStatus.DELETED) status = ItemStatus.OPEN
         }
 
         // collect current list from smobList (flow)
@@ -77,11 +77,11 @@ class AdminGroupMembersTableAdapter(rootView: View, callBack: (selectedSmobATO: 
                 item.groupType,
                 // replace list of group members with updated list of members
                 item.groupMembers.map { member ->
-                    if(member.id == item.itemId) {
+                    if(member.id == item.id) {
                         // set new status (group property)
                         SmobMemberItem(
                             member.id,
-                            item.itemStatus,  // update list item status (from status set by user)
+                            item.status,  // update list item status (from status set by user)
                             member.listPosition,
                         )
                     } else {

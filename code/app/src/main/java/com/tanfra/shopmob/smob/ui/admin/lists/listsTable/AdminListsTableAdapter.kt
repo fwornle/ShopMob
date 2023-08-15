@@ -36,10 +36,10 @@ class AdminListsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobLis
         return items
             //.filter { item -> item.members.map { member -> member.id }.contains(SmobApp.currUser?.id)  }
             .filter { item -> item.groups.map { group -> group.id }.intersect((SmobApp.currUser?.groups ?: listOf()).toSet()).any() }
-            .filter { item -> item.itemStatus != ItemStatus.DELETED  }
+            .filter { item -> item.status != ItemStatus.DELETED  }
             //.map { item -> consolidateListItem(item) }
             .sortedWith(
-                compareBy { it.itemPosition }
+                compareBy { it.position }
             )
     }
 

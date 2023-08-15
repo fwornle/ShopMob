@@ -10,9 +10,9 @@ import kotlinx.serialization.Serializable
 // domain independent data type (Application Transfer Object)
 @Serializable
 data class SmobListATO(
-    override val itemId: String,
-    override var itemStatus: @Contextual ItemStatus,
-    override var itemPosition: Long,
+    override val id: String,
+    override var status: @Contextual ItemStatus,
+    override var position: Long,
     var name: String,
     var description: String?,
     var items: List<@Contextual SmobListItem>,

@@ -14,9 +14,9 @@ fun Flow<List<SmobListDTO>>.asDomainModel(): Flow<List<SmobListATO>> = transform
     emit(
         value.map {
             SmobListATO (
-                itemId = it.itemId,
-                itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                id = it.id,
+                status = it.status,
+                position = it.position,
                 name = it.name,
                 description = it.description,
                 items = it.items,
@@ -31,9 +31,9 @@ fun Flow<List<SmobListDTO>>.asDomainModel(): Flow<List<SmobListATO>> = transform
 fun List<SmobListATO>.asDatabaseModel(): List<SmobListDTO> {
     return map {
         SmobListDTO (
-            itemId = it.itemId,
-            itemStatus = it.itemStatus,
-            itemPosition = it.itemPosition,
+            id = it.id,
+            status = it.status,
+            position = it.position,
             name = it.name,
             description = it.description,
             items = it.items,
@@ -52,9 +52,9 @@ fun Flow<SmobListDTO?>.asDomainModel(): Flow<SmobListATO?> = transform {
     emit(
         value?.let {
             SmobListATO(
-                itemId = it.itemId,
-                itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                id = it.id,
+                status = it.status,
+                position = it.position,
                 name = it.name,
                 description = it.description,
                 items = it.items,
@@ -69,9 +69,9 @@ fun Flow<SmobListDTO?>.asDomainModel(): Flow<SmobListATO?> = transform {
 fun SmobListATO.asDatabaseModel(): SmobListDTO {
     return this.let {
         SmobListDTO(
-            itemId = it.itemId,
-            itemStatus = it.itemStatus,
-            itemPosition = it.itemPosition,
+            id = it.id,
+            status = it.status,
+            position = it.position,
             name = it.name,
             description = it.description,
             items = it.items,

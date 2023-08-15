@@ -10,9 +10,9 @@ fun ArrayList<SmobUserNTO>.asRepoModel(): List<SmobUserDTO> {
     return this.let {
         it.map {
             SmobUserDTO(
-                itemId = it.itemId,
-                itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                id = it.id,
+                status = it.status,
+                position = it.position,
                 username = it.username,
                 name = it.name,
                 email = it.email,
@@ -28,9 +28,9 @@ fun List<SmobUserDTO>.asNetworkModel(): ArrayList<SmobUserNTO> {
     return ArrayList(
         map {
             SmobUserNTO (
-                itemId = it.itemId,
-                itemStatus = it.itemStatus,
-                itemPosition = it.itemPosition,
+                id = it.id,
+                status = it.status,
+                position = it.position,
                 username = it.username,
                 name = it.name,
                 email = it.email,
@@ -44,9 +44,9 @@ fun List<SmobUserDTO>.asNetworkModel(): ArrayList<SmobUserNTO> {
 // SmobUserNTO --> SmobUserDTO
 fun SmobUserNTO.asRepoModel(): SmobUserDTO {
     return SmobUserDTO (
-        itemId = this.itemId,
-        itemStatus = this.itemStatus,
-        itemPosition = this.itemPosition,
+        id = this.id,
+        status = this.status,
+        position = this.position,
         username = this.username,
         name = this.name,
         email = this.email,
@@ -58,9 +58,9 @@ fun SmobUserNTO.asRepoModel(): SmobUserDTO {
 // SmobUserDTO --> SmobUserNTO
 fun SmobUserDTO.asNetworkModel(): SmobUserNTO {
     return SmobUserNTO (
-        itemId = this.itemId,
-        itemStatus = this.itemStatus,
-        itemPosition = this.itemPosition,
+        id = this.id,
+        status = this.status,
+        position = this.position,
         username = this.username,
         name = this.name,
         email = this.email,

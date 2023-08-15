@@ -38,11 +38,11 @@ class PlanningListsTableAdapter(rootView: View, callBack: (selectedSmobATO: Smob
         return items
                 //
             .filter { item -> item.groups.map { group -> group.id }.intersect((SmobApp.currUser?.groups ?: listOf()).toSet()).any() }
-            .filter { item -> item.itemStatus != ItemStatus.DELETED  }
+            .filter { item -> item.status != ItemStatus.DELETED  }
             .map { item -> consolidateListItem(item) }
             .sortedWith(
                 compareBy(
-                    { it.itemPosition },
+                    { it.position },
                 )
             )
     }
@@ -55,7 +55,7 @@ class PlanningListsTableAdapter(rootView: View, callBack: (selectedSmobATO: Smob
     override fun uiActionConfirmed(item: SmobListATO, rootView: View) {
 
         // consolidate list item data (prior to writing to the DB)
-        val itemAdjusted = if(item.itemStatus != ItemStatus.DELETED) {
+        val itemAdjusted = if(item.status != ItemStatus.DELETED) {
             // user swiped right --> marking all sub-entries as "IN_PROGRESS" + aggregating here
             consolidateListItem(item)
         } else {
@@ -69,18 +69,18 @@ class PlanningListsTableAdapter(rootView: View, callBack: (selectedSmobATO: Smob
 
             // collect SmobList flow
             val updatedList = SmobListATO(
-                itemAdjusted.itemId,
-                itemAdjusted.itemStatus,
-                itemAdjusted.itemPosition,
+                itemAdjusted.id,
+                itemAdjusted.status,
+                itemAdjusted.position,
                 itemAdjusted.name,
                 itemAdjusted.description,
                 // replace list of products on smob list with updated list of products
                 itemAdjusted.items.map { product ->
-                    if(product.id == itemAdjusted.itemId) {
+                    if(product.id == itemAdjusted.id) {
                         // set new status (list property)
                         SmobListItem(
                             product.id,
-                            itemAdjusted.itemStatus,
+                            itemAdjusted.status,
                             product.listPosition,
                             product.mainCategory,
                         )
@@ -111,7 +111,7 @@ class PlanningListsTableAdapter(rootView: View, callBack: (selectedSmobATO: Smob
         // ... status
         val aggListStatus =
             valItems.fold(0) { sum, daItem -> sum + daItem.status.ordinal }
-        item.itemStatus = when (aggListStatus) {
+        item.status = when (aggListStatus) {
             in 0..nValItems -> ItemStatus.OPEN
             nValItems * ItemStatus.DONE.ordinal -> ItemStatus.DONE
             else -> ItemStatus.IN_PROGRESS

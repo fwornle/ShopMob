@@ -10,9 +10,9 @@ import com.tanfra.shopmob.smob.data.types.ShopLocation
 /**
  * Immutable model class for a SmobProduct. In order to compile with Room
  *
- * @param itemId         id of the smobProduct
- * @param itemStatus     status of an item of the smobProduct (in a list)
- * @param itemPosition   position of an item of the smobProduct (in a list)
+ * @param id         id of the smobProduct
+ * @param status     status of an item of the smobProduct (in a list)
+ * @param position   position of an item of the smobProduct (in a list)
  * @param name           name of the smobProduct
  * @param description    optional description
  * @param imageUrl       URL to image/avatar of the smobProduct
@@ -27,9 +27,9 @@ import com.tanfra.shopmob.smob.data.types.ShopLocation
 @Entity(tableName = "smobProducts")
 @RewriteQueriesToDropUnusedColumns
 data class SmobProductDTO(
-    @PrimaryKey @ColumnInfo(name = "productId") override var itemId: String = "invalid smob product id",
-    @ColumnInfo(name = "productItemStatus") override var itemStatus: ItemStatus = ItemStatus.NEW,
-    @ColumnInfo(name = "productItemPosition") override var itemPosition: Long = -1L,
+    @PrimaryKey @ColumnInfo(name = "productId") override var id: String = "invalid smob product id",
+    @ColumnInfo(name = "productItemStatus") override var status: ItemStatus = ItemStatus.NEW,
+    @ColumnInfo(name = "productItemPosition") override var position: Long = -1L,
     @ColumnInfo(name = "productName") var name: String = "",
     @ColumnInfo(name = "productDescription") var description: String? = "",
     @ColumnInfo(name = "productImageUrl") var imageUrl: String? = "",

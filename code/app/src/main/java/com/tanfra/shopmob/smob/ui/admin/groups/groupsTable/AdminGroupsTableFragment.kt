@@ -198,7 +198,7 @@ class AdminGroupsTableFragment : BaseFragment(), KoinComponent {
             if (it.status == Status.SUCCESS) {
                 // return  highest index
                 it.data?.fold(0L) { max, list ->
-                    if (list.itemPosition > max) list.itemPosition else max
+                    if (list.position > max) list.position else max
                 } ?: 0L
             } else {
                 0L

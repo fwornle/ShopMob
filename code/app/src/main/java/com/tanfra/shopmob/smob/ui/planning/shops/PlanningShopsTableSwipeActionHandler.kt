@@ -32,7 +32,7 @@ class PlanningShopsTableSwipeActionHandler(adapter: PlanningShopsTableAdapter):
             ItemTouchHelper.LEFT -> {
 
                 // mark smobList as 'deleted'
-                item.itemStatus = ItemStatus.DELETED
+                item.status = ItemStatus.DELETED
                 adapter.setItem(position, item)
 
                 // throw item off the list
@@ -53,9 +53,9 @@ class PlanningShopsTableSwipeActionHandler(adapter: PlanningShopsTableAdapter):
                 startActivity(context, intent, null)
 
                 // mark all items on smobList as 'IN_PROGRESS' (only relevant on NEW/OPEN lists)
-                when (item.itemStatus) {
+                when (item.status) {
                     ItemStatus.NEW, ItemStatus.OPEN -> {
-                        item.itemStatus = ItemStatus.IN_PROGRESS
+                        item.status = ItemStatus.IN_PROGRESS
                         adapter.setItem(position, item)
                     }
                     else -> {

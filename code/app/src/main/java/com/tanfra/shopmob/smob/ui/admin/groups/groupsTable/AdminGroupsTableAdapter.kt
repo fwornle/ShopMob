@@ -37,12 +37,12 @@ class AdminGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobGr
             .filter { item ->
                 item.members
                     .map { member -> if(member.status != ItemStatus.DELETED) member.id else "" }
-                    .contains(SmobApp.currUser?.itemId)
+                    .contains(SmobApp.currUser?.id)
             }
-            .filter { item -> item.itemStatus != ItemStatus.DELETED }
+            .filter { item -> item.status != ItemStatus.DELETED }
             //.map { item -> consolidateListItem(item) }
             .sortedWith(
-                compareBy { it.itemPosition }
+                compareBy { it.position }
             )
     }
 
@@ -54,7 +54,7 @@ class AdminGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobGr
     override fun uiActionConfirmed(item: SmobGroupATO, rootView: View) {
 
         // consolidate list item data (prior to writing to the DB)
-        val itemAdjusted = if (item.itemStatus != ItemStatus.DELETED) {
+        val itemAdjusted = if (item.status != ItemStatus.DELETED) {
             // user swiped right --> marking all sub-entries as "IN_PROGRESS" + aggregating here
             consolidateListItem(item)
         } else {
@@ -68,9 +68,9 @@ class AdminGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobGr
 
             // collect SmobGroup flow
             val updatedList = SmobGroupATO(
-                itemAdjusted.itemId,
-                itemAdjusted.itemStatus,
-                itemAdjusted.itemPosition,
+                itemAdjusted.id,
+                itemAdjusted.status,
+                itemAdjusted.position,
                 itemAdjusted.name,
                 itemAdjusted.description,
                 itemAdjusted.type,
