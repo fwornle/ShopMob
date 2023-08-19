@@ -1,7 +1,7 @@
 package com.tanfra.shopmob.smob.data.repo.utils
 
+import io.ktor.client.plugins.ResponseException
 import org.koin.core.component.KoinComponent
-import retrofit2.HttpException
 import java.lang.Exception
 import java.net.SocketTimeoutException
 
@@ -21,7 +21,8 @@ open class ResponseHandler: KoinComponent {
 
     fun <T : Any> handleException(e: Exception): Resource<T> {
         return when (e) {
-            is HttpException -> Resource.error(getErrorMessage(e.code(), e.message), null)
+            is ResponseException /* KTOR */ ->
+                Resource.error(getErrorMessage(e.response.status.value, e.message), null)
             is SocketTimeoutException -> {
                 Resource.error(getErrorMessage(ErrorCodes.SocketTimeOut.code, e.message), null)
             }

@@ -6,8 +6,8 @@ import com.tanfra.shopmob.smob.data.local.dto.SmobGroupDTO
 import com.tanfra.shopmob.smob.data.local.dao.SmobGroupDao
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
-import com.tanfra.shopmob.smob.data.repo.utils.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.api.SmobGroupApi
+import com.tanfra.shopmob.smob.data.repo.utils.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
 import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
@@ -324,7 +324,7 @@ class SmobGroupRepository(
             return@withContext try {
                 // return successfully received data object (from Moshi --> PoJo)
                 val netResult = smobGroupApi.getSmobItems()
-                    .body()
+                    .getOrNull()
                     ?.asRepoModel()
                     ?: listOf()  // GET request returned empty handed --> return empty list
 
@@ -366,7 +366,7 @@ class SmobGroupRepository(
             result = try {
                 // return successfully received data object (from Moshi --> PoJo)
                 val netResult: SmobGroupDTO = smobGroupApi.getSmobItemById(id)
-                    .body()
+                    .getOrNull()
                     ?.asRepoModel()
                     ?: dummySmobGroupDTO
 

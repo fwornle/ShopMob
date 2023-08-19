@@ -1,20 +1,33 @@
 package com.tanfra.shopmob.smob.data.net
 
+import com.hypercubetools.ktor.moshi.moshi
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tanfra.shopmob.BuildConfig
+import com.tanfra.shopmob.BuildConfig.BASE_URL
 import com.tanfra.shopmob.smob.data.net.api.*
-import com.tanfra.shopmob.smob.data.net.nto.*
+import com.tanfra.shopmob.smob.data.net.nto.SmobGroupNTO
+import com.tanfra.shopmob.smob.data.net.nto.SmobListNTO
+import com.tanfra.shopmob.smob.data.net.nto.SmobProductNTO
+import com.tanfra.shopmob.smob.data.net.nto.SmobShopNTO
+import com.tanfra.shopmob.smob.data.net.nto.SmobUserNTO
 import com.tanfra.shopmob.smob.data.net.utils.*
 import com.tanfra.shopmob.smob.data.repo.utils.ResponseHandler
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.HttpResponseValidator
+import io.ktor.client.plugins.RedirectResponseException
+import io.ktor.client.plugins.ServerResponseException
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
 
@@ -25,46 +38,9 @@ val netServices = module {
     fun provideCoroutineScope() =
         CoroutineScope(Dispatchers.Default + SupervisorJob())
 
-    // helper function to provide a configured OkHttpClient
-    fun provideOkHttpClient(
-        networkConnectionInterceptor: NetworkConnectionInterceptor,
-        authInterceptor: AuthInterceptor
-    ): OkHttpClient {
-
-        // add connection first, then auth
-        val client = OkHttpClient().newBuilder()
-            .addInterceptor(networkConnectionInterceptor)
-            .addInterceptor(authInterceptor)
-            .readTimeout(3, TimeUnit.SECONDS)
-            .connectTimeout(6, TimeUnit.SECONDS)
-
-
-        // add eventually logging (in debug mode only)
-        // ... even during debug mode: disable when working (by adding hardcoded 'false &&')
-        if (
-            false &&
-            BuildConfig.DEBUG
-        ) {
-
-            // create and configure logging interceptor
-            val interceptor = HttpLoggingInterceptor()
-            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-
-            // add to the HTTP client - this should always go last
-            client.addInterceptor(interceptor)
-
-        }
-
-        // done - build client and return it
-        return client.build()
-
-    }
-
-    // helper function to provide a configured retrofit instance
-    fun provideRetrofitMoshi(okHttpClient: OkHttpClient): Retrofit {
-
-        // Moshi builder
-        val moshi = Moshi.Builder()
+    // helper function to provide a configured moshi adapter instance
+    fun provideMoshiInstance(): Moshi =
+        Moshi.Builder()
             .add(ArrayListAdapter.Factory<SmobUserNTO>())
             .add(ArrayListAdapter.Factory<SmobGroupNTO>())
             .add(ArrayListAdapter.Factory<SmobProductNTO>())
@@ -73,20 +49,89 @@ val netServices = module {
             .add(KotlinJsonAdapterFactory())
             .build()
 
-        return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .build()
 
-    }
+    // creates Ktor client with OkHttp engine
+    fun provideOkHttpClient4Ktor(
+        networkConnectionInterceptor: NetworkConnectionInterceptor,
+        authInterceptor: AuthInterceptor
+    ): HttpClient = HttpClient(OkHttp) {
+
+        // activate default validation to throw exceptions for non-2xx responses:
+        expectSuccess = true
+
+        // install custom handler for specific non-2xx responses:
+        HttpResponseValidator {
+            handleResponseExceptionWithRequest { exception, _ ->
+
+                // ensure it's one of the three exception types (should always be the case)
+                val exceptionResponse = when(exception) {
+                    is RedirectResponseException -> exception.response  // 3xx
+                    is ClientRequestException -> exception.response     // 4xx
+                    is ServerResponseException -> exception.response    // 5xx
+                    else -> return@handleResponseExceptionWithRequest
+                }
+
+                // handle 404 -- note (fw-230819: also handled in ResponseHandler, see repo classes)
+                if (exceptionResponse.status == HttpStatusCode.NotFound) {
+                    val exceptionResponseText = exceptionResponse.bodyAsText()  // cache text
+                    throw MissingPageException(exceptionResponse, exceptionResponseText)
+                }
+
+            }
+        }
+
+        engine {
+
+            addInterceptor(networkConnectionInterceptor)
+            addInterceptor(authInterceptor)
+
+           // add logging (in debug mode only -- can be hardcoded to NONE by adding 'false')
+            addInterceptor(
+                HttpLoggingInterceptor().apply {
+                    setLevel(
+                        if (true && BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+                        else HttpLoggingInterceptor.Level.NONE
+                    )
+                }
+            )
+
+            // general OkHttpConfig properties
+            config {
+                readTimeout(3, TimeUnit.SECONDS)
+                connectTimeout(6, TimeUnit.SECONDS)
+            }
+
+        }  // engine
+
+        // set default request parameters
+        defaultRequest {
+            // add base url for all request
+            url(BASE_URL)
+        }
+
+        // use json (= kotlinx.serialization) content negotiation for serialize or deserialize
+        install(ContentNegotiation) {
+            moshi(provideMoshiInstance())
+        }
+
+    }  // provideOkHttpClient4Ktor
+
 
     // helper function to provide APIs
-    fun provideSmobUserApi(retrofit: Retrofit): SmobUserApi = retrofit.create(SmobUserApi::class.java)
-    fun provideSmobGroupApi(retrofit: Retrofit): SmobGroupApi = retrofit.create(SmobGroupApi::class.java)
-    fun provideSmobProductApi(retrofit: Retrofit): SmobProductApi = retrofit.create(SmobProductApi::class.java)
-    fun provideSmobShopApi(retrofit: Retrofit): SmobShopApi = retrofit.create(SmobShopApi::class.java)
-    fun provideSmobListApi(retrofit: Retrofit): SmobListApi = retrofit.create(SmobListApi::class.java)
+    fun provideSmobUserApi(ktorClient: HttpClient): SmobUserApi  =
+        SmobUserApiImpl(ktorClient, "users")
+
+    fun provideSmobGroupApi(ktorClient: HttpClient): SmobGroupApi  =
+        SmobGroupApiImpl(ktorClient, "groups")
+
+    fun provideSmobProductApi(ktorClient: HttpClient): SmobProductApi  =
+        SmobProductApiImpl(ktorClient, "products")
+
+    fun provideSmobShopApi(ktorClient: HttpClient): SmobShopApi  =
+        SmobShopApiImpl(ktorClient, "shops")
+
+    fun provideSmobListApi(ktorClient: HttpClient): SmobListApi  =
+        SmobListApiImpl(ktorClient, "lists")
 
 
     // define instances to be offered as services via the Koin service locator
@@ -98,7 +143,8 @@ val netServices = module {
         NetworkConnectionManagerImpl(context = get(), coroutineScope = provideCoroutineScope())
     }
 
-    // consistent handling of network responses/errors
+    // consistent handling of database access responses/errors (at repository level)
+    // note: fw-230819: redundant, use HttpResponseValidator instead (KTOR HttpClient engine config)
     single { ResponseHandler() }
 
     // authentication middleware
@@ -107,15 +153,11 @@ val netServices = module {
     // network connection middleware
     single { NetworkConnectionInterceptor(networkConnectionManager = get()) }
 
-    // HTTP client - allows injection of logger (for debugging... see there)
-    single { provideOkHttpClient(
+    // (KTOR) HTTP client
+    single { provideOkHttpClient4Ktor(
         networkConnectionInterceptor = get(),
         authInterceptor = get()
     ) }
-
-    // retrofit object
-    // ... incl. Moshi JSON adapters for all our data sources (generalized)
-    single { provideRetrofitMoshi(okHttpClient = get()) }
 
 
     // individual APIs for access to network data (per category) ----------------------
@@ -123,11 +165,11 @@ val netServices = module {
     // individual APIs for access to network data (per category) ----------------------
 
     // APIs to access data from the backend
-    single { provideSmobUserApi(retrofit = get()) }
-    single { provideSmobGroupApi(retrofit = get()) }
-    single { provideSmobProductApi(retrofit = get()) }
-    single { provideSmobShopApi(retrofit = get()) }
-    single { provideSmobListApi(retrofit = get()) }
+    single { provideSmobUserApi(ktorClient = get()) }
+    single { provideSmobGroupApi(ktorClient = get()) }
+    single { provideSmobProductApi(ktorClient = get()) }
+    single { provideSmobListApi(ktorClient = get()) }
+    single { provideSmobShopApi(ktorClient = get()) }
 
 }
 

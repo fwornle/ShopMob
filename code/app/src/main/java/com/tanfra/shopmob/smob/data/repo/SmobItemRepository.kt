@@ -78,13 +78,13 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
      * Get the smob item item from the local db
      * @return Result holds a Success with all the smob groups or an Error object with the error message
      */
-    override fun getAllSmobItems(): Flow<Resource<List<ATO?>>> {
+    override fun getAllSmobItems(): Flow<Resource<List<ATO>>> {
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
             // try to fetch data from the local DB
-            var atoFlow: Flow<List<ATO?>> = flowOf(listOf())
+            var atoFlow: Flow<List<ATO>> = flowOf(listOf())
             return try {
                 // fetch data from DB (and convert to ATO)
                 atoFlow = smobItemDao.getSmobItems()._asDomainModel(dummySmobItemDTO)
@@ -309,7 +309,7 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
             return@withContext try {
                 // return successfully received data object (from Moshi --> PoJo)
                 val netResult = smobItemApi.getSmobItems()
-                    .body()
+                    .getOrNull()
                     ?._asRepoModel(dummySmobItemDTO)
                     ?: listOf()  // GET request returned empty handed --> return empty list
 
@@ -361,7 +361,7 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
             result = try {
                 // return successfully received data object (from Moshi --> PoJo)
                 val netResult: DTO = smobItemApi.getSmobItemById(id)
-                    .body()
+                    .getOrNull()
                     ?._asRepoModel(dummySmobItemDTO)
                     ?: dummySmobItemDTO
 

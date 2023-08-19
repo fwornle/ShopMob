@@ -7,6 +7,6 @@ import com.tanfra.shopmob.smob.data.types.ItemStatus
  */
 sealed interface Nto {
     val id: String
-    var status: ItemStatus
-    var position: Long
+    val status: ItemStatus
+    val position: Long
 }

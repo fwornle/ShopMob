@@ -5,10 +5,12 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.dataSource.*
+import io.ktor.client.plugins.ResponseException
+import io.ktor.client.statement.bodyAsText
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import retrofit2.HttpException
 import timber.log.Timber
+
 
 // use WorkManager to do work - derived from CoroutineWorker, as we have async work to be done
 // ... need to inherit from KoinComponent to use Koin based DI in this module:
@@ -57,10 +59,11 @@ class RefreshSmobStaticDataWorkerSlow(appContext: Context, params: WorkerParamet
             Timber.i("Scheduled work ($WORK_NAME_SLOW) completed successfully")
             Result.success()
 
-        } catch (e: HttpException) {
+        } catch (e: ResponseException) {
 
             // return 'failure' - retry
             Timber.i("Scheduled work ($WORK_NAME_SLOW) could not be run - retrying")
+            Timber.i("Exception details: ${e.response.status.value}: ${e.response.bodyAsText()}")
             Result.retry()
 
         }

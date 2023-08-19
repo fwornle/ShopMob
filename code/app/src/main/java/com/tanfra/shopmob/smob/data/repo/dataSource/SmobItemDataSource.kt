@@ -5,16 +5,14 @@ import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Main entry point for accessing smob group data.
- * ... using domain data types (to abstract details of the underlying persistent storage)
- * ... wrapping results in Resource type (w/h state SUCCESS, ERROR, LOADING)
+ * Standard CRUD interface (shared) for domain level access to the repository
  */
 interface SmobItemDataSource<ATO: Ato> {
 
     // Room executes all queries on a separate thread.
     // Observed Flow will notify the observer when the data has changed.
-    fun getSmobItem(id: String): Flow<Resource<ATO?>>
-    fun getAllSmobItems(): Flow<Resource<List<ATO?>>>
+    fun getSmobItem(id: String): Flow<Resource<ATO>>
+    fun getAllSmobItems(): Flow<Resource<List<ATO>>>
 
     // By default Room runs suspend queries off the main thread
     suspend fun saveSmobItem(smobItemATO: ATO)

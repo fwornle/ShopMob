@@ -342,7 +342,7 @@ class AdminViewModel(
     var currGroup: SmobGroupATO? = null
 
     // collect all SmobUsers
-    private val smobUsersF: Flow<Resource<List<SmobUserATO>?>> = registerSmobUsersFlow()
+    private val smobUsersF: Flow<Resource<List<SmobUserATO?>>> = registerSmobUsersFlow()
     val smobUsersSF = smobUsersFlowAsSF(smobUsersF)
 
     // collect the upstream selected smobGroup as well as the list of SmobUserATO items
@@ -358,12 +358,12 @@ class AdminViewModel(
 
     // register the flow of the list of items for the upstream list the user just selected
     @ExperimentalCoroutinesApi
-    fun registerSmobUsersFlow(): Flow<Resource<List<SmobUserATO>?>> =
+    fun registerSmobUsersFlow(): Flow<Resource<List<SmobUserATO?>>> =
         userDataSource.getAllSmobItems()
 
     // convert to StateFlow
-    private fun smobUsersFlowAsSF(inFlow: Flow<Resource<List<SmobUserATO>?>>):
-            StateFlow<Resource<List<SmobUserATO>?>> =
+    private fun smobUsersFlowAsSF(inFlow: Flow<Resource<List<SmobUserATO?>>>):
+            StateFlow<Resource<List<SmobUserATO?>>> =
         inFlow.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),

@@ -6,8 +6,8 @@ import com.tanfra.shopmob.smob.data.local.dto.SmobProductDTO
 import com.tanfra.shopmob.smob.data.local.dao.SmobProductDao
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
-import com.tanfra.shopmob.smob.data.repo.utils.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.api.SmobProductApi
+import com.tanfra.shopmob.smob.data.repo.utils.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
 import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
@@ -22,6 +22,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
 import kotlin.collections.ArrayList
+
 
 /**
  * Concrete implementation of a data source as a db.
@@ -324,7 +325,7 @@ class SmobProductRepository(
             return@withContext try {
                 // return successfully received data object (from Moshi --> PoJo)
                 val netResult = smobProductApi.getSmobItems()
-                    .body()
+                    .getOrNull()
                     ?.asRepoModel()
                     ?: listOf()  // GET request returned empty handed --> return empty list
 
@@ -366,7 +367,7 @@ class SmobProductRepository(
             result = try {
                 // return successfully received data object (from Moshi --> PoJo)
                 val netResult: SmobProductDTO = smobProductApi.getSmobItemById(id)
-                    .body()
+                    .getOrNull()
                     ?.asRepoModel()
                     ?: dummySmobProductDTO
 
