@@ -1613,7 +1613,7 @@
         },
         {
           "id": "303bf979-ca76-4969-affa-33b043f776bc",
-          "status": "DONE",
+          "status": "IN_PROGRESS",
           "listPosition": 1,
           "mainCategory": "SUPPLIES"
         },
@@ -1733,7 +1733,7 @@
         },
         {
           "id": "f401784b-83c5-4e95-aeb2-38468dcf9080",
-          "status": "DONE",
+          "status": "IN_PROGRESS",
           "listPosition": 10,
           "mainCategory": "FOODS"
         }

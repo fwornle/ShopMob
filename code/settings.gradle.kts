@@ -1,0 +1,357 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+include("", "app")
+rootProject.name = "ShopMob"
+
+// manage versions centrally
+dependencyResolutionManagement {
+
+    // keep separate version catalogues for "implementation", "test" and "androidTest"
+    versionCatalogs {
+
+        // version catalog for "implementation" libs
+        create("libs") {
+
+            // kotlin
+            version("kotlin", "1.9.0")
+            library("kotlin-stdlib", "org.jetbrains.kotlin", "kotlin-stdlib").versionRef("kotlin")
+            library("kotlin-reflect", "org.jetbrains.kotlin", "kotlin-reflect").versionRef("kotlin")
+            
+            
+            // timber - logging
+            version("timber", "5.0.1")
+            library("timber", "com.jakewharton.timber", "timber").versionRef("timber")
+            
+            
+            // androidx
+            version("fragment-ktx", "1.6.1")
+            version("activity-ktx", "1.7.2")
+            version("appcompat", "1.6.1")
+            version("legacy-support-v4", "1.0.0")
+            version("annotation", "1.6.0")
+            version("lifecycle-common-java8", "2.6.1")
+            version("lifecycle-compiler", "2.6.1")
+            version("lifecycle-extensions", "2.2.0")
+            version("lifecycle-viewmodel-ktx", "2.6.1")
+            version("lifecycle-livedata-ktx", "2.6.1")
+            version("navigation-fragment-ktx", "2.6.0")  // 2.7.0 needs API 34
+            version("navigation-ui-ktx", "2.6.0")        // 2.7.0 needs API 34
+            version("kotlinx-coroutines-android", "1.7.3")
+            version("constraintlayout", "2.1.4")
+            version("cardview", "1.0.0")
+            version("recyclerview", "1.3.1")
+            version("constraintlayout", "2.1.4")
+
+            library("fragment-ktx", "androidx.fragment", "fragment-ktx").versionRef("fragment-ktx")
+            library("activity-ktx", "androidx.activity", "activity-ktx").versionRef("activity-ktx")
+            library("appcompat", "androidx.appcompat", "appcompat").versionRef("appcompat")
+            library(
+                "legacy-support-v4",
+                "androidx.legacy",
+                "legacy-support-v4"
+            ).versionRef("legacy-support-v4")
+            library("annotation", "androidx.annotation", "annotation").versionRef("annotation")
+            library(
+                "lifecycle-common-java8",
+                "androidx.lifecycle",
+                "lifecycle-common-java8"
+            ).versionRef("lifecycle-common-java8")
+            library(
+                "lifecycle-compiler",
+                "androidx.lifecycle",
+                "lifecycle-compiler"
+            ).versionRef("lifecycle-compiler") // kapt
+            library(
+                "lifecycle-extensions",
+                "androidx.lifecycle",
+                "lifecycle-extensions"
+            ).versionRef("lifecycle-extensions")
+            library(
+                "lifecycle-viewmodel-ktx",
+                "androidx.lifecycle",
+                "lifecycle-viewmodel-ktx"
+            ).versionRef("lifecycle-viewmodel-ktx")
+            library(
+                "lifecycle-livedata-ktx",
+                "androidx.lifecycle",
+                "lifecycle-livedata-ktx"
+            ).versionRef("lifecycle-livedata-ktx")
+            library(
+                "navigation-fragment-ktx",
+                "androidx.navigation",
+                "navigation-fragment-ktx"
+            ).versionRef("navigation-fragment-ktx") // 2.7.0 needs API 34
+            library(
+                "navigation-ui-ktx",
+                "androidx.navigation",
+                "navigation-ui-ktx"
+            ).versionRef("navigation-ui-ktx") // 2.7.0 needs API 34
+            library(
+                "kotlinx-coroutines-android",
+                "org.jetbrains.kotlinx",
+                "kotlinx-coroutines-android"
+            ).versionRef("kotlinx-coroutines-android")
+            library("constraintlayout", "androidx.constraintlayout", "constraintlayout").versionRef(
+                "constraintlayout"
+            )
+            library("cardview", "androidx.cardview", "cardview").versionRef("cardview")
+            library(
+                "recyclerview",
+                "androidx.recyclerview",
+                "recyclerview"
+            ).versionRef("recyclerview")
+
+            
+            // appearance
+            version("material", "1.9.0")
+            library("material", "com.google.android.material", "material").versionRef("material")
+            
+            
+            // depencency injection framework
+            version("koin", "3.4.3")
+            library("koin-core", "io.insert-koin", "koin-core").versionRef("koin")
+            library("koin-android", "io.insert-koin", "koin-android").versionRef("koin")
+
+            
+            // serialization
+            version("kotlin-serialization", "1.5.1")
+            version("gson", "2.10.1")
+            version("moshi", "1.15.0")
+
+            library("gson", "com.google.code.gson", "gson").versionRef("gson")
+            library(
+                "kotlin-serialization",
+                "org.jetbrains.kotlinx",
+                "kotlinx-serialization-json"
+            ).versionRef("kotlin-serialization")
+            library("moshi", "com.squareup.moshi", "moshi").versionRef("moshi")
+            library("moshi-kotlin", "com.squareup.moshi", "moshi-kotlin").versionRef("moshi")
+            library(
+                "moshi-kotlin-codegen",
+                "com.squareup.moshi",
+                "moshi-kotlin-codegen"
+            ).versionRef("moshi")
+
+            
+            // workmanager
+            version("work-runtime-ktx", "2.8.1")
+            library(
+                "work-runtime-ktx",
+                "androidx.work",
+                "work-runtime-ktx"
+            ).versionRef("work-runtime-ktx")
+
+            
+            // ktor - HTTP client
+            version("ktor", "2.3.3")
+            version("ktor-moshi", "3.0.0")
+            version("http-logging", "5.0.0-alpha.6")
+
+            library("ktor-client-core", "io.ktor", "ktor-client-core").versionRef("ktor")
+            library("ktor-client-okhttp", "io.ktor", "ktor-client-okhttp").versionRef("ktor")
+            library("ktor-client-content", "io.ktor", "ktor-client-content-negotiation").versionRef(
+                "ktor"
+            )
+            library("ktor-moshi", "com.hypercubetools", "ktor-moshi").versionRef("ktor-moshi")
+            library(
+                "http-logging",
+                "com.squareup.okhttp3",
+                "logging-interceptor"
+            ).versionRef("http-logging")
+
+            
+            // room - mySQL DB
+            version("room", "2.5.2")
+            library("room-ktx", "androidx.room", "room-ktx").versionRef("room")
+            library("room-runtime", "androidx.room", "room-runtime").versionRef("room")
+            library("room-compiler", "androidx.room", "room-compiler").versionRef("room")  // ksp
+
+            
+            // coil - load images from URLs
+            version("coil", "2.4.0")
+            library("coil", "io.coil-kt", "coil").versionRef("coil")
+
+            
+            // firebase
+            version("firebase-bom", "32.2.2")
+            version("firebase-ui-auth", "8.0.2")
+            library(
+                "firebase-bom",
+                "com.google.firebase",
+                "firebase-bom"
+            ).versionRef("firebase-bom")
+            library(
+                "firebase-common-ktx",
+                "com.google.firebase",
+                "firebase-common-ktx"
+            ).withoutVersion()
+            library(
+                "firebase-storage-ktx",
+                "com.google.firebase",
+                "firebase-storage-ktx"
+            ).withoutVersion()
+            library(
+                "firebase-messaging-ktx",
+                "com.google.firebase",
+                "firebase-messaging-ktx"
+            ).withoutVersion()
+            library(
+                "firebase-analytics-ktx",
+                "com.google.firebase",
+                "firebase-analytics-ktx"
+            ).withoutVersion()
+            library(
+                "firebase-auth-ktx",
+                "com.google.firebase",
+                "firebase-auth-ktx"
+            ).withoutVersion()
+
+            library(
+                "firebase-ui-auth",
+                "com.firebaseui",
+                "firebase-ui-auth"
+            ).versionRef("firebase-ui-auth")
+
+            
+            // facebook
+            version("facebook-login", "16.1.3")
+            library(
+                "facebook-login",
+                "com.facebook.android",
+                "facebook-login"
+            ).versionRef("facebook-login")
+
+            
+            // google - gms, play-services (maps & geofencing)
+            version("play-services-location", "21.0.1")
+            version("play-services-maps", "18.0.1")
+            library(
+                "play-services-location",
+                "com.google.android.gms",
+                "play-services-location"
+            ).versionRef("play-services-location")
+            library(
+                "play-services-maps",
+                "com.google.android.gms",
+                "play-services-maps"
+            ).versionRef("play-services-maps")
+
+
+            // espresso
+            version("espresso", "3.5.1")  // same as testImplementation
+            library(
+                "espresso-idling-resource",
+                "androidx.test.espresso",
+                "espresso-idling-resource"
+            ).versionRef("espresso")
+
+        }  // libs ("implementation")
+
+
+        // ======================================================================================
+        // ======================================================================================
+        // ======================================================================================
+
+        
+        // Version catalog for "testImplementation" libs and "androidTestImplementation" libs
+        create("testLibs") {
+
+            // local unit tests
+            version("junit", "4.13.2")
+            version("core-testing", "2.2.0")
+            version("kotlinx-coroutines", "1.7.3")
+
+            library("junit", "junit", "junit").versionRef("junit")
+            library(
+                "core-testing",
+                "androidx.arch.core",
+                "core-testing"
+            ).versionRef("core-testing")    // liveData testing
+            library(
+                "kotlinx-coroutines-android",
+                "org.jetbrains.kotlinx",
+                "kotlinx-coroutines-android"
+            ).versionRef("kotlinx-coroutines")
+            library(
+                "kotlinx-coroutines-test",
+                "org.jetbrains.kotlinx",
+                "kotlinx-coroutines-test"
+            ).versionRef("kotlinx-coroutines")
+
+
+            // hamcrest, truth, roboelectric
+            version("hamcrest", "1.3")
+            version("truth", "1.1.5")
+            version("robolectric", "4.10.3")
+            library("hamcrest", "org.hamcrest", "hamcrest-all").versionRef("hamcrest")
+            library("truth", "com.google.truth", "truth").versionRef("truth")
+            library("robolectric", "org.robolectric", "robolectric").versionRef("robolectric")
+            library("robolectric-annotations", "org.robolectric", "annotations").versionRef("robolectric")
+
+            
+            // dependency injection
+            version("koin", "3.4.3")  // same as implementation
+            library("koin-test", "io.insert-koin", "koin-test").versionRef("koin")
+            library("koin-test-junit4", "io.insert-koin", "koin-test-junit4").versionRef("koin")
+
+            
+            // mockito
+            version("mockito", "5.4.0")
+            version("dexmaker-mockito", "2.28.3")
+            library("mockito-core", "org.mockito", "mockito-core").versionRef("mockito")
+            library("dexmaker-mockito", "com.linkedin.dexmaker", "dexmaker-mockito").versionRef("dexmaker-mockito")
+
+            
+            // androidX test - JVM based /testing (no android dependency)
+            version("test-core", "1.5.0")
+            version("junit-ktx", "1.1.5")
+            library("core-ktx", "androidx.test", "core-ktx").versionRef("test-core")
+            library("rules", "androidx.test", "rules").versionRef("test-core")
+            library("test-core", "androidx.test", "core").versionRef("test-core")
+            library("junit-ktx", "androidx.test.ext", "junit-ktx").versionRef("junit-ktx")
+
+            // (once https://issuetracker.google.com/127986458 is fixed this can be moved to 
+            //  testImplementation)
+            version("fragment-testing", "1.6.1")
+            library(
+                "fragment-testing",
+                "androidx.fragment",
+                "fragment-testing"
+            ).versionRef("fragment-testing")
+
+            
+            // ------------------------------------------------------------------------------
+            
+            
+            // androidTests
+            version("runner", "1.5.2")
+            version("orchestrator", "1.4.2")
+            version("uiautomator", "2.2.0")
+            library("runner", "androidx.test", "runner").versionRef("runner")
+            library("orchestrator", "androidx.test", "orchestrator").versionRef("orchestrator")
+            library("uiautomator", "androidx.test.uiautomator", "uiautomator").versionRef("uiautomator")
+
+
+            // espresso
+            version("espresso", "3.5.1")
+            library("espresso-core", "androidx.test.espresso", "espresso-core").versionRef("espresso")
+            library("espresso-contrib", "androidx.test.espresso", "espresso-contrib").versionRef("espresso")
+            library("espresso-intents", "androidx.test.espresso", "espresso-intents").versionRef("espresso")
+            library("espresso-idling-concurrent", "androidx.test.espresso.idling", "idling-concurrent").versionRef("espresso")
+
+
+            // room
+            version("room", "2.5.2")  // same as implementation
+            library("room-testing", "androidx.room", "room-testing").versionRef("room")
+
+        }  // "testImplementation"
+        
+    }
+
+}
