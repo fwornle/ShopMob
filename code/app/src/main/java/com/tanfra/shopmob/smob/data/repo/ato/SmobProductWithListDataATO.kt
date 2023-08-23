@@ -7,30 +7,32 @@ import com.tanfra.shopmob.smob.data.types.ProductCategory
 import com.tanfra.shopmob.smob.data.types.SmobGroupItem
 import com.tanfra.shopmob.smob.data.types.SmobListItem
 import com.tanfra.shopmob.smob.data.types.SmobListLifecycle
-import kotlinx.serialization.Contextual
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+
 
 // domain independent data type (Application Transfer Object)
 @Serializable
+@SerialName("smobProductWithListData")
 data class SmobProductWithListDataATO(
     override val id: String,
-    override var status: @Contextual ItemStatus,
+    override var status: ItemStatus,
     override var position: Long,
     var productName: String,
     var productDescription: String?,
     var productImageUrl: String?,
-    var productCategory: @Contextual ProductCategory,
-    var productActivity: @Contextual ActivityStatus,
-    var productInShop: @Contextual InShop,
+    var productCategory: ProductCategory,
+    var productActivity: ActivityStatus,
+    var productInShop: InShop,
     val listId: String,
-    val listStatus: @Contextual ItemStatus,
+    val listStatus: ItemStatus,
     val listPosition: Long,
     var listName: String,
     var listDescription: String?,
-    var listItems: List<@Contextual SmobListItem>,
+    var listItems: List<SmobListItem>,
     var listGroups: List<SmobGroupItem>,
-    var listLifecycle: @Contextual SmobListLifecycle,
-) : Ato, java.io.Serializable {
+    var listLifecycle: SmobListLifecycle,
+) : Ato {
 
     // extract product
     fun product() = SmobProductATO(

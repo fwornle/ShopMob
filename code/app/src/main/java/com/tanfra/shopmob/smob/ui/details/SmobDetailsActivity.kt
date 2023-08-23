@@ -10,9 +10,13 @@ import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.databinding.ActivityDetailsBinding
 import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
+import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductWithListDataATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.utils.getSerializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.*
+import kotlinx.serialization.modules.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
@@ -28,12 +32,26 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
         private const val EXTRA_Source = "EXTRA_Source"
         private const val EXTRA_SmobItem = "EXTRA_SmobItem"
 
+        // define polymorphic serializer for class "ATO"
+        private val module = SerializersModule {
+            polymorphic(Ato::class) {
+                subclass(SmobListATO::class)
+            }
+        }
+
+        // configure JSON serializer - allowing for open polymorphism
+        private val mapper = Json {
+            encodeDefaults = true
+            classDiscriminator = "source"
+            serializersModule = module
+        }
+
         // Intent factory, used upon selection in an RV list - communicate just the item
         // ... use super type "Ato" to remain generic for all types of lists
         fun newIntent(context: Context, source: SmobDetailsSources, smobListItem: Ato): Intent {
             return context.createIntent<SmobDetailsActivity>(
                 EXTRA_Source to source,
-                EXTRA_SmobItem to smobListItem,
+                EXTRA_SmobItem to mapper.encodeToString(smobListItem),
             )
         }
     }
@@ -82,13 +100,18 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
                 extras?.let {
                     if (it.containsKey(EXTRA_SmobItem)) {
                         // extract the extra-data
-                        val smobListItem = intent.getSerializable(
-                            "EXTRA_SmobItem",
-                            SmobShopATO::class.java
-                        )
+                        val encString = intent.getStringExtra(EXTRA_SmobItem)
 
                         // store value in ViewModel
-                        _viewModel.smobShopDetailsItem.value = smobListItem
+                        _viewModel.smobShopDetailsItem.value = encString?.let {
+                            // https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/polymorphism.md#sealed-classes
+                            //
+                            // need to use polymorphic decoder (!!) - by qualifying it with <Ato>
+                            // ... as opposed to <SmobShopATO>  -->  necessary for the decoder to
+                            // make sense of leading (data) type element (designator changed to
+                            // 'source' to avoid clash with SmobShopATO property 'type')
+                            mapper.decodeFromString<Ato>(it) as SmobShopATO
+                        }
                     }
                 }
 
@@ -112,13 +135,12 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
                 extras?.let {
                     if (it.containsKey(EXTRA_SmobItem)) {
                         // extract the extra-data
-                        val smobListItem = intent.getSerializable(
-                            "EXTRA_SmobItem",
-                            SmobProductWithListDataATO::class.java
-                        )
+                        val encString = intent.getStringExtra(EXTRA_SmobItem)
 
                         // store value in ViewModel
-                        _viewModel.smobProductDetailsItem.value = smobListItem
+                        _viewModel.smobProductDetailsItem.value = encString?.let {
+                            mapper.decodeFromString<Ato>(it) as SmobProductWithListDataATO
+                        }
                     }
                 }
 

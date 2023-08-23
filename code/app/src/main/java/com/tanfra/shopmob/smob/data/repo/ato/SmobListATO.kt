@@ -4,18 +4,20 @@ import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.types.SmobGroupItem
 import com.tanfra.shopmob.smob.data.types.SmobListItem
 import com.tanfra.shopmob.smob.data.types.SmobListLifecycle
-import kotlinx.serialization.Contextual
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+
 
 // domain independent data type (Application Transfer Object)
 @Serializable
+@SerialName("smobList")
 data class SmobListATO(
     override val id: String,
-    override var status: @Contextual ItemStatus,
+    override var status: ItemStatus,
     override var position: Long,
     var name: String,
     var description: String?,
-    var items: List<@Contextual SmobListItem>,
+    var items: List<SmobListItem>,
     var groups: List<SmobGroupItem>,
-    var lifecycle: @Contextual SmobListLifecycle,
-) : Ato, java.io.Serializable
+    var lifecycle: SmobListLifecycle,
+) : Ato

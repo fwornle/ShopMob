@@ -7,31 +7,31 @@ import com.tanfra.shopmob.smob.data.types.SmobGroupItem
 import com.tanfra.shopmob.smob.data.types.SmobListItem
 import com.tanfra.shopmob.smob.data.types.SmobListLifecycle
 import com.tanfra.shopmob.smob.data.types.SmobMemberItem
-import kotlinx.serialization.Contextual
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+
 
 // domain independent data type (Application Transfer Object)
 @Serializable
+@SerialName("smobGroupWithListData")
 data class SmobGroupWithListDataATO(
     override val id: String,
-    override var status: @Contextual ItemStatus,
+    override var status: ItemStatus,
     override var position: Long,
     var groupName: String,
     var groupDescription: String?,
     var groupType: GroupType,
     var groupMembers: List<SmobMemberItem>,
-    // serialization strategy decided at run-time (@Contextual)
-    var groupActivity: @Contextual ActivityStatus,
+    var groupActivity: ActivityStatus,
     val listId: String,
-    val listStatus: @Contextual ItemStatus,
+    val listStatus: ItemStatus,
     val listPosition: Long,
     var listName: String,
     var listDescription: String?,
-    var listItems: List<@Contextual SmobListItem>,
-    var listGroups: List<@Contextual SmobGroupItem>,
-    // serialization strategy decided at run-time (@Contextual)
-    var listLifecycle: @Contextual SmobListLifecycle,
-) : Ato, java.io.Serializable {
+    var listItems: List<SmobListItem>,
+    var listGroups: List<SmobGroupItem>,
+    var listLifecycle: SmobListLifecycle,
+) : Ato {
 
     // extract group
     fun group() = SmobGroupATO(
