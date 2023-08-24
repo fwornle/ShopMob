@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 // domain independent data type (Application Transfer Object)
 @Serializable
-@SerialName("smobUser")
+@SerialName("smobUserATO")
 data class SmobUserATO(
     override val id: String,
     override var status: ItemStatus,
