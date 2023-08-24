@@ -118,15 +118,7 @@ dependencies {
     implementation(libs.koin.android)
 
     // serialization
-    //
-    // serialization using kotlinx-serialization (avoids reflection [parcelize] and works with the
-    // gradle "serialization" plugin (see above) --> does the "introspection" at compile time to
-    // add possibly needed serializer code (for complex data structures)
-    implementation(libs.kotlin.serialization)
-    implementation(libs.gson)
-    implementation(libs.moshi)
-    implementation(libs.moshi.kotlin)
-    ksp(libs.moshi.kotlin.codegen)
+    implementation(libs.kotlinx.serialization)
 
     // workManager
     implementation(libs.work.runtime.ktx)
@@ -135,7 +127,7 @@ dependencies {
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.okhttp)
     implementation(libs.ktor.client.content)
-    implementation(libs.ktor.moshi)
+    implementation(libs.ktor.kotlinx.json)
     implementation(libs.http.logging)
 
     // room - mySQL DB

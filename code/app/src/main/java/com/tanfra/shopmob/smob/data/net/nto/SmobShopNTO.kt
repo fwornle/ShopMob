@@ -1,14 +1,16 @@
 package com.tanfra.shopmob.smob.data.net.nto
 
-import com.squareup.moshi.JsonClass
 import com.tanfra.shopmob.smob.data.types.ShopCategory
 import com.tanfra.shopmob.smob.data.types.ShopLocation
 import com.tanfra.shopmob.smob.data.types.ShopType
 import com.tanfra.shopmob.smob.data.types.ItemStatus
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 
 // network data type
-@JsonClass(generateAdapter = true)  // use moshi codegen (via KSP annotation processor)
+@Serializable
+@SerialName("smobShopNTO")
 data class SmobShopNTO(
     override val id: String,
     override val status: ItemStatus,

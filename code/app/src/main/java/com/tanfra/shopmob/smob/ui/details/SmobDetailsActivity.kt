@@ -36,6 +36,7 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
         private val module = SerializersModule {
             polymorphic(Ato::class) {
                 subclass(SmobListATO::class)
+                subclass(SmobProductWithListDataATO::class)
             }
         }
 

@@ -167,23 +167,12 @@ dependencyResolutionManagement {
 
             
             // serialization
-            version("kotlin-serialization", "1.5.1")
-            version("gson", "2.10.1")
-            version("moshi", "1.15.0")
-
-            library("gson", "com.google.code.gson", "gson").versionRef("gson")
+            version("kotlinx-serialization", "1.6.0")
             library(
-                "kotlin-serialization",
+                "kotlinx-serialization",
                 "org.jetbrains.kotlinx",
                 "kotlinx-serialization-json"
-            ).versionRef("kotlin-serialization")
-            library("moshi", "com.squareup.moshi", "moshi").versionRef("moshi")
-            library("moshi-kotlin", "com.squareup.moshi", "moshi-kotlin").versionRef("moshi")
-            library(
-                "moshi-kotlin-codegen",
-                "com.squareup.moshi",
-                "moshi-kotlin-codegen"
-            ).versionRef("moshi")
+            ).versionRef("kotlinx-serialization")
 
             
             // workmanager
@@ -197,7 +186,6 @@ dependencyResolutionManagement {
             
             // ktor - HTTP client
             version("ktor", "2.3.3")
-            version("ktor-moshi", "3.0.0")
             version("http-logging", "5.0.0-alpha.6")
 
             library("ktor-client-core", "io.ktor", "ktor-client-core").versionRef("ktor")
@@ -205,7 +193,7 @@ dependencyResolutionManagement {
             library("ktor-client-content", "io.ktor", "ktor-client-content-negotiation").versionRef(
                 "ktor"
             )
-            library("ktor-moshi", "com.hypercubetools", "ktor-moshi").versionRef("ktor-moshi")
+            library("ktor-kotlinx-json", "io.ktor", "ktor-serialization-kotlinx-json").versionRef("ktor")
             library(
                 "http-logging",
                 "com.squareup.okhttp3",

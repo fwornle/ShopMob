@@ -1,11 +1,9 @@
 package com.tanfra.shopmob.smob.data.net
 
-import com.hypercubetools.ktor.moshi.moshi
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tanfra.shopmob.BuildConfig
 import com.tanfra.shopmob.BuildConfig.BASE_URL
 import com.tanfra.shopmob.smob.data.net.api.*
+import com.tanfra.shopmob.smob.data.net.nto.Nto
 import com.tanfra.shopmob.smob.data.net.nto.SmobGroupNTO
 import com.tanfra.shopmob.smob.data.net.nto.SmobListNTO
 import com.tanfra.shopmob.smob.data.net.nto.SmobProductNTO
@@ -29,25 +27,30 @@ import kotlinx.coroutines.SupervisorJob
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import java.util.concurrent.TimeUnit
+import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.*
 
 
 // Koin module for network services
 val netServices = module {
 
+    // define polymorphic serializer for class "NTO"
+    // ... used below when configuring the kotlinx serializer
+    val serMod = SerializersModule {
+        polymorphic(Nto::class) {
+            subclass(SmobGroupNTO::class)
+            subclass(SmobListNTO::class)
+            subclass(SmobProductNTO::class)
+            subclass(SmobShopNTO::class)
+            subclass(SmobUserNTO::class)
+        }
+    }
+
+
     // helper function to provide coroutine context
     fun provideCoroutineScope() =
         CoroutineScope(Dispatchers.Default + SupervisorJob())
-
-    // helper function to provide a configured moshi adapter instance
-    fun provideMoshiInstance(): Moshi =
-        Moshi.Builder()
-            .add(ArrayListAdapter.Factory<SmobUserNTO>())
-            .add(ArrayListAdapter.Factory<SmobGroupNTO>())
-            .add(ArrayListAdapter.Factory<SmobProductNTO>())
-            .add(ArrayListAdapter.Factory<SmobShopNTO>())
-            .add(ArrayListAdapter.Factory<SmobListNTO>())
-            .add(KotlinJsonAdapterFactory())
-            .build()
 
 
     // creates Ktor client with OkHttp engine
@@ -111,7 +114,14 @@ val netServices = module {
 
         // use json (= kotlinx.serialization) content negotiation for serialize or deserialize
         install(ContentNegotiation) {
-            moshi(provideMoshiInstance())
+            // configure kotlinx serializer for JSON & polymorphic classes - defined above (serMod)
+            json(
+                Json {
+                    encodeDefaults = true
+                    classDiscriminator = "source"
+                    serializersModule = serMod
+                }
+            )
         }
 
     }  // provideOkHttpClient4Ktor
