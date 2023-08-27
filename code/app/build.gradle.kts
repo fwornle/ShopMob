@@ -10,12 +10,13 @@ plugins {
 
 android {
 
-    compileSdk = 33
+    namespace = "com.tanfra.shopmob"
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.tanfra.shopmob"
         minSdk = 25
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.2"
         resourceConfigurations += listOf("en")
@@ -79,8 +80,16 @@ android {
         }
     }
 
+    // enable compose
+    buildFeatures {
+        compose = true
+    }
 
-    namespace = "com.tanfra.shopmob"
+    // kotlin/compose compatibility matrix: https://developer.android.com/jetpack/androidx/releases/compose-kotlin
+    val composeCompilerExtension = "1.5.2"
+    composeOptions {
+        kotlinCompilerExtensionVersion = composeCompilerExtension
+    }
 
 }
 
@@ -108,6 +117,21 @@ dependencies {
     implementation(libs.bundles.androidx.navigation)
     implementation(libs.bundles.androidx.lifecycle)
 //    kapt(libs.lifecycle.compiler)
+
+
+    // compose
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.material3)
+    implementation(libs.compose.ui.tooling.preview)
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.compose.ui.test.manifest)
+//    implementation(libs.compose.material.icons.core)
+//    implementation(libs.compose.material.icons.extended)
+//    implementation(libs.compose.material3.window)
+    implementation(libs.compose.activity)
+    implementation(libs.compose.viewmodel)
+//    implementation(libs.compose.runtime.livedata)
+//    implementation(libs.compose.runtime.rxjava2)
 
 
     // appearance
@@ -228,6 +252,11 @@ dependencies {
     androidTestImplementation(testLibs.room.testing)
     androidTestImplementation(testLibs.core.testing)
     androidTestImplementation(testLibs.robolectric.annotations)
+
+
+    // composed based UI testing
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.compose.ui.test.junit4)
 
 
     // espresso

@@ -19,7 +19,7 @@ dependencyResolutionManagement {
         create("build") {
 
             // general android
-            version("android", "8.1.0")
+            version("android", "8.1.1")
             plugin("android-application", "com.android.application").versionRef("android")
             plugin("android-library", "com.android.library").versionRef("android")
 
@@ -53,7 +53,7 @@ dependencyResolutionManagement {
             library("kotlin-stdlib", "org.jetbrains.kotlin", "kotlin-stdlib").versionRef("kotlin")
             library("kotlin-reflect", "org.jetbrains.kotlin", "kotlin-reflect").versionRef("kotlin")
             
-            
+
             // timber - logging
             version("timber", "5.0.1")
             library("timber", "com.jakewharton.timber", "timber").versionRef("timber")
@@ -153,6 +153,24 @@ dependencyResolutionManagement {
                     "lifecycle-extensions",
                 )
             )
+
+
+            // compose
+            // ref: https://developer.android.com/jetpack/compose/setup#kotlin_1
+            version("compose-bom", "2023.08.00")
+            library("compose-bom", "androidx.compose", "compose-bom").versionRef("compose-bom")
+            library("compose-material3", "androidx.compose.material3", "material3").withoutVersion()
+            library("compose-material3-window", "androidx.compose.material3", "material3-window-size-class").withoutVersion()
+            library("compose-material-icons-core", "androidx.compose.material", "material-icons-core").withoutVersion()
+            library("compose-material-icons-extended", "androidx.compose.material", "material-icons-extended").withoutVersion()
+            library("compose-ui-tooling-preview", "androidx.compose.ui", "ui-tooling-preview").withoutVersion()
+            library("compose-ui-tooling", "androidx.compose.ui", "ui-tooling").withoutVersion()
+            library("compose-ui-test-manifest", "androidx.compose.ui", "ui-test-manifest").withoutVersion()
+            library("compose-ui-test-junit4", "androidx.compose.ui", "ui-test-junit4").withoutVersion()
+            library("compose-activity", "androidx.activity", "activity-compose").versionRef("activity-ktx")  // integration (opt)
+            library("compose-viewmodel", "androidx.lifecycle", "lifecycle-viewmodel-compose").versionRef("lifecycle")  // integration (opt)
+            library("compose-runtime-livedata", "androidx.compose.runtime", "runtime-livedata").withoutVersion()  // integration (opt)
+            library("compose-runtime-rxjava2", "androidx.compose.runtime", "runtime-rxjava2").withoutVersion()  // integration (opt)
 
 
             // appearance
@@ -351,6 +369,7 @@ dependencyResolutionManagement {
             library("test-core", "androidx.test", "core").versionRef("test-core")
             library("junit-ktx", "androidx.test.ext", "junit-ktx").versionRef("junit-ktx")
 
+
             // (once https://issuetracker.google.com/127986458 is fixed this can be moved to 
             //  testImplementation)
             version("fragment-testing", "1.6.1")
@@ -360,7 +379,7 @@ dependencyResolutionManagement {
                 "fragment-testing"
             ).versionRef("fragment-testing")
 
-            
+
             // ------------------------------------------------------------------------------
             
             
