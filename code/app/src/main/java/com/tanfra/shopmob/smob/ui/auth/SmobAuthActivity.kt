@@ -2,8 +2,11 @@ package com.tanfra.shopmob.smob.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
@@ -12,12 +15,11 @@ import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 import timber.log.Timber
 import com.google.firebase.auth.FirebaseAuth
 import com.tanfra.shopmob.SmobApp
-import com.tanfra.shopmob.databinding.ActivityAuthBinding
 import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
+import com.tanfra.shopmob.smob.ui.theme.ShopMobTheme
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import org.koin.android.ext.android.inject
-
 
 
 /**
@@ -26,16 +28,9 @@ import org.koin.android.ext.android.inject
  */
 class SmobAuthActivity : AppCompatActivity() {
 
-    // bind views
-    private lateinit var binding: ActivityAuthBinding
-
     // initialize activity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Inflate the layout
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_auth)
-        setContentView(binding.root)
 
         // we're here first time or after having been logged out
         SmobApp.currUser = null
@@ -44,17 +39,21 @@ class SmobAuthActivity : AppCompatActivity() {
         val auth = FirebaseAuth.getInstance()
         if (auth.currentUser != null) {
 
-            // already authenticated --> enter app
+            // already authenticated --> enter app directly
             wrapEspressoIdlingResource { sendAuthUserToMainApp(auth) }
-            // sendAuthUserToMainApp(auth)
 
-        } else {
+        }
 
-            // not yet logged in --> activate Login button
-
-            // install onClickListener for "Login" button
-            binding.authButton.setOnClickListener { launchSignInFlow() }
-
+        // display AuthScreen with Login button
+        setContent {
+            ShopMobTheme {
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    AuthScreen {
+                        // install onClickListener for "Login" button
+                        launchSignInFlow()
+                    }
+                }
+            }
         }
 
     }
