@@ -120,7 +120,6 @@ fun NotificationManager.sendNotificationOnGeofenceHit(context: Context, daShop: 
     )
     val bigPicStyle = NotificationCompat.BigPictureStyle()
         .bigPicture(smobLogo)
-        .bigLargeIcon(null)
 
     // add action intent to directly go to "Planning" view
     val planningViewIntent = Intent(context, SmobPlanningActivity::class.java)
@@ -196,7 +195,6 @@ fun NotificationManager.sendNotificationOnFcmUpdate(context: Context, messageBod
     )
     val bigPicStyle = NotificationCompat.BigPictureStyle()
         .bigPicture(smobLogo)
-        .bigLargeIcon(null)
 
     // build the notification
     val builder = NotificationCompat.Builder(
