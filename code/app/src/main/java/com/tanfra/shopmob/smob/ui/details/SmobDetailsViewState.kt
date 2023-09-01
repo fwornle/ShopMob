@@ -1,7 +1,6 @@
-package com.tanfra.shopmob.smob.ui.details.components
+package com.tanfra.shopmob.smob.ui.details
 
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
-import com.tanfra.shopmob.smob.ui.details.SmobDetailsNavSources
 
 // ui state
 data class SmobDetailsViewState(

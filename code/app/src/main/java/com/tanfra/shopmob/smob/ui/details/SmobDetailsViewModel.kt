@@ -3,7 +3,6 @@ package com.tanfra.shopmob.smob.ui.details
 import android.app.Application
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.ui.base.BaseViewModel
-import com.tanfra.shopmob.smob.ui.details.components.SmobDetailsViewState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

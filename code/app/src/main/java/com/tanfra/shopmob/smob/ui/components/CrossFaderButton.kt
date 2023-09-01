@@ -1,18 +1,21 @@
-package com.tanfra.shopmob.smob.ui.details.components
+package com.tanfra.shopmob.smob.ui.components
 
-import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,22 +29,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tanfra.shopmob.smob.ui.theme.ShopMobTheme
+import timber.log.Timber
 
 @Composable
 fun CrossFaderButton(
     modifier: Modifier = Modifier,
-    label: String = "CrossFaderButton"
-) {
+    label: String = "CrossFaderButton",
+    color1: Color = Color.LightGray,
+    color2: Color = Color.DarkGray,
+    onClick: () -> Unit = { Timber.i("CrossFaderButton clicked") },
+    ) {
 
     // animation state
-    val infiniteTransition = rememberInfiniteTransition()
-    val color by infiniteTransition.animateColor(
-        initialValue = Color.Red,
-        targetValue = Color.Green,
+    val infiniteTransition = rememberInfiniteTransition(label = "cross fader")
+    val perc by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
         animationSpec = infiniteRepeatable(
             animation = tween(1000, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
-        )
+        ),
+        label = "cross fader animation"
     )
 
     Box(
@@ -50,23 +58,36 @@ fun CrossFaderButton(
 
         Box(modifier = modifier
             .fillMaxSize()
+            .padding(horizontal = 40.dp)
+            .background(Color.Gray)
             .align(Alignment.Center)
+            .clickable { onClick() }
         ) {
 
             Canvas(
-                modifier = modifier.fillMaxSize()
+                modifier = modifier
+                    .fillMaxSize()
             ) {
 
-                val heightButton = size.height
-                val widthButton = size.width * .8f
-                val topLeft = Offset((size.width - widthButton) / 2, 0f)
+                // compute these only once
+                val btnHeight = size.height
+                val btnWidth = size.width
+                val btnWidth1 = perc * btnWidth
+                val btnWidth2 = (1.0f - perc) * btnWidth
+                val topLeft2 = Offset(btnWidth1, 0f)
 
 
                 // button anim phase #1
                 drawRect(
-                    color = color,
-                    topLeft = topLeft,
-                    size = Size(widthButton, heightButton)
+                    color = color1,
+                   size = Size(btnWidth1, btnHeight)
+                )
+
+                // button anim phase #2
+                drawRect(
+                    color = color2,
+                    topLeft = topLeft2,
+                    size = Size(btnWidth2, btnHeight)
                 )
 
             }  // Canvas
@@ -93,7 +114,7 @@ fun CrossFaderButton(
 }
 
 @Preview(
-    name = "Custom View",
+    name = "CrossFader",
     showSystemUi = true,
 )
 @Composable
@@ -103,6 +124,9 @@ fun PreviewCrossFaderButton() {
         CrossFaderButton(
             Modifier.height(100.dp),
             label = "hello world",
+            color1 = Color.LightGray,
+            color2 = Color.DarkGray,
+            { Timber.i("clicked") }
         )
     }
 

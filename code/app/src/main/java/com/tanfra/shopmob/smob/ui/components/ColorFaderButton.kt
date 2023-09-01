@@ -36,14 +36,15 @@ fun ColorFaderButton(
 ) {
 
     // animation state (colors)
-    val infiniteTransition = rememberInfiniteTransition()
+    val infiniteTransition = rememberInfiniteTransition(label = "color fader")
     val color by infiniteTransition.animateColor(
         initialValue = Color.Red,
         targetValue = Color.Green,
         animationSpec = infiniteRepeatable(
             animation = tween(1000, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
-        )
+        ),
+        label = "color fader animation"
     )
 
     Box(
@@ -81,7 +82,7 @@ fun ColorFaderButton(
 }
 
 @Preview(
-    name = "Color fader",
+    name = "ColorFader",
     showSystemUi = true,
 )
 @Composable

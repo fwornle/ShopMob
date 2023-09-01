@@ -247,11 +247,11 @@ fun DialControlButton(
 }
 
 @Preview(
-    name = "Custom View",
+    name = "DialControl",
     showSystemUi = true,
 )
 @Composable
-fun PreviewCrossFaderButton() {
+fun PreviewDialControlButton() {
 
     ShopMobTheme {
         DialControlButton(

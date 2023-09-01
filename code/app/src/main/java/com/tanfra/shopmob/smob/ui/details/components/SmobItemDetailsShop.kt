@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -28,7 +29,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
-import com.tanfra.shopmob.smob.ui.components.ColorFaderButton
+import com.tanfra.shopmob.smob.ui.components.CrossFaderButton
 import com.tanfra.shopmob.smob.ui.components.KeyValueText
 import com.tanfra.shopmob.smob.ui.theme.ShopMobTheme
 import timber.log.Timber
@@ -124,9 +125,11 @@ fun SmobItemDetailsShop(
         )
 
         Spacer(modifier = Modifier.height(20.dp))
-        ColorFaderButton(
+        CrossFaderButton(
             Modifier.height(60.dp),
             "Enter ${item.name}",
+            colorResource(R.color.secondaryColor),
+            colorResource(R.color.secondaryDarkColor),
             onClick = sendToShop,
         )
         Spacer(modifier = Modifier.height(20.dp))
