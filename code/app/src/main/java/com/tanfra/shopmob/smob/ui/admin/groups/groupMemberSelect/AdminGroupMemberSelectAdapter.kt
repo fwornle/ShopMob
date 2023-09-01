@@ -21,8 +21,8 @@ import java.util.*
 class AdminGroupMemberSelectAdapter(rootView: View, callBack: (selectedSmobUserATO: SmobUserATO) -> Unit) :
     BaseRecyclerViewAdapter<SmobUserATO>(rootView, callBack), KoinComponent {
 
-    // inject _viewModel from Koin service locator
-    private val _viewModel: AdminViewModel by inject()
+    // inject viewModel from Koin service locator
+    private val viewModel: AdminViewModel by inject()
 
     // SearchView widget can be used to preFilter the list using user input
     override fun getSearchViewItems(items: List<SmobUserATO>, charSearch: String)
@@ -64,7 +64,7 @@ class AdminGroupMemberSelectAdapter(rootView: View, callBack: (selectedSmobUserA
         rootView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
 
             // update currently selected group with new item
-            _viewModel.currGroup?.let { daGroup ->
+            viewModel.currGroup?.let { daGroup ->
 
                 // check if selected user is already part of the list
                 if(!daGroup.members.map { member -> member.id }.contains(item.id)) {
@@ -93,13 +93,13 @@ class AdminGroupMemberSelectAdapter(rootView: View, callBack: (selectedSmobUserA
 
                     // store updated smobGroup in local DB
                     // ... this also triggers an immediate push to the backend (once stored locally)
-                    _viewModel.groupDataSource.updateSmobItem(updatedGroup)
+                    viewModel.groupDataSource.updateSmobItem(updatedGroup)
 
                     // update current group holder
-                    _viewModel.currGroup = updatedGroup
+                    viewModel.currGroup = updatedGroup
 
                     // also add group to new member's own group list
-                    _viewModel.currGroupMember?.let { newGroupMember ->
+                    viewModel.currGroupMember?.let { newGroupMember ->
 
                         // append new group ID to new member's own group list
                         val updatedMemberGroups = newGroupMember.groups
@@ -112,16 +112,16 @@ class AdminGroupMemberSelectAdapter(rootView: View, callBack: (selectedSmobUserA
                         newGroupMember.groups = updatedMemberGroups
 
                         // update smob User in DB
-                        _viewModel.updateSmobUserItem(newGroupMember)
+                        viewModel.updateSmobUserItem(newGroupMember)
 
                         // ensure this is updated too
-                        _viewModel.currGroupMember = newGroupMember
+                        viewModel.currGroupMember = newGroupMember
 
                     }  // currGroupMember set
 
                 }  // newly selected member not yet a member of this group
 
-            }  // _viewModel.currGroup != null
+            }  // viewModel.currGroup != null
 
         }  // coroutine scope (lifecycleScope)
 

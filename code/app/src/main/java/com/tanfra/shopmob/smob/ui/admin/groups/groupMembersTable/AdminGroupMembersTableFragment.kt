@@ -23,7 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.activityViewModel
 class AdminGroupMembersTableFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
-    override val _viewModel: AdminViewModel by activityViewModel()
+    override val viewModel: AdminViewModel by activityViewModel()
 
     // data binding for fragment_admin_group_member_list.xml
     private lateinit var binding: FragmentAdminGroupMembersTableBinding
@@ -42,15 +42,15 @@ class AdminGroupMembersTableFragment : BaseFragment(), KoinComponent {
             )
 
         // set injected viewModel (from KOIN service locator)
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
 //        // fetch ID of group to be displayed (from incoming bundle)
 //        val groupId = arguments?.getString("groupId")
 //        val groupName = arguments?.getString("groupName")
 
         // fetch group ID of the (clicked) group that got us here
-        val groupId = _viewModel.currGroup?.id
-        val groupName = _viewModel.currGroup?.name
+        val groupId = viewModel.currGroup?.id
+        val groupName = viewModel.currGroup?.name
 
         // console
         Timber.i("Showing members of group with ID: $groupId")
@@ -60,24 +60,24 @@ class AdminGroupMembersTableFragment : BaseFragment(), KoinComponent {
         groupId?.let {
 
             // set current group ID and group(list)position in viewModel
-            _viewModel.currGroupId = it
+            viewModel.currGroupId = it
 
 //            // fetch flow into new (alternative) StateFlow variable (_)smobGroupAltSF
 //            // ... this just hooks up the (cold) Room flow to the StateFlow variable - no collection
-//            _viewModel.collectSmobGroupAltSF()
+//            viewModel.collectSmobGroupAltSF()
 
             // register flows in viewModel
-            _viewModel.smobGroupF = _viewModel.registerSmobGroupFlow(it)  // holds the item 'status'
-            _viewModel.smobGroupMembersF = _viewModel.registerSmobGroupMembersFlow(it)
+            viewModel.smobGroupF = viewModel.registerSmobGroupFlow(it)  // holds the item 'status'
+            viewModel.smobGroupMembersF = viewModel.registerSmobGroupMembersFlow(it)
 
             // turn to StateFlows
-            _viewModel.smobGroupSF = _viewModel.smobGroupFlowAsSF(_viewModel.smobGroupF)
-            _viewModel.smobGroupMembersSF = _viewModel.smobGroupMembersFlowToSF(_viewModel.smobGroupMembersF)
+            viewModel.smobGroupSF = viewModel.smobGroupFlowAsSF(viewModel.smobGroupF)
+            viewModel.smobGroupMembersSF = viewModel.smobGroupMembersFlowToSF(viewModel.smobGroupMembersF)
 
             // combine the flows and turn into StateFlow
-            _viewModel.smobGroupMemberWithGroupDataSF = _viewModel.combineGroupAndUserFlowsSF(
-                _viewModel.smobGroupF,
-                _viewModel.smobGroupMembersF,
+            viewModel.smobGroupMemberWithGroupDataSF = viewModel.combineGroupAndUserFlowsSF(
+                viewModel.smobGroupF,
+                viewModel.smobGroupMembersF,
             )
 
         }
@@ -93,17 +93,17 @@ class AdminGroupMembersTableFragment : BaseFragment(), KoinComponent {
             binding.refreshLayout.setRefreshing(false)
 
             // refresh local DB data from backend (for this list) - also updates 'showNoData'
-            _viewModel.swipeRefreshUserDataInLocalDB()
+            viewModel.swipeRefreshUserDataInLocalDB()
 
             // empty? --> inform user that there is no point swiping for further updates...
-            if (_viewModel.showNoData.value == true) {
+            if (viewModel.showNoData.value == true) {
                 Toast.makeText(activity, getString(R.string.error_add_smob_users), Toast.LENGTH_SHORT).show()
             }
 
         }
 
         // refresh local DB data from backend (for this list) - also updates 'showNoData'
-        _viewModel.swipeRefreshUserDataInLocalDB()
+        viewModel.swipeRefreshUserDataInLocalDB()
 
         return binding.root
     }
@@ -126,7 +126,7 @@ class AdminGroupMembersTableFragment : BaseFragment(), KoinComponent {
     private fun navigateToAdminAddGroupMember() {
 
         // determine highest index of all members in currently selected group
-        val highPos = _viewModel.currGroup.let {
+        val highPos = viewModel.currGroup.let {
             it?.members?.fold(0L) { max, list ->
                 if (list.listPosition > max) list.listPosition
                 else max
@@ -139,7 +139,7 @@ class AdminGroupMembersTableFragment : BaseFragment(), KoinComponent {
         )
 
         // use the navigationCommand live data to navigate between the fragments
-        _viewModel.navigationCommand.postValue(
+        viewModel.navigationCommand.postValue(
             NavigationCommand.ToWithBundle(
                 R.id.smobAdminGroupMemberSelectFragment,
                 bundle
@@ -156,11 +156,11 @@ class AdminGroupMembersTableFragment : BaseFragment(), KoinComponent {
             // RecyclerView - it gets the data behind the clicked item as parameter
 
             // communicate the selected item (= group member)
-            _viewModel.currGroupMemberWithGroupData = it
-            _viewModel.currGroupMember = it.member()  // used in details display
+            viewModel.currGroupMemberWithGroupData = it
+            viewModel.currGroupMember = it.member()  // used in details display
 
             // use the navigationCommand live data to navigate between the fragments
-            _viewModel.navigationCommand.postValue(
+            viewModel.navigationCommand.postValue(
                 NavigationCommand.To(
                     AdminGroupMembersTableFragmentDirections
                         .actionSmobAdminGroupMembersTableFragmentToSmobAdminGroupMemberDetailsFragment()

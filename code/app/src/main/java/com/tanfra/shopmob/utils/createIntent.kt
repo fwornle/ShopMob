@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.details
+package com.tanfra.shopmob.utils
 
 import android.app.Activity
 import android.content.Context

@@ -2,9 +2,8 @@
 <navigation
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_details"
-    app:startDestination="@id/smobDetailsShopFragment">
+    app:startDestination="@id/smobDetailsFragment">
 
     <activity
         android:id="@+id/smobDetailsActivity"
@@ -12,27 +11,8 @@
         android:label="Smob Details Activity" />
 
     <fragment
-        android:id="@+id/smobDetailsProductFragment"
-        android:name="com.tanfra.shopmob.smob.ui.details.DetailsProductFragment"
-        android:label="Product Details"/>
-
-    <fragment
-        android:id="@+id/smobDetailsShopFragment"
-        android:name="com.tanfra.shopmob.smob.ui.details.DetailsShopFragment"
-        android:label="Shop Details">
-        <action
-            android:id="@+id/action_smobDetailsShopFragment_to_smobDetailsProductFragment"
-            app:destination="@id/smobDetailsProductFragment" />
-    </fragment>
-
-    <!-- cross activity navigation made easy... -->
-    <fragment
-        android:id="@+id/smobPlanningShopMapFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.shops.addNewItem.PlanningShopMapFragment"
-        android:label="Select Store Location"
-        tools:layout="@layout/fragment_planning_shop_map"
-        >
-        <deepLink app:uri="android-app://com.tanfra.shopmob.smob.ui.planning.shopEdit/map" />
-    </fragment>
+        android:id="@+id/smobDetailsFragment"
+        android:name="com.tanfra.shopmob.smob.ui.details.SmobDetailsFragment"
+        android:label="Smob Details Fragment"/>
 
 </navigation>

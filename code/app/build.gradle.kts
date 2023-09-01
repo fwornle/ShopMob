@@ -130,8 +130,10 @@ dependencies {
 //    implementation(libs.compose.material3.window)
     implementation(libs.compose.activity)
     implementation(libs.compose.viewmodel)
-//    implementation(libs.compose.runtime.livedata)
+    implementation(libs.compose.runtime)
+    implementation(libs.compose.runtime.livedata)
 //    implementation(libs.compose.runtime.rxjava2)
+    implementation(libs.compose.state.events)  // 3rd party lib (!)
 
 
     // appearance
@@ -160,6 +162,7 @@ dependencies {
     ksp(libs.room.compiler)
 
     // coil - loading an image from URL for display in ImageView
+    implementation(libs.coil.compose)
     implementation(libs.coil)
 
     // firebase

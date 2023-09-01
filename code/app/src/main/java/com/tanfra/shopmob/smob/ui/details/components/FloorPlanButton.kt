@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.details.utils
+package com.tanfra.shopmob.smob.ui.details.components
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -11,7 +11,6 @@ import androidx.core.content.withStyledAttributes
 import com.tanfra.shopmob.R
 import timber.log.Timber
 import kotlin.properties.Delegates
-
 
 // idea and general handling adapted from Kotlin/Android courses
 class FloorPlanButton @JvmOverloads constructor(
@@ -35,6 +34,11 @@ class FloorPlanButton @JvmOverloads constructor(
 
     // activate / block the button animation from outside
     private var btnActive = false
+
+    // setter function for button height
+    fun setHeight(height: Int) {
+        heightSize = height
+    }
 
     // setter function for "active state of the button" (to activate programmatically)
     fun setActive(state: Boolean) {
@@ -117,6 +121,9 @@ class FloorPlanButton @JvmOverloads constructor(
     // dynamic initializations
     init {
 
+//        .height(20.dp)
+//            .padding(horizontal = 16.dp)
+//            .background(MaterialTheme.colorScheme.secondary),
         // get custom attributes
         context.withStyledAttributes(attrs, R.styleable.FloorPlanButton) {
             btnDefaultColor = getColor(R.styleable.FloorPlanButton_defaultColor, Color.BLUE)

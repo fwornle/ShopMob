@@ -16,7 +16,7 @@ import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
-import com.tanfra.shopmob.smob.ui.details.SmobDetailsSources
+import com.tanfra.shopmob.smob.ui.details.SmobDetailsNavSources
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
@@ -31,7 +31,7 @@ import timber.log.Timber
 class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
-    override val _viewModel: PlanningViewModel by activityViewModel()
+    override val viewModel: PlanningViewModel by activityViewModel()
 
     // data binding for fragment_smob_planning_lists.xml
     private lateinit var binding: FragmentPlanningProductsTableBinding
@@ -50,7 +50,7 @@ class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
             )
 
         // set injected viewModel (from KOIN service locator)
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
         // fetch ID of list to be displayed (from incoming bundle)
         val listId = arguments?.getString("listId")
@@ -63,32 +63,32 @@ class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
         listId?.let {
 
             // set current list ID and listPosition in viewModel
-            _viewModel.currListId = it
+            viewModel.currListId = it
 
             // fetch flow into new (alternative) StateFlow variable smobList2
             // ... this just hooks up the (cold) Room flow to the StateFlow variable - no collection
-            _viewModel.fetchSmobList()
+            viewModel.fetchSmobList()
 
             // register flows in viewModel
-            _viewModel._smobList = _viewModel.fetchSmobListFlow(it)  // holds the item 'status'
-            _viewModel._smobListItems = _viewModel.fetchSmobListItemsFlow(it)
+            viewModel._smobList = viewModel.fetchSmobListFlow(it)  // holds the item 'status'
+            viewModel._smobListItems = viewModel.fetchSmobListItemsFlow(it)
 
             // turn to StateFlows
-            _viewModel.smobList = _viewModel.smobListFlowToStateFlow(_viewModel._smobList)
-            _viewModel.smobListItems = _viewModel.smobListItemsFlowToStateFlow(_viewModel._smobListItems)
+            viewModel.smobList = viewModel.smobListFlowToStateFlow(viewModel._smobList)
+            viewModel.smobListItems = viewModel.smobListItemsFlowToStateFlow(viewModel._smobListItems)
 
             // combine the flows and turn into StateFlow
-            _viewModel.smobListItemsWithStatus = _viewModel.combineFlowsAndConvertToStateFlow(
-                _viewModel._smobList,
-                _viewModel._smobListItems,
+            viewModel.smobListItemsWithStatus = viewModel.combineFlowsAndConvertToStateFlow(
+                viewModel._smobList,
+                viewModel._smobListItems,
             )
 
 //            // collect flows and store in StateFlow type (so that we have the latest value available
-//            _viewModel.fetchSmobList()
-//            _viewModel.fetchSmobListItems()
+//            viewModel.fetchSmobList()
+//            viewModel.fetchSmobListItems()
 //
 //            // combine the flows and turn into StateFlow
-//            _viewModel.fetchCombinedFlows()
+//            viewModel.fetchCombinedFlows()
 
         }
 
@@ -103,17 +103,17 @@ class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
             binding.refreshLayout.setRefreshing(false)
 
             // refresh local DB data from backend (for this list) - also updates 'showNoData'
-            _viewModel.swipeRefreshProductDataInLocalDB()
+            viewModel.swipeRefreshProductDataInLocalDB()
 
             // empty? --> inform user that there is no point swiping for further updates...
-            if (_viewModel.showNoData.value == true) {
+            if (viewModel.showNoData.value == true) {
                 Toast.makeText(activity, getString(R.string.error_add_smob_items), Toast.LENGTH_SHORT).show()
             }
 
         }
 
         // refresh local DB data from backend (for this list) - also updates 'showNoData'
-        _viewModel.swipeRefreshProductDataInLocalDB()
+        viewModel.swipeRefreshProductDataInLocalDB()
 
         return binding.root
     }
@@ -161,7 +161,7 @@ class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
 
                         // back arrow (home button)
                         android.R.id.home -> {
-                            _viewModel.navigationCommand.postValue(NavigationCommand.Back)
+                            viewModel.navigationCommand.postValue(NavigationCommand.Back)
                             true
                         }
 
@@ -180,7 +180,7 @@ class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
     // FAB handler --> navigate to PlanningProductEdit fragment
     private fun navigateToPlanningProductEdit() {
         // use the navigationCommand live data to navigate between the fragments
-        _viewModel.navigationCommand.postValue(
+        viewModel.navigationCommand.postValue(
             NavigationCommand.To(
                 PlanningProductsTableFragmentDirections
                     .actionSmobPlanningProductsTableFragmentToSmobPlanningProductsAddNewItemFragment()
@@ -197,7 +197,7 @@ class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
             // create intent which starts activity SmobDetailsActivity, with clicked data item
             val intent = SmobDetailsActivity.newIntent(
                 requireContext(),
-                SmobDetailsSources.PLANNING_PRODUCT_LIST,
+                SmobDetailsNavSources.PLANNING_PRODUCT_LIST,
                 it
             )
 

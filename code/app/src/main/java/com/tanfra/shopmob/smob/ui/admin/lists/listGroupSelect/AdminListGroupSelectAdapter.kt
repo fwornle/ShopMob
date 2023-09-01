@@ -20,8 +20,8 @@ import java.util.*
 class AdminListGroupSelectAdapter(rootView: View, callBack: (selectedSmobGroupWithListDataATO: SmobGroupWithListDataATO) -> Unit) :
     BaseRecyclerViewAdapter<SmobGroupWithListDataATO>(rootView, callBack), KoinComponent {
 
-    // inject _viewModel from Koin service locator
-    private val _viewModel: AdminViewModel by inject()
+    // inject viewModel from Koin service locator
+    private val viewModel: AdminViewModel by inject()
 
     // SearchView widget can be used to preFilter the list using user input
     override fun getSearchViewItems(items: List<SmobGroupWithListDataATO>, charSearch: String)
@@ -63,7 +63,7 @@ class AdminListGroupSelectAdapter(rootView: View, callBack: (selectedSmobGroupWi
         rootView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
 
             // update currently selected group with new item
-            _viewModel.currGroupWithListData?.let {
+            viewModel.currGroupWithListData?.let {
 
                 // check if selected group is already part of the list
                 if(!it.listGroups.map { group -> group.id }.contains(item.id)) {
@@ -92,14 +92,14 @@ class AdminListGroupSelectAdapter(rootView: View, callBack: (selectedSmobGroupWi
 
                     // store updated smobList in local DB
                     // ... this also triggers an immediate push to the backend (once stored locally)
-                    _viewModel.listDataSource.updateSmobItem(updatedList)
+                    viewModel.listDataSource.updateSmobItem(updatedList)
 
                     // update current group holder
-                    _viewModel.currList = updatedList
+                    viewModel.currList = updatedList
 
                 }  // newly selected group & not yet part of the list
 
-            }  // _viewModel.currGroup != null
+            }  // viewModel.currGroup != null
 
         }  // coroutine scope (lifecycleScope)
 

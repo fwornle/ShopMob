@@ -7,19 +7,18 @@ import com.tanfra.shopmob.smob.data.types.ItemStatus
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 // domain independent data type (Application Transfer Object)
 @Serializable
 @SerialName("smobShopATO")
 data class SmobShopATO(
-    override val id: String,
-    override var status: ItemStatus,
-    override var position: Long,
-    var name: String,
-    var description: String?,
-    var imageUrl: String?,
-    var location: ShopLocation,
-    var type: ShopType,  // clashes w/h JSON class discriminator 'type'
-    var category: ShopCategory,
-    var business: List<String>,
+    override val id: String = "invalid smob shop",
+    override var status: ItemStatus = ItemStatus.INVALID,
+    override var position: Long = -1L,
+    var name: String = "invalidName",
+    var description: String? = "invalidDescription",
+    var imageUrl: String? = "invalidURL",
+    var location: ShopLocation = ShopLocation(0.0, 0.0),
+    var type: ShopType = ShopType.INDIVIDUAL,
+    var category: ShopCategory = ShopCategory.OTHER,
+    var business: List<String> = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"),
 ) : Ato

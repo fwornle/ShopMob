@@ -30,7 +30,7 @@ import org.koin.androidx.viewmodel.ext.android.activityViewModel
 class AdminContactsImportTableFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
-    override val _viewModel: AdminViewModel by activityViewModel()
+    override val viewModel: AdminViewModel by activityViewModel()
 
     // data binding for fragment_admin_contacts_import_table.xml
     private lateinit var binding: FragmentAdminContactsImportTableBinding
@@ -52,7 +52,7 @@ class AdminContactsImportTableFragment : BaseFragment(), KoinComponent {
             )
 
         // set injected viewModel (from KOIN service locator)
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
         // configure navbar
         setDisplayHomeAsUpEnabled(true)
@@ -68,14 +68,14 @@ class AdminContactsImportTableFragment : BaseFragment(), KoinComponent {
             // fetch contacts data (after asking for permission)
             if (requireContext().hasPermission(Manifest.permission.READ_CONTACTS)) {
                 // permissions already granted --> fetch contacts data
-                _viewModel.fetchContacts()
+                viewModel.fetchContacts()
             } else {
                 // initiate permission check for (read) access to contacts on this device
                 contactsAccessPermissionRequest.launch(Manifest.permission.READ_CONTACTS)
             }
 
             // empty? --> inform user that there is no point swiping for further updates...
-            if (_viewModel.showNoData.value == true) {
+            if (viewModel.showNoData.value == true) {
                 Toast.makeText(activity, getString(R.string.error_add_smob_users), Toast.LENGTH_SHORT).show()
             }
 
@@ -90,10 +90,10 @@ class AdminContactsImportTableFragment : BaseFragment(), KoinComponent {
             // RecyclerView - it gets the data behind the clicked item as parameter
 
             // communicate the selected item (= a contact)
-            _viewModel.currSmobContactATO = it
+            viewModel.currSmobContactATO = it
 
             // use the navigationCommand live data to navigate between the fragments
-            _viewModel.navigationCommand.postValue(
+            viewModel.navigationCommand.postValue(
                 NavigationCommand.To(
                     AdminContactsImportTableFragmentDirections
                         .actionSmobAdminContactsImportTableFragmentToSmobAdminSelectCategoryFragment()
@@ -128,7 +128,7 @@ class AdminContactsImportTableFragment : BaseFragment(), KoinComponent {
         // fetch contacts data (after asking for permission)
         if (requireContext().hasPermission(Manifest.permission.READ_CONTACTS)) {
             // permissions already granted --> fetch contacts data
-            _viewModel.fetchContacts()
+            viewModel.fetchContacts()
         } else {
             // initiate permission check for (read) access to contacts on this device
             contactsAccessPermissionRequest.launch(Manifest.permission.READ_CONTACTS)
@@ -152,7 +152,7 @@ class AdminContactsImportTableFragment : BaseFragment(), KoinComponent {
     private fun navigateToAdminSelectCategory() {
 
         // use the navigationCommand live data to navigate between the fragments
-        _viewModel.navigationCommand.postValue(NavigationCommand.Back)
+        viewModel.navigationCommand.postValue(NavigationCommand.Back)
 
     }
 
@@ -166,7 +166,7 @@ class AdminContactsImportTableFragment : BaseFragment(), KoinComponent {
 
             if (isGranted) {
                 // access to contact details (stored on this device) has been granted
-                _viewModel.fetchContacts()
+                viewModel.fetchContacts()
             } else {
                 // access has NOT been granted
                 // --> inform user and send them to settings

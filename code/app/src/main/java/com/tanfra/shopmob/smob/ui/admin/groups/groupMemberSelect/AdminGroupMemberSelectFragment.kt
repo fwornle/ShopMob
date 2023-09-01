@@ -20,7 +20,7 @@ import org.koin.core.component.KoinComponent
 class AdminGroupMemberSelectFragment : BaseFragment(), KoinComponent {
 
     // get the view model (from Koin service locator) ... shared with PlanningListsFragment
-    override val _viewModel: AdminViewModel by activityViewModel()
+    override val viewModel: AdminViewModel by activityViewModel()
 
     // data binding of underlying layout
     private lateinit var binding: FragmentAdminGroupMemberSelectBinding
@@ -51,7 +51,7 @@ class AdminGroupMemberSelectFragment : BaseFragment(), KoinComponent {
         setDisplayHomeAsUpEnabled(true)
 
         // provide (injected) viewModel as data source for data binding
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
         // install listener for SwipeRefreshLayout view
         binding.refreshLayout.setOnRefreshListener {
@@ -60,17 +60,17 @@ class AdminGroupMemberSelectFragment : BaseFragment(), KoinComponent {
             binding.refreshLayout.setRefreshing(false)
 
             // refresh local DB data from backend (for this list) - also updates 'showNoData'
-            _viewModel.swipeRefreshGroupDataInLocalDB()
+            viewModel.swipeRefreshGroupDataInLocalDB()
 
             // empty? --> inform user that there is no point swiping for further updates...
-            if (_viewModel.showNoData.value == true) {
+            if (viewModel.showNoData.value == true) {
                 Toast.makeText(activity, getString(R.string.error_add_smob_users), Toast.LENGTH_SHORT).show()
             }
 
         }
 
         // refresh local DB data from backend (for this list) - also updates 'showNoData'
-        _viewModel.swipeRefreshGroupDataInLocalDB()
+        viewModel.swipeRefreshGroupDataInLocalDB()
 
         return binding.root
     }
@@ -95,11 +95,11 @@ class AdminGroupMemberSelectFragment : BaseFragment(), KoinComponent {
             // RecyclerView - it gets the data behind the clicked item as parameter
 
             // communicate the selected item (= group member)
-            _viewModel.currGroupMember = it
-            _viewModel.enableAddButton = true
+            viewModel.currGroupMember = it
+            viewModel.enableAddButton = true
 
             // use the navigationCommand live data to navigate between the fragments
-            _viewModel.navigationCommand.postValue(
+            viewModel.navigationCommand.postValue(
                 NavigationCommand.To(
                     AdminGroupMemberSelectFragmentDirections
                         .actionSmobAdminGroupMemberSelectFragmentToSmobAdminGroupMemberDetailsFragment()
@@ -131,7 +131,7 @@ class AdminGroupMemberSelectFragment : BaseFragment(), KoinComponent {
     override fun onDestroy() {
         super.onDestroy()
         //make sure to clear the view model after destroy, as it's a single view model.
-        _viewModel.onClearGroup()
+        viewModel.onClearGroup()
     }
 
 }

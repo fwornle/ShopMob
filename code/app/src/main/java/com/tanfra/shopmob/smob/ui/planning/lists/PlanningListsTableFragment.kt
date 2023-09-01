@@ -31,7 +31,7 @@ import org.koin.core.component.KoinComponent
 class PlanningListsTableFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance(s)
-    override val _viewModel: PlanningViewModel by activityViewModel()
+    override val viewModel: PlanningViewModel by activityViewModel()
 
     // data binding for fragment_planning_lists.xml
     private lateinit var binding: FragmentPlanningListsTableBinding
@@ -51,7 +51,7 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
             )
 
         // set injected viewModel (from KOIN service locator)
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
         setDisplayHomeAsUpEnabled(true)
         setTitle(getString(R.string.app_name))
@@ -63,17 +63,17 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
             binding.refreshLayout.setRefreshing(false)
 
             // refresh local DB data from backend (for this list) - also updates 'showNoData'
-            _viewModel.swipeRefreshDataInLocalDB()
+            viewModel.swipeRefreshDataInLocalDB()
 
             // empty? --> inform user that there is no point swiping for further updates...
-            if (_viewModel.showNoData.value == true) {
+            if (viewModel.showNoData.value == true) {
                 Toast.makeText(activity, getString(R.string.error_add_smob_lists), Toast.LENGTH_SHORT).show()
             }
 
         }
 
         // refresh local DB data from backend (for this list) - also updates 'showNoData'
-        _viewModel.swipeRefreshDataInLocalDB()
+        viewModel.swipeRefreshDataInLocalDB()
 
         return binding.root
     }
@@ -123,7 +123,7 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
 
                     // back arrow (home button)
                     android.R.id.home -> {
-                        _viewModel.navigationCommand.postValue(NavigationCommand.Back)
+                        viewModel.navigationCommand.postValue(NavigationCommand.Back)
                         true
                     }
 
@@ -143,7 +143,7 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
     private fun navigateToAddSmobList() {
 
         // determine hightest index in all smobLists
-        val highPos = _viewModel.smobLists.value.let {
+        val highPos = viewModel.smobLists.value.let {
             if (it.status == Status.SUCCESS) {
                 // return  highest index
                 it.data?.fold(0L) { max, list ->
@@ -160,7 +160,7 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
         )
 
         // use the navigationCommand live data to navigate between the fragments
-        _viewModel.navigationCommand.postValue(
+        viewModel.navigationCommand.postValue(
             NavigationCommand.ToWithBundle(
                 R.id.smobPlanningListsAddNewItemFragment,
                 bundle
@@ -180,7 +180,7 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
     // "STORE" FAB handler --> navigate to shop/store management fragment
     private fun navigateToShopEditFragment() {
         // use the navigationCommand live data to navigate between the fragments
-        _viewModel.navigationCommand.postValue(
+        viewModel.navigationCommand.postValue(
             NavigationCommand.To(
                 PlanningListsTableFragmentDirections.actionSmobPlanningListsTableFragmentToSmobPlanningShopsAddNewItemFragment()
             )
@@ -200,7 +200,7 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
             )
 
             // use the navigationCommand live data to navigate between the fragments
-            _viewModel.navigationCommand.postValue(
+            viewModel.navigationCommand.postValue(
                 NavigationCommand.ToWithBundle(
                     R.id.smobPlanningProductsTableFragment,
                     bundle

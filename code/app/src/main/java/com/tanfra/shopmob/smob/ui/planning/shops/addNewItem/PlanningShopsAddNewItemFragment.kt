@@ -48,7 +48,7 @@ import java.util.*
 class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelectedListener, KoinComponent {
 
     // get the view model (from Koin) this time as a singleton to be shared with another fragment
-    override val _viewModel: PlanningShopsAddNewItemViewModel by activityViewModel()
+    override val viewModel: PlanningShopsAddNewItemViewModel by activityViewModel()
 
     // data binding of underlying layout
     private lateinit var binding: FragmentPlanningShopsAddNewItemBinding
@@ -140,7 +140,7 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
         setDisplayHomeAsUpEnabled(true)
 
         // provide (injected) viewModel as data source for data binding
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
         // initialize geoFencing
         // ... see: https://developer.android.com/training/location/geofencing
@@ -162,7 +162,7 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
         //     --> see BaseFragment.kt... where the observer (lambda) is installed
         binding.defineLocation.setOnClickListener {
             // Navigate to another fragment to get the user location
-            _viewModel.navigationCommand.postValue(
+            viewModel.navigationCommand.postValue(
                 NavigationCommand.To(
                     PlanningShopsAddNewItemFragmentDirections
                         .actionSmobPlanningShopsAddNewItemFragmentToSmobPlanningShopMapFragment()
@@ -187,13 +187,13 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
                 UUID.randomUUID().toString(),
                 ItemStatus.NEW,
                 -1L,
-                _viewModel.locatedShop.value?.name ?: "mystery shop",
-                _viewModel.locatedShop.value?.description ?: "something strange",
-                _viewModel.locatedShop.value?.imageUrl ?: "some mystery picture",
-                _viewModel.locatedShop.value?.location ?: ShopLocation(0.0, 0.0),
-                _viewModel.locatedShop.value?.type ?: ShopType.INDIVIDUAL,
-                _viewModel.locatedShop.value?.category ?: ShopCategory.OTHER,
-                _viewModel.locatedShop.value?.business ?: listOf(
+                viewModel.locatedShop.value?.name ?: "mystery shop",
+                viewModel.locatedShop.value?.description ?: "something strange",
+                viewModel.locatedShop.value?.imageUrl ?: "some mystery picture",
+                viewModel.locatedShop.value?.location ?: ShopLocation(0.0, 0.0),
+                viewModel.locatedShop.value?.type ?: ShopType.INDIVIDUAL,
+                viewModel.locatedShop.value?.category ?: ShopCategory.OTHER,
+                viewModel.locatedShop.value?.business ?: listOf(
                     "Monday: closed",
                     "Tuesday: closed",
                     "Wednesday: closed",
@@ -219,7 +219,7 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
     override fun onDestroy() {
         super.onDestroy()
         //make sure to clear the view model after destroy, as it's a single view model.
-        _viewModel.onClear()
+        viewModel.onClear()
     }
 
     // set-up spinners (categories)
@@ -246,7 +246,7 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
         when(p0) {
             binding.smobShopCategory -> {
                 // set shop category in VM
-                _viewModel.locatedShop.value?.category = ShopCategory.values()[p2]
+                viewModel.locatedShop.value?.category = ShopCategory.values()[p2]
             }
             else -> {
                 // should not happen - unless someone added more spinners
@@ -325,7 +325,7 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
                         .setAction(R.string.ok) {
 
                             // activate geoFence by-pass
-                            _viewModel.geoFencingOn.value = false
+                            viewModel.geoFencingOn.value = false
 
                             // continue flow - (will now omit the geoFencing part)
                             checkPermissionsAndStartGeofencing()
@@ -352,15 +352,15 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
     private fun checkPermissionsAndStartGeofencing() {
 
         // respect the user's choices --> they didn't wanna share their location
-        if (_viewModel.geoFencingOn.value == false) {
+        if (viewModel.geoFencingOn.value == false) {
 
             // user doesn't wanna share necessary location info --> by-pass geoFencing
-            _viewModel.showToast.value =
+            viewModel.showToast.value =
                 "Not GeoFencing ShopMob item ${daSmobShopATO.name} at ${daSmobShopATO.location}"
 
             // store smob item in DB
             // ... this also takes the user back to the SmobItemListFragment
-            _viewModel.validateAndSaveSmobItem(daSmobShopATO)
+            viewModel.validateAndSaveSmobItem(daSmobShopATO)
 
         } else {
 
@@ -378,7 +378,7 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
                 //     with repeated resolution prompts (when they have already consciously taken
                 //     an action that inhibits geoFencing - permissions or settings)
                 checkDeviceLocationSettingsAndStartGeofence(
-                    _viewModel.geoFencingOn.value ?: true
+                    viewModel.geoFencingOn.value ?: true
                 )
 
             } else {
@@ -504,7 +504,7 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
                 ).setAction(R.string.ok) {
 
                     // continue in flow (by-passing geoFencing)
-                    _viewModel.geoFencingOn.value = false
+                    viewModel.geoFencingOn.value = false
                     checkPermissionsAndStartGeofencing()
 
                 }.show()
@@ -598,12 +598,12 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
                 addOnSuccessListener {
 
                     // geoFence added
-                    _viewModel.showToast.value =
+                    viewModel.showToast.value =
                         "GeoFence added for ShopMob ${daSmobShopATO.name} at ${daSmobShopATO.location.longitude} / ${daSmobShopATO.location.latitude}"
 
                     // store SmobShop in local DB (and sync to backend)
                     // ... this also takes the user back to the SmobListsFragment
-                    _viewModel.validateAndSaveSmobItem(daSmobShopATO)
+                    viewModel.validateAndSaveSmobItem(daSmobShopATO)
 
                 }
 
@@ -615,11 +615,11 @@ class PlanningShopsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelect
                             // ... might be thrown on older devices (< Android "Q") when gms
                             //     'Improve Location Accuracy' has been disabled
                             // see: https://stackoverflow.com/questions/53996168/geofence-not-avaible-code-1000-while-trying-to-set-up-geofence/53998150
-                            _viewModel.showErrorMessage.value =
+                            viewModel.showErrorMessage.value =
                                 getString(R.string.location_accuracy_explanation)
                         }
                         else -> {
-                            _viewModel.showErrorMessage.value =
+                            viewModel.showErrorMessage.value =
                                 "Error adding geoFence: ${it.message}"
                         }
                     }  // when

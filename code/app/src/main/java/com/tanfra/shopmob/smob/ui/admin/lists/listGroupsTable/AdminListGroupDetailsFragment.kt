@@ -21,7 +21,7 @@ import org.koin.core.component.KoinComponent
 class AdminListGroupDetailsFragment : BaseFragment(), KoinComponent {
 
     // get the view model (from Koin service locator)
-    override val _viewModel: AdminViewModel by activityViewModel()
+    override val viewModel: AdminViewModel by activityViewModel()
 
     // data binding of underlying layout
     private lateinit var binding: FragmentAdminListGroupDetailsBinding
@@ -44,7 +44,7 @@ class AdminListGroupDetailsFragment : BaseFragment(), KoinComponent {
         setDisplayHomeAsUpEnabled(true)
 
         // provide (injected) viewModel as data source for data binding
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
         return binding.root
     }
@@ -62,13 +62,13 @@ class AdminListGroupDetailsFragment : BaseFragment(), KoinComponent {
             // Todo: change from member to group logic
 
             // back to default: button invisible
-            _viewModel.enableAddButton = false
+            viewModel.enableAddButton = false
 
             // add newly selected group item to groups of list
-            _viewModel.currList?.let { daList ->
+            viewModel.currList?.let { daList ->
 
                 // append group ID (and status / position) to list of groups
-                _viewModel.currGroupWithListData?.id?.let { currGroupId ->
+                viewModel.currGroupWithListData?.id?.let { currGroupId ->
 
                     // assemble new groups list
                     val updatedMemberList = daList.groups.toMutableList().apply {
@@ -85,14 +85,14 @@ class AdminListGroupDetailsFragment : BaseFragment(), KoinComponent {
                     daList.groups = updatedMemberList
 
                     // update smob list in DB
-                    _viewModel.updateSmobListItem(daList)
+                    viewModel.updateSmobListItem(daList)
 
                 }  // currGroupId
 
             }  // daList
 
             // return to SmobList table
-            _viewModel.navigationCommand.postValue(
+            viewModel.navigationCommand.postValue(
                 NavigationCommand.BackTo(R.id.smobAdminListGroupsTableFragment)
             )
         }
@@ -103,7 +103,7 @@ class AdminListGroupDetailsFragment : BaseFragment(), KoinComponent {
     override fun onDestroy() {
         super.onDestroy()
         //make sure to clear the view model after destroy, as it's a single view model.
-        _viewModel.onClearList()
+        viewModel.onClearList()
     }
 
 }

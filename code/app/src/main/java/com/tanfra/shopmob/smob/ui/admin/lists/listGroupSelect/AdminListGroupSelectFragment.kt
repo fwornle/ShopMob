@@ -21,7 +21,7 @@ import timber.log.Timber
 class AdminListGroupSelectFragment : BaseFragment(), KoinComponent {
 
     // get the view model (from Koin service locator) ... shared with PlanningListsFragment
-    override val _viewModel: AdminViewModel by activityViewModel()
+    override val viewModel: AdminViewModel by activityViewModel()
 
     // data binding of underlying layout
     private lateinit var binding: FragmentAdminListGroupSelectBinding
@@ -50,8 +50,8 @@ class AdminListGroupSelectFragment : BaseFragment(), KoinComponent {
         listPosMax = arguments?.getLong("listPosMax") ?: 0L
 
         // fetch list ID of the (clicked) list that got us here
-        val listId = _viewModel.currList?.id
-        val listName = _viewModel.currList?.name
+        val listId = viewModel.currList?.id
+        val listName = viewModel.currList?.name
 
         // console
         Timber.i("Adding new group to list with ID: $listId")
@@ -61,12 +61,12 @@ class AdminListGroupSelectFragment : BaseFragment(), KoinComponent {
         listId?.let {
 
             // register (not yet collected) flow / StateFlow in viewModel:
-            _viewModel.allSmobGroupsF = _viewModel.registerAllSmobGroupsFlow()
+            viewModel.allSmobGroupsF = viewModel.registerAllSmobGroupsFlow()
 
             // combine the flows and turn into StateFlow
-            _viewModel.smobAllGroupsWithListDataSF = _viewModel.combineAllGroupsAndListFlowSF(
-                _viewModel.smobListF,
-                _viewModel.allSmobGroupsF,
+            viewModel.smobAllGroupsWithListDataSF = viewModel.combineAllGroupsAndListFlowSF(
+                viewModel.smobListF,
+                viewModel.allSmobGroupsF,
             )
 
         }
@@ -74,7 +74,7 @@ class AdminListGroupSelectFragment : BaseFragment(), KoinComponent {
         setDisplayHomeAsUpEnabled(true)
 
         // provide (injected) viewModel as data source for data binding
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
         // install listener for SwipeRefreshLayout view
         binding.refreshLayout.setOnRefreshListener {
@@ -83,17 +83,17 @@ class AdminListGroupSelectFragment : BaseFragment(), KoinComponent {
             binding.refreshLayout.setRefreshing(false)
 
             // refresh local DB data from backend (for this list) - also updates 'showNoData'
-            _viewModel.swipeRefreshGroupDataInLocalDB()
+            viewModel.swipeRefreshGroupDataInLocalDB()
 
             // empty? --> inform user that there is no point swiping for further updates...
-            if (_viewModel.showNoData.value == true) {
+            if (viewModel.showNoData.value == true) {
                 Toast.makeText(activity, getString(R.string.error_add_smob_users), Toast.LENGTH_SHORT).show()
             }
 
         }
 
         // refresh local DB data from backend (for this list) - also updates 'showNoData'
-        _viewModel.swipeRefreshGroupDataInLocalDB()
+        viewModel.swipeRefreshGroupDataInLocalDB()
 
         return binding.root
     }
@@ -118,12 +118,12 @@ class AdminListGroupSelectFragment : BaseFragment(), KoinComponent {
             // RecyclerView - it gets the data behind the clicked item as parameter
 
             // communicate the selected item (= group)
-            _viewModel.currGroupWithListData = it
-            _viewModel.currGroupDetail = it.group()  // used in details display
-            _viewModel.enableAddButton = true
+            viewModel.currGroupWithListData = it
+            viewModel.currGroupDetail = it.group()  // used in details display
+            viewModel.enableAddButton = true
 
             // use the navigationCommand live data to navigate between the fragments
-            _viewModel.navigationCommand.postValue(
+            viewModel.navigationCommand.postValue(
                 NavigationCommand.To(
                     AdminListGroupSelectFragmentDirections
                         .actionSmobAdminListGroupSelectFragmentToSmobAdminListGroupDetailsFragment()
@@ -155,7 +155,7 @@ class AdminListGroupSelectFragment : BaseFragment(), KoinComponent {
     override fun onDestroy() {
         super.onDestroy()
         //make sure to clear the view model after destroy, as it's a single view model.
-        _viewModel.onClearGroup()
+        viewModel.onClearGroup()
     }
 
 }

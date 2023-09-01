@@ -7,10 +7,9 @@
       "username": "Enya.Erlei",
       "name": "Brenner, Andrea",
       "email": "Angela.Klauder@hotmail.com",
-      "imageUrl": "https://placeimg.com/200/150/people?0",
+      "imageUrl": "https://picsum.photos/200/150?0",
       "groups": [
-        "cfdf16aa-96a4-4016-8b42-6920f017ad7e",
-        "3ccb79db-0b00-408b-8b3a-7e6d6b198a7b"
+        "efd9d0ea-6642-4b90-b0a0-318b8ebf5fc7"
       ]
     },
     {
@@ -20,9 +19,9 @@
       "username": "Kim_Theele51",
       "name": "Kúhnert, Tobias",
       "email": "Carolin31@yahoo.com",
-      "imageUrl": "https://placeimg.com/200/150/people?1",
+      "imageUrl": "https://picsum.photos/200/150?1",
       "groups": [
-        "cfdf16aa-96a4-4016-8b42-6920f017ad7e"
+        "32c219f3-4b65-4a49-be0f-a805c93511a0"
       ]
     },
     {
@@ -32,10 +31,8 @@
       "username": "Mieke.Grosser",
       "name": "Pletsch, Lenny",
       "email": "Maria67@yahoo.com",
-      "imageUrl": "https://placeimg.com/200/150/people?2",
-      "groups": [
-        "19f34b65-a49f-4e0f-a805-c93511a0bea8"
-      ]
+      "imageUrl": "https://picsum.photos/200/150?2",
+      "groups": []
     },
     {
       "id": "8d215ce3-2379-4318-a2ae-bf079488242c",
@@ -44,7 +41,7 @@
       "username": "Jasmin51",
       "name": "Rath, Paulina",
       "email": "Joscha_Jeorga@yahoo.com",
-      "imageUrl": "https://placeimg.com/200/150/people?3",
+      "imageUrl": "https://picsum.photos/200/150?3",
       "groups": []
     },
     {
@@ -54,9 +51,10 @@
       "username": "Alice_Barr",
       "name": "Bönisch, Kerem",
       "email": "Mona_Hensel@gmail.com",
-      "imageUrl": "https://placeimg.com/200/150/people?4",
+      "imageUrl": "https://picsum.photos/200/150?4",
       "groups": [
-        "19f34b65-a49f-4e0f-a805-c93511a0bea8"
+        "32c219f3-4b65-4a49-be0f-a805c93511a0",
+        "efd9d0ea-6642-4b90-b0a0-318b8ebf5fc7"
       ]
     },
     {
@@ -66,10 +64,10 @@
       "username": "Johann44",
       "name": "Leibold, Lino",
       "email": "Lucien.Zach@hotmail.com",
-      "imageUrl": "https://placeimg.com/200/150/people?5",
+      "imageUrl": "https://picsum.photos/200/150?5",
       "groups": [
-        "cfdf16aa-96a4-4016-8b42-6920f017ad7e",
-        "19f34b65-a49f-4e0f-a805-c93511a0bea8"
+        "32c219f3-4b65-4a49-be0f-a805c93511a0",
+        "248dc614-de25-4856-833a-e0ec585e28d0"
       ]
     },
     {
@@ -79,10 +77,9 @@
       "username": "Sally.Gerhardt",
       "name": "Komoll, Claas",
       "email": "Valentin.Rntsch@hotmail.com",
-      "imageUrl": "https://placeimg.com/200/150/people?6",
+      "imageUrl": "https://picsum.photos/200/150?6",
       "groups": [
-        "0cf5e4e6-69b9-4326-9db2-ced7f6c4cee8",
-        "e0ec585e-28d0-442c-8478-7d5d4ef56de9"
+        "890f8e03-20cf-45e4-a669-b93261db2ced"
       ]
     },
     {
@@ -92,9 +89,9 @@
       "username": "Davin_Stöwer",
       "name": "Schäffel, Viktor",
       "email": "Jack75@yahoo.com",
-      "imageUrl": "https://placeimg.com/200/150/people?7",
+      "imageUrl": "https://picsum.photos/200/150?7",
       "groups": [
-        "a0318b8e-bf5f-4c7a-a038-bd299248dc61"
+        "01e9dc42-851f-41ed-967a-9f0310a02bee"
       ]
     },
     {
@@ -104,9 +101,10 @@
       "username": "Tony_Umminger0",
       "name": "Peselman, Arwen",
       "email": "Sandra.Marchewski@yahoo.com",
-      "imageUrl": "https://placeimg.com/200/150/people?8",
+      "imageUrl": "https://picsum.photos/200/150?8",
       "groups": [
-        "3ccb79db-0b00-408b-8b3a-7e6d6b198a7b"
+        "890f8e03-20cf-45e4-a669-b93261db2ced",
+        "f56de9ac-d5d2-4fab-bccb-79db0b0008bc"
       ]
     },
     {
@@ -116,9 +114,10 @@
       "username": "Romina69",
       "name": "Kuske, Giulia",
       "email": "Bo.Hentschke51@hotmail.com",
-      "imageUrl": "https://placeimg.com/200/150/people?9",
+      "imageUrl": "https://picsum.photos/200/150?9",
       "groups": [
-        "19f34b65-a49f-4e0f-a805-c93511a0bea8"
+        "01e9dc42-851f-41ed-967a-9f0310a02bee",
+        "248dc614-de25-4856-833a-e0ec585e28d0"
       ]
     },
     {
@@ -128,9 +127,12 @@
       "username": "Alana82",
       "name": "Benzing, Franz",
       "email": "Fabio.Buder@gmail.com",
-      "imageUrl": "https://placeimg.com/200/150/people?10",
+      "imageUrl": "https://picsum.photos/200/150?10",
       "groups": [
-        "a0318b8e-bf5f-4c7a-a038-bd299248dc61"
+        "01e9dc42-851f-41ed-967a-9f0310a02bee",
+        "32c219f3-4b65-4a49-be0f-a805c93511a0",
+        "efd9d0ea-6642-4b90-b0a0-318b8ebf5fc7",
+        "248dc614-de25-4856-833a-e0ec585e28d0"
       ]
     },
     {
@@ -140,10 +142,9 @@
       "username": "Lisanne_Burmeister20",
       "name": "Giesche, Tayler",
       "email": "Joline_Haug@yahoo.com",
-      "imageUrl": "https://placeimg.com/200/150/people?11",
+      "imageUrl": "https://picsum.photos/200/150?11",
       "groups": [
-        "cfdf16aa-96a4-4016-8b42-6920f017ad7e",
-        "0cf5e4e6-69b9-4326-9db2-ced7f6c4cee8"
+        "32c219f3-4b65-4a49-be0f-a805c93511a0"
       ]
     },
     {
@@ -153,9 +154,9 @@
       "username": "Katja.Göckeritz",
       "name": "Schersing, Ahmad",
       "email": "Nico.Ecker@hotmail.com",
-      "imageUrl": "https://placeimg.com/200/150/people?12",
+      "imageUrl": "https://picsum.photos/200/150?12",
       "groups": [
-        "19f34b65-a49f-4e0f-a805-c93511a0bea8"
+        "01e9dc42-851f-41ed-967a-9f0310a02bee"
       ]
     },
     {
@@ -165,10 +166,8 @@
       "username": "Ilayda.Streck45",
       "name": "Verzi, Colin",
       "email": "Zoe_Wachtel@gmail.com",
-      "imageUrl": "https://placeimg.com/200/150/people?13",
-      "groups": [
-        "0cf5e4e6-69b9-4326-9db2-ced7f6c4cee8"
-      ]
+      "imageUrl": "https://picsum.photos/200/150?13",
+      "groups": []
     },
     {
       "id": "1d21d940-8b10-4915-b5ea-558b9a3f94a3",
@@ -177,10 +176,8 @@
       "username": "Luiz_Bozsik",
       "name": "Kohle, Baris",
       "email": "Yunus94@hotmail.com",
-      "imageUrl": "https://placeimg.com/200/150/people?14",
-      "groups": [
-        "3ccb79db-0b00-408b-8b3a-7e6d6b198a7b"
-      ]
+      "imageUrl": "https://picsum.photos/200/150?14",
+      "groups": []
     },
     {
       "id": "e858a057-eeb3-410b-ae58-df07e0a8e899",
@@ -189,10 +186,10 @@
       "username": "Lucienne.Sillah",
       "name": "Holinski, Penelope",
       "email": "Ramon.Sauer@yahoo.com",
-      "imageUrl": "https://placeimg.com/200/150/people?15",
+      "imageUrl": "https://picsum.photos/200/150?15",
       "groups": [
-        "0cf5e4e6-69b9-4326-9db2-ced7f6c4cee8",
-        "3ccb79db-0b00-408b-8b3a-7e6d6b198a7b"
+        "890f8e03-20cf-45e4-a669-b93261db2ced",
+        "248dc614-de25-4856-833a-e0ec585e28d0"
       ]
     },
     {
@@ -202,10 +199,10 @@
       "username": "Eric74",
       "name": "Dietz, Max",
       "email": "Anneke.Montag@gmail.com",
-      "imageUrl": "https://placeimg.com/200/150/people?16",
+      "imageUrl": "https://picsum.photos/200/150?16",
       "groups": [
-        "19f34b65-a49f-4e0f-a805-c93511a0bea8",
-        "0cf5e4e6-69b9-4326-9db2-ced7f6c4cee8"
+        "01e9dc42-851f-41ed-967a-9f0310a02bee",
+        "f56de9ac-d5d2-4fab-bccb-79db0b0008bc"
       ]
     },
     {
@@ -215,10 +212,9 @@
       "username": "Jerome.Erlei46",
       "name": "Stolz, Levke",
       "email": "Kenan17@hotmail.com",
-      "imageUrl": "https://placeimg.com/200/150/people?17",
+      "imageUrl": "https://picsum.photos/200/150?17",
       "groups": [
-        "cfdf16aa-96a4-4016-8b42-6920f017ad7e",
-        "e0ec585e-28d0-442c-8478-7d5d4ef56de9"
+        "890f8e03-20cf-45e4-a669-b93261db2ced"
       ]
     },
     {
@@ -228,9 +224,10 @@
       "username": "Claas.Keutel31",
       "name": "Sonn, Vera",
       "email": "Hennes93@yahoo.com",
-      "imageUrl": "https://placeimg.com/200/150/people?18",
+      "imageUrl": "https://picsum.photos/200/150?18",
       "groups": [
-        "cfdf16aa-96a4-4016-8b42-6920f017ad7e"
+        "890f8e03-20cf-45e4-a669-b93261db2ced",
+        "f56de9ac-d5d2-4fab-bccb-79db0b0008bc"
       ]
     },
     {
@@ -240,11 +237,8 @@
       "username": "Nelson.Herweg50",
       "name": "Kuhlee, Ludwig",
       "email": "Sophie_Dietrich32@hotmail.com",
-      "imageUrl": "https://placeimg.com/200/150/people?19",
-      "groups": [
-        "19f34b65-a49f-4e0f-a805-c93511a0bea8",
-        "0cf5e4e6-69b9-4326-9db2-ced7f6c4cee8"
-      ]
+      "imageUrl": "https://picsum.photos/200/150?19",
+      "groups": []
     },
     {
       "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
@@ -256,13 +250,13 @@
       "imageUrl": "https://lh3.googleusercontent.com/a/AATXAJx9nYtfUiFXPg2JABf1OWUMGasy_szkM1PSvfiT=s96-c",
       "groups": [
         "cfdf16aa-96a4-4016-8b42-6920f017ad7e",
-        "ed567a9f-0310-4a02-bee6-77698dd7a336",
-        "19f34b65-a49f-4e0f-a805-c93511a0bea8",
-        "0cf5e4e6-69b9-4326-9db2-ced7f6c4cee8",
-        "9863fc1d-315a-4274-acc8-50efd9d0ea66",
-        "a0318b8e-bf5f-4c7a-a038-bd299248dc61",
-        "e0ec585e-28d0-442c-8478-7d5d4ef56de9",
-        "3ccb79db-0b00-408b-8b3a-7e6d6b198a7b"
+        "01e9dc42-851f-41ed-967a-9f0310a02bee",
+        "32c219f3-4b65-4a49-be0f-a805c93511a0",
+        "890f8e03-20cf-45e4-a669-b93261db2ced",
+        "f4d5c9a7-ce46-4b72-9863-fc1d315a274e",
+        "efd9d0ea-6642-4b90-b0a0-318b8ebf5fc7",
+        "248dc614-de25-4856-833a-e0ec585e28d0",
+        "f56de9ac-d5d2-4fab-bccb-79db0b0008bc"
       ]
     }
   ],
@@ -272,80 +266,31 @@
       "status": "OPEN",
       "position": 0,
       "name": "nihil",
-      "description": "ullam quis",
-      "type": "WORK",
-      "members": [
-        {
-          "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
-          "status": "DONE",
-          "listPosition": 0
-        },
-        {
-          "id": "0c4e6054-5fd8-48a8-817c-f6611278f755",
-          "status": "OPEN",
-          "listPosition": 1
-        },
-        {
-          "id": "19a3ba83-841b-498a-998b-b1ef9131b8c7",
-          "status": "OPEN",
-          "listPosition": 2
-        },
-        {
-          "id": "3d48dd86-a5c5-4d26-9057-8899840efae5",
-          "status": "IN_PROGRESS",
-          "listPosition": 3
-        },
-        {
-          "id": "bb463b8b-b76c-4f6a-9726-65ab5730b69b",
-          "status": "IN_PROGRESS",
-          "listPosition": 4
-        },
-        {
-          "id": "d7bb95b6-5a55-4334-bac1-c606272614e6",
-          "status": "OPEN",
-          "listPosition": 5
-        },
-        {
-          "id": "f8a8c6b5-3876-4c0a-8011-a56f2754c5b3",
-          "status": "DONE",
-          "listPosition": 6
-        }
-      ],
-      "activity": {
-        "date": "2023-07-12T12:01:12.923Z",
-        "reps": 19
-      }
-    },
-    {
-      "id": "ed567a9f-0310-4a02-bee6-77698dd7a336",
-      "status": "OPEN",
-      "position": 1,
-      "name": "est",
-      "description": "sed",
-      "type": "OTHER",
-      "members": [
-        {
-          "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
-          "status": "DONE",
-          "listPosition": 0
-        }
-      ],
-      "activity": {
-        "date": "2023-06-16T04:08:09.644Z",
-        "reps": 18
-      }
-    },
-    {
-      "id": "19f34b65-a49f-4e0f-a805-c93511a0bea8",
-      "status": "OPEN",
-      "position": 2,
-      "name": "ab",
-      "description": "quia exercitationem",
+      "description": "ullam quis itaque accusamus",
       "type": "FRIENDS",
       "members": [
         {
           "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
-          "status": "IN_PROGRESS",
+          "status": "OPEN",
+          "listPosition": 0
+        }
+      ],
+      "activity": {
+        "date": "2023-07-24T13:25:15.316Z",
+        "reps": 10
+      }
+    },
+    {
+      "id": "01e9dc42-851f-41ed-967a-9f0310a02bee",
+      "status": "OPEN",
+      "position": 1,
+      "name": "qui",
+      "description": "",
+      "type": "FAMILY",
+      "members": [
+        {
+          "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
+          "status": "DONE",
           "listPosition": 0
         },
         {
@@ -355,47 +300,37 @@
         },
         {
           "id": "39fbaadf-0e40-4861-9f23-9553f193a46a",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
           "listPosition": 2
         },
         {
-          "id": "3d48dd86-a5c5-4d26-9057-8899840efae5",
-          "status": "DONE",
+          "id": "465ca607-c295-4adb-a861-f732eae81a75",
+          "status": "OPEN",
           "listPosition": 3
         },
         {
           "id": "631f7ea5-4ae4-4734-9656-ecdbb7f86d3b",
-          "status": "IN_PROGRESS",
+          "status": "OPEN",
           "listPosition": 4
         },
         {
-          "id": "757e108b-d767-490c-8657-fc9c529c372e",
-          "status": "DONE",
+          "id": "6b4d62cc-c4a4-4fa6-93a7-e8b67270c994",
+          "status": "IN_PROGRESS",
           "listPosition": 5
-        },
-        {
-          "id": "76ade417-7f38-469c-97dc-948650456bad",
-          "status": "OPEN",
-          "listPosition": 6
-        },
-        {
-          "id": "ddb56034-668b-48f0-9ac0-90be246c355d",
-          "status": "OPEN",
-          "listPosition": 7
         }
       ],
       "activity": {
-        "date": "2023-06-08T17:55:21.109Z",
-        "reps": 15
+        "date": "2022-11-19T20:50:23.610Z",
+        "reps": 17
       }
     },
     {
-      "id": "0cf5e4e6-69b9-4326-9db2-ced7f6c4cee8",
+      "id": "32c219f3-4b65-4a49-be0f-a805c93511a0",
       "status": "OPEN",
-      "position": 3,
-      "name": "eos",
-      "description": "aut velit vero corporis",
-      "type": "WORK",
+      "position": 2,
+      "name": "minus",
+      "description": "repudiandae",
+      "type": "FRIENDS",
       "members": [
         {
           "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
@@ -408,95 +343,42 @@
           "listPosition": 1
         },
         {
-          "id": "289644a6-0dea-40f2-bce0-cb4fcddb5ff6",
-          "status": "DONE",
-          "listPosition": 2
-        },
-        {
-          "id": "631f7ea5-4ae4-4734-9656-ecdbb7f86d3b",
+          "id": "3d48dd86-a5c5-4d26-9057-8899840efae5",
           "status": "OPEN",
-          "listPosition": 3
-        },
-        {
-          "id": "757e108b-d767-490c-8657-fc9c529c372e",
-          "status": "IN_PROGRESS",
-          "listPosition": 4
-        },
-        {
-          "id": "b98c56ab-d229-4fd5-bd11-603e7e83104d",
-          "status": "DONE",
-          "listPosition": 5
-        },
-        {
-          "id": "e858a057-eeb3-410b-ae58-df07e0a8e899",
-          "status": "IN_PROGRESS",
-          "listPosition": 6
-        }
-      ],
-      "activity": {
-        "date": "2023-06-25T01:34:28.577Z",
-        "reps": 9
-      }
-    },
-    {
-      "id": "9863fc1d-315a-4274-acc8-50efd9d0ea66",
-      "status": "OPEN",
-      "position": 4,
-      "name": "minima",
-      "description": "dolores est error",
-      "type": "OTHER",
-      "members": [
-        {
-          "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
-          "status": "DONE",
-          "listPosition": 0
-        }
-      ],
-      "activity": {
-        "date": "2023-08-04T07:40:28.340Z",
-        "reps": 15
-      }
-    },
-    {
-      "id": "a0318b8e-bf5f-4c7a-a038-bd299248dc61",
-      "status": "OPEN",
-      "position": 5,
-      "name": "nemo",
-      "description": "illum eveniet dolorem",
-      "type": "FAMILY",
-      "members": [
-        {
-          "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
-          "status": "DONE",
-          "listPosition": 0
+          "listPosition": 2
         },
         {
           "id": "465ca607-c295-4adb-a861-f732eae81a75",
           "status": "OPEN",
-          "listPosition": 1
+          "listPosition": 3
         },
         {
-          "id": "6b4d62cc-c4a4-4fa6-93a7-e8b67270c994",
-          "status": "OPEN",
-          "listPosition": 2
+          "id": "d7bb95b6-5a55-4334-bac1-c606272614e6",
+          "status": "DONE",
+          "listPosition": 4
+        },
+        {
+          "id": "ddb56034-668b-48f0-9ac0-90be246c355d",
+          "status": "IN_PROGRESS",
+          "listPosition": 5
         }
       ],
       "activity": {
-        "date": "2022-12-22T06:55:57.758Z",
-        "reps": 7
+        "date": "2023-07-12T17:35:38.356Z",
+        "reps": 11
       }
     },
     {
-      "id": "e0ec585e-28d0-442c-8478-7d5d4ef56de9",
+      "id": "890f8e03-20cf-45e4-a669-b93261db2ced",
       "status": "OPEN",
-      "position": 6,
-      "name": "est",
-      "description": "assumenda",
+      "position": 3,
+      "name": "dolores",
+      "description": "",
       "type": "WORK",
       "members": [
         {
           "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
           "listPosition": 0
         },
         {
@@ -505,64 +387,166 @@
           "listPosition": 1
         },
         {
+          "id": "295c71ad-3d9e-4e21-972b-616d861737c5",
+          "status": "DONE",
+          "listPosition": 2
+        },
+        {
           "id": "b98c56ab-d229-4fd5-bd11-603e7e83104d",
           "status": "IN_PROGRESS",
-          "listPosition": 2
+          "listPosition": 3
+        },
+        {
+          "id": "e858a057-eeb3-410b-ae58-df07e0a8e899",
+          "status": "DONE",
+          "listPosition": 4
+        },
+        {
+          "id": "f8a8c6b5-3876-4c0a-8011-a56f2754c5b3",
+          "status": "OPEN",
+          "listPosition": 5
         }
       ],
       "activity": {
-        "date": "2022-12-03T20:28:02.966Z",
-        "reps": 13
+        "date": "2022-09-26T22:05:35.218Z",
+        "reps": 8
       }
     },
     {
-      "id": "3ccb79db-0b00-408b-8b3a-7e6d6b198a7b",
+      "id": "f4d5c9a7-ce46-4b72-9863-fc1d315a274e",
       "status": "OPEN",
-      "position": 7,
-      "name": "nam",
-      "description": "et unde atque",
-      "type": "OTHER",
+      "position": 4,
+      "name": "dolor",
+      "description": "omnis",
+      "type": "FRIENDS",
       "members": [
         {
           "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
+          "listPosition": 0
+        }
+      ],
+      "activity": {
+        "date": "2023-08-17T04:43:42.553Z",
+        "reps": 1
+      }
+    },
+    {
+      "id": "efd9d0ea-6642-4b90-b0a0-318b8ebf5fc7",
+      "status": "OPEN",
+      "position": 5,
+      "name": "et",
+      "description": "",
+      "type": "WORK",
+      "members": [
+        {
+          "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
+          "status": "DONE",
           "listPosition": 0
         },
         {
-          "id": "1d21d940-8b10-4915-b5ea-558b9a3f94a3",
+          "id": "465ca607-c295-4adb-a861-f732eae81a75",
           "status": "DONE",
           "listPosition": 1
         },
         {
-          "id": "295c71ad-3d9e-4e21-972b-616d861737c5",
+          "id": "bb463b8b-b76c-4f6a-9726-65ab5730b69b",
           "status": "OPEN",
           "listPosition": 2
         },
         {
-          "id": "bb463b8b-b76c-4f6a-9726-65ab5730b69b",
+          "id": "ddb56034-668b-48f0-9ac0-90be246c355d",
+          "status": "IN_PROGRESS",
+          "listPosition": 3
+        }
+      ],
+      "activity": {
+        "date": "2023-02-02T15:49:52.007Z",
+        "reps": 5
+      }
+    },
+    {
+      "id": "248dc614-de25-4856-833a-e0ec585e28d0",
+      "status": "OPEN",
+      "position": 6,
+      "name": "quis",
+      "description": "",
+      "type": "OTHER",
+      "members": [
+        {
+          "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
+          "status": "IN_PROGRESS",
+          "listPosition": 0
+        },
+        {
+          "id": "34b46bad-09a7-40ab-a7b1-f8110a9fcc89",
+          "status": "DONE",
+          "listPosition": 1
+        },
+        {
+          "id": "3d48dd86-a5c5-4d26-9057-8899840efae5",
+          "status": "OPEN",
+          "listPosition": 2
+        },
+        {
+          "id": "465ca607-c295-4adb-a861-f732eae81a75",
           "status": "DONE",
           "listPosition": 3
         },
         {
           "id": "e858a057-eeb3-410b-ae58-df07e0a8e899",
-          "status": "IN_PROGRESS",
+          "status": "OPEN",
           "listPosition": 4
         }
       ],
       "activity": {
-        "date": "2022-09-29T14:30:30.731Z",
-        "reps": 18
+        "date": "2022-10-06T16:23:34.858Z",
+        "reps": 10
+      }
+    },
+    {
+      "id": "f56de9ac-d5d2-4fab-bccb-79db0b0008bc",
+      "status": "OPEN",
+      "position": 7,
+      "name": "minus",
+      "description": "et nam",
+      "type": "FAMILY",
+      "members": [
+        {
+          "id": "BTwLBEmaoWfQKbooBguh0x84bV52",
+          "status": "DONE",
+          "listPosition": 0
+        },
+        {
+          "id": "295c71ad-3d9e-4e21-972b-616d861737c5",
+          "status": "OPEN",
+          "listPosition": 1
+        },
+        {
+          "id": "631f7ea5-4ae4-4734-9656-ecdbb7f86d3b",
+          "status": "IN_PROGRESS",
+          "listPosition": 2
+        },
+        {
+          "id": "f8a8c6b5-3876-4c0a-8011-a56f2754c5b3",
+          "status": "IN_PROGRESS",
+          "listPosition": 3
+        }
+      ],
+      "activity": {
+        "date": "2023-01-03T08:52:58.364Z",
+        "reps": 19
       }
     }
   ],
   "shops": [
     {
-      "id": "777da5c1-d7df-466c-b706-2f5196af0be7",
+      "id": "e4b67309-6eac-4d99-b677-7da5c1d7df66",
       "status": "OPEN",
       "position": 0,
       "name": "Lidl",
-      "description": "eos eveniet porro",
-      "imageUrl": "https://placeimg.com/200/150/arch?0",
+      "description": "pariatur sit qui",
+      "imageUrl": "https://picsum.photos/200/150?0",
       "location": {
         "latitude": 48.19446661077098,
         "longitude": 11.465429663658142
@@ -580,12 +564,12 @@
       ]
     },
     {
-      "id": "342089a2-44a6-445e-bea1-728bd0bd354b",
+      "id": "c37062f5-196a-4f0b-a734-2089a244a645",
       "status": "OPEN",
       "position": 1,
       "name": "Aldi",
-      "description": "repellendus vel deleniti",
-      "imageUrl": "https://placeimg.com/200/150/arch?1",
+      "description": "ex explicabo dolorem",
+      "imageUrl": "https://picsum.photos/200/150?1",
       "location": {
         "latitude": 48.19283416587666,
         "longitude": 11.466210186481476
@@ -603,12 +587,12 @@
       ]
     },
     {
-      "id": "70634152-3667-44ef-a0b8-1746f280cf0c",
+      "id": "ebea1728-bd0b-4d35-8b70-63415236674e",
       "status": "OPEN",
       "position": 2,
       "name": "Rewe",
-      "description": "accusamus dicta asperiores",
-      "imageUrl": "https://placeimg.com/200/150/arch?2",
+      "description": "ducimus corporis distinctio",
+      "imageUrl": "https://picsum.photos/200/150?2",
       "location": {
         "latitude": 48.19143948391694,
         "longitude": 11.466687619686128
@@ -626,12 +610,12 @@
       ]
     },
     {
-      "id": "171a04e6-4df9-4b84-9fdd-0262ea81b9f1",
+      "id": "fa0b8174-6f28-40cf-8c17-1a04e64df9b8",
       "status": "OPEN",
       "position": 3,
       "name": "Edeka",
-      "description": "nobis adipisci ducimus",
-      "imageUrl": "https://placeimg.com/200/150/arch?3",
+      "description": "impedit quis qui",
+      "imageUrl": "https://picsum.photos/200/150?3",
       "location": {
         "latitude": 48.181761491349825,
         "longitude": 11.476078033447266
@@ -649,12 +633,12 @@
       ]
     },
     {
-      "id": "33efa769-44d7-432c-860e-0aa70d864a39",
+      "id": "4dfdd026-2ea8-41b9-b133-efa76944d732",
       "status": "OPEN",
       "position": 4,
       "name": "Obi",
-      "description": "qui magnam quas",
-      "imageUrl": "https://placeimg.com/200/150/arch?4",
+      "description": "doloribus accusantium quos",
+      "imageUrl": "https://picsum.photos/200/150?4",
       "location": {
         "latitude": 48.18904340320997,
         "longitude": 11.467192545533182
@@ -672,12 +656,12 @@
       ]
     },
     {
-      "id": "9d43762e-2b19-41b8-8c6c-5fe2f2d7bdec",
+      "id": "c860e0aa-70d8-464a-b99d-43762e2b191b",
       "status": "OPEN",
       "position": 5,
       "name": "Bauhaus",
-      "description": "quia delectus doloribus",
-      "imageUrl": "https://placeimg.com/200/150/arch?5",
+      "description": "sapiente laboriosam eos",
+      "imageUrl": "https://picsum.photos/200/150?5",
       "location": {
         "latitude": 48.17845639240512,
         "longitude": 11.505287289619448
@@ -695,12 +679,12 @@
       ]
     },
     {
-      "id": "2882b61b-c520-459a-b2ba-245c666e1161",
+      "id": "84c6c5fe-2f2d-47bd-ac28-82b61bc52059",
       "status": "OPEN",
       "position": 6,
       "name": "Hornbach",
-      "description": "expedita inventore deserunt",
-      "imageUrl": "https://placeimg.com/200/150/arch?6",
+      "description": "eveniet porro repellendus",
+      "imageUrl": "https://picsum.photos/200/150?6",
       "location": {
         "latitude": 48.181761491349825,
         "longitude": 11.476078033447266
@@ -718,12 +702,12 @@
       ]
     },
     {
-      "id": "80b0906d-e897-4fad-9aee-1f83fb0e30fc",
+      "id": "ab2ba245-c666-4e11-a180-b0906de897fa",
       "status": "OPEN",
       "position": 7,
       "name": "Höffner",
-      "description": "quia incidunt distinctio",
-      "imageUrl": "https://placeimg.com/200/150/arch?7",
+      "description": "vel deleniti accusamus",
+      "imageUrl": "https://picsum.photos/200/150?7",
       "location": {
         "latitude": 48.19143948391694,
         "longitude": 11.466687619686128
@@ -741,12 +725,12 @@
       ]
     },
     {
-      "id": "a1ce6972-d02d-4b26-b814-d36ad7c8d374",
+      "id": "ddaee1f8-3fb0-4e30-bca1-ce6972d02db2",
       "status": "OPEN",
       "position": 8,
       "name": "Segmüller",
-      "description": "porro maxime quis",
-      "imageUrl": "https://placeimg.com/200/150/arch?8",
+      "description": "dicta asperiores nobis",
+      "imageUrl": "https://picsum.photos/200/150?8",
       "location": {
         "latitude": 48.19283416587666,
         "longitude": 11.466210186481476
@@ -764,12 +748,12 @@
       ]
     },
     {
-      "id": "bc540d3d-0154-4780-b03a-8181171bdf34",
+      "id": "6f814d36-ad7c-48d3-b4bc-540d3d015478",
       "status": "OPEN",
       "position": 9,
       "name": "XXX Lutz",
-      "description": "a nulla odio",
-      "imageUrl": "https://placeimg.com/200/150/arch?9",
+      "description": "adipisci ducimus qui",
+      "imageUrl": "https://picsum.photos/200/150?9",
       "location": {
         "latitude": 48.19446661077098,
         "longitude": 11.465429663658142
@@ -787,12 +771,12 @@
       ]
     },
     {
-      "id": "71719331-b044-442d-8651-d74ab4bf07f5",
+      "id": "0303a818-1171-4bdf-b471-719331b04442",
       "status": "OPEN",
       "position": 10,
       "name": "Wimmer",
-      "description": "reiciendis voluptatibus consequatur",
-      "imageUrl": "https://placeimg.com/200/150/arch?10",
+      "description": "magnam quas quia",
+      "imageUrl": "https://picsum.photos/200/150?10",
       "location": {
         "latitude": 48.17845639240512,
         "longitude": 11.505287289619448
@@ -812,658 +796,658 @@
   ],
   "products": [
     {
-      "id": "772af7c3-56c1-4aa8-b972-fd0e224cffef",
+      "id": "7baa8707-0cb0-4b1f-8e77-2af7c356c1aa",
       "status": "OPEN",
       "position": 0,
       "name": "Milk",
       "description": "lactose free",
-      "imageUrl": "https://placeimg.com/200/150/tech?0",
+      "imageUrl": "https://picsum.photos/200/150?0",
       "category": {
         "main": "FOODS",
         "sub": "DAIRY"
       },
       "activity": {
-        "date": "Tue Aug 15 2023",
-        "reps": 52
+        "date": "Tue Aug 29 2023",
+        "reps": 64
       },
       "inShop": {
         "category": "SUPERMARKET",
         "name": "Rewe",
         "location": {
-          "latitude": 4000,
-          "longitude": 23900
+          "latitude": 45300,
+          "longitude": 49100
         }
       }
     },
     {
-      "id": "2cf6c183-e1ee-468a-8a65-02a724858fb7",
+      "id": "83972fd0-e224-4cff-af2c-f6c183e1ee68",
       "status": "OPEN",
       "position": 1,
       "name": "Cheese",
       "description": "Cheddar",
-      "imageUrl": "https://placeimg.com/200/150/tech?1",
+      "imageUrl": "https://picsum.photos/200/150?1",
       "category": {
         "main": "FOODS",
         "sub": "DAIRY"
       },
       "activity": {
-        "date": "Mon Aug 14 2023",
-        "reps": 40
+        "date": "Tue Aug 29 2023",
+        "reps": 91
       },
       "inShop": {
         "category": "SUPERMARKET",
         "name": "Rewe",
         "location": {
-          "latitude": 79400,
-          "longitude": 82700
+          "latitude": 51800,
+          "longitude": 15900
         }
       }
     },
     {
-      "id": "4a658f5a-5321-43f5-b19e-073cc7e3765e",
+      "id": "a8a6502a-7248-458f-b74a-658f5a53213f",
       "status": "OPEN",
       "position": 2,
       "name": "Bread",
       "description": "white sliced",
-      "imageUrl": "https://placeimg.com/200/150/tech?2",
+      "imageUrl": "https://picsum.photos/200/150?2",
       "category": {
         "main": "FOODS",
         "sub": "BREKKY"
       },
       "activity": {
-        "date": "Tue Aug 15 2023",
-        "reps": 32
+        "date": "Tue Aug 29 2023",
+        "reps": 50
       },
       "inShop": {
         "category": "BAKERY",
         "name": "Wimmer",
         "location": {
-          "latitude": 59000,
-          "longitude": 48300
+          "latitude": 24100,
+          "longitude": 65700
         }
       }
     },
     {
-      "id": "4f191afd-ce26-434a-bcac-72dfe3b9499f",
+      "id": "5f19e073-cc7e-4376-9e4f-191afdce2634",
       "status": "OPEN",
       "position": 3,
       "name": "Pees",
       "description": "green",
-      "imageUrl": "https://placeimg.com/200/150/tech?3",
+      "imageUrl": "https://picsum.photos/200/150?3",
       "category": {
         "main": "FOODS",
         "sub": "CANNED_FOOD"
       },
       "activity": {
-        "date": "Tue Aug 15 2023",
-        "reps": 2
+        "date": "Tue Aug 29 2023",
+        "reps": 95
       },
       "inShop": {
         "category": "SUPERMARKET",
         "name": "Rewe",
         "location": {
-          "latitude": 43200,
-          "longitude": 30900
+          "latitude": 59500,
+          "longitude": 1500
         }
       }
     },
     {
-      "id": "7af9b8dc-7110-43fc-bc59-55c862cb73d4",
+      "id": "abcac72d-fe3b-4949-9f7a-f9b8dc71103f",
       "status": "OPEN",
       "position": 4,
       "name": "Coffee",
       "description": "espresso 9",
-      "imageUrl": "https://placeimg.com/200/150/tech?4",
+      "imageUrl": "https://picsum.photos/200/150?4",
       "category": {
         "main": "FOODS",
         "sub": "BREKKY"
       },
       "activity": {
-        "date": "Tue Aug 15 2023",
-        "reps": 64
+        "date": "Tue Aug 29 2023",
+        "reps": 28
       },
       "inShop": {
         "category": "SUPERMARKET",
         "name": "Rewe",
         "location": {
-          "latitude": 66800,
-          "longitude": 31500
+          "latitude": 52100,
+          "longitude": 4000
         }
       }
     },
     {
-      "id": "1570764d-f2e6-47c1-8364-77d51c77bd9f",
+      "id": "c7c5955c-862c-4b73-9415-70764df2e67c",
       "status": "OPEN",
       "position": 5,
       "name": "Musli",
       "description": "no fruit",
-      "imageUrl": "https://placeimg.com/200/150/tech?5",
+      "imageUrl": "https://picsum.photos/200/150?5",
       "category": {
         "main": "FOODS",
         "sub": "BREKKY"
       },
       "activity": {
-        "date": "Tue Aug 15 2023",
-        "reps": 20
+        "date": "Tue Aug 29 2023",
+        "reps": 81
       },
       "inShop": {
         "category": "SUPERMARKET",
         "name": "Rewe",
         "location": {
-          "latitude": 70800,
-          "longitude": 29000
+          "latitude": 40400,
+          "longitude": 79400
         }
       }
     },
     {
-      "id": "13b98d9f-94eb-4405-aa1c-b2f58a3a9a93",
+      "id": "1836477d-51c7-47bd-9f13-b98d9f94eb40",
       "status": "OPEN",
       "position": 6,
       "name": "Apples",
       "description": "Granny Smith",
-      "imageUrl": "https://placeimg.com/200/150/tech?6",
+      "imageUrl": "https://picsum.photos/200/150?6",
       "category": {
         "main": "FOODS",
         "sub": "FRUIT_VEGETABLE"
       },
       "activity": {
-        "date": "Mon Aug 14 2023",
-        "reps": 96
+        "date": "Mon Aug 28 2023",
+        "reps": 52
       },
       "inShop": {
         "category": "SUPERMARKET",
         "name": "Aldi",
         "location": {
-          "latitude": 99300,
-          "longitude": 8600
+          "latitude": 32600,
+          "longitude": 59000
         }
       }
     },
     {
-      "id": "af2deb97-08a9-4330-88dd-bd215a4b54cf",
+      "id": "5ea1cb2f-58a3-4a9a-93af-2deb9708a933",
       "status": "OPEN",
       "position": 7,
       "name": "Beer",
       "description": "Tegernseer",
-      "imageUrl": "https://placeimg.com/200/150/tech?7",
+      "imageUrl": "https://picsum.photos/200/150?7",
       "category": {
         "main": "FOODS",
         "sub": "BEVERAGES"
       },
       "activity": {
-        "date": "Tue Aug 15 2023",
-        "reps": 46
+        "date": "Tue Aug 29 2023",
+        "reps": 64
       },
       "inShop": {
         "category": "SUPERMARKET",
         "name": "Aldi",
         "location": {
-          "latitude": 27800,
-          "longitude": 5800
+          "latitude": 2400,
+          "longitude": 43200
         }
       }
     },
     {
-      "id": "f401784b-83c5-4e95-aeb2-38468dcf9080",
+      "id": "088ddbd2-15a4-4b54-8ff4-01784b83c5e9",
       "status": "OPEN",
       "position": 8,
       "name": "Oranges",
       "description": "Sunny Vale",
-      "imageUrl": "https://placeimg.com/200/150/tech?8",
+      "imageUrl": "https://picsum.photos/200/150?8",
       "category": {
         "main": "FOODS",
         "sub": "FRUIT_VEGETABLE"
       },
       "activity": {
-        "date": "Tue Aug 15 2023",
-        "reps": 54
+        "date": "Tue Aug 29 2023",
+        "reps": 38
       },
       "inShop": {
         "category": "SUPERMARKET",
         "name": "Lidl",
         "location": {
-          "latitude": 31400,
-          "longitude": 14600
+          "latitude": 64000,
+          "longitude": 66800
         }
       }
     },
     {
-      "id": "97c58aea-fde3-4c53-8624-4a55cc319cd9",
+      "id": "5eeb2384-68dc-4f90-8097-c58aeafde3c5",
       "status": "OPEN",
       "position": 9,
       "name": "Nails",
       "description": "100 x",
-      "imageUrl": "https://placeimg.com/200/150/tech?9",
+      "imageUrl": "https://picsum.photos/200/150?9",
       "category": {
         "main": "HARDWARE",
         "sub": "DIY"
       },
       "activity": {
-        "date": "Mon Aug 14 2023",
-        "reps": 64
+        "date": "Tue Aug 29 2023",
+        "reps": 33
       },
       "inShop": {
         "category": "HARDWARE",
         "name": "Bauhaus",
         "location": {
-          "latitude": 92000,
-          "longitude": 26400
+          "latitude": 20600,
+          "longitude": 70800
         }
       }
     },
     {
-      "id": "dd9619f8-afac-4688-ace0-38a0e73f35dd",
+      "id": "386244a5-5cc3-419c-99dd-9619f8afac68",
       "status": "OPEN",
       "position": 10,
       "name": "Light Bulb",
       "description": "60 W",
-      "imageUrl": "https://placeimg.com/200/150/tech?10",
+      "imageUrl": "https://picsum.photos/200/150?10",
       "category": {
         "main": "HARDWARE",
         "sub": "DIY"
       },
       "activity": {
-        "date": "Mon Aug 14 2023",
-        "reps": 69
+        "date": "Tue Aug 29 2023",
+        "reps": 99
       },
       "inShop": {
         "category": "HARDWARE",
         "name": "Bauhaus",
         "location": {
-          "latitude": 74200,
-          "longitude": 34700
+          "latitude": 95500,
+          "longitude": 99300
         }
       }
     },
     {
-      "id": "d25f4925-f2d1-4ec8-8140-95cebf0df216",
+      "id": "82ce038a-0e73-4f35-9dd2-5f4925f2d1ec",
       "status": "OPEN",
       "position": 11,
       "name": "Hammer",
       "description": "rubber",
-      "imageUrl": "https://placeimg.com/200/150/tech?11",
+      "imageUrl": "https://picsum.photos/200/150?11",
       "category": {
         "main": "HARDWARE",
         "sub": "TOOLS"
       },
       "activity": {
-        "date": "Tue Aug 15 2023",
-        "reps": 0
+        "date": "Tue Aug 29 2023",
+        "reps": 37
       },
       "inShop": {
         "category": "HARDWARE",
         "name": "Hornbach",
         "location": {
-          "latitude": 7000,
-          "longitude": 29500
+          "latitude": 46300,
+          "longitude": 27800
         }
       }
     },
     {
-      "id": "f3133aa7-9551-478f-9968-4d6b8807dde3",
+      "id": "8014095c-ebf0-4df2-96f3-133aa7955178",
       "status": "OPEN",
       "position": 12,
       "name": "Ladder",
       "description": "foldable",
-      "imageUrl": "https://placeimg.com/200/150/tech?12",
+      "imageUrl": "https://picsum.photos/200/150?12",
       "category": {
         "main": "HARDWARE",
         "sub": "TOOLS"
       },
       "activity": {
-        "date": "Mon Aug 14 2023",
-        "reps": 8
+        "date": "Tue Aug 29 2023",
+        "reps": 55
       },
       "inShop": {
         "category": "HARDWARE",
         "name": "Obi",
         "location": {
-          "latitude": 54500,
-          "longitude": 49500
+          "latitude": 53900,
+          "longitude": 31400
         }
       }
     },
     {
-      "id": "8345fc61-b0b5-46e3-afc1-6793541dc561",
+      "id": "f59684d6-b880-47dd-a383-45fc61b0b56e",
       "status": "OPEN",
       "position": 13,
       "name": "Wood",
       "description": "Planks",
-      "imageUrl": "https://placeimg.com/200/150/tech?13",
+      "imageUrl": "https://picsum.photos/200/150?13",
       "category": {
         "main": "HARDWARE",
         "sub": "DIY"
       },
       "activity": {
-        "date": "Tue Aug 15 2023",
-        "reps": 29
+        "date": "Tue Aug 29 2023",
+        "reps": 83
       },
       "inShop": {
         "category": "HARDWARE",
         "name": "Obi",
         "location": {
-          "latitude": 65700,
-          "longitude": 64000
+          "latitude": 63400,
+          "longitude": 92000
         }
       }
     },
     {
-      "id": "63ad5f74-bac1-4fb0-afe2-4ef68459a03f",
+      "id": "36fc1679-3541-4dc5-a163-ad5f74bac1fb",
       "status": "OPEN",
       "position": 14,
       "name": "Paper",
       "description": "A4",
-      "imageUrl": "https://placeimg.com/200/150/tech?14",
+      "imageUrl": "https://picsum.photos/200/150?14",
       "category": {
         "main": "SUPPLIES",
         "sub": "OFFICE"
       },
       "activity": {
-        "date": "Tue Aug 15 2023",
-        "reps": 50
+        "date": "Tue Aug 29 2023",
+        "reps": 71
       },
       "inShop": {
         "category": "SUPPLIES",
         "name": "Kaufhof",
         "location": {
-          "latitude": 900,
-          "longitude": 3600
+          "latitude": 69100,
+          "longitude": 74200
         }
       }
     },
     {
-      "id": "303bf979-ca76-4969-affa-33b043f776bc",
+      "id": "06fe24ef-6845-49a0-bf30-3bf979ca7696",
       "status": "OPEN",
       "position": 15,
       "name": "Stapler",
       "description": "large",
-      "imageUrl": "https://placeimg.com/200/150/tech?15",
+      "imageUrl": "https://picsum.photos/200/150?15",
       "category": {
         "main": "SUPPLIES",
         "sub": "OFFICE"
       },
       "activity": {
-        "date": "Tue Aug 15 2023",
-        "reps": 32
+        "date": "Tue Aug 29 2023",
+        "reps": 41
       },
       "inShop": {
         "category": "SUPPLIES",
         "name": "Kaufhof",
         "location": {
-          "latitude": 19800,
-          "longitude": 48900
+          "latitude": 400,
+          "longitude": 7000
         }
       }
     },
     {
-      "id": "3cd16f88-d9d6-48a9-9ca4-f7b6d409a2a5",
+      "id": "9effa33b-043f-4776-bc3c-d16f88d9d68a",
       "status": "OPEN",
       "position": 16,
       "name": "Pen",
       "description": "blue",
-      "imageUrl": "https://placeimg.com/200/150/tech?16",
+      "imageUrl": "https://picsum.photos/200/150?16",
       "category": {
         "main": "SUPPLIES",
         "sub": "OFFICE"
       },
       "activity": {
-        "date": "Tue Aug 15 2023",
-        "reps": 57
+        "date": "Tue Aug 29 2023",
+        "reps": 85
       },
       "inShop": {
         "category": "SUPPLIES",
         "name": "Kaufhof",
         "location": {
-          "latitude": 70500,
-          "longitude": 10400
+          "latitude": 8100,
+          "longitude": 54500
         }
       }
     },
     {
-      "id": "1cdd9a1e-9073-43e0-95e9-55246c9c9b61",
+      "id": "9dca4f7b-6d40-49a2-a51c-dd9a1e90733e",
       "status": "OPEN",
       "position": 17,
       "name": "Stamp",
       "description": "60 p",
-      "imageUrl": "https://placeimg.com/200/150/tech?17",
+      "imageUrl": "https://picsum.photos/200/150?17",
       "category": {
         "main": "SUPPLIES",
         "sub": "POSTAL"
       },
       "activity": {
-        "date": "Mon Aug 14 2023",
-        "reps": 65
+        "date": "Tue Aug 29 2023",
+        "reps": 62
       },
       "inShop": {
         "category": "SUPPLIES",
         "name": "Kaufhof",
         "location": {
-          "latitude": 86700,
-          "longitude": 34400
+          "latitude": 28900,
+          "longitude": 65700
         }
       }
     },
     {
-      "id": "f808eb6e-d526-45bf-a989-5e312d1e19de",
+      "id": "095e9552-46c9-4c9b-a1f8-08eb6ed5265b",
       "status": "OPEN",
       "position": 18,
       "name": "Envelope",
       "description": "100 x",
-      "imageUrl": "https://placeimg.com/200/150/tech?18",
+      "imageUrl": "https://picsum.photos/200/150?18",
       "category": {
         "main": "SUPPLIES",
         "sub": "POSTAL"
       },
       "activity": {
-        "date": "Tue Aug 15 2023",
-        "reps": 18
+        "date": "Tue Aug 29 2023",
+        "reps": 56
       },
       "inShop": {
         "category": "SUPPLIES",
         "name": "Kaufhof",
         "location": {
-          "latitude": 47700,
-          "longitude": 80600
+          "latitude": 50000,
+          "longitude": 900
         }
       }
     },
     {
-      "id": "6b03ef3c-4d31-4f11-ab9e-6a2d732a1bd7",
+      "id": "fa9895e3-12d1-4e19-9e6b-03ef3c4d31f1",
       "status": "OPEN",
       "position": 19,
       "name": "Suit",
       "description": "blue",
-      "imageUrl": "https://placeimg.com/200/150/tech?19",
+      "imageUrl": "https://picsum.photos/200/150?19",
       "category": {
         "main": "CLOTHING",
         "sub": "BUSINESS"
       },
       "activity": {
-        "date": "Tue Aug 15 2023",
-        "reps": 6
+        "date": "Tue Aug 29 2023",
+        "reps": 22
       },
       "inShop": {
         "category": "CLOTHING",
         "name": "Zara",
         "location": {
-          "latitude": 7300,
-          "longitude": 93000
+          "latitude": 31800,
+          "longitude": 19800
         }
       }
     },
     {
-      "id": "8d5bbefc-0837-4572-8c8d-6625167205f3",
+      "id": "1ab9e6a2-d732-4a1b-978d-5bbefc083757",
       "status": "OPEN",
       "position": 20,
       "name": "Shirt",
       "description": "white",
-      "imageUrl": "https://placeimg.com/200/150/tech?20",
+      "imageUrl": "https://picsum.photos/200/150?20",
       "category": {
         "main": "CLOTHING",
         "sub": "BUSINESS"
       },
       "activity": {
-        "date": "Tue Aug 15 2023",
-        "reps": 71
+        "date": "Tue Aug 29 2023",
+        "reps": 44
       },
       "inShop": {
         "category": "CLOTHING",
         "name": "Zara",
         "location": {
-          "latitude": 37600,
-          "longitude": 47600
+          "latitude": 57200,
+          "longitude": 70500
         }
       }
     },
     {
-      "id": "646b0e64-0d01-45ad-a7e0-d2dbabfc35a5",
+      "id": "20c8d662-5167-4205-b364-6b0e640d015a",
       "status": "OPEN",
       "position": 21,
       "name": "T-Shirt",
       "description": "XXL",
-      "imageUrl": "https://placeimg.com/200/150/tech?21",
+      "imageUrl": "https://picsum.photos/200/150?21",
       "category": {
         "main": "CLOTHING",
         "sub": "LEISURE"
       },
       "activity": {
-        "date": "Tue Aug 15 2023",
-        "reps": 1
+        "date": "Tue Aug 29 2023",
+        "reps": 81
       },
       "inShop": {
         "category": "CLOTHING",
         "name": "Zara",
         "location": {
-          "latitude": 61200,
-          "longitude": 39000
+          "latitude": 65000,
+          "longitude": 86700
         }
       }
     },
     {
-      "id": "7cb66b89-f571-4513-ac78-fd5a3e5157a7",
+      "id": "de7e0d2d-babf-4c35-a57c-b66b89f57151",
       "status": "OPEN",
       "position": 22,
       "name": "Shorts",
       "description": "swimming",
-      "imageUrl": "https://placeimg.com/200/150/tech?22",
+      "imageUrl": "https://picsum.photos/200/150?22",
       "category": {
         "main": "CLOTHING",
         "sub": "LEISURE"
       },
       "activity": {
-        "date": "Mon Aug 14 2023",
-        "reps": 65
+        "date": "Tue Aug 29 2023",
+        "reps": 42
       },
       "inShop": {
         "category": "CLOTHING",
         "name": "Kaufhof",
         "location": {
-          "latitude": 81000,
-          "longitude": 85900
+          "latitude": 18300,
+          "longitude": 47700
         }
       }
     },
     {
-      "id": "0dc56e68-7374-47d5-a776-e82983a8f900",
+      "id": "3ec78fd5-a3e5-4157-a70d-c56e6873747d",
       "status": "OPEN",
       "position": 23,
       "name": "Boots",
       "description": "black",
-      "imageUrl": "https://placeimg.com/200/150/tech?23",
+      "imageUrl": "https://picsum.photos/200/150?23",
       "category": {
         "main": "CLOTHING",
         "sub": "SHOES"
       },
       "activity": {
-        "date": "Tue Aug 15 2023",
-        "reps": 62
+        "date": "Mon Aug 28 2023",
+        "reps": 40
       },
       "inShop": {
         "category": "CLOTHING",
         "name": "Salamander",
         "location": {
-          "latitude": 73000,
-          "longitude": 39800
+          "latitude": 6800,
+          "longitude": 7300
         }
       }
     }
   ],
   "lists": [
     {
-      "id": "4f55270e-2c03-4c1b-90ba-d368727b595e",
+      "id": "ffa0953a-bb4f-4d7f-b04f-55270e2c03c1",
       "status": "OPEN",
       "position": 0,
       "name": "Groceries",
-      "description": "vitae omnis aut",
+      "description": "minima quis aut",
       "items": [
         {
-          "id": "13b98d9f-94eb-4405-aa1c-b2f58a3a9a93",
+          "id": "088ddbd2-15a4-4b54-8ff4-01784b83c5e9",
           "status": "OPEN",
           "listPosition": 0,
           "mainCategory": "FOODS"
         },
         {
-          "id": "1570764d-f2e6-47c1-8364-77d51c77bd9f",
+          "id": "095e9552-46c9-4c9b-a1f8-08eb6ed5265b",
           "status": "OPEN",
           "listPosition": 1,
-          "mainCategory": "FOODS"
+          "mainCategory": "SUPPLIES"
         },
         {
-          "id": "1cdd9a1e-9073-43e0-95e9-55246c9c9b61",
+          "id": "1836477d-51c7-47bd-9f13-b98d9f94eb40",
           "status": "DONE",
           "listPosition": 2,
-          "mainCategory": "SUPPLIES"
-        },
-        {
-          "id": "2cf6c183-e1ee-468a-8a65-02a724858fb7",
-          "status": "DONE",
-          "listPosition": 3,
           "mainCategory": "FOODS"
         },
         {
-          "id": "63ad5f74-bac1-4fb0-afe2-4ef68459a03f",
-          "status": "OPEN",
-          "listPosition": 4,
-          "mainCategory": "SUPPLIES"
-        },
-        {
-          "id": "6b03ef3c-4d31-4f11-ab9e-6a2d732a1bd7",
-          "status": "OPEN",
-          "listPosition": 5,
+          "id": "1ab9e6a2-d732-4a1b-978d-5bbefc083757",
+          "status": "DONE",
+          "listPosition": 3,
           "mainCategory": "CLOTHING"
         },
         {
-          "id": "772af7c3-56c1-4aa8-b972-fd0e224cffef",
+          "id": "20c8d662-5167-4205-b364-6b0e640d015a",
+          "status": "DONE",
+          "listPosition": 4,
+          "mainCategory": "CLOTHING"
+        },
+        {
+          "id": "386244a5-5cc3-419c-99dd-9619f8afac68",
           "status": "IN_PROGRESS",
+          "listPosition": 5,
+          "mainCategory": "HARDWARE"
+        },
+        {
+          "id": "5ea1cb2f-58a3-4a9a-93af-2deb9708a933",
+          "status": "DONE",
           "listPosition": 6,
           "mainCategory": "FOODS"
         },
         {
-          "id": "7cb66b89-f571-4513-ac78-fd5a3e5157a7",
-          "status": "IN_PROGRESS",
+          "id": "5f19e073-cc7e-4376-9e4f-191afdce2634",
+          "status": "DONE",
           "listPosition": 7,
-          "mainCategory": "CLOTHING"
+          "mainCategory": "FOODS"
         },
         {
-          "id": "8345fc61-b0b5-46e3-afc1-6793541dc561",
-          "status": "DONE",
-          "listPosition": 8,
-          "mainCategory": "HARDWARE"
-        },
-        {
-          "id": "8d5bbefc-0837-4572-8c8d-6625167205f3",
-          "status": "DONE",
-          "listPosition": 9,
-          "mainCategory": "CLOTHING"
-        },
-        {
-          "id": "97c58aea-fde3-4c53-8624-4a55cc319cd9",
+          "id": "7baa8707-0cb0-4b1f-8e77-2af7c356c1aa",
           "status": "OPEN",
-          "listPosition": 10,
+          "listPosition": 8,
+          "mainCategory": "FOODS"
+        },
+        {
+          "id": "82ce038a-0e73-4f35-9dd2-5f4925f2d1ec",
+          "status": "IN_PROGRESS",
+          "listPosition": 9,
           "mainCategory": "HARDWARE"
         },
         {
-          "id": "dd9619f8-afac-4688-ace0-38a0e73f35dd",
+          "id": "83972fd0-e224-4cff-af2c-f6c183e1ee68",
+          "status": "IN_PROGRESS",
+          "listPosition": 10,
+          "mainCategory": "FOODS"
+        },
+        {
+          "id": "f59684d6-b880-47dd-a383-45fc61b0b56e",
           "status": "OPEN",
           "listPosition": 11,
           "mainCategory": "HARDWARE"
@@ -1471,126 +1455,9 @@
       ],
       "groups": [
         {
-          "id": "0cf5e4e6-69b9-4326-9db2-ced7f6c4cee8",
+          "id": "890f8e03-20cf-45e4-a669-b93261db2ced",
           "status": "OPEN",
           "listPosition": 0
-        },
-        {
-          "id": "a0318b8e-bf5f-4c7a-a038-bd299248dc61",
-          "status": "DONE",
-          "listPosition": 1
-        },
-        {
-          "id": "ed567a9f-0310-4a02-bee6-77698dd7a336",
-          "status": "IN_PROGRESS",
-          "listPosition": 2
-        }
-      ],
-      "lifecycle": {
-        "status": "IN_PROGRESS",
-        "completion": 33
-      }
-    },
-    {
-      "id": "bccad6de-c85a-4b3f-8eaf-601993e35d6c",
-      "status": "OPEN",
-      "position": 1,
-      "name": "Xmas party",
-      "description": "tenetur nulla nemo",
-      "items": [
-        {
-          "id": "0dc56e68-7374-47d5-a776-e82983a8f900",
-          "status": "OPEN",
-          "listPosition": 0,
-          "mainCategory": "CLOTHING"
-        },
-        {
-          "id": "13b98d9f-94eb-4405-aa1c-b2f58a3a9a93",
-          "status": "OPEN",
-          "listPosition": 1,
-          "mainCategory": "FOODS"
-        },
-        {
-          "id": "1cdd9a1e-9073-43e0-95e9-55246c9c9b61",
-          "status": "OPEN",
-          "listPosition": 2,
-          "mainCategory": "SUPPLIES"
-        },
-        {
-          "id": "303bf979-ca76-4969-affa-33b043f776bc",
-          "status": "DONE",
-          "listPosition": 3,
-          "mainCategory": "SUPPLIES"
-        },
-        {
-          "id": "3cd16f88-d9d6-48a9-9ca4-f7b6d409a2a5",
-          "status": "DONE",
-          "listPosition": 4,
-          "mainCategory": "SUPPLIES"
-        },
-        {
-          "id": "4f191afd-ce26-434a-bcac-72dfe3b9499f",
-          "status": "OPEN",
-          "listPosition": 5,
-          "mainCategory": "FOODS"
-        },
-        {
-          "id": "6b03ef3c-4d31-4f11-ab9e-6a2d732a1bd7",
-          "status": "IN_PROGRESS",
-          "listPosition": 6,
-          "mainCategory": "CLOTHING"
-        },
-        {
-          "id": "772af7c3-56c1-4aa8-b972-fd0e224cffef",
-          "status": "DONE",
-          "listPosition": 7,
-          "mainCategory": "FOODS"
-        },
-        {
-          "id": "8345fc61-b0b5-46e3-afc1-6793541dc561",
-          "status": "IN_PROGRESS",
-          "listPosition": 8,
-          "mainCategory": "HARDWARE"
-        },
-        {
-          "id": "d25f4925-f2d1-4ec8-8140-95cebf0df216",
-          "status": "DONE",
-          "listPosition": 9,
-          "mainCategory": "HARDWARE"
-        },
-        {
-          "id": "dd9619f8-afac-4688-ace0-38a0e73f35dd",
-          "status": "OPEN",
-          "listPosition": 10,
-          "mainCategory": "HARDWARE"
-        },
-        {
-          "id": "f401784b-83c5-4e95-aeb2-38468dcf9080",
-          "status": "DONE",
-          "listPosition": 11,
-          "mainCategory": "FOODS"
-        }
-      ],
-      "groups": [
-        {
-          "id": "19f34b65-a49f-4e0f-a805-c93511a0bea8",
-          "status": "OPEN",
-          "listPosition": 0
-        },
-        {
-          "id": "3ccb79db-0b00-408b-8b3a-7e6d6b198a7b",
-          "status": "OPEN",
-          "listPosition": 1
-        },
-        {
-          "id": "9863fc1d-315a-4274-acc8-50efd9d0ea66",
-          "status": "OPEN",
-          "listPosition": 2
-        },
-        {
-          "id": "a0318b8e-bf5f-4c7a-a038-bd299248dc61",
-          "status": "OPEN",
-          "listPosition": 3
         }
       ],
       "lifecycle": {
@@ -1599,200 +1466,233 @@
       }
     },
     {
-      "id": "d5a8d330-9e6b-4c87-8667-68212e279a11",
+      "id": "bd0bad36-8727-4b59-9ebc-cad6dec85ab3",
+      "status": "OPEN",
+      "position": 1,
+      "name": "Xmas party",
+      "description": "eos sunt voluptatem",
+      "items": [
+        {
+          "id": "5ea1cb2f-58a3-4a9a-93af-2deb9708a933",
+          "status": "DONE",
+          "listPosition": 0,
+          "mainCategory": "FOODS"
+        },
+        {
+          "id": "5f19e073-cc7e-4376-9e4f-191afdce2634",
+          "status": "OPEN",
+          "listPosition": 1,
+          "mainCategory": "FOODS"
+        },
+        {
+          "id": "9effa33b-043f-4776-bc3c-d16f88d9d68a",
+          "status": "OPEN",
+          "listPosition": 2,
+          "mainCategory": "SUPPLIES"
+        }
+      ],
+      "groups": [
+        {
+          "id": "01e9dc42-851f-41ed-967a-9f0310a02bee",
+          "status": "OPEN",
+          "listPosition": 0
+        },
+        {
+          "id": "efd9d0ea-6642-4b90-b0a0-318b8ebf5fc7",
+          "status": "OPEN",
+          "listPosition": 1
+        },
+        {
+          "id": "f56de9ac-d5d2-4fab-bccb-79db0b0008bc",
+          "status": "OPEN",
+          "listPosition": 2
+        }
+      ],
+      "lifecycle": {
+        "status": "OPEN",
+        "completion": 33
+      }
+    },
+    {
+      "id": "f8eaf601-993e-435d-acd5-a8d3309e6bc8",
       "status": "OPEN",
       "position": 2,
       "name": "After work event",
-      "description": "consequatur fugit rerum",
+      "description": "laudantium cumque nostrum",
       "items": [
         {
-          "id": "1570764d-f2e6-47c1-8364-77d51c77bd9f",
-          "status": "DONE",
+          "id": "06fe24ef-6845-49a0-bf30-3bf979ca7696",
+          "status": "OPEN",
           "listPosition": 0,
-          "mainCategory": "FOODS"
-        },
-        {
-          "id": "303bf979-ca76-4969-affa-33b043f776bc",
-          "status": "IN_PROGRESS",
-          "listPosition": 1,
           "mainCategory": "SUPPLIES"
         },
         {
-          "id": "646b0e64-0d01-45ad-a7e0-d2dbabfc35a5",
+          "id": "1836477d-51c7-47bd-9f13-b98d9f94eb40",
           "status": "IN_PROGRESS",
+          "listPosition": 1,
+          "mainCategory": "FOODS"
+        },
+        {
+          "id": "1ab9e6a2-d732-4a1b-978d-5bbefc083757",
+          "status": "DONE",
           "listPosition": 2,
           "mainCategory": "CLOTHING"
         },
         {
-          "id": "6b03ef3c-4d31-4f11-ab9e-6a2d732a1bd7",
+          "id": "386244a5-5cc3-419c-99dd-9619f8afac68",
           "status": "DONE",
           "listPosition": 3,
+          "mainCategory": "HARDWARE"
+        },
+        {
+          "id": "3ec78fd5-a3e5-4157-a70d-c56e6873747d",
+          "status": "IN_PROGRESS",
+          "listPosition": 4,
           "mainCategory": "CLOTHING"
         },
         {
-          "id": "772af7c3-56c1-4aa8-b972-fd0e224cffef",
+          "id": "5ea1cb2f-58a3-4a9a-93af-2deb9708a933",
           "status": "DONE",
-          "listPosition": 4,
+          "listPosition": 5,
           "mainCategory": "FOODS"
         },
         {
-          "id": "97c58aea-fde3-4c53-8624-4a55cc319cd9",
-          "status": "DONE",
-          "listPosition": 5,
+          "id": "5eeb2384-68dc-4f90-8097-c58aeafde3c5",
+          "status": "IN_PROGRESS",
+          "listPosition": 6,
           "mainCategory": "HARDWARE"
+        },
+        {
+          "id": "5f19e073-cc7e-4376-9e4f-191afdce2634",
+          "status": "DONE",
+          "listPosition": 7,
+          "mainCategory": "FOODS"
+        },
+        {
+          "id": "82ce038a-0e73-4f35-9dd2-5f4925f2d1ec",
+          "status": "IN_PROGRESS",
+          "listPosition": 8,
+          "mainCategory": "HARDWARE"
+        },
+        {
+          "id": "de7e0d2d-babf-4c35-a57c-b66b89f57151",
+          "status": "OPEN",
+          "listPosition": 9,
+          "mainCategory": "CLOTHING"
+        },
+        {
+          "id": "f59684d6-b880-47dd-a383-45fc61b0b56e",
+          "status": "OPEN",
+          "listPosition": 10,
+          "mainCategory": "HARDWARE"
+        },
+        {
+          "id": "fa9895e3-12d1-4e19-9e6b-03ef3c4d31f1",
+          "status": "OPEN",
+          "listPosition": 11,
+          "mainCategory": "CLOTHING"
         }
       ],
       "groups": [
         {
-          "id": "19f34b65-a49f-4e0f-a805-c93511a0bea8",
-          "status": "IN_PROGRESS",
-          "listPosition": 0
-        },
-        {
-          "id": "a0318b8e-bf5f-4c7a-a038-bd299248dc61",
-          "status": "OPEN",
-          "listPosition": 1
-        },
-        {
-          "id": "ed567a9f-0310-4a02-bee6-77698dd7a336",
+          "id": "248dc614-de25-4856-833a-e0ec585e28d0",
           "status": "DONE",
-          "listPosition": 2
+          "listPosition": 0
         }
       ],
       "lifecycle": {
         "status": "IN_PROGRESS",
-        "completion": 83
+        "completion": 33
       }
     },
     {
-      "id": "33f331ce-9564-4922-973f-3603ce398ba8",
+      "id": "70667682-12e2-479a-9133-f331ce956492",
       "status": "OPEN",
       "position": 3,
       "name": "Road trip",
-      "description": "qui ullam rerum",
+      "description": "ut qui at",
       "items": [
         {
-          "id": "1570764d-f2e6-47c1-8364-77d51c77bd9f",
+          "id": "088ddbd2-15a4-4b54-8ff4-01784b83c5e9",
           "status": "IN_PROGRESS",
           "listPosition": 0,
           "mainCategory": "FOODS"
         },
         {
-          "id": "2cf6c183-e1ee-468a-8a65-02a724858fb7",
+          "id": "095e9552-46c9-4c9b-a1f8-08eb6ed5265b",
           "status": "OPEN",
           "listPosition": 1,
-          "mainCategory": "FOODS"
-        },
-        {
-          "id": "3cd16f88-d9d6-48a9-9ca4-f7b6d409a2a5",
-          "status": "DONE",
-          "listPosition": 2,
           "mainCategory": "SUPPLIES"
         },
         {
-          "id": "63ad5f74-bac1-4fb0-afe2-4ef68459a03f",
+          "id": "20c8d662-5167-4205-b364-6b0e640d015a",
           "status": "DONE",
+          "listPosition": 2,
+          "mainCategory": "CLOTHING"
+        },
+        {
+          "id": "36fc1679-3541-4dc5-a163-ad5f74bac1fb",
+          "status": "OPEN",
           "listPosition": 3,
           "mainCategory": "SUPPLIES"
         },
         {
-          "id": "646b0e64-0d01-45ad-a7e0-d2dbabfc35a5",
-          "status": "DONE",
+          "id": "5ea1cb2f-58a3-4a9a-93af-2deb9708a933",
+          "status": "IN_PROGRESS",
           "listPosition": 4,
-          "mainCategory": "CLOTHING"
+          "mainCategory": "FOODS"
         },
         {
-          "id": "6b03ef3c-4d31-4f11-ab9e-6a2d732a1bd7",
+          "id": "7baa8707-0cb0-4b1f-8e77-2af7c356c1aa",
           "status": "DONE",
           "listPosition": 5,
-          "mainCategory": "CLOTHING"
+          "mainCategory": "FOODS"
         },
         {
-          "id": "7af9b8dc-7110-43fc-bc59-55c862cb73d4",
+          "id": "8014095c-ebf0-4df2-96f3-133aa7955178",
           "status": "DONE",
           "listPosition": 6,
-          "mainCategory": "FOODS"
+          "mainCategory": "HARDWARE"
         },
         {
-          "id": "97c58aea-fde3-4c53-8624-4a55cc319cd9",
+          "id": "83972fd0-e224-4cff-af2c-f6c183e1ee68",
           "status": "DONE",
           "listPosition": 7,
-          "mainCategory": "HARDWARE"
+          "mainCategory": "FOODS"
         },
         {
-          "id": "af2deb97-08a9-4330-88dd-bd215a4b54cf",
+          "id": "9dca4f7b-6d40-49a2-a51c-dd9a1e90733e",
           "status": "DONE",
           "listPosition": 8,
-          "mainCategory": "FOODS"
+          "mainCategory": "SUPPLIES"
         },
         {
-          "id": "d25f4925-f2d1-4ec8-8140-95cebf0df216",
+          "id": "9effa33b-043f-4776-bc3c-d16f88d9d68a",
           "status": "IN_PROGRESS",
           "listPosition": 9,
-          "mainCategory": "HARDWARE"
+          "mainCategory": "SUPPLIES"
         },
         {
-          "id": "f401784b-83c5-4e95-aeb2-38468dcf9080",
-          "status": "IN_PROGRESS",
+          "id": "a8a6502a-7248-458f-b74a-658f5a53213f",
+          "status": "DONE",
           "listPosition": 10,
           "mainCategory": "FOODS"
-        }
-      ],
-      "groups": [
-        {
-          "id": "0cf5e4e6-69b9-4326-9db2-ced7f6c4cee8",
-          "status": "OPEN",
-          "listPosition": 0
         },
         {
-          "id": "19f34b65-a49f-4e0f-a805-c93511a0bea8",
+          "id": "de7e0d2d-babf-4c35-a57c-b66b89f57151",
           "status": "DONE",
-          "listPosition": 1
-        },
-        {
-          "id": "a0318b8e-bf5f-4c7a-a038-bd299248dc61",
-          "status": "OPEN",
-          "listPosition": 2
-        },
-        {
-          "id": "e0ec585e-28d0-442c-8478-7d5d4ef56de9",
-          "status": "OPEN",
-          "listPosition": 3
-        }
-      ],
-      "lifecycle": {
-        "status": "IN_PROGRESS",
-        "completion": 73
-      }
-    },
-    {
-      "id": "105cdf5b-8ccd-4ff4-8174-872e7045d958",
-      "status": "OPEN",
-      "position": 4,
-      "name": "Redecoration",
-      "description": "numquam dolores quia",
-      "items": [
-        {
-          "id": "7cb66b89-f571-4513-ac78-fd5a3e5157a7",
-          "status": "DONE",
-          "listPosition": 0,
+          "listPosition": 11,
           "mainCategory": "CLOTHING"
-        },
-        {
-          "id": "d25f4925-f2d1-4ec8-8140-95cebf0df216",
-          "status": "IN_PROGRESS",
-          "listPosition": 1,
-          "mainCategory": "HARDWARE"
         }
       ],
       "groups": [
         {
-          "id": "3ccb79db-0b00-408b-8b3a-7e6d6b198a7b",
-          "status": "IN_PROGRESS",
+          "id": "01e9dc42-851f-41ed-967a-9f0310a02bee",
+          "status": "DONE",
           "listPosition": 0
         },
         {
-          "id": "a0318b8e-bf5f-4c7a-a038-bd299248dc61",
+          "id": "32c219f3-4b65-4a49-be0f-a805c93511a0",
           "status": "IN_PROGRESS",
           "listPosition": 1
         },
@@ -1802,14 +1702,115 @@
           "listPosition": 2
         },
         {
-          "id": "e0ec585e-28d0-442c-8478-7d5d4ef56de9",
-          "status": "OPEN",
+          "id": "efd9d0ea-6642-4b90-b0a0-318b8ebf5fc7",
+          "status": "DONE",
           "listPosition": 3
+        },
+        {
+          "id": "f4d5c9a7-ce46-4b72-9863-fc1d315a274e",
+          "status": "DONE",
+          "listPosition": 4
         }
       ],
       "lifecycle": {
-        "status": "DONE",
-        "completion": 100
+        "status": "IN_PROGRESS",
+        "completion": 58
+      }
+    },
+    {
+      "id": "2d73f360-3ce3-498b-a810-5cdf5b8ccdff",
+      "status": "OPEN",
+      "position": 4,
+      "name": "Redecoration",
+      "description": "id tempora beatae",
+      "items": [
+        {
+          "id": "088ddbd2-15a4-4b54-8ff4-01784b83c5e9",
+          "status": "OPEN",
+          "listPosition": 0,
+          "mainCategory": "FOODS"
+        },
+        {
+          "id": "20c8d662-5167-4205-b364-6b0e640d015a",
+          "status": "DONE",
+          "listPosition": 1,
+          "mainCategory": "CLOTHING"
+        },
+        {
+          "id": "5ea1cb2f-58a3-4a9a-93af-2deb9708a933",
+          "status": "DONE",
+          "listPosition": 2,
+          "mainCategory": "FOODS"
+        },
+        {
+          "id": "5eeb2384-68dc-4f90-8097-c58aeafde3c5",
+          "status": "DONE",
+          "listPosition": 3,
+          "mainCategory": "HARDWARE"
+        },
+        {
+          "id": "82ce038a-0e73-4f35-9dd2-5f4925f2d1ec",
+          "status": "DONE",
+          "listPosition": 4,
+          "mainCategory": "HARDWARE"
+        },
+        {
+          "id": "83972fd0-e224-4cff-af2c-f6c183e1ee68",
+          "status": "DONE",
+          "listPosition": 5,
+          "mainCategory": "FOODS"
+        },
+        {
+          "id": "9effa33b-043f-4776-bc3c-d16f88d9d68a",
+          "status": "DONE",
+          "listPosition": 6,
+          "mainCategory": "SUPPLIES"
+        },
+        {
+          "id": "abcac72d-fe3b-4949-9f7a-f9b8dc71103f",
+          "status": "DONE",
+          "listPosition": 7,
+          "mainCategory": "FOODS"
+        },
+        {
+          "id": "c7c5955c-862c-4b73-9415-70764df2e67c",
+          "status": "IN_PROGRESS",
+          "listPosition": 8,
+          "mainCategory": "FOODS"
+        },
+        {
+          "id": "f59684d6-b880-47dd-a383-45fc61b0b56e",
+          "status": "DONE",
+          "listPosition": 9,
+          "mainCategory": "HARDWARE"
+        },
+        {
+          "id": "fa9895e3-12d1-4e19-9e6b-03ef3c4d31f1",
+          "status": "IN_PROGRESS",
+          "listPosition": 10,
+          "mainCategory": "CLOTHING"
+        }
+      ],
+      "groups": [
+        {
+          "id": "248dc614-de25-4856-833a-e0ec585e28d0",
+          "status": "IN_PROGRESS",
+          "listPosition": 0
+        },
+        {
+          "id": "32c219f3-4b65-4a49-be0f-a805c93511a0",
+          "status": "OPEN",
+          "listPosition": 1
+        },
+        {
+          "id": "efd9d0ea-6642-4b90-b0a0-318b8ebf5fc7",
+          "status": "DONE",
+          "listPosition": 2
+        }
+      ],
+      "lifecycle": {
+        "status": "IN_PROGRESS",
+        "completion": 73
       }
     }
   ]

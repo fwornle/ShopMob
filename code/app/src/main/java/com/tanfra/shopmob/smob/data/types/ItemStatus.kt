@@ -6,4 +6,5 @@ enum class ItemStatus {
     IN_PROGRESS,
     DONE,
     DELETED,
+    INVALID,
 }

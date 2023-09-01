@@ -20,7 +20,7 @@ import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
-import com.tanfra.shopmob.smob.ui.details.SmobDetailsSources
+import com.tanfra.shopmob.smob.ui.details.SmobDetailsNavSources
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
@@ -37,7 +37,7 @@ import timber.log.Timber
 class PlanningShopsTableFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the (shared) ViewModel instance
-    override val _viewModel: PlanningViewModel by activityViewModel()
+    override val viewModel: PlanningViewModel by activityViewModel()
 
     // data binding for fragment_planning_shop_list.xml
     private lateinit var binding: FragmentPlanningShopsTableBinding
@@ -56,7 +56,7 @@ class PlanningShopsTableFragment : BaseFragment(), KoinComponent {
             )
 
         // set injected viewModel (from KOIN service locator)
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
         setDisplayHomeAsUpEnabled(true)
         setTitle(String.format(getString(R.string.app_name_planning_shop), "Shops"))
@@ -68,17 +68,17 @@ class PlanningShopsTableFragment : BaseFragment(), KoinComponent {
             binding.rlPlanningShopList.setRefreshing(false)
 
             // refresh local DB data from backend (for this list) - also updates 'showNoData'
-            _viewModel.swipeRefreshShopDataInLocalDB()
+            viewModel.swipeRefreshShopDataInLocalDB()
 
             // empty? --> inform user that there is no point swiping for further updates...
-            if (_viewModel.showNoData.value == true) {
+            if (viewModel.showNoData.value == true) {
                 Toast.makeText(activity, getString(R.string.error_add_smob_items), Toast.LENGTH_SHORT).show()
             }
 
         }
 
         // refresh local DB data from backend (for this list) - also updates 'showNoData'
-        _viewModel.swipeRefreshShopDataInLocalDB()
+        viewModel.swipeRefreshShopDataInLocalDB()
 
         return binding.root
     }
@@ -128,7 +128,7 @@ class PlanningShopsTableFragment : BaseFragment(), KoinComponent {
 
                     // back arrow (home button)
                     android.R.id.home -> {
-                        _viewModel.navigationCommand.postValue(NavigationCommand.Back)
+                        viewModel.navigationCommand.postValue(NavigationCommand.Back)
                         true
                     }
 
@@ -151,7 +151,7 @@ class PlanningShopsTableFragment : BaseFragment(), KoinComponent {
             .fromUri("android-app://com.tanfra.shopmob/planningShopsAddNew".toUri())
             .build()
 
-        _viewModel.navigationCommand.postValue(
+        viewModel.navigationCommand.postValue(
             NavigationCommand.ToDeepLink(request)
         )
     }
@@ -163,7 +163,7 @@ class PlanningShopsTableFragment : BaseFragment(), KoinComponent {
             // RecyclerView - it gets the data behind the clicked item as parameter
 
             // click listener with "modal" reaction
-            when(_viewModel.navSource) {
+            when(viewModel.navSource) {
 
                 // entered here from the "navDrawer"
                 "navDrawer" -> {
@@ -172,7 +172,7 @@ class PlanningShopsTableFragment : BaseFragment(), KoinComponent {
                     val context = requireContext()
                     val intent = SmobDetailsActivity.newIntent(
                         context,
-                        SmobDetailsSources.PLANNING_SHOP_LIST,
+                        SmobDetailsNavSources.PLANNING_SHOP_LIST,
                         it
                     )
                     ContextCompat.startActivity(context, intent, null)
@@ -183,10 +183,10 @@ class PlanningShopsTableFragment : BaseFragment(), KoinComponent {
                 else -> {
 
                     // reset navigation source to default
-                    _viewModel.navSource = "navDrawer"
+                    viewModel.navSource = "navDrawer"
 
                     // clicks should select the shop and return to the product edit screen
-                    val daFlow = _viewModel.shopDataSource.getSmobItem(it.id)
+                    val daFlow = viewModel.shopDataSource.getSmobItem(it.id)
                     daFlow
                         .take(1)
                         .onEach {
@@ -196,10 +196,10 @@ class PlanningShopsTableFragment : BaseFragment(), KoinComponent {
 
                     // navigate back to smobPlanningProductEditFragment
                     // ... communicate the selected SmobShop via shared ViewModel
-                    _viewModel.selectedShop.postValue(it)
+                    viewModel.selectedShop.postValue(it)
 
                     // use the navigationCommand live data to navigate between the fragments
-                    _viewModel.navigationCommand.postValue(NavigationCommand.Back)
+                    viewModel.navigationCommand.postValue(NavigationCommand.Back)
 
                 }  // product definition --> shop selection
 

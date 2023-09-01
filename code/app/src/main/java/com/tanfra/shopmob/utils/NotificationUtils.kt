@@ -13,7 +13,7 @@ import androidx.core.content.getSystemService
 import com.tanfra.shopmob.BuildConfig
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
-import com.tanfra.shopmob.smob.ui.details.SmobDetailsSources
+import com.tanfra.shopmob.smob.ui.details.SmobDetailsNavSources
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
 
@@ -90,7 +90,7 @@ fun NotificationManager.sendNotificationOnGeofenceHit(context: Context, daShop: 
     // create intent to start activity SmobDetailsActivity (via 'newIntent' factory)
     val gotoDaShopDetailsIntent = SmobDetailsActivity.newIntent(
         context.applicationContext,
-        SmobDetailsSources.GEOFENCE,
+        SmobDetailsNavSources.GEOFENCE,
         daShop
     )
 

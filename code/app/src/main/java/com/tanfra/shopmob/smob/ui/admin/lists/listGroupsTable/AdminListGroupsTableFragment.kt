@@ -23,7 +23,7 @@ import timber.log.Timber
 class AdminListGroupsTableFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
-    override val _viewModel: AdminViewModel by activityViewModel()
+    override val viewModel: AdminViewModel by activityViewModel()
 
     // data binding for fragment_admin_group_member_list.xml
     private lateinit var binding: FragmentAdminListGroupsTableBinding
@@ -42,14 +42,14 @@ class AdminListGroupsTableFragment : BaseFragment(), KoinComponent {
             )
 
         // set injected viewModel (from KOIN service locator)
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
         // reset backDestinationId
-        _viewModel.backDestinationId = null
+        viewModel.backDestinationId = null
 
         // fetch list ID of the (clicked) list that got us here
-        val listId = _viewModel.currList?.id
-        val listName = _viewModel.currList?.name
+        val listId = viewModel.currList?.id
+        val listName = viewModel.currList?.name
 
         // console
         Timber.i("Showing groups/members of list with ID: $listId")
@@ -60,18 +60,18 @@ class AdminListGroupsTableFragment : BaseFragment(), KoinComponent {
 
             // register (not yet collected) flow / StateFlow in viewModel:
             // --> selected SmobList
-            _viewModel.smobListF = _viewModel.registerSmobListFlow(it)
-            _viewModel.smobListSF = _viewModel.registerSmobListFlowAsStateFlow(_viewModel.smobListF)
+            viewModel.smobListF = viewModel.registerSmobListFlow(it)
+            viewModel.smobListSF = viewModel.registerSmobListFlowAsStateFlow(viewModel.smobListF)
 
             // register (not yet collected) flow / StateFlow in viewModel:
             // --> referenced Groups of selected SmobList
-            _viewModel.smobListGroupsF = _viewModel.registerSmobListGroupsFlow(it)
-            _viewModel.smobListGroupsSF = _viewModel.smobListGroupsFlowAsSF(_viewModel.smobListGroupsF)
+            viewModel.smobListGroupsF = viewModel.registerSmobListGroupsFlow(it)
+            viewModel.smobListGroupsSF = viewModel.smobListGroupsFlowAsSF(viewModel.smobListGroupsF)
 
             // combine the flows and turn into StateFlow
-            _viewModel.smobListGroupsWithListDataSF = _viewModel.combineListGroupsAndListFlowSF(
-                _viewModel.smobListF,
-                _viewModel.smobListGroupsF,
+            viewModel.smobListGroupsWithListDataSF = viewModel.combineListGroupsAndListFlowSF(
+                viewModel.smobListF,
+                viewModel.smobListGroupsF,
             )
 
         }
@@ -87,17 +87,17 @@ class AdminListGroupsTableFragment : BaseFragment(), KoinComponent {
             binding.refreshLayout.setRefreshing(false)
 
             // refresh local DB data from backend (for this list) - also updates 'showNoData'
-            _viewModel.swipeRefreshListDataInLocalDB()
+            viewModel.swipeRefreshListDataInLocalDB()
 
             // empty? --> inform user that there is no point swiping for further updates...
-            if (_viewModel.showNoData.value == true) {
+            if (viewModel.showNoData.value == true) {
                 Toast.makeText(activity, getString(R.string.error_add_smob_groups), Toast.LENGTH_SHORT).show()
             }
 
         }
 
         // refresh local DB data from backend (for this list) - also updates 'showNoData'
-        _viewModel.swipeRefreshListDataInLocalDB()
+        viewModel.swipeRefreshListDataInLocalDB()
 
         return binding.root
     }
@@ -120,7 +120,7 @@ class AdminListGroupsTableFragment : BaseFragment(), KoinComponent {
     private fun navigateToAdminAddGroupToList() {
 
         // determine highest index of all groups in currently selected list
-        val highPos = _viewModel.currList.let {
+        val highPos = viewModel.currList.let {
             it?.groups?.fold(0L) { max, group ->
                 if (group.listPosition > max) group.listPosition
                 else max
@@ -133,7 +133,7 @@ class AdminListGroupsTableFragment : BaseFragment(), KoinComponent {
         )
 
         // use the navigationCommand live data to navigate between the fragments
-        _viewModel.navigationCommand.postValue(
+        viewModel.navigationCommand.postValue(
             NavigationCommand.ToWithBundle(
                 R.id.smobAdminListGroupSelectFragment,
                 bundle
@@ -150,11 +150,11 @@ class AdminListGroupsTableFragment : BaseFragment(), KoinComponent {
             // RecyclerView - it gets the data behind the clicked item as parameter
 
 //            // communicate the selected item (= member)
-//            _viewModel.currGroupWithListData = it
-//            _viewModel.currGroupDetail = it.group()  // used in details display
+//            viewModel.currGroupWithListData = it
+//            viewModel.currGroupDetail = it.group()  // used in details display
 //
 //            // use the navigationCommand live data to navigate between the fragments
-//            _viewModel.navigationCommand.postValue(
+//            viewModel.navigationCommand.postValue(
 //                NavigationCommand.To(
 //                    AdminListGroupsTableFragmentDirections
 //                        .actionSmobAdminListGroupsTableFragmentToSmobAdminListGroupDetailsFragment()
@@ -162,14 +162,14 @@ class AdminListGroupsTableFragment : BaseFragment(), KoinComponent {
 //            )
 
             // store currently selected group in viewModel
-            _viewModel.currGroup = it.group()
+            viewModel.currGroup = it.group()
 
             // set back address (to return to this fragment, if we came from here)
-            _viewModel.backDestinationId = R.id.smobAdminListGroupsTableFragment
-            Timber.i("Setting 'backDestinationId' to smobAdminListGroupsTableFragment: ${_viewModel.backDestinationId}")
+            viewModel.backDestinationId = R.id.smobAdminListGroupsTableFragment
+            Timber.i("Setting 'backDestinationId' to smobAdminListGroupsTableFragment: ${viewModel.backDestinationId}")
 
             // use the navigationCommand live data to navigate between the fragments
-            _viewModel.navigationCommand.postValue(
+            viewModel.navigationCommand.postValue(
                 NavigationCommand.To(
                     AdminListGroupsTableFragmentDirections
                         .actionSmobAdminListGroupsTableFragmentToSmobAdminGroupMembersTableFragment()

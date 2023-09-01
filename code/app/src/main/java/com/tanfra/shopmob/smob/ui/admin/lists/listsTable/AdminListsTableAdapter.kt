@@ -19,8 +19,8 @@ import org.koin.core.component.inject
 class AdminListsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobListATO) -> Unit) :
     BaseRecyclerViewAdapter<SmobListATO>(rootView, callBack), KoinComponent {
 
-    // inject _viewModel from Koin service locator
-    private val _viewModel: AdminViewModel by inject()
+    // inject viewModel from Koin service locator
+    private val viewModel: AdminViewModel by inject()
 
     // SearchView widget can be used to preFilter the list using user input
     override fun getSearchViewItems(items: List<SmobListATO>, charSearch: String)
@@ -56,7 +56,7 @@ class AdminListsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobLis
 
             // store updated smobList in local DB
             // ... this also triggers an immediate push to the backend (once stored locally)
-            _viewModel.listDataSource.updateSmobItem(item)
+            viewModel.listDataSource.updateSmobItem(item)
 
         }  // coroutine scope (lifecycleScope)
 

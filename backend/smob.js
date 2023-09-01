@@ -45,7 +45,7 @@ function smob () {
         var username = faker.internet.userName()
         var name = faker.fake("{{name.lastName}}, {{name.firstName}}")
         var email = faker.internet.email()
-        var imageUrl = `https://placeimg.com/200/150/people?${id}`
+        var imageUrl = `https://picsum.photos/200/150?${id}`
 
         smobUsers.push({
             "id": uuid,
@@ -180,7 +180,7 @@ function smob () {
         var listItemPosition = id
         var name = daProducts[id].name
         var description = daProducts[id].description
-        var imageUrl = `https://placeimg.com/200/150/tech?${id}`
+        var imageUrl = `https://picsum.photos/200/150?${id}`
         var catMain = daProducts[id].catMain
         var catSub = daProducts[id].catSub
         var dateLastPurchase = faker.date.recent().toDateString()
@@ -245,7 +245,7 @@ function smob () {
         var listItemPosition = id
         var name = daShops[id].name
         var description = faker.lorem.words()
-        var imageUrl = `https://placeimg.com/200/150/arch?${id}`
+        var imageUrl = `https://picsum.photos/200/150?${id}`
         var latitude = daShops[id].latitude
         var longitude = daShops[id].longitude
         var type = daShops[id].type

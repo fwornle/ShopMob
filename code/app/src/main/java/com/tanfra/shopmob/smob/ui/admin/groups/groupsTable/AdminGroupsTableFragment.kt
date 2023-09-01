@@ -29,7 +29,7 @@ import org.koin.core.component.KoinComponent
 class AdminGroupsTableFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
-    override val _viewModel: AdminViewModel by activityViewModel()
+    override val viewModel: AdminViewModel by activityViewModel()
 
     // data binding for fragment_planning_lists.xml
     private lateinit var binding: FragmentAdminGroupsTableBinding
@@ -48,10 +48,10 @@ class AdminGroupsTableFragment : BaseFragment(), KoinComponent {
             )
 
         // set injected viewModel (from KOIN service locator)
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
         // reset backDestinationId
-        _viewModel.backDestinationId = null
+        viewModel.backDestinationId = null
 
         setDisplayHomeAsUpEnabled(true)
         setTitle(getString(R.string.app_name_admin_groups))
@@ -63,17 +63,17 @@ class AdminGroupsTableFragment : BaseFragment(), KoinComponent {
             binding.refreshLayout.setRefreshing(false)
 
             // refresh local DB data from backend (for this list) - also updates 'showNoData'
-            _viewModel.swipeRefreshGroupDataInLocalDB()
+            viewModel.swipeRefreshGroupDataInLocalDB()
 
             // empty? --> inform user that there is no point swiping for further updates...
-            if (_viewModel.showNoData.value == true) {
+            if (viewModel.showNoData.value == true) {
                 Toast.makeText(activity, getString(R.string.error_add_smob_lists), Toast.LENGTH_SHORT).show()
             }
 
         }
 
         // refresh local DB data from backend (for this list) - also updates 'showNoData'
-        _viewModel.swipeRefreshGroupDataInLocalDB()
+        viewModel.swipeRefreshGroupDataInLocalDB()
 
         return binding.root
 
@@ -109,10 +109,10 @@ class AdminGroupsTableFragment : BaseFragment(), KoinComponent {
             // RecyclerView - it gets the data behind the clicked item as parameter
 
             // store currently selected group in viewModel
-            _viewModel.currGroup = it
+            viewModel.currGroup = it
 
             // use the navigationCommand live data to navigate between the fragments
-            _viewModel.navigationCommand.postValue(
+            viewModel.navigationCommand.postValue(
                 NavigationCommand.To(
                     AdminGroupsTableFragmentDirections
                         .actionSmobAdminGroupsTableFragmentToSmobAdminGroupMembersTableFragment()
@@ -125,7 +125,7 @@ class AdminGroupsTableFragment : BaseFragment(), KoinComponent {
 //                "groupName" to it.name,
 //            )
 //
-//            _viewModel.navigationCommand.postValue(
+//            viewModel.navigationCommand.postValue(
 //                NavigationCommand.ToWithBundle(
 //                    R.id.smobAdminGroupMembersTableFragment,
 //                    bundle
@@ -173,7 +173,7 @@ class AdminGroupsTableFragment : BaseFragment(), KoinComponent {
 
                     // back arrow (home button)
                     android.R.id.home -> {
-                        _viewModel.navigationCommand.postValue(NavigationCommand.Back)
+                        viewModel.navigationCommand.postValue(NavigationCommand.Back)
                         true
                     }
 
@@ -194,7 +194,7 @@ class AdminGroupsTableFragment : BaseFragment(), KoinComponent {
     private fun navigateToAddGroup() {
 
         // determine highest index in all smobGroups
-        val highPos = _viewModel.smobGroupsSF.value.let {
+        val highPos = viewModel.smobGroupsSF.value.let {
             if (it.status == Status.SUCCESS) {
                 // return  highest index
                 it.data?.fold(0L) { max, list ->
@@ -211,7 +211,7 @@ class AdminGroupsTableFragment : BaseFragment(), KoinComponent {
         )
 
         // use the navigationCommand live data to navigate between the fragments
-        _viewModel.navigationCommand.postValue(
+        viewModel.navigationCommand.postValue(
             NavigationCommand.ToWithBundle(
                 R.id.smobAdminGroupsAddNewItemFragment,
                 bundle

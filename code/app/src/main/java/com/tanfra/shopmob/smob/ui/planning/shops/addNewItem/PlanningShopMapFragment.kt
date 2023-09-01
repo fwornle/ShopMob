@@ -45,7 +45,7 @@ import java.util.*
 class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallback {
 
     // use Koin to get the view model of the SaveSmobItem
-    override val _viewModel: PlanningShopsAddNewItemViewModel by activityViewModel()
+    override val viewModel: PlanningShopsAddNewItemViewModel by activityViewModel()
 
     // access to fragment views
     private lateinit var binding: FragmentPlanningShopMapBinding
@@ -80,16 +80,16 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
         binding.lifecycleOwner = viewLifecycleOwner
 
         // associate injected viewModel with layout (data binding)
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
         // viewModel now initialized --> use VM data to initalize local fragment variables
-        lastMarkerName = _viewModel.locatedShop.value?.name ?: "Exciting..."  // default
-        lastMarkerDescription = _viewModel.locatedShop.value?.description ?: "Something is happening"  // default
+        lastMarkerName = viewModel.locatedShop.value?.name ?: "Exciting..."  // default
+        lastMarkerDescription = viewModel.locatedShop.value?.description ?: "Something is happening"  // default
         lastMarkerLocation = String.format(
             Locale.getDefault(),
             getString(R.string.lat_long_snippet),
-            _viewModel.locatedShop.value?.location?.latitude ?: 0.0,
-            _viewModel.locatedShop.value?.location?.longitude ?: 0.0,
+            viewModel.locatedShop.value?.location?.latitude ?: 0.0,
+            viewModel.locatedShop.value?.location?.longitude ?: 0.0,
         )
 
         setDisplayHomeAsUpEnabled(true)
@@ -195,7 +195,7 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
 
                     // back arrow (home button)
                     android.R.id.home -> {
-                        _viewModel.navigationCommand.postValue(NavigationCommand.Back)
+                        viewModel.navigationCommand.postValue(NavigationCommand.Back)
                         true
                     }
 
@@ -234,7 +234,7 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(youAreHere, zoomLevel))
 
         // ask user to click on the map to select a location for the smob item
-        _viewModel.showSnackBar.value = getString(R.string.map_user_prompt)
+        viewModel.showSnackBar.value = getString(R.string.map_user_prompt)
 
     }  // onMapReady
 
@@ -245,14 +245,14 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
     private fun onLocationSelected() {
 
         // store latitude / longitude in viewModel
-        _viewModel.locatedShop.value?.location =
+        viewModel.locatedShop.value?.location =
             ShopLocation(
             lastMarker?.position?.latitude ?: 0.0,
             lastMarker?.position?.longitude ?: 0.0
             )
 
         // use the navigationCommand live data to navigate between the fragments
-        _viewModel.navigationCommand.value = NavigationCommand.Back
+        viewModel.navigationCommand.value = NavigationCommand.Back
     }
 
 
@@ -319,7 +319,7 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
     private fun activateUiControls(location: String? = null) {
 
         // set location string, if provided (POI)
-        location?.let { _viewModel.locatedShop.value?.name = it }
+        location?.let { viewModel.locatedShop.value?.name = it }
 
         // marker dropped - reveal OK/Cancel buttons and Name edit textbox
         binding.etLocationName.visibility = EditText.VISIBLE
@@ -344,7 +344,7 @@ class PlanningShopMapFragment : BaseFragment(), KoinComponent, OnMapReadyCallbac
     // remove latest set marker and clear associated viewModel variables (coords only - keep name)
     private fun deleteLastMarker() {
         lastMarker?.remove()
-        _viewModel.locatedShop.value?.location = ShopLocation(0.0, 0.0)
+        viewModel.locatedShop.value?.location = ShopLocation(0.0, 0.0)
     }
 
     // request access to user location and, if granted, fly to current location

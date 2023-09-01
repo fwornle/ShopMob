@@ -6,13 +6,13 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.ui.base.NavigationCommand
 import com.tanfra.shopmob.databinding.ActivityDetailsBinding
 import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductWithListDataATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
+import com.tanfra.shopmob.utils.createIntent
 import com.tanfra.shopmob.utils.getSerializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.*
@@ -20,7 +20,6 @@ import kotlinx.serialization.modules.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
-
 
 /**
  * Activity that displays the smob item details after the user clicks on a list item
@@ -49,7 +48,7 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
 
         // Intent factory, used upon selection in an RV list - communicate just the item
         // ... use super type "Ato" to remain generic for all types of lists
-        fun newIntent(context: Context, source: SmobDetailsSources, smobListItem: Ato): Intent {
+        fun newIntent(context: Context, source: SmobDetailsNavSources, smobListItem: Ato): Intent {
             return context.createIntent<SmobDetailsActivity>(
                 EXTRA_Source to source,
                 EXTRA_SmobItem to mapper.encodeToString(smobListItem),
@@ -59,10 +58,11 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
 
 
     // use Koin service locator to retrieve the ViewModel instance
-    val _viewModel: DetailsViewModel by viewModel()
+    val viewModel: SmobDetailsViewModel by viewModel()
 
     // data binding
     private lateinit var binding: ActivityDetailsBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,81 +75,72 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
 
 
         // attempt to read extra data from incoming intent
+        var navSource: SmobDetailsNavSources? = null
+        var itemString: String? = null
         val extras: Bundle? = intent.extras
         extras?.let {
-            // fetch incoming parameters (common: EXTRA_Source)
+
+            // where are coming from?
             if (it.containsKey(EXTRA_Source)) {
                 // extract the extra-data in the intent
-                _viewModel.navSource = intent.getSerializable(
+                navSource = intent.getSerializable(
                     "EXTRA_Source",
-                    SmobDetailsSources::class.java
+                    SmobDetailsNavSources::class.java
                 )
             }
-        }
+
+            // retrieve serialized payload
+            if (it.containsKey(EXTRA_SmobItem)) {
+                // extract the string encoded extra-data
+                itemString = intent.getStringExtra(EXTRA_SmobItem)
+            }
+
+        }  // extra
+
 
         // navigate to the requested fragment
-        when(_viewModel.navSource) {
+        when(navSource) {
 
             // home fragment or geofence
-            SmobDetailsSources.PLANNING_SHOP_LIST,
-            SmobDetailsSources.GEOFENCE,
+            SmobDetailsNavSources.PLANNING_SHOP_LIST,
+            SmobDetailsNavSources.GEOFENCE,
             -> {
-
-                // navigate to Shop Details fragment
                 Timber.i("Display details of the selected shop.")
 
-                extras?.let {
-                    if (it.containsKey(EXTRA_SmobItem)) {
-                        // extract the extra-data
-                        val encString = intent.getStringExtra(EXTRA_SmobItem)
+                // de-serialize payload
+                val item = itemString?.let {
+                    // https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/polymorphism.md#sealed-classes
+                    //
+                    // need to use polymorphic decoder (!!) - by qualifying it with <Ato>
+                    // ... as opposed to <SmobShopATO>  -->  necessary for the decoder to
+                    // make sense of leading (data) type element (designator changed to
+                    // 'source' to avoid clash with SmobShopATO property 'type')
+                    mapper.decodeFromString<Ato>(it) as SmobShopATO
+                } ?: SmobShopATO()
 
-                        // store value in ViewModel
-                        _viewModel.smobShopDetailsItem.value = encString?.let {
-                            // https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/polymorphism.md#sealed-classes
-                            //
-                            // need to use polymorphic decoder (!!) - by qualifying it with <Ato>
-                            // ... as opposed to <SmobShopATO>  -->  necessary for the decoder to
-                            // make sense of leading (data) type element (designator changed to
-                            // 'source' to avoid clash with SmobShopATO property 'type')
-                            mapper.decodeFromString<Ato>(it) as SmobShopATO
-                        }
-                    }
-                }
-
+                // set UI state - source guaranteed to be set (when)
+                viewModel.setDisplayItem(navSource!!, item)
             }
 
-            SmobDetailsSources.PLANNING_PRODUCT_LIST -> {
-
-                // navigate to Product Details fragment
+            SmobDetailsNavSources.PLANNING_PRODUCT_LIST,
+            -> {
                 Timber.i("Display details of the selected product.")
 
+                // de-serialize payload
+                val item = itemString?.let {
+                    mapper.decodeFromString<Ato>(it) as SmobProductWithListDataATO
+                } ?: SmobProductWithListDataATO()
 
-                // navigate to Product Details fragment
-                // ... note: SmobDetailsActivity starts up with Shop Details fragment
-                // ... use the navigationCommand live data to navigate between the fragments
-                _viewModel.navigationCommand.postValue(
-                    NavigationCommand.To(
-                        DetailsShopFragmentDirections.actionSmobDetailsShopFragmentToSmobDetailsProductFragment()
-                    )
-                )
-
-                extras?.let {
-                    if (it.containsKey(EXTRA_SmobItem)) {
-                        // extract the extra-data
-                        val encString = intent.getStringExtra(EXTRA_SmobItem)
-
-                        // store value in ViewModel
-                        _viewModel.smobProductDetailsItem.value = encString?.let {
-                            mapper.decodeFromString<Ato>(it) as SmobProductWithListDataATO
-                        }
-                    }
-                }
+                // set UI state - source guaranteed to be set (when)
+                viewModel.setDisplayItem(navSource!!, item.product())
 
             }
 
-            else -> Timber.i("Unknown source of navigation.")
+            else -> {
+                Timber.i("Unknown source of navigation.")
+            }
 
-        }  // when(intentSource)
+        }  // when
 
     }  // onCreate
 

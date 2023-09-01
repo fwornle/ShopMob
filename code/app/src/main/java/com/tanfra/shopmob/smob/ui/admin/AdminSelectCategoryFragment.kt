@@ -27,7 +27,7 @@ import org.koin.core.component.KoinComponent
 class AdminSelectCategoryFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
-    override val _viewModel: AdminViewModel by activityViewModel()
+    override val viewModel: AdminViewModel by activityViewModel()
 
     // data binding for fragment_planning_lists.xml
     private lateinit var binding: FragmentAdminSelectCategoryBinding
@@ -45,7 +45,7 @@ class AdminSelectCategoryFragment : BaseFragment(), KoinComponent {
             )
 
         // set injected viewModel (from KOIN service locator)
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
         setDisplayHomeAsUpEnabled(true)
         setTitle(getString(R.string.app_name_admin))
@@ -105,7 +105,7 @@ class AdminSelectCategoryFragment : BaseFragment(), KoinComponent {
 
                     // back arrow (home button)
                     android.R.id.home -> {
-                        _viewModel.navigationCommand.postValue(NavigationCommand.Back)
+                        viewModel.navigationCommand.postValue(NavigationCommand.Back)
                         true
                     }
 
@@ -125,7 +125,7 @@ class AdminSelectCategoryFragment : BaseFragment(), KoinComponent {
     // navigate to AdminProfile fragment
     private fun navigateToAdminProfileFragment() {
         // use the navigationCommand live data to navigate between the fragments
-        _viewModel.navigationCommand.postValue(
+        viewModel.navigationCommand.postValue(
             NavigationCommand.To(
                 AdminSelectCategoryFragmentDirections
                     .actionSmobAdminSelectCategoryFragmentToSmobAdminProfileFragment()
@@ -136,7 +136,7 @@ class AdminSelectCategoryFragment : BaseFragment(), KoinComponent {
     // navigate to AdminGroups fragment
     private fun navigateToAdminGroupsFragment() {
         // use the navigationCommand live data to navigate between the fragments
-        _viewModel.navigationCommand.postValue(
+        viewModel.navigationCommand.postValue(
             NavigationCommand.To(
                 AdminSelectCategoryFragmentDirections
                     .actionSmobAdminSelectCategoryFragmentToSmobAdminGroupsTableFragment()
@@ -147,7 +147,7 @@ class AdminSelectCategoryFragment : BaseFragment(), KoinComponent {
     // navigate to AdminLists fragment
     private fun navigateToAdminListsFragment() {
         // use the navigationCommand live data to navigate between the fragments
-        _viewModel.navigationCommand.postValue(
+        viewModel.navigationCommand.postValue(
             NavigationCommand.To(
                 AdminSelectCategoryFragmentDirections
                     .actionSmobAdminSelectCategoryFragmentToSmobAdminListsTableFragment()
@@ -158,7 +158,7 @@ class AdminSelectCategoryFragment : BaseFragment(), KoinComponent {
     // navigate to AdminContacts fragment
     private fun navigateToAdminContactsFragment() {
         // use the navigationCommand live data to navigate between the fragments
-        _viewModel.navigationCommand.postValue(
+        viewModel.navigationCommand.postValue(
             NavigationCommand.To(
                 AdminSelectCategoryFragmentDirections
                     .actionSmobAdminSelectCategoryFragmentToSmobAdminContactsImportFragment()

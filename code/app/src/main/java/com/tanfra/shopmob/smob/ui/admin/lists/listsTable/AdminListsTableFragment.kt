@@ -24,7 +24,7 @@ import org.koin.core.component.KoinComponent
 class AdminListsTableFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
-    override val _viewModel: AdminViewModel by activityViewModel()
+    override val viewModel: AdminViewModel by activityViewModel()
 
     // data binding for fragment_planning_lists.xml
     private lateinit var binding: FragmentAdminListsTableBinding
@@ -43,7 +43,7 @@ class AdminListsTableFragment : BaseFragment(), KoinComponent {
             )
 
         // set injected viewModel (from KOIN service locator)
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
         setDisplayHomeAsUpEnabled(true)
         setTitle(getString(R.string.app_name_admin_lists))
@@ -55,17 +55,17 @@ class AdminListsTableFragment : BaseFragment(), KoinComponent {
             binding.refreshLayout.isRefreshing = false
 
             // refresh local DB data from backend (for this list) - also updates 'showNoData'
-            _viewModel.swipeRefreshGroupDataInLocalDB()
+            viewModel.swipeRefreshGroupDataInLocalDB()
 
             // empty? --> inform user that there is no point swiping for further updates...
-            if (_viewModel.showNoData.value == true) {
+            if (viewModel.showNoData.value == true) {
                 Toast.makeText(activity, getString(R.string.error_add_smob_lists), Toast.LENGTH_SHORT).show()
             }
 
         }
 
         // refresh local DB data from backend (for this list) - also updates 'showNoData'
-        _viewModel.swipeRefreshGroupDataInLocalDB()
+        viewModel.swipeRefreshGroupDataInLocalDB()
 
         return binding.root
     }
@@ -101,10 +101,10 @@ class AdminListsTableFragment : BaseFragment(), KoinComponent {
             // RecyclerView - it gets the data behind the clicked item as parameter
 
             // store currently selected list in viewModel
-            _viewModel.currList = it
+            viewModel.currList = it
 
             // use the navigationCommand live data to navigate between the fragments
-            _viewModel.navigationCommand.postValue(
+            viewModel.navigationCommand.postValue(
                 NavigationCommand.To(
                     AdminListsTableFragmentDirections
                         .actionSmobAdminListsTableFragmentToSmobAdminListGroupsTableFragment()
@@ -127,7 +127,7 @@ class AdminListsTableFragment : BaseFragment(), KoinComponent {
     private fun navigateToAddList() {
 
         // determine highest index in all smobGroups
-        val highPos = _viewModel.smobListsSF.value.let {
+        val highPos = viewModel.smobListsSF.value.let {
             if (it.status == Status.SUCCESS) {
                 // return  highest index
                 it.data?.fold(0L) { max, list ->
@@ -144,7 +144,7 @@ class AdminListsTableFragment : BaseFragment(), KoinComponent {
         )
 
         // use the navigationCommand live data to navigate between the fragments
-        _viewModel.navigationCommand.postValue(
+        viewModel.navigationCommand.postValue(
             NavigationCommand.ToWithBundle(
                 R.id.smobAdminListsAddNewItemFragment,
                 bundle

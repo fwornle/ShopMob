@@ -17,7 +17,7 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentShoppingZonesBinding
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.base.BaseFragment
-import com.tanfra.shopmob.smob.ui.details.DetailsViewModel
+import com.tanfra.shopmob.smob.ui.details.SmobDetailsViewModel
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
@@ -27,7 +27,7 @@ import timber.log.Timber
 class SmobShoppingZonesFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the shared ViewModel instance
-    override val _viewModel: DetailsViewModel by activityViewModel()
+    override val viewModel: SmobDetailsViewModel by activityViewModel()
 
     // data binding for fragment_planning_lists.xml
     private lateinit var binding: FragmentShoppingZonesBinding

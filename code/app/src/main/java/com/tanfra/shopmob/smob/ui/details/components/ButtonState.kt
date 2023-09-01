@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.details.utils
+package com.tanfra.shopmob.smob.ui.details.components
 
 // adopted from Kotlin/Android course
 sealed class ButtonState {

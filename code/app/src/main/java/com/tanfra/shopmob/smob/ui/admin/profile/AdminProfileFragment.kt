@@ -23,7 +23,7 @@ import org.koin.core.component.KoinComponent
 class AdminProfileFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
-    override val _viewModel: AdminViewModel by activityViewModel()
+    override val viewModel: AdminViewModel by activityViewModel()
 
     // data binding for fragment_planning_lists.xml
     private lateinit var binding: FragmentAdminProfileBinding
@@ -41,7 +41,7 @@ class AdminProfileFragment : BaseFragment(), KoinComponent {
             )
 
         // set injected viewModel (from KOIN service locator)
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
         setDisplayHomeAsUpEnabled(true)
         setTitle(getString(R.string.app_name_admin_profile))
@@ -95,7 +95,7 @@ class AdminProfileFragment : BaseFragment(), KoinComponent {
 
                     // back arrow (home button)
                     android.R.id.home -> {
-                        _viewModel.navigationCommand.postValue(NavigationCommand.Back)
+                        viewModel.navigationCommand.postValue(NavigationCommand.Back)
                         true
                     }
 

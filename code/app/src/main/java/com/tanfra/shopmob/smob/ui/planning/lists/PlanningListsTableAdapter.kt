@@ -21,8 +21,8 @@ import kotlin.math.roundToInt
 class PlanningListsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobListATO) -> Unit) :
     BaseRecyclerViewAdapter<SmobListATO>(rootView, callBack), KoinComponent {
 
-    // inject _viewModel from Koin service locator
-    private val _viewModel: PlanningViewModel by inject()
+    // inject viewModel from Koin service locator
+    private val viewModel: PlanningViewModel by inject()
 
     // SearchView widget can be used to preFilter the list using user input
     override fun getSearchViewItems(items: List<SmobListATO>, charSearch: String)
@@ -94,7 +94,7 @@ class PlanningListsTableAdapter(rootView: View, callBack: (selectedSmobATO: Smob
 
             // store updated smobList in local DB
             // ... this also triggers an immediate push to the backend (once stored locally)
-            _viewModel.listDataSource.updateSmobItem(updatedList)
+            viewModel.listDataSource.updateSmobItem(updatedList)
 
         }  // coroutine scope (lifecycleScope)
 

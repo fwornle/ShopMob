@@ -158,6 +158,7 @@ dependencyResolutionManagement {
             // compose
             // ref: https://developer.android.com/jetpack/compose/setup#kotlin_1
             version("compose-bom", "2023.08.00")
+            version("state-events", "2.0.3")
             library("compose-bom", "androidx.compose", "compose-bom").versionRef("compose-bom")
             library("compose-material3", "androidx.compose.material3", "material3").withoutVersion()
             library("compose-material3-window", "androidx.compose.material3", "material3-window-size-class").withoutVersion()
@@ -169,8 +170,10 @@ dependencyResolutionManagement {
             library("compose-ui-test-junit4", "androidx.compose.ui", "ui-test-junit4").withoutVersion()
             library("compose-activity", "androidx.activity", "activity-compose").versionRef("activity-ktx")  // integration (opt)
             library("compose-viewmodel", "androidx.lifecycle", "lifecycle-viewmodel-compose").versionRef("lifecycle")  // integration (opt)
+            library("compose-runtime", "androidx.lifecycle", "lifecycle-runtime-compose").versionRef("lifecycle") // integration (opt)
             library("compose-runtime-livedata", "androidx.compose.runtime", "runtime-livedata").withoutVersion()  // integration (opt)
             library("compose-runtime-rxjava2", "androidx.compose.runtime", "runtime-rxjava2").withoutVersion()  // integration (opt)
+            library("compose-state-events", "com.github.leonard-palm", "compose-state-events").versionRef("state-events")  // 3rd party lib (!!)
 
 
             // appearance
@@ -229,6 +232,7 @@ dependencyResolutionManagement {
             // coil - load images from URLs
             version("coil", "2.4.0")
             library("coil", "io.coil-kt", "coil").versionRef("coil")
+            library("coil-compose", "io.coil-kt", "coil-compose").versionRef("coil")
 
             
             // firebase

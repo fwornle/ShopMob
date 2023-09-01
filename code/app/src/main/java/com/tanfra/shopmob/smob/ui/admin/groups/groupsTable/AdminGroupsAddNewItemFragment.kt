@@ -31,7 +31,7 @@ import java.util.*
 class AdminGroupsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelectedListener, KoinComponent {
 
     // get the view model (from Koin service locator) ... shared with PlanningListsFragment
-    override val _viewModel: AdminViewModel by activityViewModel()
+    override val viewModel: AdminViewModel by activityViewModel()
 
     // data binding of underlying layout
     private lateinit var binding: FragmentAdminGroupsAddNewItemBinding
@@ -59,7 +59,7 @@ class AdminGroupsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelected
         setDisplayHomeAsUpEnabled(true)
 
         // provide (injected) viewModel as data source for data binding
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
         return binding.root
     }
@@ -86,9 +86,9 @@ class AdminGroupsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelected
                 UUID.randomUUID().toString(),
                 ItemStatus.OPEN,
                 listPosMax + 1,
-                _viewModel.smobGroupName.value ?: "mystery group",
-                _viewModel.smobGroupDescription.value ?: "something exciting",
-                _viewModel.smobGroupType.value ?: GroupType.OTHER,
+                viewModel.smobGroupName.value ?: "mystery group",
+                viewModel.smobGroupDescription.value ?: "something exciting",
+                viewModel.smobGroupType.value ?: GroupType.OTHER,
                 SmobApp.currUser?.let {
                     listOf(SmobMemberItem(it.id, ItemStatus.OPEN, 0))
                 } ?: listOf(), // members
@@ -97,7 +97,7 @@ class AdminGroupsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelected
 
             // store smob Group in DB
             // ... this also takes the user back to the SmobGroupsFragment
-            _viewModel.validateAndSaveSmobGroup(daSmobGroupATO)
+            viewModel.validateAndSaveSmobGroup(daSmobGroupATO)
 
         }  // onClickListener (FAB - save)
 
@@ -131,7 +131,7 @@ class AdminGroupsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelected
         when(p0) {
             binding.smobGroupType -> {
                 // set main product category
-                _viewModel.smobGroupType.value = GroupType.values()[p2]
+                viewModel.smobGroupType.value = GroupType.values()[p2]
             }
             else -> {
                 // should not happen - unless someone added a second spinner
@@ -149,7 +149,7 @@ class AdminGroupsAddNewItemFragment : BaseFragment(), AdapterView.OnItemSelected
     override fun onDestroy() {
         super.onDestroy()
         //make sure to clear the view model after destroy, as it's a single view model.
-        _viewModel.onClearGroup()
+        viewModel.onClearGroup()
     }
 
 }

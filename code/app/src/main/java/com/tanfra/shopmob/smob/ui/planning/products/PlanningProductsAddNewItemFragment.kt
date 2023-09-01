@@ -45,7 +45,7 @@ class PlanningProductsAddNewItemFragment :
     BaseFragment(), AdapterView.OnItemSelectedListener, KoinComponent {
 
     // get the view model (from Koin) this time as a singleton to be shared with another fragment
-    override val _viewModel: PlanningViewModel by activityViewModel()
+    override val viewModel: PlanningViewModel by activityViewModel()
 
     // data binding of underlying layout
     private lateinit var binding: FragmentPlanningProductsAddNewItemBinding
@@ -72,7 +72,7 @@ class PlanningProductsAddNewItemFragment :
         setDisplayHomeAsUpEnabled(true)
 
         // provide (injected) viewModel as data source for data binding
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
         return binding.root
     }
@@ -86,9 +86,9 @@ class PlanningProductsAddNewItemFragment :
         binding.selectShop.setOnClickListener {
 
             // set navigation source
-            _viewModel.navSource = "planningProductEditFragment"
+            viewModel.navSource = "planningProductEditFragment"
 
-            _viewModel.navigationCommand.value =
+            viewModel.navigationCommand.value =
                 NavigationCommand.To(
                     PlanningProductsAddNewItemFragmentDirections
                         .actionSmobPlanningProductsAddNewItemFragmentToSmobPlanningShopsTableFragment()
@@ -110,7 +110,7 @@ class PlanningProductsAddNewItemFragment :
             // fetch items on current shopping list
             // ... needed to append new item 'at the bottom' of the list and update the completion
             //     rate (percent - decreases with every new item)
-//            val currList = _viewModel.smobList.value
+//            val currList = viewModel.smobList.value
 
             // collect flow associated with StateFlow element smobList2
             var currList: SmobListATO? = null
@@ -118,8 +118,8 @@ class PlanningProductsAddNewItemFragment :
             var nValItems = 0
             var itemMaxPosition = 0L
 
-            _viewModel.viewModelScope.launch {
-                _viewModel.smobList2.take(1).collect {
+            viewModel.viewModelScope.launch {
+                viewModel.smobList2.take(1).collect {
 
                     // valid data? (making sure...)
                     if (it.status == Status.SUCCESS) {
@@ -151,20 +151,20 @@ class PlanningProductsAddNewItemFragment :
                 UUID.randomUUID().toString(),
                 ItemStatus.OPEN,
                 itemMaxPosition + 1,
-                _viewModel.smobProductName.value ?: "",
-                _viewModel.smobProductDescription.value ?: "",
-                _viewModel.smobProductImageUrl.value ?: "",
-                _viewModel.smobProductCategory.value
+                viewModel.smobProductName.value ?: "",
+                viewModel.smobProductDescription.value ?: "",
+                viewModel.smobProductImageUrl.value ?: "",
+                viewModel.smobProductCategory.value
                     ?: ProductCategory(
                         ProductMainCategory.OTHER,
                         ProductSubCategory.OTHER
                     ),
                 ActivityStatus(currentDate, 0),
-                _viewModel.selectedShop.value?.let { it1 ->
+                viewModel.selectedShop.value?.let { it1 ->
                     InShop(
                         it1.category,
-                        _viewModel.selectedShop.value!!.name,
-                        _viewModel.selectedShop.value!!.location,
+                        viewModel.selectedShop.value!!.name,
+                        viewModel.selectedShop.value!!.location,
                     )
                 } ?: InShop(
                     ShopCategory.OTHER,
@@ -175,7 +175,7 @@ class PlanningProductsAddNewItemFragment :
 
             // store smob product in DB
             // ... this also takes the user back to the SmobProductListFragment
-            _viewModel.validateAndSaveSmobItem(daSmobProductATO)
+            viewModel.validateAndSaveSmobItem(daSmobProductATO)
 
 
             // update statistics on shopping list
@@ -221,7 +221,7 @@ class PlanningProductsAddNewItemFragment :
 
                 // store new List in DB - no need to trigger back navigation (already triggered
                 // when saving the product in the local DB
-                _viewModel.saveSmobListItem(newList, false)
+                viewModel.saveSmobListItem(newList, false)
 
             }  // smobList == null?
 
@@ -233,7 +233,7 @@ class PlanningProductsAddNewItemFragment :
     override fun onDestroy() {
         super.onDestroy()
         //make sure to clear the view model after destroy, as it's a single view model.
-        _viewModel.onClearProduct()
+        viewModel.onClearProduct()
     }
 
     // set-up spinners (categories)
@@ -273,11 +273,11 @@ class PlanningProductsAddNewItemFragment :
         when(p0) {
             binding.smobItemMainCategory -> {
                 // set main product category
-                _viewModel.smobProductCategory.value?.main = ProductMainCategory.values()[p2]
+                viewModel.smobProductCategory.value?.main = ProductMainCategory.values()[p2]
             }
             binding.smobItemSubCategory -> {
                 // set main product category
-                _viewModel.smobProductCategory.value?.sub = ProductSubCategory.values()[p2]
+                viewModel.smobProductCategory.value?.sub = ProductSubCategory.values()[p2]
             }
             else -> {
                 // should not happen - unless someone added a third spinner

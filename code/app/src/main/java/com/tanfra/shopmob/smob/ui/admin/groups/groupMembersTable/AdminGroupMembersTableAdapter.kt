@@ -20,8 +20,8 @@ import org.koin.core.component.inject
 class AdminGroupMembersTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobGroupMemberWithGroupDataATO) -> Unit) :
     BaseRecyclerViewAdapter<SmobGroupMemberWithGroupDataATO>(rootView, callBack), KoinComponent {
 
-    // inject _viewModel from Koin service locator
-    private val _viewModel: AdminViewModel by inject()
+    // inject viewModel from Koin service locator
+    private val viewModel: AdminViewModel by inject()
 
     // SearchView widget can be used to preFilter the list using user input
     override fun getSearchViewItems(items: List<SmobGroupMemberWithGroupDataATO>, charSearch: String)
@@ -57,8 +57,8 @@ class AdminGroupMembersTableAdapter(rootView: View, callBack: (selectedSmobATO: 
     override fun uiActionConfirmed(item: SmobGroupMemberWithGroupDataATO, rootView: View) {
 
         // last "touched" item = the swiped item (= group member)
-        _viewModel.currGroupMemberWithGroupData = item
-        _viewModel.currGroupMember = item.member().apply {
+        viewModel.currGroupMemberWithGroupData = item
+        viewModel.currGroupMember = item.member().apply {
             // for "DELETED" items --> reset status to OPEN
             // (as this action handler only purges users from group lists)
             if(status == ItemStatus.DELETED) status = ItemStatus.OPEN
@@ -99,10 +99,10 @@ class AdminGroupMembersTableAdapter(rootView: View, callBack: (selectedSmobATO: 
 
             // store updated smobGroup in local DB
             // ... this also triggers an immediate push to the backend (once stored locally)
-            _viewModel.groupDataSource.updateSmobItem(updatedGroup)
+            viewModel.groupDataSource.updateSmobItem(updatedGroup)
 
             // also update swiped user's groups (in case the user just got thrown of a group)
-            _viewModel.currGroupMember?.let { daMember ->
+            viewModel.currGroupMember?.let { daMember ->
 
                 val updatedGroupMemberIds =
                     daMember.groups
@@ -115,10 +115,10 @@ class AdminGroupMembersTableAdapter(rootView: View, callBack: (selectedSmobATO: 
                 daMember.groups = updatedGroupMemberIds
 
                 // update smob User in DB
-                _viewModel.updateSmobUserItem(daMember)
+                viewModel.updateSmobUserItem(daMember)
 
                 // ensure this is updated too
-                _viewModel.currGroupMember = daMember
+                viewModel.currGroupMember = daMember
 
             }
 

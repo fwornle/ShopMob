@@ -22,7 +22,7 @@ import java.util.*
 class PlanningListsAddNewItemFragment : BaseFragment(), KoinComponent {
 
     // get the view model (from Koin service locator) ... shared with PlanningListsFragment
-    override val _viewModel: PlanningViewModel by activityViewModel()
+    override val viewModel: PlanningViewModel by activityViewModel()
 
     // data binding of underlying layout
     private lateinit var binding: FragmentPlanningListsAddNewItemBinding
@@ -50,7 +50,7 @@ class PlanningListsAddNewItemFragment : BaseFragment(), KoinComponent {
         setDisplayHomeAsUpEnabled(true)
 
         // provide (injected) viewModel as data source for data binding
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
         return binding.root
     }
@@ -71,18 +71,18 @@ class PlanningListsAddNewItemFragment : BaseFragment(), KoinComponent {
             //     is going to be the data record written to the DB
             daSmobListATO = SmobListATO(
                 UUID.randomUUID().toString(),
-                ItemStatus.NEW,
+                ItemStatus.INVALID,
                 listPosMax + 1,
-                _viewModel.smobListName.value ?: "mystery list",
-                _viewModel.smobListDescription.value ?: "something exciting",
+                viewModel.smobListName.value ?: "mystery list",
+                viewModel.smobListDescription.value ?: "something exciting",
                 listOf(),
                 listOf(),
-                SmobListLifecycle(ItemStatus.NEW, 0.0),
+                SmobListLifecycle(ItemStatus.INVALID, 0.0),
             )
 
             // store smob List in DB
             // ... this also takes the user back to the SmobListsFragment
-            _viewModel.validateAndSaveSmobList(daSmobListATO)
+            viewModel.validateAndSaveSmobList(daSmobListATO)
 
         }  // onClickListener (FAB - save)
 
@@ -92,7 +92,7 @@ class PlanningListsAddNewItemFragment : BaseFragment(), KoinComponent {
     override fun onDestroy() {
         super.onDestroy()
         //make sure to clear the view model after destroy, as it's a single view model.
-        _viewModel.onClearProduct()
+        viewModel.onClearProduct()
     }
 
 }

@@ -22,7 +22,7 @@ import timber.log.Timber
 class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
 
     // get the view model (from Koin service locator)
-    override val _viewModel: AdminViewModel by activityViewModel()
+    override val viewModel: AdminViewModel by activityViewModel()
 
     // data binding of underlying layout
     private lateinit var binding: FragmentAdminGroupMemberDetailsBinding
@@ -46,7 +46,7 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
         setDisplayHomeAsUpEnabled(true)
 
         // provide (injected) viewModel as data source for data binding
-        binding.viewModel = _viewModel
+        binding.viewModel = viewModel
 
         return binding.root
     }
@@ -62,13 +62,13 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
         binding.btAddToGroup.setOnClickListener {
 
             // back to default: button invisible
-            _viewModel.enableAddButton = false
+            viewModel.enableAddButton = false
 
             // add newly selected member to group
-            _viewModel.currGroup?.let { daGroup ->
+            viewModel.currGroup?.let { daGroup ->
 
                 // append member ID to list of members
-                _viewModel.currGroupMember?.id?.let { newMemberId ->
+                viewModel.currGroupMember?.id?.let { newMemberId ->
 
                     // create new member list (adding newMemberId)
                     val updatedMemberList = daGroup.members
@@ -88,13 +88,13 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
                     daGroup.members = updatedMemberList
 
                     // update smob Group in DB
-                    _viewModel.updateSmobGroupItem(daGroup)
+                    viewModel.updateSmobGroupItem(daGroup)
 
-                    // ensure consistency in the _viewModel snapshots
-                    _viewModel.currGroup = daGroup
+                    // ensure consistency in the viewModel snapshots
+                    viewModel.currGroup = daGroup
 
                     // also update newly added user's group list
-                    _viewModel.currGroupMember?.let { daMember ->
+                    viewModel.currGroupMember?.let { daMember ->
 
                         val updatedGroupMemberIds =
                             daMember.groups
@@ -109,10 +109,10 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
                         daMember.groups = updatedGroupMemberIds
 
                         // update smob User in DB
-                        _viewModel.updateSmobUserItem(daMember)
+                        viewModel.updateSmobUserItem(daMember)
 
                         // ensure this is updated too
-                        _viewModel.currGroupMember = daMember
+                        viewModel.currGroupMember = daMember
 
                     }
 
@@ -121,16 +121,16 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
             }  // currGroup?
 
             // return to selected group list
-            Timber.i("_viewModel.backDestinationId = ${_viewModel.backDestinationId}")
-            when(_viewModel.backDestinationId) {
+            Timber.i("viewModel.backDestinationId = ${viewModel.backDestinationId}")
+            when(viewModel.backDestinationId) {
                 R.id.smobAdminListGroupsTableFragment ->
                     // special case: we came from lists...
-                    _viewModel.navigationCommand.postValue(
+                    viewModel.navigationCommand.postValue(
                         NavigationCommand.BackTo(R.id.smobAdminListGroupsTableFragment)
                     )
                 else ->
                     // default: we came from groups...
-                    _viewModel.navigationCommand.postValue(
+                    viewModel.navigationCommand.postValue(
                         NavigationCommand.BackTo(R.id.smobAdminGroupsTableFragment)
                     )
             }
@@ -143,7 +143,7 @@ class AdminGroupMemberDetailsFragment : BaseFragment(), KoinComponent {
     override fun onDestroy() {
         super.onDestroy()
         //make sure to clear the view model after destroy, as it's a single view model.
-        _viewModel.onClearGroup()
+        viewModel.onClearGroup()
     }
 
 }
