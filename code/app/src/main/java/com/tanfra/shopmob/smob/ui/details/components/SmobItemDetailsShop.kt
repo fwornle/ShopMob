@@ -97,7 +97,8 @@ fun SmobItemDetailsShop(
                     item.location.latitude,
                     item.location.longitude,
                 ),
-            valueColor = MaterialTheme.colorScheme.primary
+            valueColor = MaterialTheme.colorScheme.primary,
+            animate = true
         )
 
         KeyValueText(
