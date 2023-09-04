@@ -13,10 +13,10 @@ import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentPlanningProductsTableBinding
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
-import com.tanfra.shopmob.smob.ui.base.BaseFragment
-import com.tanfra.shopmob.smob.ui.base.NavigationCommand
+import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
+import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
-import com.tanfra.shopmob.smob.ui.details.SmobDetailsNavSources
+import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationSource
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
@@ -197,7 +197,7 @@ class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
             // create intent which starts activity SmobDetailsActivity, with clicked data item
             val intent = SmobDetailsActivity.newIntent(
                 requireContext(),
-                SmobDetailsNavSources.PLANNING_PRODUCT_LIST,
+                NavigationSource.PLANNING_PRODUCT_LIST,
                 it
             )
 

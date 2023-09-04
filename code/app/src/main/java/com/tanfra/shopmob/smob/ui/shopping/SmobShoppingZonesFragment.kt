@@ -16,7 +16,7 @@ import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentShoppingZonesBinding
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
-import com.tanfra.shopmob.smob.ui.base.BaseFragment
+import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsViewModel
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle

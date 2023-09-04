@@ -8,7 +8,7 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.types.SmobMemberItem
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.*
-import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
+import com.tanfra.shopmob.smob.ui.zeUiBase.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch

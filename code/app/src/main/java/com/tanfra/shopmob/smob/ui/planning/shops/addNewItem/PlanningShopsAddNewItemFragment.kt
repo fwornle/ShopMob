@@ -25,8 +25,8 @@ import com.google.android.gms.location.*
 import com.google.android.gms.location.Geofence.NEVER_EXPIRE
 import com.google.android.material.snackbar.Snackbar
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.ui.base.BaseFragment
-import com.tanfra.shopmob.smob.ui.base.NavigationCommand
+import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
+import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.smob.geofence.GeofenceBroadcastReceiver
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import timber.log.Timber

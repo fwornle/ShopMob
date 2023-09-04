@@ -1,10 +1,11 @@
 package com.tanfra.shopmob.smob.ui.details
 
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
+import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationSource
 
 // ui state
 data class SmobDetailsViewState(
     val isLoading: Boolean = false,
-    val navSource: SmobDetailsNavSources = SmobDetailsNavSources.UNKNOWN,
+    val navSource: NavigationSource = NavigationSource.UNKNOWN,
     val item: Ato? = null
 )

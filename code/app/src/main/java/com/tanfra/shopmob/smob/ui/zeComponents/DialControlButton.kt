@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.components
+package com.tanfra.shopmob.smob.ui.zeComponents
 
 import android.graphics.Paint
 import android.graphics.Rect
@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.center
 import androidx.compose.ui.unit.dp
-import com.tanfra.shopmob.smob.ui.theme.ShopMobTheme
+import com.tanfra.shopmob.smob.ui.zeTheme.ShopMobTheme
 import java.text.DecimalFormat
 import kotlin.math.abs
 import kotlin.math.atan2

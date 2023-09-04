@@ -102,6 +102,14 @@ dependencies {
     // timber - logging
     implementation(libs.timber)
 
+    // tinder fsm
+    implementation(libs.tinder.fsm)
+
+    // orbit multiplatform (redux like ui state handling)
+//    implementation(libs.orbit.core)  // KMM
+    implementation(libs.orbit.viewmodel)  // android
+    implementation(libs.orbit.compose)
+
     // androidx libraries
     implementation(libs.activity.ktx)
     implementation(libs.fragment.ktx)

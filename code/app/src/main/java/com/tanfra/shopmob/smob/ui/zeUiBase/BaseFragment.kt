@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.base
+package com.tanfra.shopmob.smob.ui.zeUiBase
 
 import android.widget.Toast
 import androidx.fragment.app.Fragment

@@ -10,7 +10,7 @@ import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
-import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
+import com.tanfra.shopmob.smob.ui.zeUiBase.BaseRecyclerViewAdapter
 
 // swiping action on RVs
 // ref: https://medium.com/@zackcosborn/step-by-step-recyclerview-swipe-to-delete-and-undo-7bbae1fce27e

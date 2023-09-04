@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.components
+package com.tanfra.shopmob.smob.ui.zeComponents
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

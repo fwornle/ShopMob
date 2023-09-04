@@ -9,10 +9,10 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentAdminGroupMemberDetailsBinding
 import com.tanfra.shopmob.smob.data.types.SmobMemberItem
 import com.tanfra.shopmob.smob.data.types.ItemStatus
-import com.tanfra.shopmob.smob.ui.base.BaseFragment
+import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
-import com.tanfra.shopmob.smob.ui.base.NavigationCommand
+import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent

@@ -14,13 +14,14 @@ import com.tanfra.shopmob.smob.data.types.ShopType
 import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.ato.*
-import com.tanfra.shopmob.smob.ui.base.BaseViewModel
+import com.tanfra.shopmob.smob.ui.zeUiBase.BaseViewModel
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
-import com.tanfra.shopmob.smob.ui.base.NavigationCommand
+import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
+import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsViewState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
@@ -36,6 +37,13 @@ class PlanningViewModel(
     private val productDataSource: SmobProductDataSource,
     val shopDataSource: SmobShopDataSource,
     ) : BaseViewModel(app), KoinComponent {
+
+
+    // define PlanningLists UI state as flow
+    private val _viewStateLists = MutableStateFlow(PlanningListsViewState())
+    val viewStateLists = _viewStateLists.asStateFlow()
+
+
 
     // fetch worker class form service locator
     val networkConnectionManager: NetworkConnectionManager by inject()

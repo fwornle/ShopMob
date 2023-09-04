@@ -12,6 +12,7 @@ import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductWithListDataATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
+import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationSource
 import com.tanfra.shopmob.utils.createIntent
 import com.tanfra.shopmob.utils.getSerializable
 import kotlinx.serialization.encodeToString
@@ -48,7 +49,7 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
 
         // Intent factory, used upon selection in an RV list - communicate just the item
         // ... use super type "Ato" to remain generic for all types of lists
-        fun newIntent(context: Context, source: SmobDetailsNavSources, smobListItem: Ato): Intent {
+        fun newIntent(context: Context, source: NavigationSource, smobListItem: Ato): Intent {
             return context.createIntent<SmobDetailsActivity>(
                 EXTRA_Source to source,
                 EXTRA_SmobItem to mapper.encodeToString(smobListItem),
@@ -75,7 +76,7 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
 
 
         // attempt to read extra data from incoming intent
-        var navSource: SmobDetailsNavSources? = null
+        var navSource: NavigationSource? = null
         var itemString: String? = null
         val extras: Bundle? = intent.extras
         extras?.let {
@@ -85,7 +86,7 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
                 // extract the extra-data in the intent
                 navSource = intent.getSerializable(
                     "EXTRA_Source",
-                    SmobDetailsNavSources::class.java
+                    NavigationSource::class.java
                 )
             }
 
@@ -102,8 +103,8 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
         when(navSource) {
 
             // home fragment or geofence
-            SmobDetailsNavSources.PLANNING_SHOP_LIST,
-            SmobDetailsNavSources.GEOFENCE,
+            NavigationSource.PLANNING_SHOP_LIST,
+            NavigationSource.GEOFENCE,
             -> {
                 Timber.i("Display details of the selected shop.")
 
@@ -122,7 +123,7 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
                 viewModel.setDisplayItem(navSource!!, item)
             }
 
-            SmobDetailsNavSources.PLANNING_PRODUCT_LIST,
+            NavigationSource.PLANNING_PRODUCT_LIST,
             -> {
                 Timber.i("Display details of the selected product.")
 

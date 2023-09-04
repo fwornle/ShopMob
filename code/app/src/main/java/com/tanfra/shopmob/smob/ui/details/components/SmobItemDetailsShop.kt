@@ -29,9 +29,9 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
-import com.tanfra.shopmob.smob.ui.components.CrossFaderButton
-import com.tanfra.shopmob.smob.ui.components.KeyValueText
-import com.tanfra.shopmob.smob.ui.theme.ShopMobTheme
+import com.tanfra.shopmob.smob.ui.zeComponents.CrossFaderButton
+import com.tanfra.shopmob.smob.ui.zeComponents.KeyValueText
+import com.tanfra.shopmob.smob.ui.zeTheme.ShopMobTheme
 import timber.log.Timber
 
 @Composable

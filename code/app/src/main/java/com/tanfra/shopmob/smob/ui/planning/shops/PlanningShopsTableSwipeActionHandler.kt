@@ -8,9 +8,9 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.utils.ui.BaseSwipeActionHandler
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
-import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
+import com.tanfra.shopmob.smob.ui.zeUiBase.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
-import com.tanfra.shopmob.smob.ui.details.SmobDetailsNavSources
+import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationSource
 import com.tanfra.shopmob.utils.ui.vibrateDevice
 
 // swiping action on RV - concrete implementation for smobList list
@@ -47,7 +47,7 @@ class PlanningShopsTableSwipeActionHandler(adapter: PlanningShopsTableAdapter):
                 val context = adapter.rootView.context
                 val intent = SmobDetailsActivity.newIntent(
                     context,
-                    SmobDetailsNavSources.PLANNING_SHOP_LIST,
+                    NavigationSource.PLANNING_SHOP_LIST,
                     item
                 )
                 startActivity(context, intent, null)

@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentAdminListGroupsTableBinding
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
-import com.tanfra.shopmob.smob.ui.base.BaseFragment
-import com.tanfra.shopmob.smob.ui.base.NavigationCommand
+import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
+import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import com.tanfra.shopmob.utils.setup

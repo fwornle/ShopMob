@@ -2,7 +2,8 @@ package com.tanfra.shopmob.smob.ui.details
 
 import android.app.Application
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
-import com.tanfra.shopmob.smob.ui.base.BaseViewModel
+import com.tanfra.shopmob.smob.ui.zeUiBase.BaseViewModel
+import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationSource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -19,7 +20,7 @@ class SmobDetailsViewModel(app: Application) : BaseViewModel(app) {
 
 
     // set UI state with (activity intent) received item
-    fun setDisplayItem(navSource: SmobDetailsNavSources, item: Ato) {
+    fun setDisplayItem(navSource: NavigationSource, item: Ato) {
         _viewState.update { currentState ->
             currentState.copy(
                 isLoading = false,

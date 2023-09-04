@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.base
+package com.tanfra.shopmob.smob.ui.zeUiBase
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -14,7 +14,7 @@ import android.widget.Filterable
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.tanfra.shopmob.R
-
+import com.tanfra.shopmob.smob.ui.base.DataBindingViewHolder
 
 
 abstract class BaseRecyclerViewAdapter<T>(val rootView: View, private val callback: ((item: T) -> Unit)? = null) :

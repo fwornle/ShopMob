@@ -1,7 +1,7 @@
-package com.tanfra.shopmob.smob.ui.details
+package com.tanfra.shopmob.smob.ui.zeUiBase
 
 // valid sources for intent based navigation to the SmobDetailsActivity
-enum class SmobDetailsNavSources {
+enum class NavigationSource {
     UNKNOWN,
     PLANNING_PRODUCT_LIST,
     PLANNING_SHOP_LIST,

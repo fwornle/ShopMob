@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.*
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.ui.base.BaseFragment
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
@@ -21,6 +20,8 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.details.components.SmobItemDetailsScreen
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
+import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
+import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationSource
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
@@ -83,13 +84,13 @@ class SmobDetailsFragment : BaseFragment(), KoinComponent {
         when(navSource) {
 
             // shop details
-            SmobDetailsNavSources.PLANNING_SHOP_LIST,
-            SmobDetailsNavSources.GEOFENCE -> {
+            NavigationSource.PLANNING_SHOP_LIST,
+            NavigationSource.GEOFENCE -> {
                 setTitle(getString(R.string.app_name_details_shop))
             }
 
             // product details
-            SmobDetailsNavSources.PLANNING_PRODUCT_LIST -> {
+            NavigationSource.PLANNING_PRODUCT_LIST -> {
                 setTitle(getString(R.string.app_name_details_product))
             }
 
@@ -102,7 +103,7 @@ class SmobDetailsFragment : BaseFragment(), KoinComponent {
 
         // no up button when navigating to here from outside the app (eg. Android -> GeoFence)
         when(navSource) {
-            SmobDetailsNavSources.GEOFENCE -> setDisplayHomeAsUpEnabled(false)
+            NavigationSource.GEOFENCE -> setDisplayHomeAsUpEnabled(false)
             else -> setDisplayHomeAsUpEnabled(true)
         }
 

@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.base
+package com.tanfra.shopmob.smob.ui.zeUiBase
 
 import android.os.Bundle
 import androidx.navigation.NavDeepLinkRequest

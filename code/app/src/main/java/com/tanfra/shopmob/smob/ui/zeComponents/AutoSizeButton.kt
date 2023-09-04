@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.components
+package com.tanfra.shopmob.smob.ui.zeComponents
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.tanfra.shopmob.smob.ui.theme.ShopMobTheme
+import com.tanfra.shopmob.smob.ui.zeTheme.ShopMobTheme
 
 @Composable
 fun AutoSizeButton(

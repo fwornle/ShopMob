@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.ui.theme
+package com.tanfra.shopmob.smob.ui.zeTheme
 
 
 import android.app.Activity

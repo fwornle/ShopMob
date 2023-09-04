@@ -1,7 +1,7 @@
 package com.tanfra.shopmob.smob.ui.shopping
 
 import android.app.Application
-import com.tanfra.shopmob.smob.ui.base.BaseViewModel
+import com.tanfra.shopmob.smob.ui.zeUiBase.BaseViewModel
 
 
 class SmobShoppingViewModel(

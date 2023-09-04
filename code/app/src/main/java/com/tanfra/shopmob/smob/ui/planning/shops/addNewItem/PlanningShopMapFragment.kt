@@ -29,8 +29,8 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
 import com.tanfra.shopmob.BuildConfig
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.ui.base.BaseFragment
-import com.tanfra.shopmob.smob.ui.base.NavigationCommand
+import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
+import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.databinding.FragmentPlanningShopMapBinding
 import com.tanfra.shopmob.smob.data.types.ShopLocation
 import com.tanfra.shopmob.utils.ui.closeSoftKeyboard

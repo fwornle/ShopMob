@@ -57,8 +57,20 @@ dependencyResolutionManagement {
             // timber - logging
             version("timber", "5.0.1")
             library("timber", "com.jakewharton.timber", "timber").versionRef("timber")
-            
-            
+
+
+            // Tinder State Machine
+            version("tinder-fsm", "0.3.0")
+            library("tinder-fsm", "com.github.tinder", "StateMachine").versionRef("tinder-fsm")
+
+
+            // Orbit Multiplatform - UI state handling (Redux style)
+            version("orbit-mvi", "6.0.0")
+//            library("orbit-core", "org.orbit-mvi", "orbit-core").versionRef("orbit-mvi")
+            library("orbit-viewmodel", "org.orbit-mvi", "orbit-viewmodel").versionRef("orbit-mvi")
+            library("orbit-compose", "org.orbit-mvi", "orbit-compose").versionRef("orbit-mvi")
+
+
             // androidx
             version("activity-ktx", "1.7.2")
             version("fragment-ktx", "1.6.1")

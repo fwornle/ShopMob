@@ -8,9 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.ui.components.LoadingSpinner
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsViewModel
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsViewState
+import com.tanfra.shopmob.smob.ui.zeComponents.LoadingSpinner
 
 @Composable
 fun SmobItemDetailsScreen(viewModel: SmobDetailsViewModel) {

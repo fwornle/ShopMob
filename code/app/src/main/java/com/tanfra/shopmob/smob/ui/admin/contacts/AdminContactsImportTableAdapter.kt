@@ -9,7 +9,7 @@ import com.tanfra.shopmob.databinding.RowContactBinding
 import com.tanfra.shopmob.databinding.RowContactDataBinding
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.SmobContactATO
-import com.tanfra.shopmob.smob.ui.base.BaseRecyclerViewAdapter
+import com.tanfra.shopmob.smob.ui.zeUiBase.BaseRecyclerViewAdapter
 import org.koin.core.component.KoinComponent
 import java.util.*
 
