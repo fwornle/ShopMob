@@ -2,32 +2,42 @@ package com.tanfra.shopmob.smob.ui.details
 
 import android.app.Application
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
-import com.tanfra.shopmob.smob.ui.details.components.DetailsViewState
+import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
+import com.tanfra.shopmob.smob.ui.details.components.DetailsUiState
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseViewModel
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationSource
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
 
-class SmobDetailsViewModel(app: Application) : BaseViewModel(app) {
+class SmobDetailsViewModel(app: Application) : BaseViewModel(app),
+    ContainerHost<DetailsUiState, Nothing> {
 
-    // define UI state as flow
-    private val _viewState = MutableStateFlow(DetailsViewState())
-    val viewState = _viewState.asStateFlow()
-
-    // holder for callback functions, which sends user to SmobShopActivity or to map (Google Maps)
-    var sendToShop: () -> Unit = { }
-    var sendToMap: () -> Unit = { }
+    // lifecycle constant parameters (set in Activity/Fragment, from launching intent data)
+    lateinit var currNavSource: NavigationSource
+    lateinit var currItem: Ato
+    lateinit var currSendToShopOnMap: (SmobShopATO) -> Unit
+    lateinit var currSendToShop: () -> Unit
 
 
-    // set UI state with (activity intent) received item
-    fun setDisplayItem(navSource: NavigationSource, item: Ato) {
-        _viewState.update { currentState ->
-            currentState.copy(
-                isLoading = false,
-                navSource = navSource,
-                item = item
-            )
+    // instantiate orbit-mvi container as UI state holder (exposes flows: ui states + side effects)
+    override val container = container<DetailsUiState, Nothing>(DetailsUiState())
+
+
+    // set UI state with current display parameters (received from the Activity launching intent)
+    // --> note: this merely sends an intent to reducer in orbit-mvi container (= ui state holder)
+    fun setUiState() {
+        intent {
+            reduce {
+                DetailsUiState(
+                    isLoading = false,
+                    navSource = currNavSource,
+                    item = currItem,
+                    sendToMap = currSendToShopOnMap,
+                    sendToShop = currSendToShop
+                )
+            }
         }
     }
 

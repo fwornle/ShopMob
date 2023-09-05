@@ -38,8 +38,8 @@ import timber.log.Timber
 fun DetailsShop(
     modifier: Modifier = Modifier,
     item: SmobShopATO = SmobShopATO(),
-    sendToShop: () -> Unit = { Timber.i("Send user to shop")},
-    sendToMap: () -> Unit = { Timber.i("Send user to map")}
+    sendToMap: (SmobShopATO) -> Unit = { Timber.i("Send user to shop location on map")},
+    sendToShop: () -> Unit = { Timber.i("Send user to shop")}
 ) {
 
     // component local state
@@ -91,7 +91,7 @@ fun DetailsShop(
         )
 
         KeyValueText(
-            modifier = Modifier.clickable { sendToMap() },  // in case the text is clickable...
+            modifier = Modifier.clickable { sendToMap(item) }, // dereference item clickable is "Void -> Unit"
             key = stringResource(R.string.location),
             value = "%.6f,%.6f".format(
                     item.location.latitude,

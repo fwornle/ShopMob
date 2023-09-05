@@ -119,8 +119,10 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
                     mapper.decodeFromString<Ato>(it) as SmobShopATO
                 } ?: SmobShopATO()
 
-                // set UI state - source guaranteed to be set (when)
-                viewModel.setDisplayItem(navSource!!, item)
+                // store display data in viewModel
+                viewModel.currNavSource = navSource!!
+                viewModel.currItem = item
+
             }
 
             NavigationSource.PLANNING_PRODUCT_LIST,
@@ -132,8 +134,9 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
                     mapper.decodeFromString<Ato>(it) as SmobProductWithListDataATO
                 } ?: SmobProductWithListDataATO()
 
-                // set UI state - source guaranteed to be set (when)
-                viewModel.setDisplayItem(navSource!!, item.product())
+                // store display data in viewModel
+                viewModel.currNavSource = navSource!!
+                viewModel.currItem = item.product()
 
             }
 

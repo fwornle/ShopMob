@@ -14,8 +14,8 @@ import timber.log.Timber
 fun DetailsItem(
     modifier: Modifier = Modifier,
     item: Ato? = null,
-    cbMap: () -> Unit = { Timber.i("SmobItemDetails 'shop coordinates' clicked") },
-    cbShop: () -> Unit = { Timber.i("SmobItemDetails 'send to shop' button clicked") },
+    sendToMap: (SmobShopATO) -> Unit = { Timber.i("SmobItemDetails 'send to shop' button clicked") },
+    sendToShop: () -> Unit = { Timber.i("SmobItemDetails 'shop coordinates' clicked") },
 ) {
 
     // display item specific content
@@ -32,8 +32,8 @@ fun DetailsItem(
             DetailsShop(
                 modifier = modifier,
                 item = item,
-                sendToMap = cbMap,  // fragment based navigation to GMaps activity (via intent)
-                sendToShop = cbShop,  // fragment based navigation to shop activity (via intent)
+                sendToMap = sendToMap,  // fragment based navigation to GMaps activity (via intent)
+                sendToShop = sendToShop,  // fragment based navigation to shop activity (via intent)
             )
         }
 

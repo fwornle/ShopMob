@@ -43,10 +43,7 @@ class SmobDetailsFragment : BaseFragment(), KoinComponent {
     }  // lambda: (shopping) activity result
 
     // callback, allowing the user to be sent to Google Maps
-    private val sendToMap = {
-
-        // concrete type
-        val daShop = viewModel.viewState.value.item as SmobShopATO
+    private val sendToShopOnMap = { daShop: SmobShopATO ->
 
         // create a Uri from an intent string. Use the result to create an Intent.
         val gmmIntentUri = Uri.parse("google.streetview:cbll=" +
@@ -71,17 +68,14 @@ class SmobDetailsFragment : BaseFragment(), KoinComponent {
     ): View {
 
         // set (fragment based) callback functions needed by view SmobDetailsShop
-        viewModel.sendToMap = sendToMap
-        viewModel.sendToShop = {
+        viewModel.currSendToShopOnMap = sendToShopOnMap
+        viewModel.currSendToShop = {
             startForResult.launch(Intent(this.context, SmobShoppingActivity::class.java))
         }
 
 
-        // retrieve navSource (from viewState)
-        val navSource = viewModel.viewState.value.navSource
-
         // set title
-        when(navSource) {
+        when(viewModel.currNavSource) {
 
             // shop details
             NavigationSource.PLANNING_SHOP_LIST,
@@ -102,11 +96,14 @@ class SmobDetailsFragment : BaseFragment(), KoinComponent {
         }
 
         // no up button when navigating to here from outside the app (eg. Android -> GeoFence)
-        when(navSource) {
+        when(viewModel.currNavSource) {
             NavigationSource.GEOFENCE -> setDisplayHomeAsUpEnabled(false)
             else -> setDisplayHomeAsUpEnabled(true)
         }
 
+
+        // set UI state to now initialized viewModel parameters (as derived in Activity/Fragment)
+        viewModel.setUiState()
 
         // construct view (compose)
         return ComposeView(requireContext()).apply {
