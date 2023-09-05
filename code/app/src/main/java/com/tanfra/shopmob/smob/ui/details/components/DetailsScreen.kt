@@ -8,12 +8,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.ui.details.DetailsViewModel
-import com.tanfra.shopmob.smob.ui.details.DetailsViewState
+import com.tanfra.shopmob.smob.ui.details.SmobDetailsViewModel
 import com.tanfra.shopmob.smob.ui.zeComponents.LoadingSpinner
 
 @Composable
-fun SmobItemDetailsScreen(viewModel: DetailsViewModel) {
+fun DetailsScreen(viewModel: SmobDetailsViewModel) {
 
     // collect ui state flow
     val viewState: DetailsViewState by viewModel.viewState.collectAsStateWithLifecycle()
@@ -22,7 +21,7 @@ fun SmobItemDetailsScreen(viewModel: DetailsViewModel) {
     if (viewState.isLoading) {
         LoadingSpinner()
     } else {
-        SmobItemDetails(
+        DetailsItem(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = dimensionResource(R.dimen.horizontal_margin_medium)),

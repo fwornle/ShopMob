@@ -31,7 +31,7 @@ import com.tanfra.shopmob.smob.ui.zeComponents.KeyValueText
 import com.tanfra.shopmob.smob.ui.zeTheme.ShopMobTheme
 
 @Composable
-fun SmobItemDetailsProduct(
+fun DetailsProduct(
     modifier: Modifier = Modifier,
     item: SmobProductATO = SmobProductATO()
 ) {
@@ -119,7 +119,7 @@ fun SmobItemDetailsProduct(
 fun PreviewSmobItemDetailsProduct() {
 
     ShopMobTheme {
-        SmobItemDetailsProduct()
+        DetailsProduct()
     }
 
 }

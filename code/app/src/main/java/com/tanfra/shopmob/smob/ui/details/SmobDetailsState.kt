@@ -6,7 +6,7 @@ import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationSource
 /*
  * States, Events, SideEffects for FSM SmobDetails
  */
-class DetailsState {
+class SmobDetailsState {
 
     sealed class State {
         object Idle : State()

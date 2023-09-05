@@ -18,7 +18,7 @@ import androidx.lifecycle.Lifecycle
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
-import com.tanfra.shopmob.smob.ui.details.components.SmobItemDetailsScreen
+import com.tanfra.shopmob.smob.ui.details.components.DetailsScreen
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationSource
@@ -29,7 +29,7 @@ import timber.log.Timber
 class SmobDetailsFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the shared ViewModel instance
-    override val viewModel: DetailsViewModel by activityViewModel()
+    override val viewModel: SmobDetailsViewModel by activityViewModel()
 
     // lambda for contract 'StartActivityForResult', which is used to start the shopping
     // activity and return from it with a result (of what has changed)
@@ -112,7 +112,7 @@ class SmobDetailsFragment : BaseFragment(), KoinComponent {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                SmobItemDetailsScreen(viewModel)
+                DetailsScreen(viewModel)
             }
         }
     }

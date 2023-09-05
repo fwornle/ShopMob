@@ -35,7 +35,7 @@ import com.tanfra.shopmob.smob.ui.zeTheme.ShopMobTheme
 import timber.log.Timber
 
 @Composable
-fun SmobItemDetailsShop(
+fun DetailsShop(
     modifier: Modifier = Modifier,
     item: SmobShopATO = SmobShopATO(),
     sendToShop: () -> Unit = { Timber.i("Send user to shop")},
@@ -148,7 +148,7 @@ fun SmobItemDetailsShop(
 fun PreviewSmobItemDetailsShop() {
 
     ShopMobTheme {
-        SmobItemDetailsShop()
+        DetailsShop()
     }
 
 }

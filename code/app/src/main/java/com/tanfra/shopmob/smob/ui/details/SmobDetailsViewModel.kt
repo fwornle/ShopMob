@@ -2,13 +2,14 @@ package com.tanfra.shopmob.smob.ui.details
 
 import android.app.Application
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
+import com.tanfra.shopmob.smob.ui.details.components.DetailsViewState
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseViewModel
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationSource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class DetailsViewModel(app: Application) : BaseViewModel(app) {
+class SmobDetailsViewModel(app: Application) : BaseViewModel(app) {
 
     // define UI state as flow
     private val _viewState = MutableStateFlow(DetailsViewState())

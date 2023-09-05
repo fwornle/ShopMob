@@ -11,7 +11,7 @@ import com.tanfra.shopmob.smob.ui.zeTheme.ShopMobTheme
 import timber.log.Timber
 
 @Composable
-fun SmobItemDetails(
+fun DetailsItem(
     modifier: Modifier = Modifier,
     item: Ato? = null,
     cbMap: () -> Unit = { Timber.i("SmobItemDetails 'shop coordinates' clicked") },
@@ -22,14 +22,14 @@ fun SmobItemDetails(
     when(item) {
 
         is SmobProductATO -> {
-            SmobItemDetailsProduct(
+            DetailsProduct(
                 modifier = modifier,
                 item = item
             )
         }
 
         is SmobShopATO -> {
-            SmobItemDetailsShop(
+            DetailsShop(
                 modifier = modifier,
                 item = item,
                 sendToMap = cbMap,  // fragment based navigation to GMaps activity (via intent)
@@ -55,7 +55,7 @@ fun SmobItemDetails(
 fun PreviewSmobItemDetails() {
 
     ShopMobTheme {
-        SmobItemDetails(item = SmobProductATO())  // default (invalid) product
+        DetailsItem(item = SmobProductATO())  // default (invalid) product
     }
 
 }
