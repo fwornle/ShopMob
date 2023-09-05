@@ -2,13 +2,13 @@ package com.tanfra.shopmob.smob.data.repo
 
 import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserRepository
 import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
-import com.tanfra.shopmob.smob.data.local.dao.SmobUserDao
+import com.tanfra.shopmob.smob.data.local.dataSource.SmobUserLocalDataSource
 import com.tanfra.shopmob.smob.data.local.dto2ato._asDomainModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
-import com.tanfra.shopmob.smob.data.net.api.SmobUserApi
+import com.tanfra.shopmob.smob.data.net.dataSource.SmobUserRemoteDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
@@ -36,10 +36,10 @@ import kotlin.collections.ArrayList
  * @param ioDispatcher a coroutine dispatcher to offload the blocking IO tasks
  */
 class SmobUserRepository(
-    private val smobUserDao: SmobUserDao,
-    private val smobUserApi: SmobUserApi,
+    private val smobUserDao: SmobUserLocalDataSource,
+    private val smobUserApi: SmobUserRemoteDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-) : SmobUserDataSource, KoinComponent {
+) : SmobUserRepository, KoinComponent {
 
     // fetch NetworkConnectionManager form service locator
     private val networkConnectionManager: NetworkConnectionManager by inject()
@@ -421,37 +421,5 @@ class SmobUserRepository(
         }
     }
 
-
-    // net-facing setter: update a specific (existing) group
-    private suspend fun updateSmobUserViaApi(
-        id: String,
-        smobUserDTO: SmobUserDTO,
-    ) = withContext(ioDispatcher) {
-        // network access - could fail --> handle consistently via ResponseHandler class
-        try {
-            // return successfully received data object (from Moshi --> PoJo)
-            smobUserApi.updateSmobItemById(id, smobUserDTO.asNetworkModel())
-        } catch (ex: Exception) {
-            // return with exception --> handle it...
-            val daException = responseHandler.handleException<SmobUserDTO>(ex)
-            // local logging
-            Timber.e(daException.message)
-        }
-    }
-
-
-    // net-facing setter: delete a specific (existing) group
-    private suspend fun deleteSmobUserViaApi(id: String) = withContext(ioDispatcher) {
-        // network access - could fail --> handle consistently via ResponseHandler class
-        try {
-            // return successfully received data object (from Moshi --> PoJo)
-            smobUserApi.deleteSmobItemById(id)
-        } catch (ex: Exception) {
-            // return with exception --> handle it...
-            val daException = responseHandler.handleException<SmobUserDTO>(ex)
-            // local logging
-            Timber.e(daException.message)
-        }
-    }
 
 }

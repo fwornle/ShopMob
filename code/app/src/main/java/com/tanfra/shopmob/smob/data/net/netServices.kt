@@ -3,6 +3,11 @@ package com.tanfra.shopmob.smob.data.net
 import com.tanfra.shopmob.BuildConfig
 import com.tanfra.shopmob.BuildConfig.BASE_URL
 import com.tanfra.shopmob.smob.data.net.api.*
+import com.tanfra.shopmob.smob.data.net.dataSource.SmobGroupRemoteDataSource
+import com.tanfra.shopmob.smob.data.net.dataSource.SmobListRemoteDataSource
+import com.tanfra.shopmob.smob.data.net.dataSource.SmobProductRemoteDataSource
+import com.tanfra.shopmob.smob.data.net.dataSource.SmobShopRemoteDataSource
+import com.tanfra.shopmob.smob.data.net.dataSource.SmobUserRemoteDataSource
 import com.tanfra.shopmob.smob.data.net.nto.Nto
 import com.tanfra.shopmob.smob.data.net.nto.SmobGroupNTO
 import com.tanfra.shopmob.smob.data.net.nto.SmobListNTO
@@ -128,19 +133,19 @@ val netServices = module {
 
 
     // helper function to provide APIs
-    fun provideSmobUserApi(ktorClient: HttpClient): SmobUserApi  =
+    fun provideSmobUserApi(ktorClient: HttpClient): SmobUserRemoteDataSource =
         SmobUserApiImpl(ktorClient, "users")
 
-    fun provideSmobGroupApi(ktorClient: HttpClient): SmobGroupApi  =
+    fun provideSmobGroupApi(ktorClient: HttpClient): SmobGroupRemoteDataSource =
         SmobGroupApiImpl(ktorClient, "groups")
 
-    fun provideSmobProductApi(ktorClient: HttpClient): SmobProductApi  =
+    fun provideSmobProductApi(ktorClient: HttpClient): SmobProductRemoteDataSource =
         SmobProductApiImpl(ktorClient, "products")
 
-    fun provideSmobShopApi(ktorClient: HttpClient): SmobShopApi  =
+    fun provideSmobShopApi(ktorClient: HttpClient): SmobShopRemoteDataSource =
         SmobShopApiImpl(ktorClient, "shops")
 
-    fun provideSmobListApi(ktorClient: HttpClient): SmobListApi  =
+    fun provideSmobListApi(ktorClient: HttpClient): SmobListRemoteDataSource =
         SmobListApiImpl(ktorClient, "lists")
 
 

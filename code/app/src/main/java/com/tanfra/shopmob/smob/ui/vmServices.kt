@@ -18,9 +18,9 @@ val vmServices = module {
     viewModel {
         PlanningViewModel(
             get(),  // app (context)
-            get() as SmobListDataSource,  // repo as data source
-            get() as SmobProductDataSource,  // repo as data source
-            get() as SmobShopDataSource,  // repo as data source
+            get() as SmobListRepository,  // repo as data source
+            get() as SmobProductRepository,  // repo as data source
+            get() as SmobShopRepository,  // repo as data source
         )
     }
 
@@ -28,7 +28,7 @@ val vmServices = module {
     viewModel {
         PlanningShopsAddNewItemViewModel(
             get(),  // app (context)
-            get() as SmobShopDataSource,  // repo as data source
+            get() as SmobShopRepository,  // repo as data source
         )
     }
 
@@ -39,9 +39,9 @@ val vmServices = module {
     viewModel {
         AdminViewModel(
             get(),  // app (context)
-            get() as SmobGroupDataSource,  // repo as data source
-            get() as SmobListDataSource,   // repo as data source
-            get() as SmobUserDataSource,   // repo as data source
+            get() as SmobGroupRepository,  // repo as data source
+            get() as SmobListRepository,   // repo as data source
+            get() as SmobUserRepository,   // repo as data source
         )
     }
 

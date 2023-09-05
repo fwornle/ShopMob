@@ -11,9 +11,9 @@ import com.tanfra.shopmob.smob.data.types.GroupType
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseViewModel
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobGroupDataSource
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobGroupRepository
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListRepository
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.ato.SmobContactATO
@@ -27,9 +27,9 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalCoroutinesApi::class)
 class AdminViewModel(
     private val app: Application,
-    val groupDataSource: SmobGroupDataSource,  // public - used in AdminGroupsAdapter
-    val listDataSource: SmobListDataSource,    // public - used in AdminListsAdapter
-    private val userDataSource: SmobUserDataSource,    // public - used in AdminGroupMemberAdapter
+    val groupDataSource: SmobGroupRepository,  // public - used in AdminGroupsAdapter
+    val listDataSource: SmobListRepository,    // public - used in AdminListsAdapter
+    private val userDataSource: SmobUserRepository,    // public - used in AdminGroupMemberAdapter
     ) : BaseViewModel(app) {
 
 
@@ -776,25 +776,6 @@ class AdminViewModel(
     }
 
     /**
-     * Save the smobGroup item to the data source
-     */
-    @ExperimentalCoroutinesApi
-    private fun saveSmobListItem(smobListData: SmobListATO) {
-        showLoading.value = true
-        viewModelScope.launch {
-            // store in local DB (and sync to server)
-            listDataSource.saveSmobItem(smobListData)
-        }
-        showLoading.value = false
-
-        // load SmobList from local DB to update StateFlow value
-        collectSmobListsFlowAsAltSF()
-
-        // check if the "no data" symbol has to be shown (empty list)
-        updateShowNoSmobItemsData(smobListsAltSF.value)
-    }
-
-    /**
      * Update the smobGroup item in the data source
      */
     @ExperimentalCoroutinesApi
@@ -811,20 +792,6 @@ class AdminViewModel(
 
         // check if the "no data" symbol has to be shown (empty list)
         updateShowNoSmobItemsData(_smobListsAltSF.value)
-    }
-
-    /**
-     * Validate the entered data and show error to the user if there's any invalid data
-     */
-    private fun validateEnteredListData(shopMobData: SmobListATO): Boolean {
-
-        if (shopMobData.name.isEmpty()) {
-            showSnackBarInt.value = R.string.err_enter_list_name
-            return false
-        }
-
-        // successful validation
-        return true
     }
 
 

@@ -27,7 +27,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
-import com.tanfra.shopmob.smob.geofence.GeofenceBroadcastReceiver
+import com.tanfra.shopmob.smob.domain.geofence.GeofenceBroadcastReceiver
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import timber.log.Timber
 import com.google.android.gms.location.LocationServices
@@ -38,7 +38,7 @@ import com.tanfra.shopmob.smob.data.types.ShopLocation
 import com.tanfra.shopmob.smob.data.types.ShopType
 import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
-import com.tanfra.shopmob.utils.ui.closeSoftKeyboard
+import com.tanfra.shopmob.smob.ui.zeUtils.closeSoftKeyboard
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 import java.util.*

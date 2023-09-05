@@ -20,7 +20,6 @@
     <string name="app_name_details_shop">ShopMob Shop Details</string>
     <string name="app_name_shopping_zones">ShopMob Shop Floorplan</string>
     <string name="shop_list">Stores</string>
-    <string name="shopping_sections">Shop Sections</string>
     <string name="icon_shopping_cart">Shopping Cart</string>
     <string name="shopping">Shopping at the supermarket</string>
     <string name="no_data">No Data</string>
@@ -32,7 +31,6 @@
     <string name="smob_item_desc">ShopMob Item Description (optional)</string>
     <string name="smob_item_mainCat">ShopMob Item Main Category (e.g. FOODS)</string>
     <string name="smob_item_subCat">ShopMob Item Sub Category (e.g. DAIRY)</string>
-    <string name="smob_item_saved">ShopMob Item Saved!</string>
 
     <string name="smob_lists_name">ShopMob Shopping Lists</string>
 
@@ -49,17 +47,10 @@
 
     <string name="smob_group_name">ShopMob Group Name</string>
     <string name="smob_group_desc">ShopMob Group Description</string>
-    <string name="smob_group_saved">ShopMob Group Saved!</string>
     <string name="smob_group_type">ShopMob Group Type (e.g. FAMILY)</string>
 
-    <string name="smob_group_member_username">ShopMob Group Member Username</string>
-    <string name="smob_group_member_name">ShopMob Group Member Name</string>
-    <string name="smob_group_member_saved">ShopMob Group Member Added!</string>
-
     <string name="logout">Logout</string>
-    <string name="launch">Launch</string>
     <string name="welcome_message">Welcome to\nShopMob</string>
-    <string name="welcome_user">Welcome to\nShopMob, %1s</string>
     <string name="login">Login</string>
     <string name="normal_map">Normal Map</string>
     <string name="hybrid_map">Hybrid Map</string>
@@ -111,11 +102,8 @@
     <string name="smob_list_group_details">ShopMob List - Group Details</string>
 
     <string name="smob_shop_details">ShopMob Store Details</string>
-    <string name="map">map</string>
     <string name="undo_delete">Undo "Delete"?</string>
-    <string name="undo_purchase">Undo "Purchased"?</string>
     <string name="undo">UNDO</string>
-    <string name="smob_floorplan">Shop Floor Plan</string>
 
     <string name="anchor_char">x</string>
     <string name="title_product">Product</string>
@@ -127,30 +115,24 @@
     <string name="contacts">Contacts</string>
     <string name="import_contacts">Import Contacts</string>
     <string name="profile">Profile</string>
-    <string name="floor_plan">Floor Plan</string>
     <string name="description">Description</string>
     <string name="admin_group_member_username">Username</string>
     <string name="admin_group_member_name">Name</string>
     <string name="admin_group_member_email">Email</string>
     <string name="adminDescription">ShopMob administration</string>
-    <string name="adminGroupDescription">ShopMob group administration</string>
     <string name="adminGroupMemberDescription">ShopMob group member administration</string>
     <string name="adminListMemberDescription">ShopMob list member administration</string>
-    <string name="adminListDescription">ShopMob shopping list administration</string>
     <string name="adminProfileDescription">ShopMob user profile administration</string>
     <string name="adminMemberDescription">ShopMob group member details</string>
     <string name="adminUserAvatar">ShopMob user avatar</string>
     <string name="location">Location</string>
-    <string name="location_latlong">%1$.6f,%2$.6f</string>
     <string name="catMain">Category</string>
     <string name="catSub">Kind</string>
     <string name="actDate">Purchased</string>
     <string name="actReps">Repetitions</string>
     <string name="storeType">Type</string>
     <string name="storeCategory">Category</string>
-    <string name="storeCatConv">%1$d</string>
     <string name="storeBusiness">Hours</string>
-    <string name="storeBusinessTable">Mon: %1$s // Tue: %2$s\nWed: %3$s // Thur: %4$s\nFri: %5$s // Sat: %6$s\nSun: %7$s</string>
     <string name="map_user_prompt">Select location of the ShopMob Store.</string>
     <string name="error_add_smob_items">Add some ShopMob items first…</string>
     <string name="error_add_smob_users">Add some ShopMob users first…</string>
@@ -163,7 +145,6 @@
     <string name="open">open</string>
     <string name="close">close</string>
     <string name="coming_soon">… coming soon.</string>
-    <string name="deepLinkMap">android-app://com.tanfra.shopmob.smob.ui.planning.shopEdit/map</string>
     <string name="message_subscribed">Successfully subscribed to topic \'shopmob\'.</string>
     <string name="message_subscribe_failed">Failed to subscribe to topic \'shopmob\'</string>
     <string name="notification_permissions_granted">Using energy saving FCM driven notifications to update Smob content.</string>

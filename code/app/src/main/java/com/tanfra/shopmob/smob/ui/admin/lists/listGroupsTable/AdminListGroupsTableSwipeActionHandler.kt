@@ -5,12 +5,12 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.types.ItemStatus
-import com.tanfra.shopmob.utils.ui.BaseSwipeActionHandler
+import com.tanfra.shopmob.smob.ui.zeUiBase.BaseSwipeActionHandler
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupWithListDataATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseRecyclerViewAdapter
-import com.tanfra.shopmob.utils.ui.vibrateDevice
+import com.tanfra.shopmob.smob.ui.zeUtils.vibrateDevice
 
 // swiping action on RV - concrete implementation for smobList list
 @Suppress("UNCHECKED_CAST")

@@ -5,7 +5,7 @@ import com.tanfra.shopmob.Constants.WORK_POLLING_FAST_VALUE
 import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.dataSource.*
-import com.tanfra.shopmob.smob.work.SmobAppWork
+import com.tanfra.shopmob.smob.domain.work.SmobAppWork
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -40,11 +40,11 @@ object RefreshLocalDB: KoinComponent {
     private val wManager: SmobAppWork by inject()
 
     // fetch repositories from Koin service locator
-    private val smobUserDataSource: SmobUserDataSource by inject()
-    private val smobGroupDataSource: SmobGroupDataSource by inject()
-    private val smobProductDataSource: SmobProductDataSource by inject()
-    private val smobShopDataSource: SmobShopDataSource by inject()
-    private val smobListDataSource: SmobListDataSource by inject()
+    private val smobUserDataSource: SmobUserRepository by inject()
+    private val smobGroupDataSource: SmobGroupRepository by inject()
+    private val smobProductDataSource: SmobProductRepository by inject()
+    private val smobShopDataSource: SmobShopRepository by inject()
+    private val smobListDataSource: SmobListRepository by inject()
 
     // refresh (polling)
     private fun refreshSmobDb() {

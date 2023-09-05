@@ -2,7 +2,11 @@ package com.tanfra.shopmob.smob.data.local
 
 import android.content.Context
 import androidx.room.Room
-import com.tanfra.shopmob.smob.data.local.dao.*
+import com.tanfra.shopmob.smob.data.local.dataSource.SmobGroupLocalDataSource
+import com.tanfra.shopmob.smob.data.local.dataSource.SmobListLocalDataSource
+import com.tanfra.shopmob.smob.data.local.dataSource.SmobProductLocalDataSource
+import com.tanfra.shopmob.smob.data.local.dataSource.SmobShopLocalDataSource
+import com.tanfra.shopmob.smob.data.local.dataSource.SmobUserLocalDataSource
 
 
 /**
@@ -21,27 +25,27 @@ object LocalDB {
     }
 
     // DAO to table smobUsers
-    fun createSmobUserDao(db: SmobDatabase): SmobUserDao {
+    fun createSmobUserDao(db: SmobDatabase): SmobUserLocalDataSource {
         return db.smobUserDao()
     }
 
     // DAO to table smobGroups
-    fun createSmobGroupDao(db: SmobDatabase): SmobGroupDao {
+    fun createSmobGroupDao(db: SmobDatabase): SmobGroupLocalDataSource {
         return db.smobGroupDao()
     }
 
     // DAO to table smobShops
-    fun createSmobShopDao(db: SmobDatabase): SmobShopDao {
+    fun createSmobShopDao(db: SmobDatabase): SmobShopLocalDataSource {
         return db.smobShopDao()
     }
 
     // DAO to table smobProducts
-    fun createSmobProductDao(db: SmobDatabase): SmobProductDao {
+    fun createSmobProductDao(db: SmobDatabase): SmobProductLocalDataSource {
         return db.smobProductDao()
     }
 
     // DAO to table smobProducts
-    fun createSmobListDao(db: SmobDatabase): SmobListDao {
+    fun createSmobListDao(db: SmobDatabase): SmobListLocalDataSource {
         return db.smobListDao()
     }
 

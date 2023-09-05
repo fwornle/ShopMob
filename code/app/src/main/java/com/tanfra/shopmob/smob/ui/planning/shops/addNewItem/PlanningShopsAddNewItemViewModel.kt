@@ -11,12 +11,12 @@ import com.tanfra.shopmob.smob.data.types.ShopType
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseViewModel
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopRepository
 import kotlinx.coroutines.launch
 
 class PlanningShopsAddNewItemViewModel(
     val app: Application,
-    private val shopDataSource: SmobShopDataSource
+    private val shopDataSource: SmobShopRepository
     ) : BaseViewModel(app) {
 
     var locatedShop = MutableLiveData<SmobShopATO>()

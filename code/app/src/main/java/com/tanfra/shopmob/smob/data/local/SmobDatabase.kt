@@ -3,7 +3,11 @@ package com.tanfra.shopmob.smob.data.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.tanfra.shopmob.smob.data.local.dao.*
+import com.tanfra.shopmob.smob.data.local.dataSource.SmobGroupLocalDataSource
+import com.tanfra.shopmob.smob.data.local.dataSource.SmobListLocalDataSource
+import com.tanfra.shopmob.smob.data.local.dataSource.SmobProductLocalDataSource
+import com.tanfra.shopmob.smob.data.local.dataSource.SmobShopLocalDataSource
+import com.tanfra.shopmob.smob.data.local.dataSource.SmobUserLocalDataSource
 import com.tanfra.shopmob.smob.data.local.dto.*
 import com.tanfra.shopmob.smob.data.local.utils.LocalDbConverters
 
@@ -24,9 +28,9 @@ import com.tanfra.shopmob.smob.data.local.utils.LocalDbConverters
     exportSchema = false
 )
     abstract class SmobDatabase : RoomDatabase() {
-        abstract fun smobUserDao(): SmobUserDao
-        abstract fun smobGroupDao(): SmobGroupDao
-        abstract fun smobShopDao(): SmobShopDao
-        abstract fun smobProductDao(): SmobProductDao
-        abstract fun smobListDao(): SmobListDao
+        abstract fun smobUserDao(): SmobUserLocalDataSource
+        abstract fun smobGroupDao(): SmobGroupLocalDataSource
+        abstract fun smobShopDao(): SmobShopLocalDataSource
+        abstract fun smobProductDao(): SmobProductLocalDataSource
+        abstract fun smobListDao(): SmobListLocalDataSource
     }

@@ -30,7 +30,7 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
-import com.tanfra.shopmob.utils.ui.closeSoftKeyboard
+import com.tanfra.shopmob.smob.ui.zeUtils.closeSoftKeyboard
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.activityViewModel

@@ -2,6 +2,11 @@ package com.tanfra.shopmob.smob.data.net.api
 
 import com.tanfra.shopmob.BuildConfig
 import com.tanfra.shopmob.Constants
+import com.tanfra.shopmob.smob.data.net.api.crud.deleteItem
+import com.tanfra.shopmob.smob.data.net.api.crud.getItem
+import com.tanfra.shopmob.smob.data.net.api.crud.postItem
+import com.tanfra.shopmob.smob.data.net.api.crud.putItem
+import com.tanfra.shopmob.smob.data.net.dataSource.SmobShopRemoteDataSource
 import com.tanfra.shopmob.smob.data.net.nto.SmobShopNTO
 import io.ktor.client.HttpClient
 import io.ktor.client.request.setBody
@@ -12,7 +17,7 @@ import io.ktor.http.contentType
 class SmobShopApiImpl(
     private val ktor: HttpClient,
     tableUrlPart: String
-): SmobShopApi {
+): SmobShopRemoteDataSource {
 
     // assemble endpoint URL (base)
     private val endpointBase = "${BuildConfig.BASE_URL}/${Constants.SMOB_API_URL}/$tableUrlPart"

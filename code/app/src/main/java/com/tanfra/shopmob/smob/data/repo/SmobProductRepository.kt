@@ -1,12 +1,12 @@
 package com.tanfra.shopmob.smob.data.repo
 
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductRepository
 import com.tanfra.shopmob.smob.data.local.dto.SmobProductDTO
-import com.tanfra.shopmob.smob.data.local.dao.SmobProductDao
+import com.tanfra.shopmob.smob.data.local.dataSource.SmobProductLocalDataSource
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
-import com.tanfra.shopmob.smob.data.net.api.SmobProductApi
+import com.tanfra.shopmob.smob.data.net.dataSource.SmobProductRemoteDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
@@ -29,15 +29,15 @@ import kotlin.collections.ArrayList
  *
  * The repository is implemented so that you can focus on only testing it.
  *
- * @param smobProductDao the dao that does the Room db operations for table smobProducts
+ * @param smobProductLocalDataSource the dao that does the Room db operations for table smobProducts
  * @param smobProductApi the api that does the network operations for table smobProducts
  * @param ioDispatcher a coroutine dispatcher to offload the blocking IO tasks
  */
 class SmobProductRepository(
-    private val smobProductDao: SmobProductDao,
-    private val smobProductApi: SmobProductApi,
+    private val smobProductLocalDataSource: SmobProductLocalDataSource,
+    private val smobProductApi: SmobProductRemoteDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-) : SmobProductDataSource, KoinComponent {
+) : SmobProductRepository, KoinComponent {
 
     // fetch NetworkConnectionManager form service locator
     private val networkConnectionManager: NetworkConnectionManager by inject()
@@ -60,7 +60,7 @@ class SmobProductRepository(
             var atoFlow: Flow<SmobProductATO?> = flowOf(null)
             return try {
                 // fetch data from DB (and convert to ATO)
-                atoFlow = smobProductDao.getSmobItemById(id).asDomainModel()
+                atoFlow = smobProductLocalDataSource.getSmobItemById(id).asDomainModel()
                 // wrap data in Resource (--> error/success/[loading])
                 atoFlow.asResource(null)
             } catch (e: Exception) {
@@ -85,7 +85,7 @@ class SmobProductRepository(
             var atoFlow: Flow<List<SmobProductATO>> = flowOf(listOf())
             return try {
                 // fetch data from DB (and convert to ATO)
-                atoFlow = smobProductDao.getSmobItems().asDomainModel()
+                atoFlow = smobProductLocalDataSource.getSmobItems().asDomainModel()
                 // wrap data in Resource (--> error/success/[loading])
                 atoFlow.asResource(null)
             } catch (e: Exception) {
@@ -112,7 +112,7 @@ class SmobProductRepository(
             var atoFlow: Flow<List<SmobProductATO>> = flowOf(listOf())
             return try {
                 // fetch data from DB (and convert to ATO)
-                atoFlow = smobProductDao.getSmobProductsByListId(id).asDomainModel()
+                atoFlow = smobProductLocalDataSource.getSmobProductsByListId(id).asDomainModel()
                 // wrap data in Resource (--> error/success/[loading])
                 atoFlow.asResource(null)
             } catch (e: Exception) {
@@ -136,7 +136,7 @@ class SmobProductRepository(
 
             // first store in local DB first
             val dbProduct = smobItemATO.asDatabaseModel()
-            smobProductDao.saveSmobItem(dbProduct)
+            smobProductLocalDataSource.saveSmobItem(dbProduct)
 
             // then push to backend DB
             // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
@@ -178,7 +178,7 @@ class SmobProductRepository(
 
                 // first store in local DB first
                 val dbProduct = smobItemATO.asDatabaseModel()
-                smobProductDao.updateSmobItem(dbProduct)
+                smobProductLocalDataSource.updateSmobItem(dbProduct)
 
                 // then push to backend DB
                 // ... use 'update', as product may already exist (equivalent of REPLACE w/h local DB)
@@ -208,7 +208,7 @@ class SmobProductRepository(
         withContext(ioDispatcher) {
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
-                smobProductDao.deleteSmobItemById(id)
+                smobProductLocalDataSource.deleteSmobItemById(id)
                 if(networkConnectionManager.isNetworkConnected) {
                     smobProductApi.deleteSmobItemById(id)
                 }
@@ -225,7 +225,7 @@ class SmobProductRepository(
             wrapEspressoIdlingResource {
 
                 // first delete all products from local DB
-                smobProductDao.deleteAllSmobItems()
+                smobProductLocalDataSource.deleteAllSmobItems()
 
                 // then delete all products from backend DB
                 if(networkConnectionManager.isNetworkConnected) {
@@ -263,7 +263,7 @@ class SmobProductRepository(
 
                 // store product data in DB - if any
                 response.data?.let {
-                    it.map { smobProductDao.saveSmobItem(it) }
+                    it.map { smobProductLocalDataSource.saveSmobItem(it) }
                     Timber.i("SmobProduct data items stored in local DB")
                 }
 
@@ -293,7 +293,7 @@ class SmobProductRepository(
 
                 // store product data in DB - if any
                 response.data?.let {
-                    smobProductDao.saveSmobItem(it)
+                    smobProductLocalDataSource.saveSmobItem(it)
                     Timber.i("SmobProduct data items stored in local DB")
                 }
 
@@ -408,37 +408,5 @@ class SmobProductRepository(
         }
     }
 
-
-    // net-facing setter: update a specific (existing) group
-    private suspend fun updateSmobProductViaApi(
-        id: String,
-        smobProductDTO: SmobProductDTO,
-    ) = withContext(ioDispatcher) {
-        // network access - could fail --> handle consistently via ResponseHandler class
-        try {
-            // return successfully received data object (from Moshi --> PoJo)
-            smobProductApi.updateSmobItemById(id, smobProductDTO.asNetworkModel())
-        } catch (ex: Exception) {
-            // return with exception --> handle it...
-            val daException = responseHandler.handleException<SmobProductDTO>(ex)
-            // local logging
-            Timber.e(daException.message)
-        }
-    }
-
-
-    // net-facing setter: delete a specific (existing) group
-    private suspend fun deleteSmobProductViaApi(id: String) = withContext(ioDispatcher) {
-        // network access - could fail --> handle consistently via ResponseHandler class
-        try {
-            // return successfully received data object (from Moshi --> PoJo)
-            smobProductApi.deleteSmobItemById(id)
-        } catch (ex: Exception) {
-            // return with exception --> handle it...
-            val daException = responseHandler.handleException<SmobProductDTO>(ex)
-            // local logging
-            Timber.e(daException.message)
-        }
-    }
 
 }

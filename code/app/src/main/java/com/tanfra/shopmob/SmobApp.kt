@@ -13,9 +13,10 @@ import com.tanfra.shopmob.smob.data.net.netServices
 import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.repo.repoServices
+import com.tanfra.shopmob.smob.domain.useCases
 import com.tanfra.shopmob.smob.ui.vmServices
-import com.tanfra.shopmob.smob.work.SmobAppWork
-import com.tanfra.shopmob.smob.work.wmServices
+import com.tanfra.shopmob.smob.domain.work.SmobAppWork
+import com.tanfra.shopmob.smob.domain.work.wmServices
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -58,7 +59,7 @@ class SmobApp : Application(), KoinComponent, Configuration.Provider {
             androidContext(this@SmobApp)
 
             // declare modules of provided services
-            modules(listOf(wmServices, vmServices, netServices, dbServices, repoServices))
+            modules(listOf(wmServices, vmServices, netServices, dbServices, repoServices, useCases))
 
         }
 

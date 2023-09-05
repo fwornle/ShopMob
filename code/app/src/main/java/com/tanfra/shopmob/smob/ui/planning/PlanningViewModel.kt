@@ -15,10 +15,10 @@ import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseViewModel
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Status
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductDataSource
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopDataSource
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductRepository
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsViewState
@@ -33,9 +33,9 @@ import org.koin.core.component.inject
 @OptIn(ExperimentalCoroutinesApi::class)
 class PlanningViewModel(
     val app: Application,
-    val listDataSource: SmobListDataSource,  // public, as used (externally) to update the smobList
-    private val productDataSource: SmobProductDataSource,
-    val shopDataSource: SmobShopDataSource,
+    val listDataSource: SmobListRepository,  // public, as used (externally) to update the smobList
+    private val productDataSource: SmobProductRepository,
+    val shopDataSource: SmobShopRepository,
     ) : BaseViewModel(app), KoinComponent {
 
 

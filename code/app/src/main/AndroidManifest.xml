@@ -93,7 +93,7 @@
             android:value="@string/google_maps_key" />
 
         <receiver
-            android:name=".smob.geofence.GeofenceBroadcastReceiver"
+            android:name=".smob.domain.geofence.GeofenceBroadcastReceiver"
             android:enabled="true"
             android:exported="false" />
 
@@ -151,7 +151,7 @@
 
         <!-- start FCM service for sending/receiving messages (to/from selected topic) -->
         <service
-            android:name=".smob.fcm.SmobFireBaseMessagingService"
+            android:name=".smob.data.net.fcm.SmobFireBaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>

@@ -1,12 +1,12 @@
 package com.tanfra.shopmob.smob.data.repo
 
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListDataSource
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListRepository
 import com.tanfra.shopmob.smob.data.local.dto.SmobListDTO
-import com.tanfra.shopmob.smob.data.local.dao.SmobListDao
+import com.tanfra.shopmob.smob.data.local.dataSource.SmobListLocalDataSource
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
-import com.tanfra.shopmob.smob.data.net.api.SmobListApi
+import com.tanfra.shopmob.smob.data.net.dataSource.SmobListRemoteDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.ResponseHandler
 import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
@@ -34,10 +34,10 @@ import kotlin.collections.ArrayList
  * @param ioDispatcher a coroutine dispatcher to offload the blocking IO tasks
  */
 class SmobListRepository(
-    private val smobListDao: SmobListDao,
-    private val smobListApi: SmobListApi,
+    private val smobListDao: SmobListLocalDataSource,
+    private val smobListApi: SmobListRemoteDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-) : SmobListDataSource, KoinComponent {
+) : SmobListRepository, KoinComponent {
 
     // fetch NetworkConnectionManager form service locator
     private val networkConnectionManager: NetworkConnectionManager by inject()
@@ -408,19 +408,5 @@ class SmobListRepository(
         }
     }
 
-
-    // net-facing setter: delete a specific (existing) group
-    private suspend fun deleteSmobListViaApi(id: String) = withContext(ioDispatcher) {
-        // network access - could fail --> handle consistently via ResponseHandler class
-        try {
-            // return successfully received data object (from Moshi --> PoJo)
-            smobListApi.deleteSmobItemById(id)
-        } catch (ex: Exception) {
-            // return with exception --> handle it...
-            val daException = responseHandler.handleException<SmobListDTO>(ex)
-            // local logging
-            Timber.e(daException.message)
-        }
-    }
 
 }

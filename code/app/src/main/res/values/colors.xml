@@ -6,17 +6,12 @@
   <color name="secondaryColor">#90a4ae</color>
   <color name="secondaryLightColor">#c1d5e0</color>
   <color name="secondaryDarkColor">#62757f</color>
-  <color name="primaryTextColor">#3e2723</color>
-  <color name="primaryTextColorHint">#455A64</color>
-  <color name="secondaryTextColor">#263238</color>
 
-  <color name="swipeSecondaryLightColor">#F1FBF2</color>
+    <color name="swipeSecondaryLightColor">#F1FBF2</color>
   <color name="swipePrimaryColor">#c8e6c9</color>
   <color name="swipeSecondaryColor">#8EC190</color>
-  <color name="swipePrimaryTextColor">#1b5e20</color>
-  <color name="swipeSecondaryTextColor">#1b5e20</color>
 
-  <color name="colorNoNetwork">#E1D9DA</color>
+    <color name="colorNoNetwork">#E1D9DA</color>
 
   <color name="colorAccent">#D81B60</color>
   <color name="black">#000000</color>

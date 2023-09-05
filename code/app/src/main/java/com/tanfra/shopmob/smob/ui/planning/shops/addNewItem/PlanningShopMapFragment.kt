@@ -33,8 +33,8 @@ import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.databinding.FragmentPlanningShopMapBinding
 import com.tanfra.shopmob.smob.data.types.ShopLocation
-import com.tanfra.shopmob.utils.ui.closeSoftKeyboard
-import com.tanfra.shopmob.utils.ui.openSoftKeyboard
+import com.tanfra.shopmob.smob.ui.zeUtils.closeSoftKeyboard
+import com.tanfra.shopmob.smob.ui.zeUtils.openSoftKeyboard
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent

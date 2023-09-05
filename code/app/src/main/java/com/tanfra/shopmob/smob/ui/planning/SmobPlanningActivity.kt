@@ -26,8 +26,8 @@ import com.tanfra.shopmob.databinding.ActivityPlanningBinding
 import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserDataSource
-import com.tanfra.shopmob.smob.work.SmobAppWork
+import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserRepository
+import com.tanfra.shopmob.smob.domain.work.SmobAppWork
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
@@ -156,7 +156,7 @@ class SmobPlanningActivity : AppCompatActivity() {
             wManager.applicationScope.launch {
 
                 // fetch user repo to allow storing/updating of logged-in user
-                val userRepo: SmobUserDataSource by inject()
+                val userRepo: SmobUserRepository by inject()
 
                 // fetch latest user collection from BE (to ensure the app starts up
                 // reliably, even after a fresh install - and, consequently, no local DB)
