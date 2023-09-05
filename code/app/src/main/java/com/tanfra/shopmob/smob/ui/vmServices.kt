@@ -2,7 +2,7 @@ package com.tanfra.shopmob.smob.ui
 
 import com.tanfra.shopmob.smob.data.repo.dataSource.*
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
-import com.tanfra.shopmob.smob.ui.details.SmobDetailsViewModel
+import com.tanfra.shopmob.smob.ui.details.DetailsViewModel
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.smob.ui.planning.shops.addNewItem.PlanningShopsAddNewItemViewModel
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingViewModel
@@ -51,7 +51,7 @@ val vmServices = module {
 
     // shared with all details fragments (and the activity)
     viewModel {
-        SmobDetailsViewModel(
+        DetailsViewModel(
             get(),  // app (context)
 //            get() as SmobProductDataSource,  // repo as data source
 //            get() as SmobShopDataSource,  // repo as data source

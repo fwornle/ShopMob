@@ -59,7 +59,7 @@ class SmobDetailsActivity : AppCompatActivity(), KoinComponent {
 
 
     // use Koin service locator to retrieve the ViewModel instance
-    val viewModel: SmobDetailsViewModel by viewModel()
+    val viewModel: DetailsViewModel by viewModel()
 
     // data binding
     private lateinit var binding: ActivityDetailsBinding

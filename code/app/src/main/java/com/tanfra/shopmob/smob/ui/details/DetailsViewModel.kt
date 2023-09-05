@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class SmobDetailsViewModel(app: Application) : BaseViewModel(app) {
+class DetailsViewModel(app: Application) : BaseViewModel(app) {
 
     // define UI state as flow
-    private val _viewState = MutableStateFlow(SmobDetailsViewState())
+    private val _viewState = MutableStateFlow(DetailsViewState())
     val viewState = _viewState.asStateFlow()
 
     // holder for callback functions, which sends user to SmobShopActivity or to map (Google Maps)

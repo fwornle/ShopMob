@@ -29,7 +29,7 @@ import timber.log.Timber
 class SmobDetailsFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the shared ViewModel instance
-    override val viewModel: SmobDetailsViewModel by activityViewModel()
+    override val viewModel: DetailsViewModel by activityViewModel()
 
     // lambda for contract 'StartActivityForResult', which is used to start the shopping
     // activity and return from it with a result (of what has changed)
