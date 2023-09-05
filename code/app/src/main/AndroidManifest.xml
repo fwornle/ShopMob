@@ -151,7 +151,7 @@
 
         <!-- start FCM service for sending/receiving messages (to/from selected topic) -->
         <service
-            android:name=".smob.data.net.fcm.SmobFireBaseMessagingService"
+            android:name=".smob.data.remote.fcm.SmobFireBaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>

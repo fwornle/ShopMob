@@ -9,8 +9,8 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.tanfra.shopmob.Constants.FCM_TOPIC
 import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 import com.tanfra.shopmob.smob.data.local.dbServices
-import com.tanfra.shopmob.smob.data.net.netServices
-import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
+import com.tanfra.shopmob.smob.data.remote.netServices
+import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.repo.repoServices
 import com.tanfra.shopmob.smob.domain.useCases

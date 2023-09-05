@@ -12,7 +12,7 @@ import com.tanfra.shopmob.smob.data.types.ShopCategory
 import com.tanfra.shopmob.smob.data.types.ShopLocation
 import com.tanfra.shopmob.smob.data.types.ShopType
 import com.tanfra.shopmob.smob.data.local.utils.*
-import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
+import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseViewModel
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListRepository

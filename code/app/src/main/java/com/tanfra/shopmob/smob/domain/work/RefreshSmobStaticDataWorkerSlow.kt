@@ -3,7 +3,7 @@ package com.tanfra.shopmob.smob.domain.work
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
+import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.dataSource.*
 import io.ktor.client.plugins.ResponseException
 import io.ktor.client.statement.bodyAsText

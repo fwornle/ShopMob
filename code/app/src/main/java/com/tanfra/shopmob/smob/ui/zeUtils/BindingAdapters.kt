@@ -11,7 +11,7 @@ import coil.load
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.data.types.ItemStatus
-import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
+import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.utils.fadeIn

@@ -6,11 +6,11 @@ import com.tanfra.shopmob.smob.data.local.dto.SmobShopDTO
 import com.tanfra.shopmob.smob.data.local.dataSource.SmobShopLocalDataSource
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
-import com.tanfra.shopmob.smob.data.net.dataSource.SmobShopRemoteDataSource
+import com.tanfra.shopmob.smob.data.remote.dataSource.SmobShopRemoteDataSource
 import com.tanfra.shopmob.smob.data.repo.utils.ResponseHandler
-import com.tanfra.shopmob.smob.data.net.nto2dto.asNetworkModel
-import com.tanfra.shopmob.smob.data.net.nto2dto.asRepoModel
-import com.tanfra.shopmob.smob.data.net.utils.NetworkConnectionManager
+import com.tanfra.shopmob.smob.data.remote.nto2dto.asNetworkModel
+import com.tanfra.shopmob.smob.data.remote.nto2dto.asRepoModel
+import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.asResource
