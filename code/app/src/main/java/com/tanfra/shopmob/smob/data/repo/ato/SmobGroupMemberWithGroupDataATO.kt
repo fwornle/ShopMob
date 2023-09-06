@@ -7,27 +7,26 @@ import com.tanfra.shopmob.smob.data.types.SmobMemberItem
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 // domain independent data type (Application Transfer Object)
 @Serializable
 @SerialName("smobGroupMemberWithGroupDataATO")
 data class SmobGroupMemberWithGroupDataATO(
-    override val id: String,
-    override var status: ItemStatus,
-    override var position: Long,
-    var memberUsername: String,
-    var memberName: String,
-    var memberEmail: String,
-    var memberImageUrl: String?,
-    var memberGroups: List<String>,
-    val groupId: String,
-    val groupStatus: ItemStatus,
-    val groupPosition: Long,
-    var groupName: String,
-    var groupDescription: String?,
-    var groupType: GroupType,
-    var groupMembers: List<SmobMemberItem>,
-    var groupActivity: ActivityStatus,
+    override val id: String = "invalid ID",
+    override var status: ItemStatus = ItemStatus.INVALID,
+    override var position: Long = -1,
+    val memberUsername: String = "invalid user name",
+    val memberName: String = "invalid name",
+    val memberEmail: String = "invalid email",
+    val memberImageUrl: String? = null,
+    val memberGroups: List<String> = listOf(),
+    val groupId: String = "invalid ID",
+    val groupStatus: ItemStatus = ItemStatus.INVALID,
+    val groupPosition: Long = -1,
+    val groupName: String = "invalid name",
+    val groupDescription: String? = null,
+    val groupType: GroupType = GroupType.OTHER,
+    val groupMembers: List<SmobMemberItem> = listOf(),
+    val groupActivity: ActivityStatus = ActivityStatus("invalid date", -1),
 ) : Ato {
 
     // extract member

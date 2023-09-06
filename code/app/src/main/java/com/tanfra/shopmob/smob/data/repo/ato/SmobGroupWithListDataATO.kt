@@ -10,27 +10,26 @@ import com.tanfra.shopmob.smob.data.types.SmobMemberItem
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 // domain independent data type (Application Transfer Object)
 @Serializable
 @SerialName("smobGroupWithListDataATO")
 data class SmobGroupWithListDataATO(
-    override val id: String,
-    override var status: ItemStatus,
-    override var position: Long,
-    var groupName: String,
-    var groupDescription: String?,
-    var groupType: GroupType,
-    var groupMembers: List<SmobMemberItem>,
-    var groupActivity: ActivityStatus,
-    val listId: String,
-    val listStatus: ItemStatus,
-    val listPosition: Long,
-    var listName: String,
-    var listDescription: String?,
-    var listItems: List<SmobListItem>,
-    var listGroups: List<SmobGroupItem>,
-    var listLifecycle: SmobListLifecycle,
+    override val id: String = "invalid ID",
+    override var status: ItemStatus = ItemStatus.INVALID,
+    override var position: Long = -1,
+    val groupName: String = "invalid name",
+    val groupDescription: String? = null,
+    val groupType: GroupType = GroupType.OTHER,
+    val groupMembers: List<SmobMemberItem> = listOf(),
+    val groupActivity: ActivityStatus = ActivityStatus("invalid date", -1),
+    val listId: String = "invalid ID",
+    val listStatus: ItemStatus = ItemStatus.INVALID,
+    val listPosition: Long = -1,
+    val listName: String = "invalid name",
+    val listDescription: String? = null,
+    val listItems: List<SmobListItem> = listOf(),
+    val listGroups: List<SmobGroupItem> = listOf(),
+    val listLifecycle: SmobListLifecycle = SmobListLifecycle(ItemStatus.INVALID, 0.0),
 ) : Ato {
 
     // extract group
