@@ -163,7 +163,7 @@ class SmobPlanningActivity : AppCompatActivity() {
                 userRepo.refreshDataInLocalDB()
 
                 // determine highest item position
-                userRepo.getAllSmobItems().take(1).collectLatest { daResList ->
+                userRepo.getSmobItems().take(1).collectLatest { daResList ->
                     daResList.data.let { allUsers ->
 
                         Timber.i("Number of users: ${allUsers?.size ?: -1}")

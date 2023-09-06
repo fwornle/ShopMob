@@ -76,7 +76,7 @@ class SmobListRepository(
      * Get the smob list from the local db
      * @return Result holds a Success with all the smob lists or an Error object with the error message
      */
-    override fun getAllSmobItems(): Flow<Resource<List<SmobListATO>>> {
+    override fun getSmobItems(): Flow<Resource<List<SmobListATO>>> {
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
@@ -189,7 +189,7 @@ class SmobListRepository(
     /**
      * Deletes all the smob lists in the db
      */
-    override suspend fun deleteAllSmobItems() {
+    override suspend fun deleteSmobItems() {
         withContext(ioDispatcher) {
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {

@@ -537,7 +537,7 @@ class PlanningViewModel(
     fun fetchSmobShopList() {
 
         // collect flow
-        shopDataSource.getAllSmobItems()
+        shopDataSource.getSmobItems()
             .catch { e ->
                 // previously unhandled exception (= not handled at Room level)
                 // --> catch it here and represent in Resource status
@@ -679,7 +679,7 @@ class PlanningViewModel(
     fun fetchSmobLists() {
 
         // collect flow
-        listDataSource.getAllSmobItems()
+        listDataSource.getSmobItems()
             .catch { e ->
                 // previously unhandled exception (= not handled at Room level)
                 // --> catch it here and represent in Resource status

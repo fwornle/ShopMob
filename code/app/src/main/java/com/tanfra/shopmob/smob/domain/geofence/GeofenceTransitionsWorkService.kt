@@ -96,7 +96,7 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
 
                     // collect flow (originating in the Room DB) of list of all SmobLists
                     _planningViewModel.listDataSource
-                        .getAllSmobItems()
+                        .getSmobItems()
                         .take(1)
                         .onEach { Timber.i("collecting SmobList resource with status: ${it.status}, fc: ${flowCollections++}") }
                         .collect { listOfSmobLists ->
@@ -148,7 +148,7 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
                                 // fetch smobShops
                                 // collect flow (originating in the Room DB) of list of all SmobShops
                                 _planningViewModel.shopDataSource
-                                    .getAllSmobItems()
+                                    .getSmobItems()
                                     .take(1)
                                     .onEach { Timber.i("collecting SmobShop resource with status: ${it.status}, fc: ${flowCollections++}") }
                                     .collect { listOfSmobShops ->

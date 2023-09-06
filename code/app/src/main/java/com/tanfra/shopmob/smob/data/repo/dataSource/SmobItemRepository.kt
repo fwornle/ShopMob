@@ -12,7 +12,7 @@ interface SmobItemRepository<ATO: Ato> {
     // Room executes all queries on a separate thread.
     // Observed Flow will notify the observer when the data has changed.
     fun getSmobItem(id: String): Flow<Resource<ATO>>
-    fun getAllSmobItems(): Flow<Resource<List<ATO>>>
+    fun getSmobItems(): Flow<Resource<List<ATO>>>
 
     // By default Room runs suspend queries off the main thread
     suspend fun saveSmobItem(smobItemATO: ATO)
@@ -20,7 +20,7 @@ interface SmobItemRepository<ATO: Ato> {
     suspend fun updateSmobItem(smobItemATO: ATO)
     suspend fun updateSmobItems(smobItemsATO: List<ATO>)
     suspend fun deleteSmobItem(id: String)
-    suspend fun deleteAllSmobItems()
+    suspend fun deleteSmobItems()
     suspend fun refreshDataInLocalDB()
     suspend fun refreshSmobItemInLocalDB(id: String)
 

@@ -183,7 +183,7 @@ class AdminViewModel(
     fun collectAllSmobGroupsSF() {
 
         // collect flow
-        groupDataSource.getAllSmobItems()
+        groupDataSource.getSmobItems()
             .catch { e ->
                 // previously unhandled exception (= not handled at Room level)
                 // --> catch it here and represent in Resource status
@@ -359,7 +359,7 @@ class AdminViewModel(
     // register the flow of the list of items for the upstream list the user just selected
     @ExperimentalCoroutinesApi
     fun registerSmobUsersFlow(): Flow<Resource<List<SmobUserATO?>>> =
-        userDataSource.getAllSmobItems()
+        userDataSource.getSmobItems()
 
     // convert to StateFlow
     private fun smobUsersFlowAsSF(inFlow: Flow<Resource<List<SmobUserATO?>>>):
@@ -545,7 +545,7 @@ class AdminViewModel(
     // fetch flow of SmobLists and turn into Stateflow (SF) for direct collection in the UI
     @ExperimentalCoroutinesApi
     fun registerSmobListsFlow(): Flow<Resource<List<SmobListATO>?>> =
-        listDataSource.getAllSmobItems()
+        listDataSource.getSmobItems()
 
     // convert flow to StateFlow (SF, not yet collected --> for direct collection in UI)
     private fun smobListsFlowAsSF(inFlow: Flow<Resource<List<SmobListATO>?>>):
@@ -568,7 +568,7 @@ class AdminViewModel(
     fun collectSmobListsFlowAsAltSF() {
 
         // collect flow
-        listDataSource.getAllSmobItems()
+        listDataSource.getSmobItems()
             .catch { e ->
                 // previously unhandled exception (= not handled at Room level)
                 // --> catch it here and represent in Resource status
@@ -817,7 +817,7 @@ class AdminViewModel(
     // fetch the flow of the groups referred to by the upstream list the user just selected
     @ExperimentalCoroutinesApi
     fun registerAllSmobGroupsFlow(): Flow<Resource<List<SmobGroupATO>?>> =
-        groupDataSource.getAllSmobItems()
+        groupDataSource.getSmobItems()
 
     // -------------------------------------------------------------------------------------------
     // combined StateFlow of all groups with selected list data

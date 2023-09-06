@@ -76,7 +76,7 @@ class SmobGroupRepository(
      * Get the smob group group from the local db
      * @return Result holds a Success with all the smob groups or an Error object with the error message
      */
-    override fun getAllSmobItems(): Flow<Resource<List<SmobGroupATO>>> {
+    override fun getSmobItems(): Flow<Resource<List<SmobGroupATO>>> {
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
@@ -216,7 +216,7 @@ class SmobGroupRepository(
     /**
      * Deletes all the smob groups in the db
      */
-    override suspend fun deleteAllSmobItems() {
+    override suspend fun deleteSmobItems() {
         withContext(ioDispatcher) {
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
