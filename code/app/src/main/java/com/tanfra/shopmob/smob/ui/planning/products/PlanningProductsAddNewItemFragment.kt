@@ -106,19 +106,15 @@ class PlanningProductsAddNewItemFragment :
             val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss", Locale.GERMANY)
             val currentDate = sdf.format(Date())
 
-            // fetch items on current shopping list
-            // ... needed to append new item 'at the bottom' of the list and update the completion
-            //     rate (percent - decreases with every new item)
-//            val currList = viewModel.smobList.value
-
-            // collect flow associated with StateFlow element smobList2
+            // collect (state)flow smobListSF to be able to add a new product to the (currently
+            // selected) SmobList
             var currList: SmobListATO? = null
             var valItems: List<SmobListItem>? = null
             var nValItems = 0
             var itemMaxPosition = 0L
 
             viewModel.viewModelScope.launch {
-                viewModel.smobListStaticSF.take(1).collect {
+                viewModel.smobListSF.take(1).collect {
 
                     // valid data? (making sure...)
                     when (it) {

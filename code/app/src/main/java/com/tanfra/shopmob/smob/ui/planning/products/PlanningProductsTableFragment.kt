@@ -27,7 +27,6 @@ import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
 
-
 class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance
@@ -35,6 +34,7 @@ class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
 
     // data binding for fragment_smob_planning_lists.xml
     private lateinit var binding: FragmentPlanningProductsTableBinding
+
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
@@ -61,36 +61,27 @@ class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
 
         // register flows fetch items of the selected upstream list (as well as the list itself)
         listId?.let {
+            with(viewModel) {
 
-            // set current list ID and listPosition in viewModel
-            viewModel.currListId = it
+                // set current list ID and listPosition in viewModel
+                currListId = it
 
-            // fetch flow into new (alternative) StateFlow variable smobListStaticMSF
-            // ... this just hooks up the (cold) Room flow to the StateFlow variable - no collection
-            viewModel.collectSmobList()
+                // register flows in viewModel
+                smobListF = getFlowSmobList(it)  // holds the item 'status'
+                smobListProductsF = getFlowSmobListProducts(it)
 
-            // register flows in viewModel
-            viewModel.smobListF = viewModel.getFlowSmobList(it)  // holds the item 'status'
-            viewModel.smobListProductsF = viewModel.getFlowSmobListProducts(it)
+                // turn to StateFlows
+                smobListSF = smobListFlowToStateFlow(smobListF)
+                smobListProductsSF = smobListProductsFlowToStateFlow(smobListProductsF)
 
-            // turn to StateFlows
-            viewModel.smobListSF = viewModel.smobListFlowToStateFlow(viewModel.smobListF)
-            viewModel.smobListProductsSF = viewModel.smobListProductsFlowToStateFlow(viewModel.smobListProductsF)
+                // combine the flows and turn into StateFlow
+                smobListProductsWithListDataSF = combineFlowsAndConvertToStateFlow(
+                    smobListF,
+                    smobListProductsF,
+                )
 
-            // combine the flows and turn into StateFlow
-            viewModel.smobListProductsWithListDataSF = viewModel.combineFlowsAndConvertToStateFlow(
-                viewModel.smobListF,
-                viewModel.smobListProductsF,
-            )
-
-//            // collect flows and store in StateFlow type (so that we have the latest value available
-//            viewModel.fetchSmobList()
-//            viewModel.fetchSmobListItems()
-//
-//            // combine the flows and turn into StateFlow
-//            viewModel.fetchCombinedFlows()
-
-        }
+            }  // viewModel
+        }  // let...
 
         // configure navbar
         setDisplayHomeAsUpEnabled(true)

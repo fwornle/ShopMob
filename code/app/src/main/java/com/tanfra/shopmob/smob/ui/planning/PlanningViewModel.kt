@@ -61,12 +61,6 @@ class PlanningViewModel(
     lateinit var smobListProductsSF: StateFlow<Resource<List<SmobProductATO>>>
     lateinit var smobListProductsWithListDataSF: StateFlow<List<SmobProductWithListDataATO>>
 
-    // fw230908:  this type of declaration to substitute all static SF declarations
-    // fw230908:  this type of declaration to substitute all static SF declarations
-    // fw230908:  this type of declaration to substitute all static SF declarations
-    private val smobListStaticMSF = MutableStateFlow<Resource<SmobListATO>>(Resource.Loading)
-    val smobListStaticSF = smobListStaticMSF.asStateFlow()
-
 
     /**
      * fetch the flow of the upstream list the user just selected
@@ -174,41 +168,6 @@ class PlanningViewModel(
 
     }  //  combineFlowsAndConvertToStateFlow
 
-
-    /**
-     * collect the flow of the upstream list the user just selected
-     */
-    @ExperimentalCoroutinesApi
-    fun collectSmobList() {
-
-        // list ID set yet?
-        currListId?.let { id ->
-
-            // collect flow
-            viewModelScope.launch {
-
-                // flow terminator
-                listRepository.getSmobItem(id)
-                    .catch { ex ->
-                        // previously unhandled exception (= not handled at Room level)
-                        // --> catch it here and represent in Resource status
-                        smobListStaticMSF.value = Resource.Error(Exception(ex))
-                        showSnackBar.value = ex.message ?: "(no message)"
-                    }
-                    .collectLatest {
-                        // no exception during flow collection
-                        when (it) {
-                            is Resource.Error -> throw(Exception("Couldn't retrieve SmobList from remote"))
-                            is Resource.Loading -> throw(Exception("SmobList still loading"))
-                            is Resource.Success -> { smobListStaticMSF.value = it }
-                        }
-                    }
-
-            }  // coroutine
-
-        } // listId set
-
-    }  // collectSmobList
 
 
     /**
