@@ -71,16 +71,16 @@ class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
 
             // register flows in viewModel
             viewModel.smobListF = viewModel.getFlowSmobList(it)  // holds the item 'status'
-            viewModel.smobListItemsF = viewModel.getFlowSmobListItems(it)
+            viewModel.smobListProductsF = viewModel.getFlowSmobListProducts(it)
 
             // turn to StateFlows
             viewModel.smobListSF = viewModel.smobListFlowToStateFlow(viewModel.smobListF)
-            viewModel.smobListItemsSF = viewModel.smobListItemsFlowToStateFlow(viewModel.smobListItemsF)
+            viewModel.smobListProductsSF = viewModel.smobListProductsFlowToStateFlow(viewModel.smobListProductsF)
 
             // combine the flows and turn into StateFlow
-            viewModel.smobListItemsWithStatusSF = viewModel.combineFlowsAndConvertToStateFlow(
+            viewModel.smobListProductsWithListDataSF = viewModel.combineFlowsAndConvertToStateFlow(
                 viewModel.smobListF,
-                viewModel.smobListItemsF,
+                viewModel.smobListProductsF,
             )
 
 //            // collect flows and store in StateFlow type (so that we have the latest value available

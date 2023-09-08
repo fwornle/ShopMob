@@ -57,14 +57,16 @@ class PlanningViewModel(
     lateinit var smobListF: Flow<Resource<SmobListATO>>
     lateinit var smobListSF: StateFlow<Resource<SmobListATO>>
 
-    lateinit var smobListItemsF: Flow<Resource<List<SmobProductATO>>>
-    lateinit var smobListItemsSF: StateFlow<Resource<List<SmobProductATO>>>
+    lateinit var smobListProductsF: Flow<Resource<List<SmobProductATO>>>
+    lateinit var smobListProductsSF: StateFlow<Resource<List<SmobProductATO>>>
+    lateinit var smobListProductsWithListDataSF: StateFlow<List<SmobProductWithListDataATO>>
 
-    lateinit var smobListItemsWithStatusSF: StateFlow<List<SmobProductWithListDataATO>>
-
+    // fw230908:  this type of declaration to substitute all static SF declarations
+    // fw230908:  this type of declaration to substitute all static SF declarations
     // fw230908:  this type of declaration to substitute all static SF declarations
     private val smobListStaticMSF = MutableStateFlow<Resource<SmobListATO>>(Resource.Loading)
     val smobListStaticSF = smobListStaticMSF.asStateFlow()
+
 
     /**
      * fetch the flow of the upstream list the user just selected
@@ -80,24 +82,24 @@ class PlanningViewModel(
             scope = viewModelScope,
             started = WhileSubscribed(5000),
             initialValue = Resource.Loading
-        )  // StateFlow<...>
+        )
     }
 
     /**
-     * fetch the flow of the list of items for the upstream list the user just selected
+     * fetch the flow of the list of products for the upstream SmobList the user just selected
      */
     @ExperimentalCoroutinesApi
-    fun getFlowSmobListItems(id: String): Flow<Resource<List<SmobProductATO>>> {
+    fun getFlowSmobListProducts(id: String): Flow<Resource<List<SmobProductATO>>> {
         return productRepository.getSmobProductsByListId(id)
     }
 
     // convert to StateFlow
-    fun smobListItemsFlowToStateFlow(inFlow: Flow<Resource<List<SmobProductATO>>>): StateFlow<Resource<List<SmobProductATO>>> {
+    fun smobListProductsFlowToStateFlow(inFlow: Flow<Resource<List<SmobProductATO>>>): StateFlow<Resource<List<SmobProductATO>>> {
         return inFlow.stateIn(
             scope = viewModelScope,
             started = WhileSubscribed(5000),
             initialValue = Resource.Loading
-        )  // StateFlow<...>
+        )
     }
 
     /**
@@ -168,7 +170,7 @@ class PlanningViewModel(
                 scope = viewModelScope,
                 started = WhileSubscribed(5000),
                 initialValue = listOf()
-            )  // StateFlow<...>
+            )
 
     }  //  combineFlowsAndConvertToStateFlow
 
@@ -222,7 +224,7 @@ class PlanningViewModel(
             productRepository.refreshDataInLocalDB()
 
             // collect flow to update StateFlow with current value from DB
-            smobListItemsSF.take(1).collect {
+            smobListProductsSF.take(1).collect {
 
                 when (it) {
                     is Resource.Error -> { showSnackBar.value = it.exception.message }
@@ -272,7 +274,7 @@ class PlanningViewModel(
         selectedShop.postValue(
             SmobShopATO(
                 "no product selected yet (id)",
-                ItemStatus.NEW,
+                ItemStatus.INVALID,
                 -1L,
                 "",
                 "",
@@ -320,7 +322,7 @@ class PlanningViewModel(
             navigationCommand.value = NavigationCommand.Back
 
             // update StateFlow values by re-collecting flows from local DB
-            smobListItemsSF.take(1).collect {
+            smobListProductsSF.take(1).collect {
 
                 when (it) {
                     is Resource.Error -> { showSnackBar.value = it.exception.message }
@@ -463,8 +465,8 @@ class PlanningViewModel(
     // list that holds the smob data items to be displayed on the UI
     // ... flow, converted to StateFlow --> data changes in the backend are observed
     // ... ref: https://medium.com/androiddevelopers/migrating-from-livedata-to-kotlins-flow-379292f419fb
-    private val _smobLists = MutableStateFlow<Resource<List<SmobListATO>>>(Resource.Loading)
-    val smobLists = _smobLists.asStateFlow()
+    private val smobListsStaticMSF = MutableStateFlow<Resource<List<SmobListATO>>>(Resource.Loading)
+    val smobListsStaticSF = smobListsStaticMSF.asStateFlow()
 
     // Detailed investigation of Flow vs. LiveData: LD seems the better fit for UI layer
     // see: https://bladecoder.medium.com/kotlins-flow-in-viewmodels-it-s-complicated-556b472e281a
@@ -490,7 +492,7 @@ class PlanningViewModel(
             .catch { ex ->
                 // previously unhandled exception (= not handled at Room level)
                 // --> catch it here and represent in Resource status
-                _smobLists.value = Resource.Error(Exception(ex))
+                smobListsStaticMSF.value = Resource.Error(Exception(ex))
                 showSnackBar.value = ex.message ?: "(no message)"
             }
             .take(1)
@@ -501,11 +503,11 @@ class PlanningViewModel(
                     is Resource.Error ->{
                         // these are errors handled at Room level --> display
                         showSnackBar.value = it.exception.message ?: "(no message)"
-                        _smobLists.value = it  // still return Resource value (w/h error)
+                        smobListsStaticMSF.value = it  // still return Resource value (w/h error)
                     }
                     is Resource.Success -> {
                         // --> store successfully received data in StateFlow value
-                        _smobLists.value = it
+                        smobListsStaticMSF.value = it
                         updateShowNoData(it)
                     }
                 }
@@ -531,7 +533,7 @@ class PlanningViewModel(
             collectSmobLists()
 
             // check if the "no data" symbol has to be shown (empty list)
-            updateShowNoData(_smobLists.value)
+            updateShowNoData(smobListsStaticMSF.value)
 
         }
 
@@ -586,7 +588,7 @@ class PlanningViewModel(
         collectSmobLists()
 
         // check if the "no data" symbol has to be shown (empty list)
-        updateShowNoData(_smobLists.value)
+        updateShowNoData(smobListsStaticMSF.value)
     }
 
     /**
@@ -602,6 +604,5 @@ class PlanningViewModel(
         // successful validation
         return true
     }
-
 
 }

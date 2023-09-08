@@ -142,7 +142,7 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
     private fun navigateToAddSmobList() {
 
         // determine hightest index in all smobLists
-        val highPos = viewModel.smobLists.value.let {
+        val highPos = viewModel.smobListsStaticSF.value.let {
             when (it) {
                 is Resource.Error -> throw (Exception("Couldn't retrieve SmobGroup from remote"))
                 is Resource.Loading -> throw (Exception("SmobGroup still loading"))
