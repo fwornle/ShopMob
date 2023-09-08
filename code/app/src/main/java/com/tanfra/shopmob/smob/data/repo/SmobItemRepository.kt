@@ -13,7 +13,6 @@ import com.tanfra.shopmob.smob.data.remote.nto2dto._asRepoModel
 import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
-import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.asResource
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
@@ -24,14 +23,13 @@ import org.koin.core.component.inject
 import timber.log.Timber
 import kotlin.collections.ArrayList
 
-
 /**
  * Concrete implementation of a data source as a db.
  *
  * The repository is implemented so that you can focus on only testing it.
  *
- * @param smobItemDao the dao that does the Room db operations for table smobItems
- * @param smobItemApi the api that does the network operations for table smobItems
+ * @param smobItemDao data source for CRUD operations in local DB for table smobItems
+ * @param smobItemApi data source for network based access to remote table smobItems
  * @param ioDispatcher a coroutine dispatcher to offload the blocking IO tasks
  */
 open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
@@ -64,9 +62,9 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
                 // fetch data from DB (and convert to ATO)
                 atoFlow = smobItemDao.getSmobItemById(id)._asDomainModel(dummySmobItemDTO)
                 // wrap data in Resource (--> error/success/[loading])
-                atoFlow.asResource(null)
+                atoFlow.asResource("item with id $id not found in local table")
             } catch (e: Exception) {
-                // handle exceptions --> error message returned in Resource.error
+                // handle exceptions --> error message returned in Resource.Error
                 atoFlow.asResource(e.localizedMessage)
             }
 
@@ -76,7 +74,7 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
 
     /**
      * Get the smob item item from the local db
-     * @return Result holds a Success with all the smob groups or an Error object with the error message
+     * @return Result holds a Success with all the smob items or an Error object with the error message
      */
     override fun getSmobItems(): Flow<Resource<List<ATO>>> {
 
@@ -89,9 +87,9 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
                 // fetch data from DB (and convert to ATO)
                 atoFlow = smobItemDao.getSmobItems()._asDomainModel(dummySmobItemDTO)
                 // wrap data in Resource (--> error/success/[loading])
-                atoFlow.asResource(null)
+                atoFlow.asResource("local table empty")
             } catch (e: Exception) {
-                // handle exceptions --> error message returned in Resource.error
+                // handle exceptions --> error message returned in Resource.Error
                 atoFlow.asResource(e.localizedMessage)
             }
 
@@ -109,22 +107,32 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
-            // first store in local DB first
+            // first store in local DB
             smobItemATO._asDatabaseModel(dummySmobItemDTO)
-                .also {
+                .also { dbItem ->
 
-                smobItemDao.saveSmobItem(it)
+                smobItemDao.saveSmobItem(dbItem)
 
                 // then push to backend DB
                 // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
                 if(networkConnectionManager.isNetworkConnected) {
-                    val testRead = getSmobItemViaApi(it.id)
-                    if (testRead.data?.id != it.id) {
-                        // item not found in backend --> use POST to create it
-                        saveSmobItemViaApi(it)
-                    } else {
-                        // item already exists in backend DB --> use PUT to update it
-                        smobItemApi.updateSmobItemById(it.id, it._asNetworkModel(dummySmobItemDTO))
+                    getSmobItemViaApi(dbItem.id).let {
+                        when (it) {
+                            is Resource.Error -> Timber.i("Couldn't retrieve SmobItem from remote")
+                            is Resource.Loading -> Timber.i("SmobItem still loading")
+                            is Resource.Success -> {
+                                if (it.data.id != dbItem.id) {
+                                    // item not found in backend --> use POST to create it
+                                    saveSmobItemViaApi(dbItem)
+                                } else {
+                                    // item already exists in backend DB --> use PUT to update it
+                                    smobItemApi.updateSmobItemById(
+                                        dbItem.id,
+                                        dbItem._asNetworkModel(dummySmobItemDTO)
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -136,11 +144,11 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
 
 
     /**
-     * Insert several smob groups in the db. Replace any potentially existing smob u?ser record.
-     * @param smobItemsATO a item of smob groups to be inserted
+     * Insert several smob items in the db. Replace any potentially existing smob u?ser record.
+     * @param smobItemsATO a item of smob items to be inserted
      */
     override suspend fun saveSmobItems(smobItemsATO: List<ATO>) {
-        // store all provided smob groups by repeatedly calling upon saveSmobItem
+        // store all provided smob items by repeatedly calling upon saveSmobItem
         withContext(ioDispatcher) {
             smobItemsATO.map { saveSmobItem(it) }
         }
@@ -155,7 +163,7 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
 
-                // first store in local DB first
+                // first store in local DB
                 smobItemATO._asDatabaseModel(dummySmobItemDTO)
                     .also {
                         smobItemDao.updateSmobItem(it)
@@ -172,11 +180,11 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
         }
 
     /**
-     * Update an set of existing smob groups in the db. Ignore smob groups which do not exist.
-     * @param smobItemsATO the item of smob groups to be updated
+     * Update an set of existing smob items in the db. Ignore smob items which do not exist.
+     * @param smobItemsATO the item of smob items to be updated
      */
     override suspend fun updateSmobItems(smobItemsATO: List<ATO>) {
-        // update all provided smob groups by repeatedly calling upon updateSmobItem
+        // update all provided smob items by repeatedly calling upon updateSmobItem
         withContext(ioDispatcher) {
             smobItemsATO.map { updateSmobItem(it) }
         }
@@ -199,23 +207,29 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
     }
 
     /**
-     * Deletes all the smob groups in the db
+     * Deletes all the smob items in the db
      */
     override suspend fun deleteSmobItems() {
         withContext(ioDispatcher) {
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
 
-                // first delete all groups from local DB
+                // first delete all items from local DB
                 smobItemDao.deleteAllSmobItems()
 
-                // then delete all groups from backend DB
+                // then delete all items from backend DB
                 if(networkConnectionManager.isNetworkConnected) {
-                    getSmobItemsViaApi().let { resList ->
-                        if (resList.status == Status.SUCCESS) {
-                            resList.data?.map { smobItemApi.deleteSmobItemById(it!!.id) }
-                        } else {
-                            Timber.w("Unable to get SmobItem IDs from backend DB (via API) - not deleting anything.")
+                    getSmobItemsViaApi().let {
+                        when (it) {
+                            is Resource.Error -> Timber.i("Couldn't retrieve SmobItem from remote")
+                            is Resource.Loading -> Timber.i("SmobItem still loading")
+                            is Resource.Success -> {
+                                it.data.map { itemOrNull -> 
+                                    itemOrNull?.let { item -> 
+                                        smobItemApi.deleteSmobItemById(item.id) 
+                                    } 
+                                }
+                            }
                         }
                     }
                 }
@@ -226,7 +240,7 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
 
 
     /**
-     * Synchronize all smob groups in the db by retrieval from the backend using the (net) API
+     * Synchronize all smob items in the db by retrieval from the backend using the (net) API
      */
     override suspend fun refreshDataInLocalDB() {
 
@@ -235,53 +249,50 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
 
             // initiate the (HTTP) GET request using the provided query parameters
             Timber.i("Sending GET request for SmobItem data...")
-            val response: Resource<List<DTO?>> = getSmobItemsViaApi()
+            getSmobItemsViaApi().let {
+                when (it) {
+                    is Resource.Error -> Timber.i("Couldn't retrieve SmobItem from remote")
+                    is Resource.Loading -> Timber.i("SmobItem still loading")
+                    is Resource.Success -> {
+                        Timber.i("SmobItem data GET request complete (success)")
 
-            // got any valid data back?
-            if (response.status == Status.SUCCESS) {
+                        // store item data in DB - if any
+                        it.data.let { daList ->
+                            daList.map { itemOrNull -> 
+                                itemOrNull?.let { item ->
+                                    smobItemDao.saveSmobItem(item)
+                                }
+                            } 
+                        }
+                            
+                        Timber.i("SmobItem data items stored in local DB")
 
-                // set status to keep UI updated
-                Timber.i("SmobItem data GET request complete (success)")
-
-                // store item data in DB - if any
-                response.data?.let {
-                    it.map { smobItemDao.saveSmobItem(it!!) }
-                    Timber.i("SmobItem data items stored in local DB")
+                    }
                 }
-
-            }  // if (valid response)
+            }
 
         }  // coroutine scope (IO)
 
     }  // refreshSmobItemsInDB()
 
     /**
-     * Synchronize an individual smob groups in the db by retrieval from the backend DB (API call)
+     * Synchronize an individual smob items in the db by retrieval from the backend DB (API call)
      */
     override suspend fun refreshSmobItemInLocalDB(id: String) {
 
         // initiate the (HTTP) GET request using the provided query parameters
         Timber.i("Sending GET request for SmobItem data...")
-        val response: Resource<DTO> = getSmobItemViaApi(id)
-
-        // got back any valid data?
-        if (response.status == Status.SUCCESS) {
-
-            Timber.i("SmobItem data GET request complete (success)")
-
-
-            // send POST request to server - coroutine to avoid blocking the main (UI) thread
-            withContext(Dispatchers.IO) {
-
-                // store item data in DB - if any
-                response.data?.let {
-                    smobItemDao.saveSmobItem(it)
+        getSmobItemViaApi(id).let {
+            when (it) {
+                is Resource.Error -> Timber.i("Couldn't retrieve SmobItem from remote")
+                is Resource.Loading -> Timber.i("SmobItem still loading")
+                is Resource.Success -> {
+                    Timber.i("SmobItem data GET request complete (success)")
+                    it.data.let { item -> smobItemDao.saveSmobItem(item) }
                     Timber.i("SmobItem data items stored in local DB")
                 }
-
-            }  // coroutine scope (IO)
-
-        }  // if (valid response)
+            }
+        }
 
     }  // refreshSmobItemInLocalDB()
 
@@ -296,7 +307,7 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
     // ... so that we don't have to get a separate instance in every repository
     private val responseHandler: ResponseHandler by inject()
 
-    // net-facing getter: all groups
+    // net-facing getter: all items
     // ... wrap in Resource (as opposed to Result - see above) to also provide "loading" state
     // ... note: no 'override', as this is not exposed in the repository interface (network access
     //           is fully abstracted by the repo - all data access done via local DB)
@@ -319,15 +330,9 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
 
             } catch (ex: Exception) {
 
-                // return with exception
-                // --> handle it... wraps data in Response type (success/error/loading)
-                val daException = responseHandler.handleException<ArrayList<DTO>>(ex)
-
                 // local logging
-                Timber.e(daException.message)
-
-                // return handled exception
-                daException
+                Timber.e(ex.message)
+                responseHandler.handleException<ArrayList<DTO>>(ex)
 
             }
 
@@ -341,18 +346,7 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
 
         // overall result - haven't got anything yet
         // ... this is useless here --> but needs to be done like this in the viewModel
-//        val dummySmobItemDTO = DTO(
-//            "DUMMY",
-//            ItemStatus.NEW,
-//            -1L,
-//            "",
-//            "",
-//            ItemType.OTHER,
-//            listOf(),
-//            "",
-//            0,
-//        )
-        var result = Resource.loading(dummySmobItemDTO)
+        var result: Resource<DTO> = Resource.Loading
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
@@ -370,14 +364,9 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
 
             } catch (ex: Exception) {
 
-                // return with exception --> handle it...
-                val daException = responseHandler.handleException<DTO>(ex)
-
                 // local logging
-                Timber.e(daException.message)
-
-                // return handled exception
-                daException
+                Timber.e(ex.message)
+                responseHandler.handleException(ex)
 
             }
 
@@ -395,10 +384,9 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
             // return successfully received data object (from Moshi --> PoJo)
             smobItemApi.saveSmobItem(smobItemDTO._asNetworkModel(dummySmobItemDTO))
         } catch (ex: Exception) {
-            // return with exception --> handle it...
-            val daException = responseHandler.handleException<DTO>(ex)
             // local logging
-            Timber.e(daException.message)
+            Timber.e(ex.message)
+            responseHandler.handleException<DTO>(ex)
         }
     }
 

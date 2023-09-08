@@ -12,7 +12,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.databinding.FragmentAdminListsTableBinding
-import com.tanfra.shopmob.smob.data.repo.utils.Status
+import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
@@ -126,16 +126,19 @@ class AdminListsTableFragment : BaseFragment(), KoinComponent {
     // "+" FAB handler --> navigate to selected fragment of the admin activity
     private fun navigateToAddList() {
 
-        // determine highest index in all smobGroups
+        // determine highest index in all smobLists
         val highPos = viewModel.smobListsSF.value.let {
-            if (it.status == Status.SUCCESS) {
-                // return  highest index
-                it.data?.fold(0L) { max, list ->
-                    if (list.position > max) list.position else max
-                } ?: 0L
-            } else {
-                0L
-            }
+            when (it) {
+                is Resource.Error -> throw (Exception("Couldn't retrieve SmobList from remote"))
+                is Resource.Loading -> throw (Exception("SmobList still loading"))
+                is Resource.Success -> {
+                    it.data.let { daList ->
+                        daList.fold(0L) { max, list ->
+                            if (list.position > max) list.position else max
+                        }
+                    }
+                }  // Resource.Success
+            }  // when
         }
 
         // communicate the currently highest list position

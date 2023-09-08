@@ -8,14 +8,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("smobUserATO")
 data class SmobUserATO(
-    override val id: String,
-    override var status: ItemStatus,
-    override var position: Long,
-    val username: String,
-    val name: String,
-    val email: String,
-    val imageUrl: String?,
-    var groups: List<String>,
+    override val id: String = "invalid ID",
+    override var status: ItemStatus = ItemStatus.INVALID,
+    override var position: Long = -1,
+    val username: String = "invalid user name",
+    val name: String = "invalid name",
+    val email: String = "",
+    val imageUrl: String? = null,
+    var groups: List<String> = listOf(),
 ) : Ato {
 
     // determine, if user is affiliated with any groups (yet)

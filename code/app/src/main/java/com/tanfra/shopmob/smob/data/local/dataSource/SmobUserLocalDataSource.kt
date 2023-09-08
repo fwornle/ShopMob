@@ -12,7 +12,7 @@ interface SmobUserLocalDataSource: SmobItemLocalDataSource<SmobUserDTO> {
 
     /**
      * @param smobItemId the ID of the smob user
-     * @return the smob user object with the smobItemId
+     * @return the smob user object with the smobItemId - or null if the table is empty
      */
     //
     // note: Flow types must not be declared as "suspend"able functions, see the third answer in:
@@ -21,7 +21,7 @@ interface SmobUserLocalDataSource: SmobItemLocalDataSource<SmobUserDTO> {
     override fun getSmobItemById(smobItemId: String): Flow<SmobUserDTO?>
 
     /**
-     * @return all smobUsers.
+     * @return all smobUsers - returns an empty list, if the table is empty
      */
     //
     // note: Flow types must not be declared as "suspend"able functions, see the third answer in:

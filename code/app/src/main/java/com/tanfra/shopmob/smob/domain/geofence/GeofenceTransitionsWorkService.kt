@@ -6,7 +6,7 @@ import androidx.work.WorkerParameters
 import com.tanfra.shopmob.smob.data.types.ProductMainCategory
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
-import com.tanfra.shopmob.smob.data.repo.utils.Status
+import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.smob.ui.zeUtils.hasProduct
 import com.tanfra.shopmob.utils.sendNotificationOnGeofenceHit
@@ -16,7 +16,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
 
-class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerParameters):
+class GeofenceTransitionsWorkService(private val appContext: Context, params: WorkerParameters):
     CoroutineWorker(appContext, params), KoinComponent {
 
     companion object {
@@ -44,8 +44,8 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
             val smobProductIds = mutableListOf<String>()
 
             // loop over all smobLists
-            smobLists?.map {
-                it.items
+            smobLists?.map { daList ->
+                daList.items
                     .map { item -> item.id }
                     .forEach { smobProductIds.add(it) }
             }
@@ -58,8 +58,8 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
             val productMainCategories = mutableListOf<ProductMainCategory>()
 
             // loop over all smobLists
-            smobLists?.map {
-                it.items
+            smobLists?.map { daList ->
+                daList.items
                     .map { item -> item.mainCategory }
                     .forEach { productMainCategories.add(it) }
             }
@@ -95,33 +95,16 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
                     var smobLists: List<SmobListATO>? = null
 
                     // collect flow (originating in the Room DB) of list of all SmobLists
-                    _planningViewModel.listDataSource
+                    _planningViewModel.listRepository
                         .getSmobItems()
                         .take(1)
-                        .onEach { Timber.i("collecting SmobList resource with status: ${it.status}, fc: ${flowCollections++}") }
+                        .onEach { Timber.i("collecting SmobList resource, fc: ${flowCollections++}") }
                         .collect { listOfSmobLists ->
-
-                            // check Resource status
-                            when(listOfSmobLists.status) {
-
-                                Status.ERROR -> {
-                                    // these are errors handled at Room level --> display
-                                    Timber.e("Cannot fetch smobLists flow: ${listOfSmobLists.message}")
-                                }
-
-                                Status.LOADING -> {
-                                    // could control visibility of progress bar here
-                                    Timber.i("SmobLists... still loading.")
-                                }
-
-                                Status.SUCCESS -> {
-                                    // process successfully received data
-                                    smobLists = listOfSmobLists.data
-
-                                }  // Status.SUCCESS (SmobLists)
-
-                            }  // when (Resource status, SmobLists)
-
+                            when(listOfSmobLists) {
+                                is Resource.Error -> throw(Exception("Cannot fetch smobLists flow"))
+                                is Resource.Loading -> throw(Exception("SmobList still loading"))
+                                is Resource.Success -> smobLists = listOfSmobLists.data
+                            }
                         }  // collect flow (SmobLists)
 
                     // any SmobList items?
@@ -147,33 +130,16 @@ class GeofenceTransitionsWorkService(val appContext: Context, params: WorkerPara
 
                                 // fetch smobShops
                                 // collect flow (originating in the Room DB) of list of all SmobShops
-                                _planningViewModel.shopDataSource
+                                _planningViewModel.shopRepository
                                     .getSmobItems()
                                     .take(1)
-                                    .onEach { Timber.i("collecting SmobShop resource with status: ${it.status}, fc: ${flowCollections++}") }
+                                    .onEach { Timber.i("collecting SmobShop resource, fc: ${flowCollections++}") }
                                     .collect { listOfSmobShops ->
-
-                                        // check Resource status
-                                        when(listOfSmobShops.status) {
-
-                                            Status.ERROR -> {
-                                                // these are errors handled at Room level --> display
-                                                Timber.e("Cannot fetch smobShops flow: ${listOfSmobShops.message}")
-                                            }
-
-                                            Status.LOADING -> {
-                                                // could control visibility of progress bar here
-                                                Timber.i("SmobShops... still loading.")
-                                            }
-
-                                            Status.SUCCESS -> {
-                                                // process successfully received data
-                                                smobShops = listOfSmobShops.data
-
-                                            }  // Status.SUCCESS (SmobShops)
-
-                                        }  // when (Resource status, SmobShops)
-
+                                        when(listOfSmobShops) {
+                                            is Resource.Error -> throw(Exception("Cannot fetch smobShops flow"))
+                                            is Resource.Loading -> throw(Exception("SmobShops still loading"))
+                                            is Resource.Success -> smobShops = listOfSmobShops.data
+                                        }
                                     }  // collect flow (SmobShops)
 
 

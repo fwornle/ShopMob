@@ -16,7 +16,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.databinding.FragmentAdminGroupsTableBinding
-import com.tanfra.shopmob.smob.data.repo.utils.Status
+import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
@@ -195,14 +195,17 @@ class AdminGroupsTableFragment : BaseFragment(), KoinComponent {
 
         // determine highest index in all smobGroups
         val highPos = viewModel.smobGroupsSF.value.let {
-            if (it.status == Status.SUCCESS) {
-                // return  highest index
-                it.data?.fold(0L) { max, list ->
-                    if (list.position > max) list.position else max
-                } ?: 0L
-            } else {
-                0L
-            }
+            when (it) {
+                is Resource.Error -> throw (Exception("Couldn't retrieve SmobGroup from remote"))
+                is Resource.Loading -> throw (Exception("SmobGroup still loading"))
+                is Resource.Success -> {
+                    it.data.let { daList ->
+                        daList.fold(0L) { max, list ->
+                            if (list.position > max) list.position else max
+                        }
+                    }
+                }  // Resource.Success
+            }  // when
         }
 
         // communicate the currently highest list position

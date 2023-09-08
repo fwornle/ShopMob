@@ -10,6 +10,7 @@ interface SmobShopRemoteDataSource {
 
         suspend fun getSmobItemById(id: String): Result<SmobShopNTO>
         suspend fun getSmobItems(): Result<ArrayList<SmobShopNTO>>
+
         suspend fun saveSmobItem(newItem: SmobShopNTO): Result<Void>
         suspend fun updateSmobItemById(id: String, newItem: SmobShopNTO): Result<Void>
         suspend fun deleteSmobItemById(id: String): Result<Void>

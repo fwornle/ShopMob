@@ -27,7 +27,7 @@ import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
-import com.tanfra.shopmob.smob.data.repo.utils.Status
+import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.smob.ui.zeUtils.closeSoftKeyboard
@@ -38,7 +38,6 @@ import org.koin.core.component.KoinComponent
 import timber.log.Timber
 import java.util.*
 import kotlin.math.roundToInt
-
 
 @SuppressLint("UnspecifiedImmutableFlag")
 class PlanningProductsAddNewItemFragment :
@@ -122,23 +121,27 @@ class PlanningProductsAddNewItemFragment :
                 viewModel.smobList2.take(1).collect {
 
                     // valid data? (making sure...)
-                    if (it.status == Status.SUCCESS) {
+                    when (it) {
+                        is Resource.Error -> throw (Exception("Couldn't retrieve SmobList from remote"))
+                        is Resource.Loading -> throw (Exception("SmobList still loading"))
+                        is Resource.Success -> {
 
-                        // store current SmobList
-                        currList = it.data
+                            // store current SmobList
+                            currList = it.data
 
-                        valItems =
-                            it.data?.items?.filter { itm -> itm.status != ItemStatus.DELETED }
-                        nValItems = valItems?.size ?: 0
-                        itemMaxPosition = currList?.items?.fold(0L) { max, item ->
-                            if (item.listPosition > max) {
-                                item.listPosition
-                            } else {
-                                max
-                            }
-                        } ?: 0L
+                            valItems =
+                                it.data.items.filter { itm -> itm.status != ItemStatus.DELETED }
+                            nValItems = valItems?.size ?: 0
+                            itemMaxPosition = currList?.items?.fold(0L) { max, item ->
+                                if (item.listPosition > max) {
+                                    item.listPosition
+                                } else {
+                                    max
+                                }
+                            } ?: 0L
 
-                    }
+                        }  // Resource.Success
+                    }  // when
 
                 }  // collect
             }  // coroutine

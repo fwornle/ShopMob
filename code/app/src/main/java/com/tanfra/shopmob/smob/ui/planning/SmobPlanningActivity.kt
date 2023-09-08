@@ -27,6 +27,7 @@ import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserRepository
+import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.domain.work.SmobAppWork
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.take
@@ -164,56 +165,62 @@ class SmobPlanningActivity : AppCompatActivity() {
 
                 // determine highest item position
                 userRepo.getSmobItems().take(1).collectLatest { daResList ->
-                    daResList.data.let { allUsers ->
 
-                        Timber.i("Number of users: ${allUsers?.size ?: -1}")
+                    when (daResList) {
+                        is Resource.Error -> throw (Exception("Couldn't retrieve SmobList from remote"))
+                        is Resource.Loading -> throw (Exception("SmobList still loading"))
+                        is Resource.Success -> {
+                            daResList.data.let { allUsers ->
 
-                        val userItemPos: Long
-                        val daUser: SmobUserATO? = allUsers?.find { it.id == userId }
+                                Timber.i("Number of users: ${allUsers.size}")
 
-                        // determine position of user item in DB
-                        userItemPos = if(daUser == null) {
-                            // user new to ShopMob app --> append at the end
-                            // indicate that this is a new user (new to ShopMob)
-                            isNewUser = true
+                                val userItemPos: Long
+                                val daUser: SmobUserATO? = allUsers.find { it.id == userId }
 
-                            // determine highest user position (plus one)
-                            allUsers?.maxOf { it.position + 1 } ?: -1
+                                // determine position of user item in DB
+                                userItemPos = if (daUser == null) {
+                                    // user new to ShopMob app --> append at the end
+                                    // indicate that this is a new user (new to ShopMob)
+                                    isNewUser = true
 
-                        } else {
-                            // user already in ShopMob DB --> use current position
-                            daUser.position
-                        }
+                                    // determine highest user position (plus one)
+                                    allUsers.maxOf { it.position + 1 }
+
+                                } else {
+                                    // user already in ShopMob DB --> use current position
+                                    daUser.position
+                                }
 
 
-                        // define user object
-                        SmobApp.currUser = SmobUserATO(
-                            userId,
-                            if(isNewUser) ItemStatus.NEW else ItemStatus.OPEN,
-                            userItemPos,
-                            userName.trim().replace(" ", "."),
-                            userName,
-                            userEmail,
-                            userProfileUrl.toString(),
-                            daUser?.groups ?: listOf(),
-                        )
+                                // define user object
+                                SmobApp.currUser = SmobUserATO(
+                                    userId,
+                                    if (isNewUser) ItemStatus.NEW else ItemStatus.OPEN,
+                                    userItemPos,
+                                    userName.trim().replace(" ", "."),
+                                    userName,
+                                    userEmail,
+                                    userProfileUrl.toString(),
+                                    daUser?.groups ?: listOf(),
+                                )
 
-                        Timber.i("User has groups: ${daUser?.hasGroupRefs()}")
+                                Timber.i("User has groups: ${daUser?.hasGroupRefs()}")
 
-                        // attempt to update user data in local/backend DB (or store, if new)
-                        // --> create new co-routine (also in 'wManager.applicationScope')
-                        // --> forces the parent co-routine to await completion of the 'child' CR
-                        //     ... and, as such, ensures a reliable start-up of the app - as
-                        //     SmobApp.currUser is set before the fragment is initialized (thereby
-                        //     guaranteeing the correct display of the user's smobLists)
-                        launch { userRepo.saveSmobItem(SmobApp.currUser!!) }
+                                // attempt to update user data in local/backend DB (or store, if new)
+                                // --> create new co-routine (also in 'wManager.applicationScope')
+                                // --> forces the parent co-routine to await completion of the 'child' CR
+                                //     ... and, as such, ensures a reliable start-up of the app - as
+                                //     SmobApp.currUser is set before the fragment is initialized (thereby
+                                //     guaranteeing the correct display of the user's smobLists)
+                                launch { userRepo.saveSmobItem(SmobApp.currUser!!) }
 
-                    }
+                            }  // let ...
+                        }  // Resource.Success
+                    }  // when (daResList)
 
-                }
+                }  // collectLastest
 
             }  //  applicationScope
-
 
         }  // just logged-in
 

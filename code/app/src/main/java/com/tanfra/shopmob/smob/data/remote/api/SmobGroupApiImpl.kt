@@ -13,7 +13,6 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 
-
 class SmobGroupApiImpl(
     private val ktor: HttpClient,
     tableUrlPart: String

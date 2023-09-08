@@ -2,8 +2,8 @@ package com.tanfra.shopmob.smob.data.repo.utils
 
 import io.ktor.client.plugins.ResponseException
 import org.koin.core.component.KoinComponent
-import java.lang.Exception
 import java.net.SocketTimeoutException
+import kotlin.Exception
 
 // standardize network error handling
 // see: https://medium.com/@harmittaa/retrofit-2-6-0-with-koin-and-coroutines-network-error-handling-a5b98b5e5ca0
@@ -16,17 +16,17 @@ enum class ErrorCodes(val code: Int) {
 open class ResponseHandler: KoinComponent {
 
     fun <T : Any> handleSuccess(data: T): Resource<T> {
-        return Resource.success(data)
+        return Resource.Success(data)
     }
 
     fun <T : Any> handleException(e: Exception): Resource<T> {
         return when (e) {
             is ResponseException /* KTOR */ ->
-                Resource.error(getErrorMessage(e.response.status.value, e.message), null)
-            is SocketTimeoutException -> {
-                Resource.error(getErrorMessage(ErrorCodes.SocketTimeOut.code, e.message), null)
-            }
-            else -> Resource.error(getErrorMessage(Int.MAX_VALUE, e.message), null)
+                Resource.Error(Exception(getErrorMessage(e.response.status.value, e.message)))
+            is SocketTimeoutException ->
+                Resource.Error(Exception(getErrorMessage(ErrorCodes.SocketTimeOut.code, e.message)))
+            else ->
+                Resource.Error(Exception(getErrorMessage(Int.MAX_VALUE, e.message)))
         }
     }
 

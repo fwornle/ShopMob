@@ -1,11 +1,9 @@
 package com.tanfra.shopmob.smob.data.repo
 
-import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserRepository
 import com.tanfra.shopmob.smob.data.local.dto.SmobUserDTO
 import com.tanfra.shopmob.smob.data.local.dataSource.SmobUserLocalDataSource
-import com.tanfra.shopmob.smob.data.local.dto2ato._asDomainModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDomainModel
 import com.tanfra.shopmob.smob.data.remote.dataSource.SmobUserRemoteDataSource
@@ -14,7 +12,6 @@ import com.tanfra.shopmob.smob.data.remote.nto2dto.asNetworkModel
 import com.tanfra.shopmob.smob.data.remote.nto2dto.asRepoModel
 import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
-import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.smob.data.repo.utils.asResource
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
@@ -25,14 +22,13 @@ import org.koin.core.component.inject
 import timber.log.Timber
 import kotlin.collections.ArrayList
 
-
 /**
  * Concrete implementation of a data source as a db.
  *
  * The repository is implemented so that you can focus on only testing it.
  *
- * @param smobUserDao the dao that does the Room db operations for table smobUsers
- * @param smobUserApi the api that does the network operations for table smobUsers
+ * @param smobUserDao data source for CRUD operations in local DB for table smobUsers
+ * @param smobUserApi data source for network based access to remote table smobUsers
  * @param ioDispatcher a coroutine dispatcher to offload the blocking IO tasks
  */
 class SmobUserRepository(
@@ -64,9 +60,9 @@ class SmobUserRepository(
                 // fetch data from DB (and convert to ATO)
                 atoFlow = smobUserDao.getSmobItemById(id).asDomainModel()
                 // wrap data in Resource (--> error/success/[loading])
-                atoFlow.asResource(null)
+                atoFlow.asResource("item with id $id not found in local user table")
             } catch (e: Exception) {
-                // handle exceptions --> error message returned in Resource.error
+                // handle exceptions --> error message returned in Resource.Error
                 atoFlow.asResource(e.localizedMessage)
             }
 
@@ -89,9 +85,9 @@ class SmobUserRepository(
                 // fetch data from DB (and convert to ATO)
                 atoFlow = smobUserDao.getSmobItems().asDomainModel()
                 // wrap data in Resource (--> error/success/[loading])
-                atoFlow.asResource(null)
+                atoFlow.asResource("local user table empty")
             } catch (e: Exception) {
-                // handle exceptions --> error message returned in Resource.error
+                // handle exceptions --> error message returned in Resource.Error
                 atoFlow.asResource(e.localizedMessage)
             }
 
@@ -116,9 +112,9 @@ class SmobUserRepository(
                 // fetch data from DB (and convert to ATO)
                 atoFlow = smobUserDao.getSmobMembersByGroupId(id).asDomainModel()
                 // wrap data in Resource (--> error/success/[loading])
-                atoFlow.asResource(null)
+                atoFlow.asResource("local user table empty")
             } catch (e: Exception) {
-                // handle exceptions --> error message returned in Resource.error
+                // handle exceptions --> error message returned in Resource.Error
                 atoFlow.asResource(e.localizedMessage)
             }
 
@@ -136,22 +132,30 @@ class SmobUserRepository(
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
-            // first store in local DB first
+            // first store in local DB
             val dbUser = smobItemATO.asDatabaseModel()
             smobUserDao.saveSmobItem(dbUser)
 
             // then push to backend DB
             // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
             if(networkConnectionManager.isNetworkConnected) {
-                val testRead = getSmobUserViaApi(dbUser.id)
-                if (testRead.data?.id != dbUser.id) {
-                    // item not found in backend --> use POST to create it
-                    saveSmobUserViaApi(dbUser)
-                } else {
-                    // item already exists in backend DB --> use PUT to update it
-                    smobUserApi.updateSmobItemById(dbUser.id, dbUser.asNetworkModel())
+                getSmobUserViaApi(dbUser.id).let {
+                    when (it) {
+                        is Resource.Error -> Timber.i("Couldn't retrieve SmobUser from remote")
+                        is Resource.Loading -> Timber.i("SmobUser still loading")
+                        is Resource.Success -> {
+                            if (it.data.id != dbUser.id) {
+                                // item not found in backend --> use POST to create it
+                                saveSmobUserViaApi(dbUser)
+                            } else {
+                                // item already exists in backend DB --> use PUT to update it
+                                smobUserApi.updateSmobItemById(dbUser.id, dbUser.asNetworkModel())
+                            }
+                        }
+                    }
                 }
-            }
+
+            }  // wrapEspressoIdlingResource
 
         }  // idlingResource (testing)
 
@@ -178,24 +182,31 @@ class SmobUserRepository(
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
 
-                // first store in local DB first
+                // first store in local DB
                 val dbUser = smobItemATO.asDatabaseModel()
                 smobUserDao.updateSmobItem(dbUser)
 
                 // then push to backend DB
                 // ... PUT or POST? --> try a GET first to find out if item already exists in backend DB
                 if(networkConnectionManager.isNetworkConnected) {
-                    val testRead = getSmobUserViaApi(dbUser.id)
-                    if (testRead.data?.id != dbUser.id) {
-                        // item not found in backend --> use POST to create it
-                        saveSmobUserViaApi(dbUser)
-                    } else {
-                        // item already exists in backend DB --> use PUT to update it
-                        smobUserApi.updateSmobItemById(dbUser.id, dbUser.asNetworkModel())
+                    getSmobUserViaApi(dbUser.id).let {
+                        when (it) {
+                            is Resource.Error -> Timber.i("Couldn't retrieve SmobUser from remote")
+                            is Resource.Loading -> Timber.i("SmobUser still loading")
+                            is Resource.Success -> {
+                                if (it.data.id != dbUser.id) {
+                                    // item not found in backend --> use POST to create it
+                                    saveSmobUserViaApi(dbUser)
+                                } else {
+                                    // item already exists in backend DB --> use PUT to update it
+                                    smobUserApi.updateSmobItemById(dbUser.id, dbUser.asNetworkModel())
+                                }
+                            }
+                        }
                     }
                 }
 
-            }
+            }  // wrapEspressoIdlingResource
         }
 
     /**
@@ -230,6 +241,7 @@ class SmobUserRepository(
      */
     override suspend fun deleteSmobItems() {
         withContext(ioDispatcher) {
+            
             // support espresso testing (w/h coroutines)
             wrapEspressoIdlingResource {
 
@@ -239,14 +251,17 @@ class SmobUserRepository(
                 // then delete all shops from backend DB
                 if(networkConnectionManager.isNetworkConnected) {
                     getSmobUsersViaApi().let {
-                        if (it.status == Status.SUCCESS) {
-                            it.data?.map { smobUserApi.deleteSmobItemById(it.id) }
-                        } else {
-                            Timber.w("Unable to get smobItem IDs from backend DB (via API) - not deleting anything.")
+                        when (it) {
+                            is Resource.Error -> Timber.i("Couldn't retrieve SmobUser from remote")
+                            is Resource.Loading -> Timber.i("SmobUser still loading")
+                            is Resource.Success -> {
+                                it.data.map { item -> smobUserApi.deleteSmobItemById(item.id) }
+                            }
                         }
                     }
                 }
-            }
+                
+            }  // wrapEspressoIdlingResource
 
         }  // context: ioDispatcher
     }
@@ -262,21 +277,21 @@ class SmobUserRepository(
 
             // initiate the (HTTP) GET request using the provided query parameters
             Timber.i("Sending GET request for SmobUser data...")
-            val response: Resource<List<SmobUserDTO>> = getSmobUsersViaApi()
+            getSmobUsersViaApi().let {
+                when (it) {
+                    is Resource.Error -> Timber.i("Couldn't retrieve SmobUser from remote")
+                    is Resource.Loading -> Timber.i("SmobUser still loading")
+                    is Resource.Success -> {
+                        Timber.i("SmobUser data GET request complete (success)")
 
-            // got any valid data back?
-            if (response.status == Status.SUCCESS) {
-
-                // set status to keep UI updated
-                Timber.i("SmobUser data GET request complete (success)")
-
-                // store shop data in DB - if any
-                response.data?.let {
-                    it.map { smobUserDao.saveSmobItem(it) }
-                    Timber.i("SmobUser data items stored in local DB")
+                        // store group data in DB - if any
+                        it.data.let { daList ->
+                            daList.map { item -> smobUserDao.saveSmobItem(item) }
+                            Timber.i("SmobUser data items stored in local DB")
+                        }
+                    }
                 }
-
-            }  // if (valid response)
+            }
 
         }  // coroutine scope (IO)
 
@@ -289,30 +304,26 @@ class SmobUserRepository(
 
         // initiate the (HTTP) GET request using the provided query parameters
         Timber.i("Sending GET request for SmobUser data...")
-        val response: Resource<SmobUserDTO> = getSmobUserViaApi(id)
+        getSmobUserViaApi(id).let {
+            when (it) {
+                is Resource.Error -> Timber.i("Couldn't retrieve SmobUser from remote")
+                is Resource.Loading -> Timber.i("SmobUser still loading")
+                is Resource.Success -> {
+                    Timber.i("SmobUser data GET request complete (success)")
 
-        // got back any valid data?
-        if (response.status == Status.SUCCESS) {
+                    // send POST request to server - coroutine to avoid blocking the main (UI) thread
+                    withContext(Dispatchers.IO) {
 
-            Timber.i("SmobUser data GET request complete (success)")
+                        // store group data in DB - if any
+                        it.data.let { daUser ->
+                            smobUserDao.saveSmobItem(daUser)
+                            Timber.i("SmobUser data items stored in local DB")
+                        }
 
-            // send POST request to server - coroutine to avoid blocking the main (UI) thread
-            withContext(Dispatchers.IO) {
-
-                // store shop data in DB - if any
-                response.data?.let {
-                    smobUserDao.saveSmobItem(it)
-                    Timber.i("SmobUser data items stored in local DB")
-
-                    // modified user = "me"? --> if so, update "currUser"
-                    // ... this normally only updates the groups a user is affiliated with
-                    if(it.id == SmobApp.currUser?.id) SmobApp.currUser = it._asDomainModel(it)
-
+                    }  // coroutine scope (IO)
                 }
-
-            }  // coroutine scope (IO)
-
-        }  // if (valid response)
+            }
+        }
 
     }  // refreshSmobUserInLocalDB()
 
@@ -348,15 +359,12 @@ class SmobUserRepository(
 
             } catch (ex: Exception) {
 
+                // local logging
+                Timber.e(ex.message)
+
                 // return with exception
                 // --> handle it... wraps data in Response type (success/error/loading)
-                val daException = responseHandler.handleException<ArrayList<SmobUserDTO>>(ex)
-
-                // local logging
-                Timber.e(daException.message)
-
-                // return handled exception
-                daException
+                responseHandler.handleException<ArrayList<SmobUserDTO>>(ex)
 
             }
 
@@ -371,7 +379,7 @@ class SmobUserRepository(
         // overall result - haven't got anything yet
         // ... this is useless here --> but needs to be done like this in the viewModel
         val dummySmobUserDTO = SmobUserDTO()
-        var result = Resource.loading(dummySmobUserDTO)
+        var result: Resource<SmobUserDTO> = Resource.Loading
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
@@ -389,14 +397,11 @@ class SmobUserRepository(
 
             } catch (ex: Exception) {
 
-                // return with exception --> handle it...
-                val daException = responseHandler.handleException<SmobUserDTO>(ex)
-
                 // local logging
-                Timber.e(daException.message)
+                Timber.e(ex.message)
 
-                // return handled exception
-                daException
+                // return with exception --> handle it...
+                responseHandler.handleException<SmobUserDTO>(ex)
 
             }
 
@@ -414,12 +419,9 @@ class SmobUserRepository(
             // return successfully received data object (from Moshi --> PoJo)
             smobUserApi.saveSmobItem(smobUserDTO.asNetworkModel())
         } catch (ex: Exception) {
-            // return with exception --> handle it...
-            val daException = responseHandler.handleException<SmobUserDTO>(ex)
-            // local logging
-            Timber.e(daException.message)
+            Timber.e(ex.message)
+            responseHandler.handleException<SmobUserDTO>(ex)
         }
     }
-
 
 }

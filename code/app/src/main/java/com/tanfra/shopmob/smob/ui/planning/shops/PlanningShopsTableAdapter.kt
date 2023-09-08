@@ -52,7 +52,7 @@ class PlanningShopsTableAdapter(rootView: View, callBack: (selectedSmobATO: Smob
 
             // store updated smobList in local DB
             // ... this also triggers an immediate push to the backend (once stored locally)
-            viewModel.shopDataSource.updateSmobItem(item)
+            viewModel.shopRepository.updateSmobItem(item)
 
         }  // coroutine scope (lifecycleScope)
 

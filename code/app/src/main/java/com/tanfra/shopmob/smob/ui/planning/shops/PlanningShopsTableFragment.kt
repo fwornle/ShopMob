@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.FragmentPlanningShopsTableBinding
+import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
@@ -186,11 +187,17 @@ class PlanningShopsTableFragment : BaseFragment(), KoinComponent {
                     viewModel.navSource = "navDrawer"
 
                     // clicks should select the shop and return to the product edit screen
-                    val daFlow = viewModel.shopDataSource.getSmobItem(it.id)
+                    val daFlow = viewModel.shopRepository.getSmobItem(it.id)
                     daFlow
                         .take(1)
-                        .onEach {
-                            Timber.i("Received shop: ${it.data?.name}")
+                        .onEach { daShopRes ->
+                            when (daShopRes) {
+                                is Resource.Error -> throw (Exception("Couldn't retrieve SmobShop from remote"))
+                                is Resource.Loading -> throw (Exception("SmobShop still loading"))
+                                is Resource.Success -> {
+                                    Timber.i("Received shop: ${daShopRes.data.name}")
+                                }
+                            }
                         }
                         .launchIn(viewLifecycleOwner.lifecycleScope)  // co-routine scope
 

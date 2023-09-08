@@ -22,12 +22,12 @@ import com.tanfra.shopmob.smob.data.types.SmobListItem
 @RewriteQueriesToDropUnusedColumns
 data class SmobListDTO(
     @PrimaryKey @ColumnInfo(name = "listId") override var id: String = "invalid smob list id",
-    @ColumnInfo(name = "listItemStatus") override var status: ItemStatus = ItemStatus.NEW,
+    @ColumnInfo(name = "listItemStatus") override var status: ItemStatus = ItemStatus.INVALID,
     @ColumnInfo(name = "listItemPosition") override var position: Long = -1L,
     @ColumnInfo(name = "listName") var name: String = "",
     @ColumnInfo(name = "listDescription") var description: String? = "",
     @ColumnInfo(name = "listItems") var items: List<SmobListItem> = listOf(),
     @ColumnInfo(name = "listGroups") var groups: List<SmobGroupItem> = listOf(),
-    @ColumnInfo(name = "listLifecycleStatus") var lcStatus: ItemStatus = ItemStatus.OPEN,
+    @ColumnInfo(name = "listLifecycleStatus") var lcStatus: ItemStatus = ItemStatus.INVALID,
     @ColumnInfo(name = "listLifecycleCompletion") var lcCompletion: Double = -1.0,
 ) : Dto()

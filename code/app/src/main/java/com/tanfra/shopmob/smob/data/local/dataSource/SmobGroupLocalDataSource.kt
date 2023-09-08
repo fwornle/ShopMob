@@ -12,13 +12,13 @@ interface SmobGroupLocalDataSource: SmobItemLocalDataSource<SmobGroupDTO> {
 
     /**
      * @param smobItemId the ID of the smob group
-     * @return the smob group object with the smobGroupId
+     * @return the smob group object with the smobItemId - or null if the table is empty
      */
     @Query("SELECT * FROM smobGroups WHERE groupId = :smobItemId")
     override fun getSmobItemById(smobItemId: String): Flow<SmobGroupDTO?>
 
     /**
-     * @return all smobGroups
+     * @return all smobGroups - returns an empty list, if the table is empty
      */
     @Query("SELECT * FROM smobGroups")
     override fun getSmobItems(): Flow<List<SmobGroupDTO>>

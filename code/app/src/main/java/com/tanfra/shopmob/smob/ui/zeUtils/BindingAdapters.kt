@@ -13,7 +13,6 @@ import com.tanfra.shopmob.smob.ui.zeUiBase.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
-import com.tanfra.shopmob.smob.data.repo.utils.Status
 import com.tanfra.shopmob.utils.fadeIn
 import com.tanfra.shopmob.utils.fadeOut
 import kotlinx.coroutines.flow.*
@@ -70,11 +69,17 @@ object BindingAdapters {
                 .take(1)
                 .catch { Timber.i("error in flow/take(1): $it") }
                 .collect { itemList ->
-                (recyclerView.adapter as? BaseRecyclerViewAdapter<T>)?.apply {
-                    clear()
-                    itemList.data?.let { addData(it) }
+                    when (itemList) {
+                        is Resource.Error -> Timber.i("setStateFlowResource: Couldn't retrieve item list from remote")
+                        is Resource.Loading -> Timber.i("setStateFlowResource: Item list still loading")
+                        is Resource.Success -> {
+                            (recyclerView.adapter as? BaseRecyclerViewAdapter<T>)?.apply {
+                                clear()
+                                addData(itemList.data)
+                            }
+                        }
+                    }
                 }
-            }
 
         }  // coroutine scope
     }
@@ -101,18 +106,18 @@ object BindingAdapters {
      */
     @BindingAdapter("fadeVisibleOnLoading")
     @JvmStatic
-    fun <T> setFadeVisibleOnLoading(view: View, resource: Resource<T>?) {
+    fun <T> setFadeVisibleOnLoading(view: View, resource: Resource<T>) {
         if (view.tag == null) {
             view.tag = true
-            view.visibility = if (resource?.status == Status.LOADING) View.VISIBLE else View.GONE
+            view.visibility = when (resource) {
+                is Resource.Loading -> { View.VISIBLE }
+                else -> { View.GONE }
+            }
         } else {
             view.animate().cancel()
-            if (resource?.status == Status.LOADING) {
-                if (view.visibility == View.GONE)
-                    view.fadeIn()
-            } else {
-                if (view.visibility == View.VISIBLE)
-                    view.fadeOut()
+            when (resource) {
+                is Resource.Loading -> if (view.visibility == View.GONE) view.fadeIn()
+                else -> if (view.visibility == View.VISIBLE) view.fadeOut()
             }
         }
     }
