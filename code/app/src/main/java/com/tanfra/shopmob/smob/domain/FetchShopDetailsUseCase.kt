@@ -1,6 +1,6 @@
 package com.tanfra.shopmob.smob.domain
 
-import com.tanfra.shopmob.smob.data.repo.`interface`.SmobShopRepository
+import com.tanfra.shopmob.smob.data.repo.repoIf.SmobShopRepository
 import timber.log.Timber
 
 class FetchShopDetailsUseCase(

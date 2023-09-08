@@ -4,7 +4,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
-import com.tanfra.shopmob.smob.data.repo.`interface`.*
+import com.tanfra.shopmob.smob.data.repo.repoIf.*
 import com.tanfra.shopmob.smob.domain.work.SmobAppWork
 import com.tanfra.shopmob.utils.sendNotificationOnFcmUpdate
 import kotlinx.coroutines.launch

@@ -118,7 +118,7 @@ class PlanningProductsAddNewItemFragment :
             var itemMaxPosition = 0L
 
             viewModel.viewModelScope.launch {
-                viewModel.smobList2.take(1).collect {
+                viewModel.smobListStaticSF.take(1).collect {
 
                     // valid data? (making sure...)
                     when (it) {

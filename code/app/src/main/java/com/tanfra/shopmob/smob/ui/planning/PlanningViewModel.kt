@@ -15,9 +15,9 @@ import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseViewModel
-import com.tanfra.shopmob.smob.data.repo.`interface`.SmobListRepository
-import com.tanfra.shopmob.smob.data.repo.`interface`.SmobProductRepository
-import com.tanfra.shopmob.smob.data.repo.`interface`.SmobShopRepository
+import com.tanfra.shopmob.smob.data.repo.repoIf.SmobListRepository
+import com.tanfra.shopmob.smob.data.repo.repoIf.SmobProductRepository
+import com.tanfra.shopmob.smob.data.repo.repoIf.SmobShopRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsViewState
@@ -36,11 +36,6 @@ class PlanningViewModel(
     val shopRepository: SmobShopRepository,
     ) : BaseViewModel(app), KoinComponent {
 
-
-    // define PlanningLists UI state as flow
-    private val _viewStateLists = MutableStateFlow(PlanningListsViewState())
-    val viewStateLists = _viewStateLists.asStateFlow()
-
     // fetch worker class form service locator
     val networkConnectionManager: NetworkConnectionManager by inject()
 
@@ -51,27 +46,31 @@ class PlanningViewModel(
     // current list ID and list position (in the list of SmobLists)
     var currListId: String? = null
 
+    // define PlanningLists UI state as flow
+    private val viewStateListsMSF = MutableStateFlow(PlanningListsViewState())
+    val viewStateListsSF = viewStateListsMSF.asStateFlow()
+
 
 
     // collect the upstream selected smobList as well as the list of SmobProductATO items
     // ... lateinit, as this can only be done once the fragment is created (and the id's are here)
-    lateinit var _smobList: Flow<Resource<SmobListATO>>
-    lateinit var smobList: StateFlow<Resource<SmobListATO>>
+    lateinit var smobListF: Flow<Resource<SmobListATO>>
+    lateinit var smobListSF: StateFlow<Resource<SmobListATO>>
 
-    private val _smobList2 = MutableStateFlow<Resource<SmobListATO>>(Resource.Loading)
-    val smobList2 = _smobList2.asStateFlow()
+    lateinit var smobListItemsF: Flow<Resource<List<SmobProductATO>>>
+    lateinit var smobListItemsSF: StateFlow<Resource<List<SmobProductATO>>>
 
-    lateinit var _smobListItems: Flow<Resource<List<SmobProductATO>>>
-    lateinit var smobListItems: StateFlow<Resource<List<SmobProductATO>>>
+    lateinit var smobListItemsWithStatusSF: StateFlow<List<SmobProductWithListDataATO>>
 
-    lateinit var smobListItemsWithStatus: StateFlow<List<SmobProductWithListDataATO>>
-
+    // fw230908:  this type of declaration to substitute all static SF declarations
+    private val smobListStaticMSF = MutableStateFlow<Resource<SmobListATO>>(Resource.Loading)
+    val smobListStaticSF = smobListStaticMSF.asStateFlow()
 
     /**
      * fetch the flow of the upstream list the user just selected
      */
     @ExperimentalCoroutinesApi
-    fun fetchSmobListFlow(id: String): Flow<Resource<SmobListATO>> {
+    fun getFlowSmobList(id: String): Flow<Resource<SmobListATO>> {
         return listRepository.getSmobItem(id)
     }
 
@@ -88,7 +87,7 @@ class PlanningViewModel(
      * fetch the flow of the list of items for the upstream list the user just selected
      */
     @ExperimentalCoroutinesApi
-    fun fetchSmobListItemsFlow(id: String): Flow<Resource<List<SmobProductATO>>> {
+    fun getFlowSmobListItems(id: String): Flow<Resource<List<SmobProductATO>>> {
         return productRepository.getSmobProductsByListId(id)
     }
 
@@ -178,7 +177,7 @@ class PlanningViewModel(
      * collect the flow of the upstream list the user just selected
      */
     @ExperimentalCoroutinesApi
-    fun fetchSmobList() {
+    fun collectSmobList() {
 
         // list ID set yet?
         currListId?.let { id ->
@@ -191,7 +190,7 @@ class PlanningViewModel(
                     .catch { ex ->
                         // previously unhandled exception (= not handled at Room level)
                         // --> catch it here and represent in Resource status
-                        _smobList2.value = Resource.Error(Exception(ex))
+                        smobListStaticMSF.value = Resource.Error(Exception(ex))
                         showSnackBar.value = ex.message ?: "(no message)"
                     }
                     .collectLatest {
@@ -199,7 +198,7 @@ class PlanningViewModel(
                         when (it) {
                             is Resource.Error -> throw(Exception("Couldn't retrieve SmobList from remote"))
                             is Resource.Loading -> throw(Exception("SmobList still loading"))
-                            is Resource.Success -> { _smobList2.value = it }
+                            is Resource.Success -> { smobListStaticMSF.value = it }
                         }
                     }
 
@@ -207,7 +206,7 @@ class PlanningViewModel(
 
         } // listId set
 
-    }  // fetchSmobList
+    }  // collectSmobList
 
 
     /**
@@ -223,7 +222,7 @@ class PlanningViewModel(
             productRepository.refreshDataInLocalDB()
 
             // collect flow to update StateFlow with current value from DB
-            smobListItems.take(1).collect {
+            smobListItemsSF.take(1).collect {
 
                 when (it) {
                     is Resource.Error -> { showSnackBar.value = it.exception.message }
@@ -320,8 +319,8 @@ class PlanningViewModel(
             // travel back
             navigationCommand.value = NavigationCommand.Back
 
-            // update StateFlow values by re-fetching flows from local DB
-            smobListItems.take(1).collect {
+            // update StateFlow values by re-collecting flows from local DB
+            smobListItemsSF.take(1).collect {
 
                 when (it) {
                     is Resource.Error -> { showSnackBar.value = it.exception.message }
@@ -374,23 +373,23 @@ class PlanningViewModel(
     // (ex) ShopListViewModel contents ------------------------------------------------
 
     // fetch list of smobShops (flow --> StateFlow)
-    private val _smobShopList = MutableStateFlow<Resource<List<SmobShopATO>>>(Resource.Loading)
-    val smobShopList = _smobShopList.asStateFlow()
-//    val smobShopList = shopDataSource.getAllSmobShops().asLiveData()
+    private val smobShopListMSF = MutableStateFlow<Resource<List<SmobShopATO>>>(Resource.Loading)
+    val smobShopListSF = smobShopListMSF.asStateFlow()
+//    val smobShopListSF = shopDataSource.getAllSmobShops().asLiveData()
 
 
     /**
      * collect the flow of the list of SmobShops
      */
     @ExperimentalCoroutinesApi
-    fun fetchSmobShopList() {
+    fun collectSmobShopList() {
 
         // collect flow
         shopRepository.getSmobItems()
             .catch { ex ->
                 // previously unhandled exception (= not handled at Room level)
                 // --> catch it here and represent in Resource status
-                _smobShopList.value = Resource.Error(Exception(ex))
+                smobShopListMSF.value = Resource.Error(Exception(ex))
                 showSnackBar.value = ex.message ?: "(no message)"
             }
             .take(1)
@@ -401,23 +400,18 @@ class PlanningViewModel(
                     is Resource.Error ->{
                         // these are errors handled at Room level --> display
                         showSnackBar.value = it.exception.message ?: "(no message)"
-                        _smobShopList.value = it  // still return Resource value (w/h error)
+                        smobShopListMSF.value = it  // still return Resource value (w/h error)
                     }
                     is Resource.Success -> {
                         // --> store successfully received data in StateFlow value
-                        _smobShopList.value = it
+                        smobShopListMSF.value = it
                         updateShowNoData(it)
                     }
                 }
             }
             .launchIn(viewModelScope)  // co-routine scope
 
-    }  // fetchSmobShopList
-
-
-
-    // fetch an individual smobShop (flow --> StateFlow)
-//    private val _smobShop = MutableStateFlow<Resource<SmobShopATO?>>(Resource.Loading)
+    }  // collectSmobShopList
 
 
     /**
@@ -433,10 +427,10 @@ class PlanningViewModel(
             shopRepository.refreshDataInLocalDB()
 
             // collect flow and update StateFlow values
-            fetchSmobShopList()
+            collectSmobShopList()
 
             // check if the "no data" symbol has to be shown (empty list)
-            updateShowNoData(_smobShopList.value)
+            updateShowNoData(smobShopListMSF.value)
 
         }
 
@@ -489,7 +483,7 @@ class PlanningViewModel(
      * collect the flow of the upstream list the user just selected
      */
     @ExperimentalCoroutinesApi
-    fun fetchSmobLists() {
+    fun collectSmobLists() {
 
         // collect flow
         listRepository.getSmobItems()
@@ -518,7 +512,7 @@ class PlanningViewModel(
             }
             .launchIn(viewModelScope)  // co-routine scope
 
-    }  // fetchSmobLists
+    }  // collectSmobLists
 
 
     /**
@@ -534,7 +528,7 @@ class PlanningViewModel(
             listRepository.refreshDataInLocalDB()
 
             // load SmobLists from local DB and store in StateFlow value
-            fetchSmobLists()
+            collectSmobLists()
 
             // check if the "no data" symbol has to be shown (empty list)
             updateShowNoData(_smobLists.value)
@@ -589,7 +583,7 @@ class PlanningViewModel(
         showLoading.value = false
 
         // load SmobLists from local DB to update StateFlow value
-        fetchSmobLists()
+        collectSmobLists()
 
         // check if the "no data" symbol has to be shown (empty list)
         updateShowNoData(_smobLists.value)

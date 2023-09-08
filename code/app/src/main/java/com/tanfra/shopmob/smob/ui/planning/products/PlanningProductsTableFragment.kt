@@ -65,22 +65,22 @@ class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
             // set current list ID and listPosition in viewModel
             viewModel.currListId = it
 
-            // fetch flow into new (alternative) StateFlow variable smobList2
+            // fetch flow into new (alternative) StateFlow variable smobListStaticMSF
             // ... this just hooks up the (cold) Room flow to the StateFlow variable - no collection
-            viewModel.fetchSmobList()
+            viewModel.collectSmobList()
 
             // register flows in viewModel
-            viewModel._smobList = viewModel.fetchSmobListFlow(it)  // holds the item 'status'
-            viewModel._smobListItems = viewModel.fetchSmobListItemsFlow(it)
+            viewModel.smobListF = viewModel.getFlowSmobList(it)  // holds the item 'status'
+            viewModel.smobListItemsF = viewModel.getFlowSmobListItems(it)
 
             // turn to StateFlows
-            viewModel.smobList = viewModel.smobListFlowToStateFlow(viewModel._smobList)
-            viewModel.smobListItems = viewModel.smobListItemsFlowToStateFlow(viewModel._smobListItems)
+            viewModel.smobListSF = viewModel.smobListFlowToStateFlow(viewModel.smobListF)
+            viewModel.smobListItemsSF = viewModel.smobListItemsFlowToStateFlow(viewModel.smobListItemsF)
 
             // combine the flows and turn into StateFlow
-            viewModel.smobListItemsWithStatus = viewModel.combineFlowsAndConvertToStateFlow(
-                viewModel._smobList,
-                viewModel._smobListItems,
+            viewModel.smobListItemsWithStatusSF = viewModel.combineFlowsAndConvertToStateFlow(
+                viewModel.smobListF,
+                viewModel.smobListItemsF,
             )
 
 //            // collect flows and store in StateFlow type (so that we have the latest value available

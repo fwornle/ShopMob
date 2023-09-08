@@ -1,7 +1,7 @@
 package com.tanfra.shopmob.smob.data.repo
 
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
-import com.tanfra.shopmob.smob.data.repo.`interface`.SmobProductRepository
+import com.tanfra.shopmob.smob.data.repo.repoIf.SmobProductRepository
 import com.tanfra.shopmob.smob.data.local.dto.SmobProductDTO
 import com.tanfra.shopmob.smob.data.local.dataSource.SmobProductLocalDataSource
 import com.tanfra.shopmob.smob.data.local.dto2ato.asDatabaseModel

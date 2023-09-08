@@ -4,7 +4,7 @@ import android.os.CountDownTimer
 import com.tanfra.shopmob.Constants.WORK_POLLING_FAST_VALUE
 import com.tanfra.shopmob.SmobApp
 import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
-import com.tanfra.shopmob.smob.data.repo.`interface`.*
+import com.tanfra.shopmob.smob.data.repo.repoIf.*
 import com.tanfra.shopmob.smob.domain.work.SmobAppWork
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent

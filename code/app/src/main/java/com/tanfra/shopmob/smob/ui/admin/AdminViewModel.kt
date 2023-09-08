@@ -11,9 +11,9 @@ import com.tanfra.shopmob.smob.data.types.GroupType
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseViewModel
-import com.tanfra.shopmob.smob.data.repo.`interface`.SmobGroupRepository
-import com.tanfra.shopmob.smob.data.repo.`interface`.SmobListRepository
-import com.tanfra.shopmob.smob.data.repo.`interface`.SmobUserRepository
+import com.tanfra.shopmob.smob.data.repo.repoIf.SmobGroupRepository
+import com.tanfra.shopmob.smob.data.repo.repoIf.SmobListRepository
+import com.tanfra.shopmob.smob.data.repo.repoIf.SmobUserRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.ato.SmobContactATO
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
