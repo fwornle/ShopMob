@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.smob.data.repo.dataSource
+package com.tanfra.shopmob.smob.data.repo.`interface`
 
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.data.repo.utils.Resource

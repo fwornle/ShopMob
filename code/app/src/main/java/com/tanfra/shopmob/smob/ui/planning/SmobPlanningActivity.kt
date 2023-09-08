@@ -26,7 +26,7 @@ import com.tanfra.shopmob.databinding.ActivityPlanningBinding
 import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserRepository
+import com.tanfra.shopmob.smob.data.repo.`interface`.SmobUserRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.domain.work.SmobAppWork
 import kotlinx.coroutines.flow.collectLatest

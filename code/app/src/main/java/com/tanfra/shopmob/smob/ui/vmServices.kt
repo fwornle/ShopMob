@@ -1,6 +1,6 @@
 package com.tanfra.shopmob.smob.ui
 
-import com.tanfra.shopmob.smob.data.repo.dataSource.*
+import com.tanfra.shopmob.smob.data.repo.`interface`.*
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsViewModel
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel

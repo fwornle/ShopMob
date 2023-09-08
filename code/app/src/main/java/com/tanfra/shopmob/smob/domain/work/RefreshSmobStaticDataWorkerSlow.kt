@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
-import com.tanfra.shopmob.smob.data.repo.dataSource.*
+import com.tanfra.shopmob.smob.data.repo.`interface`.*
 import io.ktor.client.plugins.ResponseException
 import io.ktor.client.statement.bodyAsText
 import org.koin.core.component.KoinComponent

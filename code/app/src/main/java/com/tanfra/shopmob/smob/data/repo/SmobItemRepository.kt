@@ -3,7 +3,7 @@ package com.tanfra.shopmob.smob.data.repo
 import com.tanfra.shopmob.smob.data.local.dataSource.SmobItemLocalDataSource
 import com.tanfra.shopmob.smob.data.local.dto.Dto
 import com.tanfra.shopmob.smob.data.local.dto2ato._asDomainModel
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobItemRepository
+import com.tanfra.shopmob.smob.data.repo.`interface`.SmobItemRepository
 import com.tanfra.shopmob.smob.data.repo.utils.ResponseHandler
 import com.tanfra.shopmob.smob.data.remote.dataSource.SmobItemRemoteDataSource
 import com.tanfra.shopmob.smob.data.remote.nto.Nto

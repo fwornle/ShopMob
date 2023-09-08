@@ -1,10 +1,10 @@
 package com.tanfra.shopmob.smob.data.repo
 
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobGroupRepository
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListRepository
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductRepository
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopRepository
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobUserRepository
+import com.tanfra.shopmob.smob.data.repo.`interface`.SmobGroupRepository
+import com.tanfra.shopmob.smob.data.repo.`interface`.SmobListRepository
+import com.tanfra.shopmob.smob.data.repo.`interface`.SmobProductRepository
+import com.tanfra.shopmob.smob.data.repo.`interface`.SmobShopRepository
+import com.tanfra.shopmob.smob.data.repo.`interface`.SmobUserRepository
 import org.koin.dsl.module
 
 

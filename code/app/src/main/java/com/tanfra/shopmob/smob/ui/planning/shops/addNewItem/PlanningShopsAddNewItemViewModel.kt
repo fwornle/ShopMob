@@ -11,7 +11,7 @@ import com.tanfra.shopmob.smob.data.types.ShopType
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseViewModel
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopRepository
+import com.tanfra.shopmob.smob.data.repo.`interface`.SmobShopRepository
 import kotlinx.coroutines.launch
 
 class PlanningShopsAddNewItemViewModel(

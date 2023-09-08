@@ -15,9 +15,9 @@ import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseViewModel
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobListRepository
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobProductRepository
-import com.tanfra.shopmob.smob.data.repo.dataSource.SmobShopRepository
+import com.tanfra.shopmob.smob.data.repo.`interface`.SmobListRepository
+import com.tanfra.shopmob.smob.data.repo.`interface`.SmobProductRepository
+import com.tanfra.shopmob.smob.data.repo.`interface`.SmobShopRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsViewState
