@@ -67,8 +67,8 @@ class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
                 currListId = it
 
                 // register flows in viewModel
-                smobListF = getFlowSmobList(it)  // holds the item 'status'
-                smobListProductsF = getFlowSmobListProducts(it)
+                smobListF = getFlowOfSmobList(it)  // holds the item 'status'
+                smobListProductsF = getFlowOfSmobListProducts(it)
 
                 // turn to StateFlows
                 smobListSF = smobListFlowToStateFlow(smobListF)

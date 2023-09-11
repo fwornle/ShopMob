@@ -161,16 +161,16 @@ class SmobPlanningActivity : AppCompatActivity() {
 
                 // fetch latest user collection from BE (to ensure the app starts up
                 // reliably, even after a fresh install - and, consequently, no local DB)
-                userRepo.refreshDataInLocalDB()
+                userRepo.refreshItemsInLocalDB()
 
                 // determine highest item position
-                userRepo.getSmobItems().take(1).collectLatest { daResList ->
+                userRepo.getSmobItems().take(1).collectLatest { daUserList ->
 
-                    when (daResList) {
-                        is Resource.Error -> throw (Exception("Couldn't retrieve SmobList from remote"))
-                        is Resource.Loading -> throw (Exception("SmobList still loading"))
+                    when (daUserList) {
+                        is Resource.Error -> throw (Exception("Couldn't retrieve SmobUsers from remote"))
+                        is Resource.Loading -> throw (Exception("SmobUsers still loading"))
                         is Resource.Success -> {
-                            daResList.data.let { allUsers ->
+                            daUserList.data.let { allUsers ->
 
                                 Timber.i("Number of users: ${allUsers.size}")
 

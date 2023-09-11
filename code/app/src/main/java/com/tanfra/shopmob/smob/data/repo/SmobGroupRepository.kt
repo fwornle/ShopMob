@@ -238,7 +238,7 @@ class SmobGroupRepository(
     /**
      * Synchronize all smob groups in the db by retrieval from the backend using the (net) API
      */
-    override suspend fun refreshDataInLocalDB() {
+    override suspend fun refreshItemsInLocalDB() {
 
         // initiate the (HTTP) GET request using the provided query parameters
         // send GET request to server - coroutine to avoid blocking the main (UI) thread

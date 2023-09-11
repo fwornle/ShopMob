@@ -66,7 +66,7 @@ class PlanningViewModel(
      * fetch the flow of the upstream list the user just selected
      */
     @ExperimentalCoroutinesApi
-    fun getFlowSmobList(id: String): Flow<Resource<SmobListATO>> {
+    fun getFlowOfSmobList(id: String): Flow<Resource<SmobListATO>> {
         return listRepository.getSmobItem(id)
     }
 
@@ -83,7 +83,7 @@ class PlanningViewModel(
      * fetch the flow of the list of products for the upstream SmobList the user just selected
      */
     @ExperimentalCoroutinesApi
-    fun getFlowSmobListProducts(id: String): Flow<Resource<List<SmobProductATO>>> {
+    fun getFlowOfSmobListProducts(id: String): Flow<Resource<List<SmobProductATO>>> {
         return productRepository.getSmobProductsByListId(id)
     }
 
@@ -180,7 +180,7 @@ class PlanningViewModel(
         viewModelScope.launch {
 
             // update backend DB (from net API)
-            productRepository.refreshDataInLocalDB()
+            productRepository.refreshItemsInLocalDB()
 
             // collect flow to update StateFlow with current value from DB
             smobListProductsSF.take(1).collect {
@@ -343,7 +343,7 @@ class PlanningViewModel(
      * collect the flow of the list of SmobShops
      */
     @ExperimentalCoroutinesApi
-    fun collectSmobShopList() {
+    private fun collectSmobShopList() {
 
         // collect flow
         shopRepository.getSmobItems()
@@ -385,7 +385,7 @@ class PlanningViewModel(
         viewModelScope.launch {
 
             // update backend DB (from net API)
-            shopRepository.refreshDataInLocalDB()
+            shopRepository.refreshItemsInLocalDB()
 
             // collect flow and update StateFlow values
             collectSmobShopList()
@@ -444,7 +444,7 @@ class PlanningViewModel(
      * collect the flow of the upstream list the user just selected
      */
     @ExperimentalCoroutinesApi
-    fun collectSmobLists() {
+    private fun collectSmobLists() {
 
         // collect flow
         listRepository.getSmobItems()
@@ -480,13 +480,13 @@ class PlanningViewModel(
      * update all items in the local DB by querying the backend - triggered on "swipe down"
      */
     @ExperimentalCoroutinesApi
-    fun swipeRefreshDataInLocalDB() {
+    fun swiperefreshItemsInLocalDB() {
 
         // user is impatient - trigger update of local DB from net
         viewModelScope.launch {
 
             // update backend DB (from net API)
-            listRepository.refreshDataInLocalDB()
+            listRepository.refreshItemsInLocalDB()
 
             // load SmobLists from local DB and store in StateFlow value
             collectSmobLists()
@@ -496,7 +496,7 @@ class PlanningViewModel(
 
         }
 
-    }  // swipeRefreshDataInLocalDB
+    }  // swiperefreshItemsInLocalDB
 
 
 

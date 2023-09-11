@@ -208,7 +208,7 @@ class SmobListRepository(
     /**
      * Update all smob lists in the local db by retrieving them from the backend using the (net) API
      */
-    override suspend fun refreshDataInLocalDB() {
+    override suspend fun refreshItemsInLocalDB() {
 
         // send GET request to server - coroutine to avoid blocking the main (UI) thread
         withContext(Dispatchers.IO) {

@@ -21,7 +21,7 @@ interface SmobItemRepository<ATO: Ato> {
     suspend fun updateSmobItems(smobItemsATO: List<ATO>)
     suspend fun deleteSmobItem(id: String)
     suspend fun deleteSmobItems()
-    suspend fun refreshDataInLocalDB()
+    suspend fun refreshItemsInLocalDB()
     suspend fun refreshSmobItemInLocalDB(id: String)
 
 }

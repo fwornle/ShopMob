@@ -61,11 +61,11 @@ object RefreshLocalDB: KoinComponent {
             wManager.applicationScope.launch {
 
                 // update users in local DB from backend DB
-                smobUserDataSource.refreshDataInLocalDB()
-                smobGroupDataSource.refreshDataInLocalDB()
-                smobProductDataSource.refreshDataInLocalDB()
-                smobShopDataSource.refreshDataInLocalDB()
-                smobListDataSource.refreshDataInLocalDB()
+                smobUserDataSource.refreshItemsInLocalDB()
+                smobGroupDataSource.refreshItemsInLocalDB()
+                smobProductDataSource.refreshItemsInLocalDB()
+                smobShopDataSource.refreshItemsInLocalDB()
+                smobListDataSource.refreshItemsInLocalDB()
 
             }  // coroutine scope
 

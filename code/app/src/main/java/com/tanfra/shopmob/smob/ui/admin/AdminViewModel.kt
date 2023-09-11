@@ -218,7 +218,7 @@ class AdminViewModel(
         viewModelScope.launch {
 
             // update backend DB (from net API)
-            groupDataSource.refreshDataInLocalDB()
+            groupDataSource.refreshItemsInLocalDB()
 
             // load smobGroups from local DB and store in StateFlow value
             collectAllSmobGroupsSF()
@@ -479,7 +479,7 @@ class AdminViewModel(
         viewModelScope.launch {
 
             // update backend DB (from net API)
-            userDataSource.refreshDataInLocalDB()
+            userDataSource.refreshItemsInLocalDB()
 
             // collect flow to update StateFlow with current value from DB
             smobGroupMembersSF.take(1).collect {
@@ -587,7 +587,7 @@ class AdminViewModel(
         viewModelScope.launch {
 
             // update backend DB (from net API)
-            listDataSource.refreshDataInLocalDB()
+            listDataSource.refreshItemsInLocalDB()
 
             // collect flow to update StateFlow with current value from DB
             smobListsSF.take(1).collect {

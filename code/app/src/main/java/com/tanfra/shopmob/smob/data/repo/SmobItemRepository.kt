@@ -252,7 +252,7 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
     /**
      * Synchronize all smob items in the db by retrieval from the backend using the (net) API
      */
-    override suspend fun refreshDataInLocalDB() {
+    override suspend fun refreshItemsInLocalDB() {
 
         // send GET request to server - coroutine to avoid blocking the main (UI) thread
         withContext(Dispatchers.IO) {
