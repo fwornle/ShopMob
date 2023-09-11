@@ -1430,7 +1430,7 @@
         },
         {
           "id": "7baa8707-0cb0-4b1f-8e77-2af7c356c1aa",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
           "listPosition": 8,
           "mainCategory": "FOODS"
         },
@@ -1442,7 +1442,7 @@
         },
         {
           "id": "83972fd0-e224-4cff-af2c-f6c183e1ee68",
-          "status": "IN_PROGRESS",
+          "status": "DONE",
           "listPosition": 10,
           "mainCategory": "FOODS"
         },

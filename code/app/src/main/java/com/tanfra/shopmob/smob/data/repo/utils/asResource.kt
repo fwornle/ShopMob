@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.transform
 </T> */
 fun <T: Ato?> Flow<T?>.asResource(msgOnFailure: String?): Flow<Resource<T>> =
     transform { value ->
-        if (value != null) return@transform emit(Resource.Success(value))
-        else return@transform emit(Resource.Error(Exception("asResource: Flow is null - $msgOnFailure")))
+        if (value == null) return@transform emit(Resource.Error(Exception("asResource: Flow is null - $msgOnFailure")))
+        else return@transform emit(Resource.Success(value))
     }
 
 /**

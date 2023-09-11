@@ -16,7 +16,7 @@ import com.tanfra.shopmob.smob.data.repo.utils.asResource
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.catch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -54,17 +54,11 @@ class SmobShopRepository(
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
-        // try to fetch data from the local DB
-        var atoFlow: Flow<SmobShopATO?> = flowOf(null)
-        return try {
-            // fetch data from DB (and convert to ATO)
-            atoFlow = smobShopDao.getSmobItemById(id).asDomainModel()
-            // wrap data in Resource (--> error/success/[loading])
-            atoFlow.asResource("item with id $id not found in local shop table")
-        } catch (e: Exception) {
-            // handle exceptions --> error message returned in Resource.Error
-            atoFlow.asResource(e.localizedMessage)
-        }
+
+            return smobShopDao.getSmobItemById(id)
+                .catch { ex -> Resource.Error(Exception(ex.localizedMessage)) }
+                .asDomainModel()
+                .asResource("item with id $id not found in local shop table")
 
         }  // idlingResource (testing)
     }
@@ -78,17 +72,10 @@ class SmobShopRepository(
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {
 
-            // try to fetch data from the local DB
-            var atoFlow: Flow<List<SmobShopATO>> = flowOf(listOf())
-            return try {
-                // fetch data from DB (and convert to ATO)
-                atoFlow = smobShopDao.getSmobItems().asDomainModel()
-                // wrap data in Resource (--> error/success/[loading])
-                atoFlow.asResource("local shop table empty")
-            } catch (e: Exception) {
-                // handle exceptions --> error message returned in Resource.Error
-                atoFlow.asResource(e.localizedMessage)
-            }
+            return smobShopDao.getSmobItems()
+                .catch { ex -> Resource.Error(Exception(ex.localizedMessage)) }
+                .asDomainModel()
+                .asResource("local shop table empty")
 
         }  // idlingResource (testing)
 
