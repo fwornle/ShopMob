@@ -76,6 +76,6 @@ interface SmobProductLocalDataSource: SmobItemLocalDataSource<SmobProductDTO> {
 
     // Delete all smobProducts.
     @Query("DELETE FROM smobProducts")
-    override suspend fun deleteAllSmobItems()
+    override suspend fun deleteSmobItems()
 
 }

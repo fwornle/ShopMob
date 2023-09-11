@@ -59,7 +59,7 @@ class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
         val listName = arguments?.getString("listName")
         Timber.i("... list name: $listName")
 
-        // register flows fetch items of the selected upstream list (as well as the list itself)
+        // register flows and fetch items of the selected upstream list (as well as the list itself)
         listId?.let {
             with(viewModel) {
 
@@ -82,6 +82,7 @@ class PlanningProductsTableFragment : BaseFragment(), KoinComponent {
 
             }  // viewModel
         }  // let...
+
 
         // configure navbar
         setDisplayHomeAsUpEnabled(true)

@@ -217,7 +217,7 @@ class SmobProductRepository(
             wrapEspressoIdlingResource {
 
                 // first delete all products from local DB
-                smobProductDao.deleteAllSmobItems()
+                smobProductDao.deleteSmobItems()
 
                 // then delete all products from backend DB
                 if(networkConnectionManager.isNetworkConnected) {
@@ -254,6 +254,9 @@ class SmobProductRepository(
                     is Resource.Loading -> Timber.i("SmobProduct still loading")
                     is Resource.Success -> {
                         Timber.i("SmobProduct data GET request complete (success)")
+
+                        // delete current table from local DB
+                        smobProductDao.deleteSmobItems()
 
                         // store group data in DB - if any
                         it.data.let { daList ->

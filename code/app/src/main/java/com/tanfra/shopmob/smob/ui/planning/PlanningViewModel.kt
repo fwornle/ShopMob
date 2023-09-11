@@ -387,11 +387,11 @@ class PlanningViewModel(
             // update backend DB (from net API)
             shopRepository.refreshItemsInLocalDB()
 
-            // collect flow and update StateFlow values
+            // collect flow and update StateFlow values (to get it out of the initial loading state)
             collectSmobShopList()
 
-            // check if the "no data" symbol has to be shown (empty list)
-            updateShowNoData(smobShopListMSF.value)
+//            // check if the "no data" symbol has to be shown (empty list)
+//            updateShowNoData(smobShopListMSF.value)
 
         }
 

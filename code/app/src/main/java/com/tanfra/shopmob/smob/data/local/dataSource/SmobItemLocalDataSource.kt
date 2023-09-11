@@ -14,6 +14,6 @@ interface SmobItemLocalDataSource<DTO: Dto> {
     suspend fun saveSmobItem(smobItem: DTO)
     suspend fun updateSmobItem(smobItem: DTO)
     suspend fun deleteSmobItemById(smobItemId: String)
-    suspend fun deleteAllSmobItems()
+    suspend fun deleteSmobItems()
 
 }

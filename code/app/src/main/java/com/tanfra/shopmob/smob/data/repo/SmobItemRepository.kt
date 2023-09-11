@@ -225,7 +225,7 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
             wrapEspressoIdlingResource {
 
                 // first delete all items from local DB
-                smobItemDao.deleteAllSmobItems()
+                smobItemDao.deleteSmobItems()
 
                 // then delete all items from backend DB
                 if(networkConnectionManager.isNetworkConnected) {
