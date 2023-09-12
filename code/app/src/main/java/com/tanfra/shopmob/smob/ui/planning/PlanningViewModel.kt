@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import timber.log.Timber
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PlanningViewModel(
@@ -109,15 +110,27 @@ class PlanningViewModel(
 
             // unwrap list (from Resource)
             when (list) {
-                is Resource.Error -> throw(Exception("Couldn't retrieve SmobList from remote"))
-                is Resource.Loading -> throw(Exception("SmobList still loading"))
+                is Resource.Error -> {
+                    Timber.i("Couldn't retrieve SmobList from remote")
+                    listOf()
+                }
+                is Resource.Loading -> {
+                    Timber.i("SmobList still loading")
+                    listOf()
+                }
                 is Resource.Success -> {
                     list.data.let { rawList ->
 
                         // evaluate/unwrap Resource
                         when (items) {
-                            is Resource.Error -> throw(Exception("Couldn't retrieve SmobProducts from remote"))
-                            is Resource.Loading -> throw(Exception("SmobProducts still loading"))
+                            is Resource.Error -> {
+                                Timber.i("Couldn't retrieve SmobProducts from remote")
+                                listOf()
+                            }
+                            is Resource.Loading -> {
+                                Timber.i("SmobProducts still loading")
+                                listOf()
+                            }
                             is Resource.Success -> {
 
                                 // received the items on the list alright --> process
@@ -333,10 +346,13 @@ class PlanningViewModel(
     // (ex) ShopListViewModel contents ------------------------------------------------
     // (ex) ShopListViewModel contents ------------------------------------------------
 
-    // fetch list of smobShops (flow --> StateFlow)
-    private val smobShopListMSF = MutableStateFlow<Resource<List<SmobShopATO>>>(Resource.Loading)
-    val smobShopListSF = smobShopListMSF.asStateFlow()
-//    val smobShopListSF = shopDataSource.getAllSmobShops().asLiveData()
+    // static StateFlows (independent of user choice / id)
+    val smobShopListSF = shopRepository.getSmobItems()
+        .stateIn(
+            scope = viewModelScope,
+            started = WhileSubscribed(5000),
+            initialValue = Resource.Loading
+        )
 
 
     /**
@@ -345,32 +361,26 @@ class PlanningViewModel(
     @ExperimentalCoroutinesApi
     private fun collectSmobShopList() {
 
-        // collect flow
-        shopRepository.getSmobItems()
-            .catch { ex ->
-                // previously unhandled exception (= not handled at Room level)
-                // --> catch it here and represent in Resource status
-                smobShopListMSF.value = Resource.Error(Exception(ex))
-                showSnackBar.value = ex.message ?: "(no message)"
-            }
-            .take(1)
-            .onEach {
-                // no exception during flow collection
+        viewModelScope.launch {
+
+            // collect flow / update SF
+            smobShopListSF
+                .take(1)
+                .collect {
                 when (it) {
-                    is Resource.Loading -> throw(Exception("SmobProducts still loading"))
-                    is Resource.Error ->{
+                    is Resource.Loading -> Timber.i("SmobShops still loading")
+                    is Resource.Error -> {
                         // these are errors handled at Room level --> display
                         showSnackBar.value = it.exception.message ?: "(no message)"
-                        smobShopListMSF.value = it  // still return Resource value (w/h error)
                     }
                     is Resource.Success -> {
-                        // --> store successfully received data in StateFlow value
-                        smobShopListMSF.value = it
+                        // --> turn empty list into
                         updateShowNoData(it)
                     }
                 }
             }
-            .launchIn(viewModelScope)  // co-routine scope
+
+        }
 
     }  // collectSmobShopList
 
@@ -389,9 +399,6 @@ class PlanningViewModel(
 
             // collect flow and update StateFlow values (to get it out of the initial loading state)
             collectSmobShopList()
-
-//            // check if the "no data" symbol has to be shown (empty list)
-//            updateShowNoData(smobShopListMSF.value)
 
         }
 

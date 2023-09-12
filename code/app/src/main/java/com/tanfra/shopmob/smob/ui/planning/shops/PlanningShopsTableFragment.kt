@@ -192,8 +192,8 @@ class PlanningShopsTableFragment : BaseFragment(), KoinComponent {
                         .take(1)
                         .onEach { daShopRes ->
                             when (daShopRes) {
-                                is Resource.Error -> throw (Exception("Couldn't retrieve SmobShop from remote"))
-                                is Resource.Loading -> throw (Exception("SmobShop still loading"))
+                                is Resource.Error -> Timber.i("Couldn't retrieve SmobShop from remote")
+                                is Resource.Loading -> Timber.i("SmobShop still loading")
                                 is Resource.Success -> {
                                     Timber.i("Received shop: ${daShopRes.data.name}")
                                 }
