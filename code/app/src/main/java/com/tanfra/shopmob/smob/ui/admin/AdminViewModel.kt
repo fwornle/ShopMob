@@ -193,7 +193,7 @@ class AdminViewModel(
             .onEach {
                 // no exception during flow collection
                 when (it) {
-                    is Resource.Loading -> throw(Exception("SmobProducts still loading"))
+                    is Resource.Loading -> Timber.i("SmobProducts still loading")
                     is Resource.Error ->{
                         // these are errors handled at Room level --> display
                         showSnackBar.value = it.exception.message ?: "(no message)"
@@ -410,15 +410,27 @@ class AdminViewModel(
 
             // unwrap group (from Resource)
             when (group) {
-                is Resource.Error -> throw(Exception("Couldn't retrieve SmobGroup from remote"))
-                is Resource.Loading -> throw(Exception("SmobGroup still loading"))
+                is Resource.Error -> {
+                    Timber.i("Couldn't retrieve SmobGroup from remote")
+                    listOf()
+                }
+                is Resource.Loading -> {
+                    Timber.i("SmobGroup still loading")
+                    listOf()
+                }
                 is Resource.Success -> {
                     group.data.let { daGroup ->
 
                         // evaluate/unwrap Resource
                         when (users) {
-                            is Resource.Error -> throw(Exception("Couldn't retrieve SmobUsers from remote"))
-                            is Resource.Loading -> throw(Exception("SmobUsers still loading"))
+                            is Resource.Error -> {
+                                Timber.i("Couldn't retrieve SmobUsers from remote")
+                                listOf()
+                            }
+                            is Resource.Loading -> {
+                                Timber.i("SmobUsers still loading")
+                                listOf()
+                            }
                             is Resource.Success -> {
                                 // successfully received all users --> could be empty system though
                                 users.data.let { allUsers ->
@@ -487,7 +499,7 @@ class AdminViewModel(
 
                 when (it) {
                     is Resource.Error -> { showSnackBar.value = it.exception.message }
-                    is Resource.Loading -> throw(Exception("SmobUser still loading"))
+                    is Resource.Loading -> Timber.i("SmobUser still loading")
                     is Resource.Success -> updateShowNoSmobItemsData(it)
                 }
 
@@ -562,7 +574,7 @@ class AdminViewModel(
             .onEach {
                 // no exception during flow collection
                 when (it) {
-                    is Resource.Loading -> throw(Exception("SmobLists still loading"))
+                    is Resource.Loading -> Timber.i("SmobLists still loading")
                     is Resource.Error ->{
                         // these are errors handled at Room level --> display
                         showSnackBar.value = it.exception.message ?: "(no message)"
@@ -595,7 +607,7 @@ class AdminViewModel(
 
                 when (it) {
                     is Resource.Error -> { showSnackBar.value = it.exception.message }
-                    is Resource.Loading -> throw(Exception("SmobList still loading"))
+                    is Resource.Loading -> Timber.i("SmobList still loading")
                     is Resource.Success -> updateShowNoSmobItemsData(it)
                 }
 

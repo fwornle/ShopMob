@@ -193,37 +193,6 @@ object BindingAdapters {
 
     }
 
-
-//    // layout properties with attribute <... app:itemImage ...> call upon this code
-//    @BindingAdapter(value = ["itemImage", "errorImage"], requireAll = false)
-//    @JvmStatic
-//    fun bindItemImage(
-//        imgView: ImageView,
-//        imgUrl: String?,
-//        errDrawableResId: Int?
-//    ) {
-//        imgUrl?.let {
-//            // load image using "coil" (https://github.com/coil-kt/coil#readme)
-//            // REF: https://betterprogramming.pub/how-to-use-coil-kotlins-native-image-loader-d6715dda7d26
-//            // ... suspends the current coroutine; non-blocking and thread safe
-//            // ... built-in image cache --> each product image only loaded once
-//            imgView
-//                // TEST images:
-//                //.load("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTc9mTlmQ_nD24rgudSHzKPsAZdSKn861Z0bw&usqp=CAU")
-//                //.load("https://media.istockphoto.com/photos/sunrise-at-quiraing-isle-of-skye-scotland-picture-id143177040")
-//                //.load("https://placeimg.com/300/200/arch?1")
-//                // actual product image
-//                .load(it)
-//                {
-//                    crossfade(true)
-//                    placeholder(R.drawable.smob_1)      // during loading of actual image
-//                    error(errDrawableResId ?: R.drawable.ic_baseline_broken_image_24)  // retrieval of image failed
-//                }
-//
-//        }
-//
-//    }
-
     // layout properties with attribute <... app:profileImage ...> call upon this code
     @BindingAdapter("profileImage")
     @JvmStatic

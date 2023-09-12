@@ -101,8 +101,8 @@ class GeofenceTransitionsWorkService(private val appContext: Context, params: Wo
                         .onEach { Timber.i("collecting SmobList resource, fc: ${flowCollections++}") }
                         .collect { listOfSmobLists ->
                             when(listOfSmobLists) {
-                                is Resource.Error -> throw(Exception("Cannot fetch smobLists flow"))
-                                is Resource.Loading -> throw(Exception("SmobList still loading"))
+                                is Resource.Error -> Timber.i("Cannot fetch smobLists flow")
+                                is Resource.Loading -> Timber.i("SmobList still loading")
                                 is Resource.Success -> smobLists = listOfSmobLists.data
                             }
                         }  // collect flow (SmobLists)
@@ -136,8 +136,8 @@ class GeofenceTransitionsWorkService(private val appContext: Context, params: Wo
                                     .onEach { Timber.i("collecting SmobShop resource, fc: ${flowCollections++}") }
                                     .collect { listOfSmobShops ->
                                         when(listOfSmobShops) {
-                                            is Resource.Error -> throw(Exception("Cannot fetch smobShops flow"))
-                                            is Resource.Loading -> throw(Exception("SmobShops still loading"))
+                                            is Resource.Error -> Timber.i("Cannot fetch smobShops flow")
+                                            is Resource.Loading -> Timber.i("SmobShops still loading")
                                             is Resource.Success -> smobShops = listOfSmobShops.data
                                         }
                                     }  // collect flow (SmobShops)

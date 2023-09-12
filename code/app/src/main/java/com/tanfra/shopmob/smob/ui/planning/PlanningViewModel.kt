@@ -47,12 +47,6 @@ class PlanningViewModel(
     // current list ID and list position (in the list of SmobLists)
     var currListId: String? = null
 
-    // define PlanningLists UI state as flow
-    private val viewStateListsMSF = MutableStateFlow(PlanningListsViewState())
-    val viewStateListsSF = viewStateListsMSF.asStateFlow()
-
-
-
     // collect the upstream selected smobList as well as the list of SmobProductATO items
     // ... lateinit, as this can only be done once the fragment is created (and the id's are here)
     lateinit var smobListF: Flow<Resource<SmobListATO>>
@@ -61,6 +55,11 @@ class PlanningViewModel(
     lateinit var smobListProductsF: Flow<Resource<List<SmobProductATO>>>
     lateinit var smobListProductsSF: StateFlow<Resource<List<SmobProductATO>>>
     lateinit var smobListProductsWithListDataSF: StateFlow<List<SmobProductWithListDataATO>>
+
+
+    // define PlanningLists UI state as flow
+    private val viewStateListsMSF = MutableStateFlow(PlanningListsViewState())
+    val viewStateListsSF = viewStateListsMSF.asStateFlow()
 
 
     /**
@@ -200,7 +199,7 @@ class PlanningViewModel(
 
                 when (it) {
                     is Resource.Error -> { showSnackBar.value = it.exception.message }
-                    is Resource.Loading -> throw(Exception("SmobProducts still loading"))
+                    is Resource.Loading -> Timber.i("SmobProducts still loading")
                     is Resource.Success -> updateShowNoData(it)
                 }
 
@@ -301,7 +300,7 @@ class PlanningViewModel(
 
                 when (it) {
                     is Resource.Error -> { showSnackBar.value = it.exception.message }
-                    is Resource.Loading -> throw(Exception("SmobProducts still loading"))
+                    is Resource.Loading -> Timber.i("SmobProducts still loading")
                     is Resource.Success -> updateShowNoData(it)
                 }
 
