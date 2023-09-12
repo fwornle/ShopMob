@@ -29,7 +29,7 @@ class GeofenceTransitionsWorkService(private val appContext: Context, params: Wo
     }
 
     // get repository instance for shop
-    private val _planningViewModel: PlanningViewModel by inject()
+    private val planningViewModel: PlanningViewModel by inject()
 
     // this will be triggered, as soon as the user enters the geoFence perimeter
     override suspend fun doWork(): Result {
@@ -85,8 +85,6 @@ class GeofenceTransitionsWorkService(private val appContext: Context, params: Wo
                     Timber.i("Received geoFence entry transition")
 
                     // near a shop --> fetch all SmobLists (of the user) and determine if there are items
-                    // which are of a category that matches any of the shops
-//                    _planningListsViewModel.fetchSmobLists()
 
                     // debugging
                     var flowCollections = 0
@@ -95,7 +93,7 @@ class GeofenceTransitionsWorkService(private val appContext: Context, params: Wo
                     var smobLists: List<SmobListATO>? = null
 
                     // collect flow (originating in the Room DB) of list of all SmobLists
-                    _planningViewModel.listRepository
+                    planningViewModel.listRepository
                         .getSmobItems()
                         .take(1)
                         .onEach { Timber.i("collecting SmobList resource, fc: ${flowCollections++}") }
@@ -130,7 +128,7 @@ class GeofenceTransitionsWorkService(private val appContext: Context, params: Wo
 
                                 // fetch smobShops
                                 // collect flow (originating in the Room DB) of list of all SmobShops
-                                _planningViewModel.shopRepository
+                                planningViewModel.shopRepository
                                     .getSmobItems()
                                     .take(1)
                                     .onEach { Timber.i("collecting SmobShop resource, fc: ${flowCollections++}") }
