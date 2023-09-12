@@ -17,6 +17,7 @@ import com.tanfra.shopmob.smob.data.repo.repoIf.SmobUserRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.ato.SmobContactATO
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
+import com.tanfra.shopmob.smob.ui.zeUtils.combineFlows
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
@@ -26,9 +27,9 @@ import timber.log.Timber
 @OptIn(ExperimentalCoroutinesApi::class)
 class AdminViewModel(
     private val app: Application,
-    val groupDataSource: SmobGroupRepository,  // public - used in AdminGroupsAdapter
-    val listDataSource: SmobListRepository,    // public - used in AdminListsAdapter
-    private val userDataSource: SmobUserRepository,    // public - used in AdminGroupMemberAdapter
+    val groupRepository: SmobGroupRepository,  // public - used in AdminGroupsAdapter
+    val listRepository: SmobListRepository,    // public - used in AdminListsAdapter
+    private val userRepository: SmobUserRepository,    // public - used in AdminGroupMemberAdapter
     ) : BaseViewModel(app) {
 
 
@@ -38,8 +39,8 @@ class AdminViewModel(
 
     // adapted from: https://medium.com/@kednaik/android-contacts-fetching-using-coroutines-aa0129bffdc4
 
-    private val _contactsLiveData = MutableLiveData<List<SmobContactATO>>()
-    val contactsLiveData: LiveData<List<SmobContactATO>> = _contactsLiveData
+    private val contactsMLD = MutableLiveData<List<SmobContactATO>>()
+    val contactsLD: LiveData<List<SmobContactATO>> = contactsMLD
 
     // currently selected contact (by clicking one in the list)
     var currSmobContactATO: SmobContactATO? = null
@@ -63,7 +64,7 @@ class AdminViewModel(
                     emails.map { email -> contact.emails.add(email) }
                 }
             }
-            _contactsLiveData.postValue(contacts)
+            contactsMLD.postValue(contacts)
         }
     }
 
@@ -159,59 +160,48 @@ class AdminViewModel(
 
 
     // list that holds the smob data items to be displayed on the UI
-    // ... flow, converted to StateFlow --> data changes in the backend are observed
-    // ... ref: https://medium.com/androiddevelopers/migrating-from-livedata-to-kotlins-flow-379292f419fb
-    private val _smobGroupsSF = MutableStateFlow<Resource<List<SmobGroupATO>>>(Resource.Loading)
-    val smobGroupsSF = _smobGroupsSF.asStateFlow()  // read-only
-
-    // Detailed investigation of Flow vs. LiveData: LD seems the better fit for UI layer
-    // see: https://bladecoder.medium.com/kotlins-flow-in-viewmodels-it-s-complicated-556b472e281a
-    //
-    // --> reverting back to LiveData at ViewModel layer (collection point) and benefitting of the
-    //     much less cumbersome handling of the data incl. the better "lifecycle optimized" behavior
-    //
-    // --> using ".asLiveData()", as the incoming flow is not based on "suspendable" operations
-    //     (already handled internally at Room level --> no "suspend fun" for read operations, see
-    //     DAO)
-    // --> alternative (with Coroutine scope would be to use ... = liveData { ... suspend fun ... })
-//    val smobGroupsLD = groupDataSource.getAllSmobGroups().asLiveData()
+    // static StateFlows (independent of user choice / id)
+    val smobGroupsSF = groupRepository.getSmobItems()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = Resource.Loading
+        )
 
 
-    // collect flow of all groups and return as StateFlow (SF)
+    /**
+     * collect the flow of the list of SmobShops
+     */
     @ExperimentalCoroutinesApi
-    fun collectAllSmobGroupsSF() {
+    private fun collectSmobGroups() {
 
-        // collect flow
-        groupDataSource.getSmobItems()
-            .catch { ex ->
-                // previously unhandled exception (= not handled at Room level)
-                // --> catch it here and represent in Resource status
-                _smobGroupsSF.value = Resource.Error(Exception(ex))
-                showSnackBar.value = ex.message
-            }
-            .take(1)
-            .onEach {
-                // no exception during flow collection
-                when (it) {
-                    is Resource.Loading -> Timber.i("SmobProducts still loading")
-                    is Resource.Error ->{
-                        // these are errors handled at Room level --> display
-                        showSnackBar.value = it.exception.message ?: "(no message)"
-                        _smobGroupsSF.value = it  // still return Resource value (w/h error)
-                    }
-                    is Resource.Success -> {
-                        // --> store successfully received data in StateFlow value
-                        _smobGroupsSF.value = it
-                        updateShowNoSmobItemsData(it)
+        viewModelScope.launch {
+
+            // collect flow / update SF
+            smobGroupsSF
+                .take(1)
+                .collect {
+                    when (it) {
+                        is Resource.Loading -> Timber.i("SmobGroups still loading")
+                        is Resource.Error -> {
+                            // these are errors handled at Room level --> display
+                            showSnackBar.value = it.exception.message ?: "(no message)"
+                        }
+                        is Resource.Success -> {
+                            // --> turn empty list into
+                            updateShowNoData(it)
+                        }
                     }
                 }
-            }
-            .launchIn(viewModelScope)  // co-routine scope
 
-    }  // collectAllSmobGroupsSF
+        }
+
+    }  // collectSmobGroups
 
 
-    // update all group items in the local DB by querying the backend - triggered on "swipe down"
+    /**
+     * update all items in the local DB by querying the backend - triggered on "swipe down"
+     */
     @ExperimentalCoroutinesApi
     fun swipeRefreshGroupDataInLocalDB() {
 
@@ -219,27 +209,29 @@ class AdminViewModel(
         viewModelScope.launch {
 
             // update backend DB (from net API)
-            groupDataSource.refreshItemsInLocalDB()
+            groupRepository.refreshItemsInLocalDB()
 
-            // load smobGroups from local DB and store in StateFlow value
-            collectAllSmobGroupsSF()
+            // collect flow and update StateFlow values (to get it out of the initial loading state)
+            collectSmobGroups()
 
             // check if the "no data" symbol has to be shown (empty list)
-            updateShowNoSmobItemsData(_smobGroupsSF.value)
+            updateShowNoData(smobGroupsSF.value)
 
         }
 
-    }  // swipeRefreshGroupDataInLocalDB
+    }  // swipeRefreshShopDataInLocalDB
+
 
     // inform the user that the list of SmobItems is empty
     @ExperimentalCoroutinesApi
-    private fun updateShowNoSmobItemsData(smobListNewest: Resource<List<*>>) {
+    private fun updateShowNoData(smobListNewest: Resource<List<*>>) {
         showNoData.value = when(smobListNewest) {
+            is Resource.Error -> true
+            is Resource.Loading -> false
             is Resource.Success -> {
                 smobListNewest.data.isEmpty() ||
-                smobListNewest.data.all { (it as Ato).status == ItemStatus.DELETED }
+                        smobListNewest.data.all { (it as Ato).status == ItemStatus.DELETED }
             }
-            else -> false
         }
     }
 
@@ -279,15 +271,16 @@ class AdminViewModel(
         showLoading.value = true
         viewModelScope.launch {
             // store in local DB (and sync to server)
-            groupDataSource.saveSmobItem(smobGroupData)
+            groupRepository.saveSmobItem(smobGroupData)
         }
         showLoading.value = false
 
-        // load SmobLists from local DB to update StateFlow value
-        collectAllSmobGroupsSF()
+        // collect flow and update StateFlow values (to get it out of the initial loading state)
+        collectSmobGroups()
 
         // check if the "no data" symbol has to be shown (empty list)
-        updateShowNoSmobItemsData(_smobGroupsSF.value)
+        updateShowNoData(smobGroupsSF.value)
+
     }
 
     // update the smobGroup item in the data source
@@ -296,15 +289,16 @@ class AdminViewModel(
         showLoading.value = true
         viewModelScope.launch {
             // update in local DB (and sync to server)
-            groupDataSource.updateSmobItem(smobGroupData)
+            groupRepository.updateSmobItem(smobGroupData)
         }
         showLoading.value = false
 
-        // load SmobLists from local DB to update StateFlow value
-        collectAllSmobGroupsSF()
+        // collect flow and update StateFlow values (to get it out of the initial loading state)
+        collectSmobGroups()
 
         // check if the "no data" symbol has to be shown (empty list)
-        updateShowNoSmobItemsData(_smobGroupsSF.value)
+        updateShowNoData(smobGroupsSF.value)
+
     }
 
     // update the smobUser item in the data source
@@ -313,7 +307,7 @@ class AdminViewModel(
         showLoading.value = true
         viewModelScope.launch {
             // update in local DB (and sync to server)
-            userDataSource.updateSmobItem(smobUserData)
+            userRepository.updateSmobItem(smobUserData)
         }
         showLoading.value = false
     }
@@ -339,30 +333,20 @@ class AdminViewModel(
     var currGroupId: String? = null
     var currGroup: SmobGroupATO? = null
 
-    // collect all SmobUsers
-    private val smobUsersF: Flow<Resource<List<SmobUserATO>>> = registerSmobUsersFlow()
-    val smobUsersSF = smobUsersFlowAsSF(smobUsersF)
 
-    // collect the upstream selected smobGroup as well as the list of SmobUserATO items
+    // access to the upstream selected smobGroup as well as the list of SmobUserATO items
     // ... lateinit, as this can only be done once the fragment is created (and the id's are here)
     lateinit var smobGroupF: Flow<Resource<SmobGroupATO>>
-    lateinit var smobGroupSF: StateFlow<Resource<SmobGroupATO>>
-
     lateinit var smobGroupMembersF: Flow<Resource<List<SmobUserATO>>>
-    lateinit var smobGroupMembersSF: StateFlow<Resource<List<SmobUserATO>>>
 
+    lateinit var smobGroupSF: StateFlow<Resource<SmobGroupATO>>
+    lateinit var smobGroupMembersSF: StateFlow<Resource<List<SmobUserATO>>>
     lateinit var smobGroupMemberWithGroupDataSF: StateFlow<List<SmobGroupMemberWithGroupDataATO>>
 
 
-    // register the flow of the list of items for the upstream list the user just selected
-    @ExperimentalCoroutinesApi
-    fun registerSmobUsersFlow(): Flow<Resource<List<SmobUserATO>>> =
-        userDataSource.getSmobItems()
-
-    // convert to StateFlow
-    private fun smobUsersFlowAsSF(inFlow: Flow<Resource<List<SmobUserATO>>>):
-            StateFlow<Resource<List<SmobUserATO>>> =
-        inFlow.stateIn(
+    // access to (static) flows
+    val smobUsersSF = userRepository.getSmobItems()
+        .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = Resource.Loading
@@ -372,7 +356,7 @@ class AdminViewModel(
     // register the flow of the upstream group the user just selected (flow still not collected)
     @ExperimentalCoroutinesApi
     fun registerSmobGroupFlow(id: String): Flow<Resource<SmobGroupATO>> =
-        groupDataSource.getSmobItem(id)
+        groupRepository.getSmobItem(id)
 
     // convert to StateFlow
     fun smobGroupFlowAsSF(inFlow: Flow<Resource<SmobGroupATO>>):
@@ -387,7 +371,7 @@ class AdminViewModel(
     // register the flow of the list of items for the upstream list the user just selected
     @ExperimentalCoroutinesApi
     fun registerSmobGroupMembersFlow(id: String): Flow<Resource<List<SmobUserATO>>> =
-        userDataSource.getSmobMembersByGroupId(id)
+        userRepository.getSmobMembersByGroupId(id)
 
     // convert to StateFlow
     fun smobGroupMembersFlowToSF(inFlow: Flow<Resource<List<SmobUserATO>>>):
@@ -399,89 +383,52 @@ class AdminViewModel(
         )
 
 
-    // combine the two flows (users, groups [user status]) and turn into StateFlow
+    /**
+     * combine the two flows (users, groups [user status]) and turn into StateFlow
+     */
     @ExperimentalCoroutinesApi
     fun combineGroupAndUserFlowsSF(
-        groupFlow: Flow<Resource<SmobGroupATO>>,
-        usersFlow: Flow<Resource<List<SmobUserATO>>>,
-    ): StateFlow<List<SmobGroupMemberWithGroupDataATO>> {
+        groupResFlow: Flow<Resource<SmobGroupATO>>,
+        userListResFlow: Flow<Resource<List<SmobUserATO>>>,
+    ): StateFlow<List<SmobGroupMemberWithGroupDataATO>> =
+        combineFlows(groupResFlow, userListResFlow) { daGroup, daUsers ->
 
-        return usersFlow.combine(groupFlow) { users, group ->
+            // fetch all users as defined by the member list of the selected group
+            val daGroupUsers = daUsers.filter { user ->
+                daGroup.members
+                    .map { member -> member.id }
+                    .contains(user.id)
+            }
 
-            // unwrap group (from Resource)
-            when (group) {
-                is Resource.Error -> {
-                    Timber.i("Couldn't retrieve SmobGroup from remote")
-                    listOf()
-                }
-                is Resource.Loading -> {
-                    Timber.i("SmobGroup still loading")
-                    listOf()
-                }
-                is Resource.Success -> {
-                    group.data.let { daGroup ->
+            // return all (other) users, except those from daGroup member list
+            daGroupUsers.map { member ->
 
-                        // evaluate/unwrap Resource
-                        when (users) {
-                            is Resource.Error -> {
-                                Timber.i("Couldn't retrieve SmobUsers from remote")
-                                listOf()
-                            }
-                            is Resource.Loading -> {
-                                Timber.i("SmobUsers still loading")
-                                listOf()
-                            }
-                            is Resource.Success -> {
-                                // successfully received all users --> could be empty system though
-                                users.data.let { allUsers ->
-
-                                    // fetch all users as defined by the member list of the selected group
-                                    val daGroupUsers = allUsers.filter { user ->
-                                        daGroup.members
-                                            .map { member -> member.id }
-                                            .contains(user.id)
-                                    }
-
-                                    // return all (other) users, except those from daGroup member list
-                                    daGroupUsers.map { member ->
-
-                                        // extend user record by group data
-                                        SmobGroupMemberWithGroupDataATO(
-                                            id = member.id,
-                                            status = member.status,
-                                            position = member.position,
-                                            memberUsername = member.username,
-                                            memberName = member.name,
-                                            memberEmail = member.email,
-                                            memberImageUrl = member.imageUrl,
-                                            memberGroups = member.groups,
-                                            groupId = daGroup.id,
-                                            groupStatus = daGroup.status,
-                                            groupPosition = daGroup.position,
-                                            groupName = daGroup.name,
-                                            groupDescription = daGroup.description,
-                                            groupType = daGroup.type,
-                                            groupMembers = daGroup.members,
-                                            groupActivity = daGroup.activity,
-                                        )
-
-                                    }
-                                }  // let...
-                            }  // Resource.Success
-                        }  // when (users)
-
-                    }  // let...
-                }  // Resource.Success
-            }  // when (group)
-
-        }  // combine(Flow_1, Flow_2)
+                // extend user record by group data
+                SmobGroupMemberWithGroupDataATO(
+                    id = member.id,
+                    status = member.status,
+                    position = member.position,
+                    memberUsername = member.username,
+                    memberName = member.name,
+                    memberEmail = member.email,
+                    memberImageUrl = member.imageUrl,
+                    memberGroups = member.groups,
+                    groupId = daGroup.id,
+                    groupStatus = daGroup.status,
+                    groupPosition = daGroup.position,
+                    groupName = daGroup.name,
+                    groupDescription = daGroup.description,
+                    groupType = daGroup.type,
+                    groupMembers = daGroup.members,
+                    groupActivity = daGroup.activity,
+                )
+            }
+        }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5000),
                 initialValue = listOf()
-            )  // StateFlow<...>
-
-    }  //  combineGroupAndUserFlowsSF
+            )
 
 
     //update all items in the local DB by querying the backend - triggered on "swipe down"
@@ -492,7 +439,7 @@ class AdminViewModel(
         viewModelScope.launch {
 
             // update backend DB (from net API)
-            userDataSource.refreshItemsInLocalDB()
+            userRepository.refreshItemsInLocalDB()
 
             // collect flow to update StateFlow with current value from DB
             smobGroupMembersSF.take(1).collect {
@@ -500,7 +447,7 @@ class AdminViewModel(
                 when (it) {
                     is Resource.Error -> { showSnackBar.value = it.exception.message }
                     is Resource.Loading -> Timber.i("SmobUser still loading")
-                    is Resource.Success -> updateShowNoSmobItemsData(it)
+                    is Resource.Success -> updateShowNoData(it)
                 }
 
             }
@@ -532,64 +479,43 @@ class AdminViewModel(
     // AdminListsTable ---------------------------------------------------------------------
     // AdminListsTable ---------------------------------------------------------------------
 
-    // -------------------------------------------------------------------------------------------
-    // register flow for all SmobLists and provide as (un-collected) StateFlow
-    private val smobListsF: Flow<Resource<List<SmobListATO>>> = registerSmobListsFlow()
-    val smobListsSF = smobListsFlowAsSF(smobListsF)  // SF
-
-    // fetch flow of SmobLists and turn into Stateflow (SF) for direct collection in the UI
-    @ExperimentalCoroutinesApi
-    fun registerSmobListsFlow(): Flow<Resource<List<SmobListATO>>> =
-        listDataSource.getSmobItems()
-
-    // convert flow to StateFlow (SF, not yet collected --> for direct collection in UI)
-    private fun smobListsFlowAsSF(inFlow: Flow<Resource<List<SmobListATO>>>):
-            StateFlow<Resource<List<SmobListATO>>> =
-        inFlow.stateIn(
+    // StateFlow for all SmobLists
+    val smobListsSF = listRepository.getSmobItems()
+        .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = Resource.Loading
         )
 
 
-    // -------------------------------------------------------------------------------------------
-    // alternative formulation: directly define Stateflow (SF) of all SmobLists
-    // ... ref: https://medium.com/androiddevelopers/migrating-from-livedata-to-kotlins-flow-379292f419fb
-    private val _smobListsAltSF = MutableStateFlow<Resource<List<SmobListATO>>>(Resource.Loading)
-    private val smobListsAltSF = _smobListsAltSF.asStateFlow()  // read-only
-
-    // collect the flow of all SmobLists (--> lists table) into _smobListSF / smobListsSF
+    /**
+     * collect the flow of the list of SmobShops
+     */
     @ExperimentalCoroutinesApi
-    fun collectSmobListsFlowAsAltSF() {
+    private fun collectSmobLists() {
 
-        // collect flow
-        listDataSource.getSmobItems()
-            .catch { ex ->
-                // previously unhandled exception (= not handled at Room level)
-                // --> catch it here and represent in Resource status
-                _smobListsAltSF.value = Resource.Error(Exception(ex))
-                showSnackBar.value = ex.message
-            }
-            .take(1)
-            .onEach {
-                // no exception during flow collection
-                when (it) {
-                    is Resource.Loading -> Timber.i("SmobLists still loading")
-                    is Resource.Error ->{
-                        // these are errors handled at Room level --> display
-                        showSnackBar.value = it.exception.message ?: "(no message)"
-                        _smobListsAltSF.value = it  // still return Resource value (w/h error)
-                    }
-                    is Resource.Success -> {
-                        // --> store successfully received data in StateFlow value
-                        _smobListsAltSF.value = it
-                        updateShowNoSmobItemsData(it)
+        viewModelScope.launch {
+
+            // collect flow / update SF
+            smobListsSF
+                .take(1)
+                .collect {
+                    when (it) {
+                        is Resource.Loading -> Timber.i("SmobLists still loading")
+                        is Resource.Error -> {
+                            // these are errors handled at Room level --> display
+                            showSnackBar.value = it.exception.message ?: "(no message)"
+                        }
+                        is Resource.Success -> {
+                            // --> turn empty list into
+                            updateShowNoData(it)
+                        }
                     }
                 }
-            }
-            .launchIn(viewModelScope)  // co-routine scope
 
-    }  // collectSmobListsFlowAsAltSF
+        }
+
+    }  // collectSmobLists
 
 
     // update all items in the local DB by querying the backend - triggered on "swipe down"
@@ -600,7 +526,7 @@ class AdminViewModel(
         viewModelScope.launch {
 
             // update backend DB (from net API)
-            listDataSource.refreshItemsInLocalDB()
+            listRepository.refreshItemsInLocalDB()
 
             // collect flow to update StateFlow with current value from DB
             smobListsSF.take(1).collect {
@@ -608,7 +534,7 @@ class AdminViewModel(
                 when (it) {
                     is Resource.Error -> { showSnackBar.value = it.exception.message }
                     is Resource.Loading -> Timber.i("SmobList still loading")
-                    is Resource.Success -> updateShowNoSmobItemsData(it)
+                    is Resource.Success -> updateShowNoData(it)
                 }
 
             }
@@ -636,7 +562,7 @@ class AdminViewModel(
     // fetch the flow of the upstream SmobList the user just selected
     @ExperimentalCoroutinesApi
     fun registerSmobListFlow(id: String): Flow<Resource<SmobListATO>> =
-        listDataSource.getSmobItem(id)
+        listRepository.getSmobItem(id)
 
     // convert flow to StateFlow (SF, not yet collected --> for direct collection in UI)
     fun registerSmobListFlowAsStateFlow(inFlow: Flow<Resource<SmobListATO>>):
@@ -657,7 +583,7 @@ class AdminViewModel(
     // fetch the flow of the groups referred to by the upstream list the user just selected
     @ExperimentalCoroutinesApi
     fun registerSmobListGroupsFlow(id: String): Flow<Resource<List<SmobGroupATO>>> =
-        groupDataSource.getSmobGroupsByListId(id)
+        groupRepository.getSmobGroupsByListId(id)
 
     // convert to StateFlow
     fun smobListGroupsFlowAsSF(inFlow: Flow<Resource<List<SmobGroupATO>>>):
@@ -673,92 +599,53 @@ class AdminViewModel(
     // combined StateFlow of referenced groups list with corresponding list data
     lateinit var smobListGroupsWithListDataSF: StateFlow<List<SmobGroupWithListDataATO>>
 
-    // combine the two flows of a selected list (#1) and it's referenced groups (#2), return as SF
+
+    /**
+     * combine the two flows of a selected list (#1) and it's referenced groups (#2), return as SF
+     */
     @ExperimentalCoroutinesApi
     fun combineListGroupsAndListFlowSF(
-        listFlow: Flow<Resource<SmobListATO>>,
-        groupFlow: Flow<Resource<List<SmobGroupATO>>>,
-    ): StateFlow<List<SmobGroupWithListDataATO>> {
+        listResFlow: Flow<Resource<SmobListATO>>,
+        groupListResFlow: Flow<Resource<List<SmobGroupATO>>>,
+    ): StateFlow<List<SmobGroupWithListDataATO>> =
+        combineFlows(listResFlow, groupListResFlow) { daList, daGroups ->
 
-        return groupFlow.combine(listFlow) { groups, list ->
+            // fetch all groups who refer to any of the groups associated with the
+            // selected list (daList.groups)
+            val daListGroups = daGroups.filter { group ->
+                daList.groups.map { listGroup -> listGroup.id }
+                    .contains(group.id)
+            }
 
-            // unwrap list (from Resource)
-            when (list) {
-                is Resource.Error -> {
-                    Timber.i("Couldn't retrieve SmobList from remote")
-                    listOf()
-                }
-                is Resource.Loading -> {
-                    Timber.i("SmobList still loading")
-                    listOf()
-                }
-                is Resource.Success -> {
-                    list.data.let { daList ->
+            // return all groups associated with daList, incl. the list details
+            daListGroups.map { group ->
 
-                        // evaluate/unwrap Resource
-                        when (groups) {
-                            is Resource.Error -> {
-                                Timber.i("Couldn't retrieve SmobGroups from remote")
-                                listOf()
-                            }
-                            is Resource.Loading -> {
-                                Timber.i("SmobGroups still loading")
-                                listOf()
-                            }
-                            is Resource.Success -> {
-
-                                // successfully received all groups --> could be empty system though
-                                groups.data.let { allGroups ->
-
-                                    // fetch all groups who refer to any of the groups associated with the
-                                    // selected list (daList.groups)
-                                    val daListGroups = allGroups.filter { group ->
-                                        daList.groups.map { listGroup -> listGroup.id }
-                                            .contains(group.id)
-                                    }
-
-                                    // return all groups associated with daList, incl. the list details
-                                    daListGroups.map { group ->
-
-                                        // extend user record by group data
-                                        SmobGroupWithListDataATO(
-                                            id = group.id,
-                                            status = group.status,
-                                            position = group.position,
-                                            groupName = group.name,
-                                            groupDescription = group.description,
-                                            groupType = group.type,
-                                            groupMembers = group.members,
-                                            groupActivity = group.activity,
-                                            listId = daList.id,
-                                            listStatus = daList.status,
-                                            listPosition = daList.position,
-                                            listName = daList.name,
-                                            listDescription = daList.description,
-                                            listItems = daList.items,
-                                            listGroups = daList.groups,
-                                            listLifecycle = daList.lifecycle,
-                                        )
-
-                                    }
-
-                                }  // let...
-                            }  // Resource.Success
-                        }  // when (groups)
-
-                    }  // let...
-                }  // status == SUCCESS
-            }  // when (list)
-
-        }  // combine(Flow_1, Flow_2)
+                // extend user record by group data
+                SmobGroupWithListDataATO(
+                    id = group.id,
+                    status = group.status,
+                    position = group.position,
+                    groupName = group.name,
+                    groupDescription = group.description,
+                    groupType = group.type,
+                    groupMembers = group.members,
+                    groupActivity = group.activity,
+                    listId = daList.id,
+                    listStatus = daList.status,
+                    listPosition = daList.position,
+                    listName = daList.name,
+                    listDescription = daList.description,
+                    listItems = daList.items,
+                    listGroups = daList.groups,
+                    listLifecycle = daList.lifecycle,
+                )
+            }
+        }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5000),
                 initialValue = listOf()
-            )  // StateFlow<...>
-
-    }  //  combineListGroupsAndListFlowSF
-
+            )
 
 
     // AdminListsAddNewItem --------------------------------------------------------------
@@ -791,15 +678,15 @@ class AdminViewModel(
         showLoading.value = true
         viewModelScope.launch {
             // update in local DB (and sync to server)
-            listDataSource.updateSmobItem(smobListData)
+            listRepository.updateSmobItem(smobListData)
         }
         showLoading.value = false
 
         // load SmobLists from local DB to update StateFlow value
-        collectSmobListsFlowAsAltSF()
+        this.collectSmobLists()
 
         // check if the "no data" symbol has to be shown (empty list)
-        updateShowNoSmobItemsData(_smobListsAltSF.value)
+        updateShowNoData(smobListsSF.value)
     }
 
 
@@ -825,107 +712,68 @@ class AdminViewModel(
     // fetch the flow of the groups referred to by the upstream list the user just selected
     @ExperimentalCoroutinesApi
     fun registerAllSmobGroupsFlow(): Flow<Resource<List<SmobGroupATO>>> =
-        groupDataSource.getSmobItems()
+        groupRepository.getSmobItems()
 
     // -------------------------------------------------------------------------------------------
     // combined StateFlow of all groups with selected list data
     lateinit var smobAllGroupsWithListDataSF: StateFlow<List<SmobGroupWithListDataATO>>
 
-    // combine the two flows (selected list, referenced groups) and return as StateFlow
+    /**
+     * combine the two flows of a selected list (#1) and it's referenced groups (#2), return as SF
+     */
     @ExperimentalCoroutinesApi
     fun combineAllGroupsAndListFlowSF(
-        listFlow: Flow<Resource<SmobListATO>>,
-        groupsFlow: Flow<Resource<List<SmobGroupATO>>>,
-    ): StateFlow<List<SmobGroupWithListDataATO>> {
+        listResFlow: Flow<Resource<SmobListATO>>,
+        groupListResFlow: Flow<Resource<List<SmobGroupATO>>>,
+    ): StateFlow<List<SmobGroupWithListDataATO>> =
+        combineFlows(listResFlow, groupListResFlow) { daList, daGroups ->
 
-        return groupsFlow.combine(listFlow) { groups, list ->
-
-            // unwrap list (from Resource)
-            when (list) {
-                is Resource.Error -> {
-                    Timber.i("Couldn't retrieve SmobList from remote")
-                    listOf()
+            // fetch all groups who refer to any of the groups associated with the
+            // selected list (daList.groups)
+            val daListGroups = daGroups
+                .filter { group ->
+                    daList.groups
+                        .map { listGroup ->
+                            if (listGroup.status != ItemStatus.DELETED)
+                                listGroup.id
+                            else
+                                ""
+                        }
+                        .contains(group.id)
                 }
-                is Resource.Loading -> {
-                    Timber.i("SmobList still loading")
-                    listOf()
-                }
-                is Resource.Success -> {
-                    list.data.let { daList ->
 
-                        // evaluate/unwrap Resource
-                        when (groups) {
-                            is Resource.Error -> {
-                                Timber.i("Couldn't retrieve SmobGroups from remote")
-                                listOf()
-                            }
-                            is Resource.Loading -> {
-                                Timber.i("SmobGroups still loading")
-                                listOf()
-                            }
-                            is Resource.Success -> {
+            // fetch all groups which are not yet referred to by the selected list
+            val daOtherGroups = daGroups.subtract(daListGroups.toSet())
 
-                                // successfully received all groups --> could be empty system though
-                                groups.data.let { allGroups ->
+            // return all groups associated with daList, incl. the list details
+            daOtherGroups.map { group ->
 
-                                    // fetch all groups who refer to any of the groups associated with the
-                                    // selected list (daList.groups)
-                                    val daListGroups = allGroups
-                                        .filter { group ->
-                                            daList.groups
-                                                .map { listGroup ->
-                                                    if (listGroup.status != ItemStatus.DELETED)
-                                                        listGroup.id
-                                                    else
-                                                        ""
-                                                }
-                                                .contains(group.id)
-                                        }
+                // extend user record by group data
+                SmobGroupWithListDataATO(
+                    id = group.id,
+                    status = group.status,
+                    position = group.position,
+                    groupName = group.name,
+                    groupDescription = group.description,
+                    groupType = group.type,
+                    groupMembers = group.members,
+                    groupActivity = group.activity,
+                    listId = daList.id,
+                    listStatus = daList.status,
+                    listPosition = daList.position,
+                    listName = daList.name,
+                    listDescription = daList.description,
+                    listItems = daList.items,
+                    listGroups = daList.groups,
+                    listLifecycle = daList.lifecycle,
+                )
 
-
-                                    // fetch all groups which are not yet referred to by the selected list
-                                    val daOtherGroups = allGroups.subtract(daListGroups.toSet())
-
-                                    // return all groups associated with daList, incl. the list details
-                                    daOtherGroups.map { group ->
-
-                                        // extend user record by group data
-                                        SmobGroupWithListDataATO(
-                                            id = group.id,
-                                            status = group.status,
-                                            position = group.position,
-                                            groupName = group.name,
-                                            groupDescription = group.description,
-                                            groupType = group.type,
-                                            groupMembers = group.members,
-                                            groupActivity = group.activity,
-                                            listId = daList.id,
-                                            listStatus = daList.status,
-                                            listPosition = daList.position,
-                                            listName = daList.name,
-                                            listDescription = daList.description,
-                                            listItems = daList.items,
-                                            listGroups = daList.groups,
-                                            listLifecycle = daList.lifecycle,
-                                        )
-
-                                    }
-
-                                }  // let ...
-                            }  // Resource.Success
-                        }  // when (groups)
-
-                    }  // let ...
-                }  // Resource.Success
-            }  // when (list)
-
-        }  // combine(Flow_1, Flow_2)
+            }
+        }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5000),
                 initialValue = listOf()
-            )  // StateFlow<...>
-
-    }  //  combineAllGroupsAndListFlowSF
+            )
 
 }

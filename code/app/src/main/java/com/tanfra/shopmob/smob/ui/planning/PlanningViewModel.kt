@@ -21,6 +21,7 @@ import com.tanfra.shopmob.smob.data.repo.repoIf.SmobShopRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsViewState
+import com.tanfra.shopmob.smob.ui.zeUtils.combineFlows
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
@@ -101,85 +102,44 @@ class PlanningViewModel(
      */
     @ExperimentalCoroutinesApi
     fun combineFlowsAndConvertToStateFlow(
-        listFlow: Flow<Resource<SmobListATO>>,
-        itemsFlow: Flow<Resource<List<SmobProductATO>>>,
-    ): StateFlow<List<SmobProductWithListDataATO>> {
+        listResFlow: Flow<Resource<SmobListATO>>,
+        itemListResFlow: Flow<Resource<List<SmobProductATO>>>,
+    ): StateFlow<List<SmobProductWithListDataATO>> =
+        combineFlows(listResFlow, itemListResFlow) { list, productList ->
 
-        return itemsFlow.combine(listFlow) { items, list ->
+            productList.map { product ->
 
-            // unwrap list (from Resource)
-            when (list) {
-                is Resource.Error -> {
-                    Timber.i("Couldn't retrieve SmobList from remote")
-                    listOf()
-                }
-                is Resource.Loading -> {
-                    Timber.i("SmobList still loading")
-                    listOf()
-                }
-                is Resource.Success -> {
-                    list.data.let { rawList ->
+                val productOnList =
+                    list.items.first { item -> item.id == product.id }
 
-                        // evaluate/unwrap Resource
-                        when (items) {
-                            is Resource.Error -> {
-                                Timber.i("Couldn't retrieve SmobProducts from remote")
-                                listOf()
-                            }
-                            is Resource.Loading -> {
-                                Timber.i("SmobProducts still loading")
-                                listOf()
-                            }
-                            is Resource.Success -> {
+                SmobProductWithListDataATO(
+                    id = product.id,
+                    status = productOnList.status,
+                    position = productOnList.listPosition,
+                    productName = product.name,
+                    productDescription = product.description,
+                    productImageUrl = product.imageUrl,
+                    productCategory = product.category,
+                    productActivity = product.activity,
+                    productInShop = product.inShop,
+                    listId = list.id,
+                    listStatus = list.status,
+                    listPosition = list.position,
+                    listName = list.name,
+                    listDescription = list.description,
+                    listItems = list.items,
+                    listGroups = list.groups,
+                    listLifecycle = list.lifecycle,
+                )
 
-                                // received the items on the list alright --> process
-                                items.data.map { product ->
+            }
 
-                                    // at this point, the products on the shopping lists have been properly
-                                    // received --> implies that the list itself is also available
-                                    // output merged data type (with product item status)
-
-                                    // fetch product details from 'items' list on the smobList
-                                    val productOnList =
-                                        rawList.items.first { item -> item.id == product.id }
-
-                                    SmobProductWithListDataATO(
-                                        id = product.id,
-                                        status = productOnList.status,
-                                        position = productOnList.listPosition,
-                                        productName = product.name,
-                                        productDescription = product.description,
-                                        productImageUrl = product.imageUrl,
-                                        productCategory = product.category,
-                                        productActivity = product.activity,
-                                        productInShop = product.inShop,
-                                        listId = rawList.id,
-                                        listStatus = rawList.status,
-                                        listPosition = rawList.position,
-                                        listName = rawList.name,
-                                        listDescription = rawList.description,
-                                        listItems = rawList.items,
-                                        listGroups = rawList.groups,
-                                        listLifecycle = rawList.lifecycle,
-                                    )
-
-                                }  // let...
-                            }  // Resource.Success
-                        }  // when(items)
-
-                    }  // let...
-                }  // Resource.Success
-            }  // when(list)
-
-        }  // combine(Flow_1, Flow_2)
+        }
             .stateIn(
                 scope = viewModelScope,
                 started = WhileSubscribed(5000),
                 initialValue = listOf()
             )
-
-    }  //  combineFlowsAndConvertToStateFlow
-
 
 
     /**
@@ -218,12 +178,13 @@ class PlanningViewModel(
     @ExperimentalCoroutinesApi
     private fun updateShowNoData(smobListNewest: Resource<List<*>>) {
         showNoData.value = when(smobListNewest) {
+            is Resource.Error -> true
+            is Resource.Loading -> false
             is Resource.Success -> {
                 smobListNewest.data.isEmpty() ||
                 smobListNewest.data.all { (it as Ato).status == ItemStatus.DELETED } ||
                 SmobApp.currUser?.hasGroupRefs()?.not() ?: false
             }
-            else -> true
         }
     }
 
@@ -449,7 +410,7 @@ class PlanningViewModel(
         viewModelScope.launch {
 
             // collect flow / update SF
-            this@PlanningViewModel.smobListsSF
+            smobListsSF
                 .take(1)
                 .collect {
                     when (it) {
@@ -540,8 +501,8 @@ class PlanningViewModel(
         // load SmobLists from local DB to update StateFlow value
         collectSmobLists()
 
-//        // check if the "no data" symbol has to be shown (empty list)
-//        updateShowNoData(smobListsSF.value)
+        // check if the "no data" symbol has to be shown (empty list)
+        updateShowNoData(smobListsSF.value)
     }
 
     /**

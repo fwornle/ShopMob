@@ -99,7 +99,7 @@ class AdminGroupMembersTableAdapter(rootView: View, callBack: (selectedSmobATO: 
 
             // store updated smobGroup in local DB
             // ... this also triggers an immediate push to the backend (once stored locally)
-            viewModel.groupDataSource.updateSmobItem(updatedGroup)
+            viewModel.groupRepository.updateSmobItem(updatedGroup)
 
             // also update swiped user's groups (in case the user just got thrown of a group)
             viewModel.currGroupMember?.let { daMember ->

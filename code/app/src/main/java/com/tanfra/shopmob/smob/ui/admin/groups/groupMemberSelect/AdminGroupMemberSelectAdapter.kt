@@ -93,7 +93,7 @@ class AdminGroupMemberSelectAdapter(rootView: View, callBack: (selectedSmobUserA
 
                     // store updated smobGroup in local DB
                     // ... this also triggers an immediate push to the backend (once stored locally)
-                    viewModel.groupDataSource.updateSmobItem(updatedGroup)
+                    viewModel.groupRepository.updateSmobItem(updatedGroup)
 
                     // update current group holder
                     viewModel.currGroup = updatedGroup

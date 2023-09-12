@@ -56,7 +56,7 @@ class AdminListsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobLis
 
             // store updated smobList in local DB
             // ... this also triggers an immediate push to the backend (once stored locally)
-            viewModel.listDataSource.updateSmobItem(item)
+            viewModel.listRepository.updateSmobItem(item)
 
         }  // coroutine scope (lifecycleScope)
 

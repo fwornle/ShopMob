@@ -80,7 +80,7 @@ class AdminGroupsTableAdapter(rootView: View, callBack: (selectedSmobATO: SmobGr
 
             // store updated smobGroup in local DB
             // ... this also triggers an immediate push to the backend (once stored locally)
-            viewModel.groupDataSource.updateSmobItem(updatedList)
+            viewModel.groupRepository.updateSmobItem(updatedList)
 
         }  // coroutine scope (lifecycleScope)
 
