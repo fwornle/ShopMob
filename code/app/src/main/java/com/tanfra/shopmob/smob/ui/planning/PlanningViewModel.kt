@@ -206,6 +206,9 @@ class PlanningViewModel(
 
             }
 
+            // check if the "no data" symbol has to be shown (empty list)
+            updateShowNoData(smobListProductsSF.value)
+
         }
 
     }  // swipeRefreshProductDataInLocalDB
@@ -221,7 +224,7 @@ class PlanningViewModel(
                 smobListNewest.data.all { (it as Ato).status == ItemStatus.DELETED } ||
                 SmobApp.currUser?.hasGroupRefs()?.not() ?: false
             }
-            else -> false
+            else -> true
         }
     }
 
@@ -400,10 +403,12 @@ class PlanningViewModel(
             // collect flow and update StateFlow values (to get it out of the initial loading state)
             collectSmobShopList()
 
+            // check if the "no data" symbol has to be shown (empty list)
+            updateShowNoData(smobShopListSF.value)
+
         }
 
     }  // swipeRefreshShopDataInLocalDB
-
 
 
     /**
@@ -427,24 +432,13 @@ class PlanningViewModel(
     // (ex)-PlanningListsViewModel --------------------------------------------
     // (ex)-PlanningListsViewModel --------------------------------------------
 
-
-    // list that holds the smob data items to be displayed on the UI
-    // ... flow, converted to StateFlow --> data changes in the backend are observed
-    // ... ref: https://medium.com/androiddevelopers/migrating-from-livedata-to-kotlins-flow-379292f419fb
-    private val smobListsStaticMSF = MutableStateFlow<Resource<List<SmobListATO>>>(Resource.Loading)
-    val smobListsStaticSF = smobListsStaticMSF.asStateFlow()
-
-    // Detailed investigation of Flow vs. LiveData: LD seems the better fit for UI layer
-    // see: https://bladecoder.medium.com/kotlins-flow-in-viewmodels-it-s-complicated-556b472e281a
-    //
-    // --> reverting back to LiveData at ViewModel layer (collection point) and benefiting of the
-    //     much less cumbersome handling of the data incl. the better "lifecycle optimized" behavior
-    //
-    // --> using ".asLiveData()", as the incoming flow is not based on "suspendable" operations
-    //     (already handled internally at Room level --> no "suspend fun" for read operations, see
-    //     DAO)
-    // --> alternative (with Coroutine scope would be to use ... = liveData { ... suspend fun ... })
-//    val smobLists = listsDataSource.getAllSmobLists().asLiveData()
+    // static StateFlows (independent of user choice / id)
+    val smobListsSF = listRepository.getSmobItems()
+        .stateIn(
+            scope = viewModelScope,
+            started = WhileSubscribed(5000),
+            initialValue = Resource.Loading
+        )
 
 
     /**
@@ -453,32 +447,26 @@ class PlanningViewModel(
     @ExperimentalCoroutinesApi
     private fun collectSmobLists() {
 
-        // collect flow
-        listRepository.getSmobItems()
-            .catch { ex ->
-                // previously unhandled exception (= not handled at Room level)
-                // --> catch it here and represent in Resource status
-                smobListsStaticMSF.value = Resource.Error(Exception(ex))
-                showSnackBar.value = ex.message ?: "(no message)"
-            }
-            .take(1)
-            .onEach {
-                // no exception during flow collection
-                when (it) {
-                    is Resource.Loading -> throw(Exception("SmobProducts still loading"))
-                    is Resource.Error ->{
-                        // these are errors handled at Room level --> display
-                        showSnackBar.value = it.exception.message ?: "(no message)"
-                        smobListsStaticMSF.value = it  // still return Resource value (w/h error)
-                    }
-                    is Resource.Success -> {
-                        // --> store successfully received data in StateFlow value
-                        smobListsStaticMSF.value = it
-                        updateShowNoData(it)
+        viewModelScope.launch {
+
+            // collect flow / update SF
+            this@PlanningViewModel.smobListsSF
+                .take(1)
+                .collect {
+                    when (it) {
+                        is Resource.Loading -> Timber.i("SmobLists still loading")
+                        is Resource.Error -> {
+                            // these are errors handled at Room level --> display
+                            showSnackBar.value = it.exception.message ?: "(no message)"
+                        }
+                        is Resource.Success -> {
+                            // --> turn empty list into
+                            updateShowNoData(it)
+                        }
                     }
                 }
-            }
-            .launchIn(viewModelScope)  // co-routine scope
+
+        }
 
     }  // collectSmobLists
 
@@ -499,7 +487,7 @@ class PlanningViewModel(
             collectSmobLists()
 
             // check if the "no data" symbol has to be shown (empty list)
-            updateShowNoData(smobListsStaticMSF.value)
+            updateShowNoData(smobListsSF.value)
 
         }
 
@@ -553,8 +541,8 @@ class PlanningViewModel(
         // load SmobLists from local DB to update StateFlow value
         collectSmobLists()
 
-        // check if the "no data" symbol has to be shown (empty list)
-        updateShowNoData(smobListsStaticMSF.value)
+//        // check if the "no data" symbol has to be shown (empty list)
+//        updateShowNoData(smobListsSF.value)
     }
 
     /**

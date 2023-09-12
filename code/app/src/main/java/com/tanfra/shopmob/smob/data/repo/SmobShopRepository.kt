@@ -240,7 +240,7 @@ class SmobShopRepository(
                     is Resource.Success -> {
                         Timber.i("SmobShop data GET request complete (success)")
 
-                        // delete current table from local DB
+                        // delete current table from local DB (= clear local cache)
                         smobShopDao.deleteSmobItems()
 
                         // store group data in DB - if any

@@ -26,6 +26,7 @@ import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
+import timber.log.Timber
 
 class PlanningListsTableFragment : BaseFragment(), KoinComponent {
 
@@ -142,10 +143,10 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
     private fun navigateToAddSmobList() {
 
         // determine hightest index in all smobLists
-        val highPos = viewModel.smobListsStaticSF.value.let {
+        val highPos = viewModel.smobListsSF.value.let {
             when (it) {
-                is Resource.Error -> throw (Exception("Couldn't retrieve SmobGroup from remote"))
-                is Resource.Loading -> throw (Exception("SmobGroup still loading"))
+                is Resource.Error -> Timber.i("Couldn't retrieve SmobGroup from remote")
+                is Resource.Loading -> Timber.i("SmobGroup still loading")
                 is Resource.Success -> {
                     it.data.let { daList ->
                         daList.fold(0L) { max, list ->

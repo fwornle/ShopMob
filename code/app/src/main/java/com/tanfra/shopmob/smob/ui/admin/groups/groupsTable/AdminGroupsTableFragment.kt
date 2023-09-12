@@ -25,6 +25,7 @@ import com.tanfra.shopmob.utils.setup
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
+import timber.log.Timber
 
 class AdminGroupsTableFragment : BaseFragment(), KoinComponent {
 
@@ -196,8 +197,8 @@ class AdminGroupsTableFragment : BaseFragment(), KoinComponent {
         // determine highest index in all smobGroups
         val highPos = viewModel.smobGroupsSF.value.let {
             when (it) {
-                is Resource.Error -> throw (Exception("Couldn't retrieve SmobGroup from remote"))
-                is Resource.Loading -> throw (Exception("SmobGroup still loading"))
+                is Resource.Error -> Timber.i("Couldn't retrieve SmobGroup from remote")
+                is Resource.Loading -> Timber.i("SmobGroup still loading")
                 is Resource.Success -> {
                     it.data.let { daList ->
                         daList.fold(0L) { max, list ->

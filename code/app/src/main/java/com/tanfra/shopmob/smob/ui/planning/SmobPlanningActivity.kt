@@ -167,8 +167,8 @@ class SmobPlanningActivity : AppCompatActivity() {
                 userRepo.getSmobItems().take(1).collectLatest { daUserList ->
 
                     when (daUserList) {
-                        is Resource.Error -> throw (Exception("Couldn't retrieve SmobUsers from remote"))
-                        is Resource.Loading -> throw (Exception("SmobUsers still loading"))
+                        is Resource.Error -> Timber.i("Couldn't retrieve SmobUsers from remote")
+                        is Resource.Loading -> Timber.i("SmobUsers still loading")
                         is Resource.Success -> {
                             daUserList.data.let { allUsers ->
 

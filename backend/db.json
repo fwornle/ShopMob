@@ -258,6 +258,16 @@
         "248dc614-de25-4856-833a-e0ec585e28d0",
         "f56de9ac-d5d2-4fab-bccb-79db0b0008bc"
       ]
+    },
+    {
+      "id": "user-without-firebase-id",
+      "status": "NEW",
+      "position": 21,
+      "username": "user-without-username",
+      "name": "user-without-username",
+      "email": "user-without-email",
+      "imageUrl": "null",
+      "groups": []
     }
   ],
   "groups": [

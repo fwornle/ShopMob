@@ -21,6 +21,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AdminViewModel(
@@ -671,15 +672,27 @@ class AdminViewModel(
 
             // unwrap list (from Resource)
             when (list) {
-                is Resource.Error -> throw(Exception("Couldn't retrieve SmobList from remote"))
-                is Resource.Loading -> throw(Exception("SmobList still loading"))
+                is Resource.Error -> {
+                    Timber.i("Couldn't retrieve SmobList from remote")
+                    listOf()
+                }
+                is Resource.Loading -> {
+                    Timber.i("SmobList still loading")
+                    listOf()
+                }
                 is Resource.Success -> {
                     list.data.let { daList ->
 
                         // evaluate/unwrap Resource
                         when (groups) {
-                            is Resource.Error -> throw (Exception("Couldn't retrieve SmobGroups from remote"))
-                            is Resource.Loading -> throw (Exception("SmobGroups still loading"))
+                            is Resource.Error -> {
+                                Timber.i("Couldn't retrieve SmobGroups from remote")
+                                listOf()
+                            }
+                            is Resource.Loading -> {
+                                Timber.i("SmobGroups still loading")
+                                listOf()
+                            }
                             is Resource.Success -> {
 
                                 // successfully received all groups --> could be empty system though
@@ -817,15 +830,27 @@ class AdminViewModel(
 
             // unwrap list (from Resource)
             when (list) {
-                is Resource.Error -> throw(Exception("Couldn't retrieve SmobList from remote"))
-                is Resource.Loading -> throw(Exception("SmobList still loading"))
+                is Resource.Error -> {
+                    Timber.i("Couldn't retrieve SmobList from remote")
+                    listOf()
+                }
+                is Resource.Loading -> {
+                    Timber.i("SmobList still loading")
+                    listOf()
+                }
                 is Resource.Success -> {
                     list.data.let { daList ->
 
                         // evaluate/unwrap Resource
                         when (groups) {
-                            is Resource.Error -> throw (Exception("Couldn't retrieve SmobGroups from remote"))
-                            is Resource.Loading -> throw (Exception("SmobGroups still loading"))
+                            is Resource.Error -> {
+                                Timber.i("Couldn't retrieve SmobGroups from remote")
+                                listOf()
+                            }
+                            is Resource.Loading -> {
+                                Timber.i("SmobGroups still loading")
+                                listOf()
+                            }
                             is Resource.Success -> {
 
                                 // successfully received all groups --> could be empty system though
