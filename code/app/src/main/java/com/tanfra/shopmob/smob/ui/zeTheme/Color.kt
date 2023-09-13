@@ -24,3 +24,4 @@ val swipePrimaryColor = Color(0xFFc8e6c9)
 val swipeSecondaryColor = Color(0xFF8EC190)
 
 val colorNoNetwork = Color(0xFFE1D9DA)
+val colorAccent = Color(0xFFD81B60)

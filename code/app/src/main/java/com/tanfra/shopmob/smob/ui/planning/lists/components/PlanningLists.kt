@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.ui.zeTheme.ShopMobTheme
+import com.tanfra.shopmob.smob.ui.zeTheme.colorAccent
 import com.tanfra.shopmob.smob.ui.zeUtils.statusColor
 import timber.log.Timber
 
@@ -64,8 +65,13 @@ fun ListItem(
                 text = list.name,
                 style = MaterialTheme.typography.headlineMedium,
             )
-
-            Text(list.id)
+            Text(
+                text = list.description ?: "(no description)",
+            )
+            Text(
+                text = list.status.toString(),
+                color = colorAccent,
+            )
         }
 
         IconButton(

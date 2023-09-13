@@ -10,6 +10,8 @@ import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
 import android.widget.Toast
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -20,6 +22,7 @@ import com.tanfra.shopmob.databinding.FragmentPlanningListsTableBinding
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
+import com.tanfra.shopmob.smob.ui.planning.lists.components.PlanningListsScreen
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
 import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
@@ -75,7 +78,13 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
         // refresh local DB data from backend (for this list) - also updates 'showNoData'
         viewModel.swiperefreshItemsInLocalDB()
 
-        return binding.root
+        // construct view (compose)
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                PlanningListsScreen(viewModel)
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
