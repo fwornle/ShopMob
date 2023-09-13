@@ -20,7 +20,7 @@ import com.tanfra.shopmob.smob.data.repo.repoIf.SmobProductRepository
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobShopRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
-import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsViewState
+import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsUiState
 import com.tanfra.shopmob.smob.ui.zeUtils.combineFlows
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -45,6 +45,7 @@ class PlanningViewModel(
     // ... depending on how we got to the list (and, as such, on how we want to use it)
     var navSource = "navDrawer"  // default
 
+
     // current list ID and list position (in the list of SmobLists)
     var currListId: String? = null
 
@@ -58,9 +59,103 @@ class PlanningViewModel(
     lateinit var smobListProductsWithListDataSF: StateFlow<List<SmobProductWithListDataATO>>
 
 
-    // define PlanningLists UI state as flow
-    private val viewStateListsMSF = MutableStateFlow(PlanningListsViewState())
-    val viewStateListsSF = viewStateListsMSF.asStateFlow()
+    // (ex) PlanningProductEditViewModel contents ------------------------------------------------
+    // (ex) PlanningProductEditViewModel contents ------------------------------------------------
+    // (ex) PlanningProductEditViewModel contents ------------------------------------------------
+
+    var smobProductName = MutableLiveData<String?>()
+    var smobProductDescription = MutableLiveData<String?>()
+    var smobProductImageUrl = MutableLiveData<String?>()
+    val smobProductCategory = MutableLiveData<ProductCategory>()
+
+    // this will be overwritten from within the shopList, as soon as the user selects a shop from the list
+    // ... it remains active until a new shop is chosen
+    var selectedShop = MutableLiveData<SmobShopATO>()
+
+    // default
+    // ... using 'postValue' as the VM is instantiated from within a coroutine, when the WorkManager
+    //     scheduled geoFence is triggered (and "doWork" is called)
+    init {
+        selectedShop.postValue(
+            SmobShopATO(
+                "no product selected yet (id)",
+                ItemStatus.INVALID,
+                -1L,
+                "",
+                "",
+                "",
+                ShopLocation(0.0, 0.0),
+                ShopType.INDIVIDUAL,
+                ShopCategory.OTHER,
+                listOf(),
+            )
+        )
+
+        smobProductCategory.postValue(
+            ProductCategory(ProductMainCategory.OTHER, ProductSubCategory.OTHER)
+        )
+    }
+
+    // (ex) ShopListViewModel contents ------------------------------------------------
+    // (ex) ShopListViewModel contents ------------------------------------------------
+    // (ex) ShopListViewModel contents ------------------------------------------------
+
+    // static StateFlows (independent of user choice / id)
+    val smobShopListSF = shopRepository.getSmobItems()
+        .stateIn(
+            scope = viewModelScope,
+            started = WhileSubscribed(5000),
+            initialValue = Resource.Loading
+        )
+
+
+    // (ex)-PlanningListsViewModel --------------------------------------------
+    // (ex)-PlanningListsViewModel --------------------------------------------
+    // (ex)-PlanningListsViewModel --------------------------------------------
+
+    // static StateFlows (independent of user choice / id)
+    val smobListsSF = listRepository.getSmobItems()
+        .stateIn(
+            scope = viewModelScope,
+            started = WhileSubscribed(5000),
+            initialValue = Resource.Loading
+        )
+
+
+    // (ex)-PlanningListEditViewModel ---------------------------------------------
+    // (ex)-PlanningListEditViewModel ---------------------------------------------
+    // (ex)-PlanningListEditViewModel ---------------------------------------------
+
+    val smobListName = MutableLiveData<String?>()
+    val smobListDescription = MutableLiveData<String?>()
+    private val smobListImageUrl = MutableLiveData<String?>()
+
+    init {
+        onClearList()
+    }
+
+
+
+    // UI state ------------------------------------------------------------------
+    // UI state ------------------------------------------------------------------
+    // UI state ------------------------------------------------------------------
+
+    val uiStateListsSF = smobListsSF.map {
+        when (it) {
+            is Resource.Error -> PlanningListsUiState(isError = true)
+            is Resource.Loading -> PlanningListsUiState(isLoading = true)
+            is Resource.Success -> PlanningListsUiState(lists = it.data)
+        }
+    }
+
+
+
+
+    // ===========================================================================
+    // ===========================================================================
+    // ===========================================================================
+    // ===========================================================================
+    // ===========================================================================
 
 
     /**
@@ -193,39 +288,6 @@ class PlanningViewModel(
     // (ex) PlanningProductEditViewModel contents ------------------------------------------------
     // (ex) PlanningProductEditViewModel contents ------------------------------------------------
 
-    var smobProductName = MutableLiveData<String?>()
-    var smobProductDescription = MutableLiveData<String?>()
-    var smobProductImageUrl = MutableLiveData<String?>()
-    val smobProductCategory = MutableLiveData<ProductCategory>()
-
-    // this will be overwritten from within the shopList, as soon as the user selects a shop from the list
-    // ... it remains active until a new shop is chosen
-    var selectedShop = MutableLiveData<SmobShopATO>()
-
-    // default
-    // ... using 'postValue' as the VM is instantiated from within a coroutine, when the WorkManager
-    //     scheduled geoFence is triggered (and "doWork" is called)
-    init {
-        selectedShop.postValue(
-            SmobShopATO(
-                "no product selected yet (id)",
-                ItemStatus.INVALID,
-                -1L,
-                "",
-                "",
-                "",
-                ShopLocation(0.0, 0.0),
-                ShopType.INDIVIDUAL,
-                ShopCategory.OTHER,
-                listOf(),
-            )
-        )
-
-        smobProductCategory.postValue(
-            ProductCategory(ProductMainCategory.OTHER, ProductSubCategory.OTHER)
-        )
-    }
-
     /**
      * Clear the live data objects to start fresh next time the view model gets called
      */
@@ -309,15 +371,6 @@ class PlanningViewModel(
     // (ex) ShopListViewModel contents ------------------------------------------------
     // (ex) ShopListViewModel contents ------------------------------------------------
 
-    // static StateFlows (independent of user choice / id)
-    val smobShopListSF = shopRepository.getSmobItems()
-        .stateIn(
-            scope = viewModelScope,
-            started = WhileSubscribed(5000),
-            initialValue = Resource.Loading
-        )
-
-
     /**
      * collect the flow of the list of SmobShops
      */
@@ -392,15 +445,6 @@ class PlanningViewModel(
     // (ex)-PlanningListsViewModel --------------------------------------------
     // (ex)-PlanningListsViewModel --------------------------------------------
 
-    // static StateFlows (independent of user choice / id)
-    val smobListsSF = listRepository.getSmobItems()
-        .stateIn(
-            scope = viewModelScope,
-            started = WhileSubscribed(5000),
-            initialValue = Resource.Loading
-        )
-
-
     /**
      * collect the flow of the upstream list the user just selected
      */
@@ -458,14 +502,6 @@ class PlanningViewModel(
     // (ex)-PlanningListEditViewModel ---------------------------------------------
     // (ex)-PlanningListEditViewModel ---------------------------------------------
     // (ex)-PlanningListEditViewModel ---------------------------------------------
-
-    val smobListName = MutableLiveData<String?>()
-    val smobListDescription = MutableLiveData<String?>()
-    private val smobListImageUrl = MutableLiveData<String?>()
-
-    init {
-        onClearList()
-    }
 
     /**
      * Clear the live data objects to start fresh next time the view model gets instantiated
