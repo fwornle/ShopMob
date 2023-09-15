@@ -49,6 +49,10 @@ class PlanningViewModel(
     // current list ID and list position (in the list of SmobLists)
     var currListId: String? = null
 
+    // refreshing state
+    private val isRefreshingMSF = MutableStateFlow(false)
+    val isRefreshingSF = isRefreshingMSF.asStateFlow()
+
     // collect the upstream selected smobList as well as the list of SmobProductATO items
     // ... lateinit, as this can only be done once the fragment is created (and the id's are here)
     lateinit var smobListF: Flow<Resource<SmobListATO>>
@@ -147,7 +151,6 @@ class PlanningViewModel(
             is Resource.Success -> PlanningListsUiState(lists = it.data)
         }
     }
-
 
 
 
@@ -265,7 +268,7 @@ class PlanningViewModel(
 
         }
 
-    }  // swipeRefreshProductDataInLocalDB
+    }
 
     /**
      * Inform the user that the list is empty
@@ -421,7 +424,7 @@ class PlanningViewModel(
 
         }
 
-    }  // swipeRefreshShopDataInLocalDB
+    }
 
 
     /**
@@ -479,10 +482,13 @@ class PlanningViewModel(
      * update all items in the local DB by querying the backend - triggered on "swipe down"
      */
     @ExperimentalCoroutinesApi
-    fun swiperefreshItemsInLocalDB() {
+    fun swipeRefreshListDataInLocalDB() {
 
         // user is impatient - trigger update of local DB from net
         viewModelScope.launch {
+
+            // refreshing started
+            isRefreshingMSF.emit(true)
 
             // update backend DB (from net API)
             listRepository.refreshItemsInLocalDB()
@@ -493,9 +499,12 @@ class PlanningViewModel(
             // check if the "no data" symbol has to be shown (empty list)
             updateShowNoData(smobListsSF.value)
 
+            // refreshing done
+            isRefreshingMSF.emit(false)
+
         }
 
-    }  // swiperefreshItemsInLocalDB
+    }
 
 
 

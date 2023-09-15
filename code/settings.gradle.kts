@@ -169,9 +169,10 @@ dependencyResolutionManagement {
 
             // compose
             // ref: https://developer.android.com/jetpack/compose/setup#kotlin_1
-            version("compose-bom", "2023.08.00")
+            version("compose-bom", "2023.09.00")
             version("state-events", "2.0.3")
             library("compose-bom", "androidx.compose", "compose-bom").versionRef("compose-bom")
+            library("compose-material", "androidx.compose.material", "material").withoutVersion()
             library("compose-material3", "androidx.compose.material3", "material3").withoutVersion()
             library("compose-material3-window", "androidx.compose.material3", "material3-window-size-class").withoutVersion()
             library("compose-material-icons-core", "androidx.compose.material", "material-icons-core").withoutVersion()

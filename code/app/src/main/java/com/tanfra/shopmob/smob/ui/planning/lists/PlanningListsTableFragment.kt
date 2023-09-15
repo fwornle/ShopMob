@@ -66,7 +66,7 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
             binding.refreshLayout.setRefreshing(false)
 
             // refresh local DB data from backend (for this list) - also updates 'showNoData'
-            viewModel.swiperefreshItemsInLocalDB()
+            viewModel.swipeRefreshListDataInLocalDB()
 
             // empty? --> inform user that there is no point swiping for further updates...
             if (viewModel.showNoData.value == true) {
@@ -76,7 +76,7 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
         }
 
         // refresh local DB data from backend (for this list) - also updates 'showNoData'
-        viewModel.swiperefreshItemsInLocalDB()
+        viewModel.swipeRefreshListDataInLocalDB()
 
         // construct view (compose)
         return ComposeView(requireContext()).apply {

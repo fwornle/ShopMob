@@ -8,5 +8,5 @@ data class PlanningListsUiState(
     val isError: Boolean = false,
     val lists: List<SmobListATO> = listOf(),
     val currListId: String = "invalid-list-id",
-    val navSource: String = "navDrawer"
+    val navSource: String = "navDrawer",
 )

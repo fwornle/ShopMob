@@ -35,26 +35,28 @@ import timber.log.Timber
 fun PlanningLists(
     lists: List<SmobListATO> = listOf(),
 ) {
+
     LazyColumn {
         items(lists) {
-            ListItem(list = it)
+            ListItem(item = it)
         }
     }
+
 }
 
 
 @Composable
 fun ListItem(
-    list: SmobListATO,
+    item: SmobListATO,
 ) {
     Row (modifier = Modifier
         .fillMaxWidth()
         .padding(5.dp)
-        .clickable { Timber.i("Clicked on list ${list.name}") }
+        .clickable { Timber.i("Clicked on list ${item.name}") }
         //.border(BorderStroke(1.dp, Color.DarkGray), RoundedCornerShape(10.dp))
         .shadow(5.dp, RoundedCornerShape(10.dp))
         .clip(RoundedCornerShape(10.dp))
-        .background(statusColor(list.status))
+        .background(statusColor(item.status))
         .padding(10.dp)
     ) {
         Column(
@@ -62,14 +64,14 @@ fun ListItem(
                 .weight(1f),
         ) {
             Text(
-                text = list.name,
+                text = item.name,
                 style = MaterialTheme.typography.headlineMedium,
             )
             Text(
-                text = list.description ?: "(no description)",
+                text = item.description ?: "(no description)",
             )
             Text(
-                text = list.status.toString(),
+                text = item.status.toString(),
                 color = colorAccent,
             )
         }
@@ -95,8 +97,9 @@ fun ListItem(
 @Composable
 fun PreviewPlanningLists() {
 
-    val dE = SmobListATO(status = ItemStatus.IN_PROGRESS)
-    val daList = listOf(dE, dE, dE, dE, dE, dE)
+    val dE1 = SmobListATO(status = ItemStatus.IN_PROGRESS)
+    val dE2 = SmobListATO(status = ItemStatus.DONE)
+    val daList = listOf(dE1, dE1, dE1, dE2, dE1, dE2, dE1, dE1, dE2, dE1, dE2, dE1)
 
     ShopMobTheme {
         PlanningLists(daList)
