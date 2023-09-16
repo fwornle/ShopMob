@@ -490,7 +490,7 @@ class PlanningViewModel(
             // refreshing started
             isRefreshingMSF.emit(true)
 
-            // update backend DB (from net API)
+            // update local DB from backend DB (via net API)
             listRepository.refreshItemsInLocalDB()
 
             // load SmobLists from local DB and store in StateFlow value

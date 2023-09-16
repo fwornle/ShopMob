@@ -215,7 +215,9 @@ class SmobListRepository(
 
             // initiate the (HTTP) GET request using the provided query parameters
             Timber.i("Sending GET request for SmobList data...")
-            getSmobListsViaApi().let {
+
+            // use async/await here to avoid premature "null" result of smobListApi.getSmobItems()
+            async { getSmobListsViaApi() }.await().let {
                 when (it) {
                     is Resource.Error -> Timber.i("Couldn't retrieve SmobList from remote")
                     is Resource.Loading -> Timber.i("SmobList still loading")

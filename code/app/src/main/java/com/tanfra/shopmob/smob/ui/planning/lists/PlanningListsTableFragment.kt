@@ -2,14 +2,12 @@ package com.tanfra.shopmob.smob.ui.planning.lists
 
 import android.os.Bundle
 import android.view.*
-import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
-import android.widget.Toast
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
@@ -46,34 +44,34 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
         savedInstanceState: Bundle?
     ): View {
 
-        // bind layout class
-        binding =
-            DataBindingUtil.inflate(
-                inflater,
-                R.layout.fragment_planning_lists_table, container, false
-            )
-
-        // set injected viewModel (from KOIN service locator)
-        binding.viewModel = viewModel
+//        // bind layout class
+//        binding =
+//            DataBindingUtil.inflate(
+//                inflater,
+//                R.layout.fragment_planning_lists_table, container, false
+//            )
+//
+//        // set injected viewModel (from KOIN service locator)
+//        binding.viewModel = viewModel
 
         setDisplayHomeAsUpEnabled(true)
         setTitle(getString(R.string.app_name))
 
-        // install listener for SwipeRefreshLayout view
-        binding.refreshLayout.setOnRefreshListener {
-
-            // deactivate SwipeRefreshLayout spinner
-            binding.refreshLayout.setRefreshing(false)
-
-            // refresh local DB data from backend (for this list) - also updates 'showNoData'
-            viewModel.swipeRefreshListDataInLocalDB()
-
-            // empty? --> inform user that there is no point swiping for further updates...
-            if (viewModel.showNoData.value == true) {
-                Toast.makeText(activity, getString(R.string.error_add_smob_lists), Toast.LENGTH_SHORT).show()
-            }
-
-        }
+//        // install listener for SwipeRefreshLayout view
+//        binding.refreshLayout.setOnRefreshListener {
+//
+//            // deactivate SwipeRefreshLayout spinner
+//            binding.refreshLayout.setRefreshing(false)
+//
+//            // refresh local DB data from backend (for this list) - also updates 'showNoData'
+//            viewModel.swipeRefreshListDataInLocalDB()
+//
+//            // empty? --> inform user that there is no point swiping for further updates...
+//            if (viewModel.showNoData.value == true) {
+//                Toast.makeText(activity, getString(R.string.error_add_smob_lists), Toast.LENGTH_SHORT).show()
+//            }
+//
+//        }
 
         // refresh local DB data from backend (for this list) - also updates 'showNoData'
         viewModel.swipeRefreshListDataInLocalDB()
@@ -90,15 +88,15 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.lifecycleOwner = viewLifecycleOwner
-
-        // RV - incl. onClick listener for items
-        setupRecyclerView()
-
-        // handlers for "+" FAB, "SHOP" FAB and "STORE" FAB
-        binding.addSmobItemFab.setOnClickListener { navigateToAddSmobList() }
-        binding.goShop.setOnClickListener { navigateToShopping() }
-        binding.defineShop.setOnClickListener { navigateToShopEditFragment() }
+//        binding.lifecycleOwner = viewLifecycleOwner
+//
+//        // RV - incl. onClick listener for items
+//        setupRecyclerView()
+//
+//        // handlers for "+" FAB, "SHOP" FAB and "STORE" FAB
+//        binding.addSmobItemFab.setOnClickListener { navigateToAddSmobList() }
+//        binding.goShop.setOnClickListener { navigateToShopping() }
+//        binding.defineShop.setOnClickListener { navigateToShopEditFragment() }
 
         // The usage of an interface lets you inject your own implementation
         val menuHost: MenuHost = requireActivity()

@@ -16,9 +16,7 @@ import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.utils.fadeIn
 import com.tanfra.shopmob.utils.fadeOut
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import timber.log.Timber
-
 
 object BindingAdapters {
 
@@ -30,23 +28,12 @@ object BindingAdapters {
     @JvmStatic
     fun <T> setStateFlow(
         recyclerView: RecyclerView,
-        items: StateFlow<List<T>>
+        items: List<T>
     ) {
-        // collecting flow --> this must be on a coroutine
-        recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
-
-            // collect flow items
-            items
-                .take(1)
-                .catch { Timber.i("error in flow/take(1): $it") }
-                .collect { itemList ->
-                (recyclerView.adapter as? BaseRecyclerViewAdapter<T>)?.apply {
-                    clear()
-                    addData(itemList)
-                }
-            }
-
-        }  // coroutine scope
+        (recyclerView.adapter as? BaseRecyclerViewAdapter<T>)?.apply {
+            clear()
+            addData(items)
+        }
     }
 
 
@@ -59,29 +46,18 @@ object BindingAdapters {
     @JvmStatic
     fun <T> setStateFlowResource(
         recyclerView: RecyclerView,
-        items: StateFlow<Resource<List<T>>>
+        items: Resource<List<T>>
     ) {
-        // collecting flow --> this must be on a coroutine
-        recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
-
-            // collect flow items
-            items
-                .take(1)
-                .catch { Timber.i("error in flow/take(1): $it") }
-                .collect { itemList ->
-                    when (itemList) {
-                        is Resource.Error -> Timber.i("setStateFlowResource: Couldn't retrieve item list from remote")
-                        is Resource.Loading -> Timber.i("setStateFlowResource: Item list still loading")
-                        is Resource.Success -> {
-                            (recyclerView.adapter as? BaseRecyclerViewAdapter<T>)?.apply {
-                                clear()
-                                addData(itemList.data)
-                            }
-                        }
-                    }
+        when (items) {
+            is Resource.Error -> Timber.i("setStateFlowResource: Couldn't retrieve item list from remote")
+            is Resource.Loading -> Timber.i("setStateFlowResource: Item list still loading")
+            is Resource.Success -> {
+                (recyclerView.adapter as? BaseRecyclerViewAdapter<T>)?.apply {
+                    clear()
+                    addData(items.data)
                 }
-
-        }  // coroutine scope
+            }
+        }
     }
 
 
