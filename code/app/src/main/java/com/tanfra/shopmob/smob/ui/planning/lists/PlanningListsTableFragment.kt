@@ -73,6 +73,7 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
 //
 //        }
 
+
         // refresh local DB data from backend (for this list) - also updates 'showNoData'
         viewModel.swipeRefreshListDataInLocalDB()
 
@@ -85,8 +86,12 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
         }
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // collect SmobLists flow
+        viewModel.loadLists()
 
 //        binding.lifecycleOwner = viewLifecycleOwner
 //
@@ -152,8 +157,8 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
         // determine hightest index in all smobLists
         val highPos = viewModel.smobListsSF.value.let {
             when (it) {
-                is Resource.Error -> Timber.i("Couldn't retrieve SmobGroup from remote")
-                is Resource.Loading -> Timber.i("SmobGroup still loading")
+                is Resource.Failure -> Timber.i("Couldn't retrieve SmobGroup from remote")
+                is Resource.Empty -> Timber.i("SmobGroup still loading")
                 is Resource.Success -> {
                     it.data.let { daList ->
                         daList.fold(0L) { max, list ->

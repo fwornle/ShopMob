@@ -56,9 +56,9 @@ class SmobProductRepository(
         wrapEspressoIdlingResource {
 
             return smobProductDao.getSmobItemById(id)
-                .catch { ex -> Resource.Error(Exception(ex.localizedMessage)) }
+                .catch { ex -> Resource.Failure(Exception(ex.localizedMessage)) }
                 .asDomainModel()
-                .asResource("item with id $id not found in local product table")
+                .asResource()
 
         }  // idlingResource (testing)
 
@@ -74,9 +74,9 @@ class SmobProductRepository(
         wrapEspressoIdlingResource {
 
             return smobProductDao.getSmobItems()
-                .catch { ex -> Resource.Error(Exception(ex.localizedMessage)) }
+                .catch { ex -> Resource.Failure(Exception(ex.localizedMessage)) }
                 .asDomainModel()
-                .asResource("local product table empty")
+                .asResource()  // always Resource.Success
 
         }  // idlingResource (testing)
 
@@ -99,7 +99,7 @@ class SmobProductRepository(
                 // fetch data from DB (and convert to ATO)
                 atoFlow = smobProductDao.getSmobProductsByListId(id).asDomainModel()
                 // wrap data in Resource (--> error/success/[loading])
-                atoFlow.asResource("local product table empty")
+                atoFlow.asResource()
             } catch (e: Exception) {
                 // handle exceptions --> error message returned in Resource.Error
                 atoFlow.asResource(e.localizedMessage)
@@ -128,8 +128,8 @@ class SmobProductRepository(
             if(networkConnectionManager.isNetworkConnected) {
                 getSmobProductViaApi(dbProduct.id).let {
                     when (it) {
-                        is Resource.Error -> Timber.i("Couldn't retrieve SmobProduct from remote")
-                        is Resource.Loading -> Timber.i("SmobProduct still loading")
+                        is Resource.Failure -> Timber.i("Couldn't retrieve SmobProduct from remote")
+                        is Resource.Empty -> Timber.i("SmobProduct still loading")
                         is Resource.Success -> {
                             if (it.data.id != dbProduct.id) {
                                 // item not found in backend --> use POST to create it
@@ -223,8 +223,8 @@ class SmobProductRepository(
                 if(networkConnectionManager.isNetworkConnected) {
                     getSmobProductsViaApi().let {
                         when (it) {
-                            is Resource.Error -> Timber.i("Couldn't retrieve SmobProduct from remote")
-                            is Resource.Loading -> Timber.i("SmobProduct still loading")
+                            is Resource.Failure -> Timber.i("Couldn't retrieve SmobProduct from remote")
+                            is Resource.Empty -> Timber.i("SmobProduct still loading")
                             is Resource.Success -> {
                                 it.data.map { item -> smobProductApi.deleteSmobItemById(item.id) }
                             }
@@ -248,20 +248,25 @@ class SmobProductRepository(
 
             // initiate the (HTTP) GET request using the provided query parameters
             Timber.i("Sending GET request for SmobProduct data...")
-            getSmobProductsViaApi().let {
+
+            // use async/await here to avoid premature "null" result of smobXyzApi.getSmobItems()
+            async { getSmobProductsViaApi() }.await().let {
                 when (it) {
-                    is Resource.Error -> Timber.i("Couldn't retrieve SmobProduct from remote")
-                    is Resource.Loading -> Timber.i("SmobProduct still loading")
+                    is Resource.Failure -> Timber.i("Couldn't retrieve SmobProduct from remote")
+                    is Resource.Empty -> Timber.i("SmobProduct still loading")
                     is Resource.Success -> {
                         Timber.i("SmobProduct data GET request complete (success)")
 
-                        // delete current table from local DB (= clear local cache)
-                        smobProductDao.deleteSmobItems()
-
-                        // store group data in DB - if any
+                        // store product data in DB - if any
                         it.data.let { daList ->
+                            // delete current table from local DB (= clear local cache)
+                            Timber.i("Deleting all SmobProduct data from local DB")
+                            smobProductDao.deleteSmobItems()
+                            Timber.i("Local DB table empty")
+
+                            Timber.i("Storing newly retrieved data in local DB")
                             daList.map { item -> smobProductDao.saveSmobItem(item) }
-                            Timber.i("SmobProduct data items stored in local DB")
+                            Timber.i("All SmobProduct data items stored in local DB")
                         }
                     }
                 }
@@ -280,8 +285,8 @@ class SmobProductRepository(
         Timber.i("Sending GET request for SmobProduct data...")
         getSmobProductViaApi(id).let {
             when (it) {
-                is Resource.Error -> Timber.i("Couldn't retrieve SmobProduct from remote")
-                is Resource.Loading -> Timber.i("SmobProduct still loading")
+                is Resource.Failure -> Timber.i("Couldn't retrieve SmobProduct from remote")
+                is Resource.Empty -> Timber.i("SmobProduct still loading")
                 is Resource.Success -> {
                     Timber.i("SmobProduct data GET request complete (success)")
 
@@ -353,7 +358,7 @@ class SmobProductRepository(
         // overall result - haven't got anything yet
         // ... this is useless here --> but needs to be done like this in the viewModel
         val dummySmobProductDTO = SmobProductDTO()
-        var result: Resource<SmobProductDTO> = Resource.Loading
+        var result: Resource<SmobProductDTO> = Resource.Empty
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {

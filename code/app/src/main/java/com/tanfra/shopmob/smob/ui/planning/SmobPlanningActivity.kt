@@ -167,8 +167,8 @@ class SmobPlanningActivity : AppCompatActivity() {
                 userRepo.getSmobItems().take(1).collectLatest { daUserList ->
 
                     when (daUserList) {
-                        is Resource.Error -> Timber.i("Couldn't retrieve SmobUsers from remote")
-                        is Resource.Loading -> Timber.i("SmobUsers still loading")
+                        is Resource.Failure -> Timber.i("Couldn't retrieve SmobUsers from remote")
+                        is Resource.Empty -> Timber.i("SmobUsers still loading")
                         is Resource.Success -> {
                             daUserList.data.let { allUsers ->
 
@@ -178,19 +178,23 @@ class SmobPlanningActivity : AppCompatActivity() {
                                 val daUser: SmobUserATO? = allUsers.find { it.id == userId }
 
                                 // determine position of user item in DB
-                                userItemPos = if (daUser == null) {
-                                    // user new to ShopMob app --> append at the end
-                                    // indicate that this is a new user (new to ShopMob)
-                                    isNewUser = true
-
-                                    // determine highest user position (plus one)
-                                    allUsers.maxOf { it.position + 1 }
-
+                                userItemPos = if (allUsers.size == 0) {
+                                    // avoid a crash, if the user could not be found
+                                    0
                                 } else {
-                                    // user already in ShopMob DB --> use current position
-                                    daUser.position
-                                }
+                                    if (daUser == null) {
+                                        // user new to ShopMob app --> append at the end
+                                        // indicate that this is a new user (new to ShopMob)
+                                        isNewUser = true
 
+                                        // determine highest user position (plus one)
+                                        allUsers.maxOf { it.position + 1 }
+
+                                    } else {
+                                        // user already in ShopMob DB --> use current position
+                                        daUser.position
+                                    }
+                                }
 
                                 // define user object
                                 SmobApp.currUser = SmobUserATO(

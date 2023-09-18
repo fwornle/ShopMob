@@ -23,6 +23,7 @@ import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsUiState
 import com.tanfra.shopmob.smob.ui.zeUtils.combineFlows
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.launch
@@ -109,7 +110,7 @@ class PlanningViewModel(
         .stateIn(
             scope = viewModelScope,
             started = WhileSubscribed(5000),
-            initialValue = Resource.Loading
+            initialValue = Resource.Empty
         )
 
 
@@ -122,7 +123,7 @@ class PlanningViewModel(
         .stateIn(
             scope = viewModelScope,
             started = WhileSubscribed(5000),
-            initialValue = Resource.Loading
+            initialValue = Resource.Empty
         )
 
 
@@ -144,14 +145,74 @@ class PlanningViewModel(
     // UI state ------------------------------------------------------------------
     // UI state ------------------------------------------------------------------
 
-    val uiStateListsSF = smobListsSF.map {
-        when (it) {
-            is Resource.Error -> PlanningListsUiState(isError = true)
-            is Resource.Loading -> PlanningListsUiState(isLoading = true)
-            is Resource.Success -> PlanningListsUiState(lists = it.data)
-        }
-    }
+    private var loadListsJob: Job? = null
 
+    private val _uiStateLists = MutableStateFlow(PlanningListsUiState(isLoaderVisible = true))
+    val uiStateLists = _uiStateLists.asStateFlow()
+
+    fun loadLists() {
+
+        // cancel a possibly previously started collection job
+        loadListsJob?.cancel()
+
+        // start new collection
+        loadListsJob = viewModelScope.launch {
+
+            // display loading indicator
+            _uiStateLists.update { currState ->
+                currState.copy(
+                    isLoaderVisible = true,
+                    isEmptyVisible = false,
+                    isListsVisible = false,
+                    isErrorVisible = false,
+                )
+            }
+
+
+            // attempt to collect SmobLists
+            smobListsSF.collect { result ->
+                when (result) {
+
+                    is Resource.Empty -> {
+                        Timber.i("Lists flow returns empty")
+                        _uiStateLists.update { currState ->
+                            currState.copy(
+                                isLoaderVisible = false,
+                                isEmptyVisible = true,
+                                isListsVisible = false,
+                                isErrorVisible = false,
+                            )
+                        }
+                    }
+                    is Resource.Failure -> {
+                        Timber.i("Error collecting SmobLists")
+                        _uiStateLists.update { currState ->
+                            currState.copy(
+                                isLoaderVisible = false,
+                                isEmptyVisible = false,
+                                isListsVisible = false,
+                                isErrorVisible = true,
+                                errorMessage = result.exception.message ?: "Error collecting SmobLists"
+                            )
+                        }
+                    }
+                    is Resource.Success -> {
+                        _uiStateLists.update { currState ->
+                            currState.copy(
+                                isLoaderVisible = false,
+                                isEmptyVisible = false,
+                                isListsVisible = true,
+                                isErrorVisible = false,
+                                lists = result.data
+                            )
+                        }
+                    }
+
+                }  // when (result)
+            }  // collect flow
+        }  // coroutine scope
+
+    }
 
 
     // ===========================================================================
@@ -174,7 +235,7 @@ class PlanningViewModel(
         return inFlow.stateIn(
             scope = viewModelScope,
             started = WhileSubscribed(5000),
-            initialValue = Resource.Loading
+            initialValue = Resource.Empty
         )
     }
 
@@ -191,7 +252,7 @@ class PlanningViewModel(
         return inFlow.stateIn(
             scope = viewModelScope,
             started = WhileSubscribed(5000),
-            initialValue = Resource.Loading
+            initialValue = Resource.Empty
         )
     }
 
@@ -256,8 +317,8 @@ class PlanningViewModel(
             smobListProductsSF.take(1).collect {
 
                 when (it) {
-                    is Resource.Error -> { showSnackBar.value = it.exception.message }
-                    is Resource.Loading -> Timber.i("SmobProducts still loading")
+                    is Resource.Failure -> { showSnackBar.value = it.exception.message }
+                    is Resource.Empty -> Timber.i("SmobProducts still loading")
                     is Resource.Success -> updateShowNoData(it)
                 }
 
@@ -276,8 +337,8 @@ class PlanningViewModel(
     @ExperimentalCoroutinesApi
     private fun updateShowNoData(smobListNewest: Resource<List<*>>) {
         showNoData.value = when(smobListNewest) {
-            is Resource.Error -> true
-            is Resource.Loading -> false
+            is Resource.Failure -> false
+            is Resource.Empty -> true
             is Resource.Success -> {
                 smobListNewest.data.isEmpty() ||
                 smobListNewest.data.all { (it as Ato).status == ItemStatus.DELETED } ||
@@ -325,8 +386,8 @@ class PlanningViewModel(
             smobListProductsSF.take(1).collect {
 
                 when (it) {
-                    is Resource.Error -> { showSnackBar.value = it.exception.message }
-                    is Resource.Loading -> Timber.i("SmobProducts still loading")
+                    is Resource.Failure -> { showSnackBar.value = it.exception.message }
+                    is Resource.Empty -> Timber.i("SmobProducts still loading")
                     is Resource.Success -> updateShowNoData(it)
                 }
 
@@ -387,8 +448,8 @@ class PlanningViewModel(
                 .take(1)
                 .collect {
                 when (it) {
-                    is Resource.Loading -> Timber.i("SmobShops still loading")
-                    is Resource.Error -> {
+                    is Resource.Empty -> Timber.i("SmobShops still loading")
+                    is Resource.Failure -> {
                         // these are errors handled at Room level --> display
                         showSnackBar.value = it.exception.message ?: "(no message)"
                     }
@@ -452,7 +513,7 @@ class PlanningViewModel(
      * collect the flow of the upstream list the user just selected
      */
     @ExperimentalCoroutinesApi
-    private fun collectSmobLists() {
+    fun collectSmobLists() {
 
         viewModelScope.launch {
 
@@ -461,8 +522,8 @@ class PlanningViewModel(
                 .take(1)
                 .collect {
                     when (it) {
-                        is Resource.Loading -> Timber.i("SmobLists still loading")
-                        is Resource.Error -> {
+                        is Resource.Empty -> Timber.i("SmobLists still loading")
+                        is Resource.Failure -> {
                             // these are errors handled at Room level --> display
                             showSnackBar.value = it.exception.message ?: "(no message)"
                         }
@@ -494,7 +555,8 @@ class PlanningViewModel(
             listRepository.refreshItemsInLocalDB()
 
             // load SmobLists from local DB and store in StateFlow value
-            collectSmobLists()
+            loadLists()
+//            collectSmobLists()
 
             // check if the "no data" symbol has to be shown (empty list)
             updateShowNoData(smobListsSF.value)

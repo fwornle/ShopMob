@@ -56,9 +56,9 @@ class SmobUserRepository(
         wrapEspressoIdlingResource {
 
             return smobUserDao.getSmobItemById(id)
-                .catch { ex -> Resource.Error(Exception(ex.localizedMessage)) }
+                .catch { ex -> Resource.Failure(Exception(ex.localizedMessage)) }
                 .asDomainModel()
-                .asResource("item with id $id not found in local user table")
+                .asResource()
 
         }  // idlingResource (testing)
 
@@ -74,10 +74,9 @@ class SmobUserRepository(
         wrapEspressoIdlingResource {
 
             return smobUserDao.getSmobItems()
-                .catch { ex -> Resource.Error(Exception(ex.localizedMessage)) }
+                .catch { ex -> Resource.Failure(Exception(ex.localizedMessage)) }
                 .asDomainModel()
-                .asResource("local user table empty")
-
+                .asResource()
         }  // idlingResource (testing)
 
     }
@@ -99,7 +98,7 @@ class SmobUserRepository(
                 // fetch data from DB (and convert to ATO)
                 atoFlow = smobUserDao.getSmobMembersByGroupId(id).asDomainModel()
                 // wrap data in Resource (--> error/success/[loading])
-                atoFlow.asResource("local user table empty")
+                atoFlow.asResource()
             } catch (e: Exception) {
                 // handle exceptions --> error message returned in Resource.Error
                 atoFlow.asResource(e.localizedMessage)
@@ -128,8 +127,8 @@ class SmobUserRepository(
             if(networkConnectionManager.isNetworkConnected) {
                 getSmobUserViaApi(dbUser.id).let {
                     when (it) {
-                        is Resource.Error -> Timber.i("Couldn't retrieve SmobUser from remote")
-                        is Resource.Loading -> Timber.i("SmobUser still loading")
+                        is Resource.Failure -> Timber.i("Couldn't retrieve SmobUser from remote")
+                        is Resource.Empty -> Timber.i("SmobUser still loading")
                         is Resource.Success -> {
                             if (it.data.id != dbUser.id) {
                                 // item not found in backend --> use POST to create it
@@ -178,8 +177,8 @@ class SmobUserRepository(
                 if(networkConnectionManager.isNetworkConnected) {
                     getSmobUserViaApi(dbUser.id).let {
                         when (it) {
-                            is Resource.Error -> Timber.i("Couldn't retrieve SmobUser from remote")
-                            is Resource.Loading -> Timber.i("SmobUser still loading")
+                            is Resource.Failure -> Timber.i("Couldn't retrieve SmobUser from remote")
+                            is Resource.Empty -> Timber.i("SmobUser still loading")
                             is Resource.Success -> {
                                 if (it.data.id != dbUser.id) {
                                     // item not found in backend --> use POST to create it
@@ -239,8 +238,8 @@ class SmobUserRepository(
                 if(networkConnectionManager.isNetworkConnected) {
                     getSmobUsersViaApi().let {
                         when (it) {
-                            is Resource.Error -> Timber.i("Couldn't retrieve SmobUser from remote")
-                            is Resource.Loading -> Timber.i("SmobUser still loading")
+                            is Resource.Failure -> Timber.i("Couldn't retrieve SmobUser from remote")
+                            is Resource.Empty -> Timber.i("SmobUser still loading")
                             is Resource.Success -> {
                                 it.data.map { item -> smobUserApi.deleteSmobItemById(item.id) }
                             }
@@ -264,20 +263,25 @@ class SmobUserRepository(
 
             // initiate the (HTTP) GET request using the provided query parameters
             Timber.i("Sending GET request for SmobUser data...")
-            getSmobUsersViaApi().let {
+
+            // use async/await here to avoid premature "null" result of smobXyzApi.getSmobItems()
+            async { getSmobUsersViaApi() }.await().let {
                 when (it) {
-                    is Resource.Error -> Timber.i("Couldn't retrieve SmobUser from remote")
-                    is Resource.Loading -> Timber.i("SmobUser still loading")
+                    is Resource.Failure -> Timber.i("Couldn't retrieve SmobUser from remote")
+                    is Resource.Empty -> Timber.i("SmobUser still loading")
                     is Resource.Success -> {
                         Timber.i("SmobUser data GET request complete (success)")
 
-                        // delete current table from local DB (= clear local cache)
-                        smobUserDao.deleteSmobItems()
-
-                        // store group data in DB - if any
+                        // store user data in DB - if any
                         it.data.let { daList ->
+                            // delete current table from local DB (= clear local cache)
+                            Timber.i("Deleting all SmobUser data from local DB")
+                            smobUserDao.deleteSmobItems()
+                            Timber.i("Local DB table empty")
+
+                            Timber.i("Storing newly retrieved data in local DB")
                             daList.map { item -> smobUserDao.saveSmobItem(item) }
-                            Timber.i("SmobUser data items stored in local DB")
+                            Timber.i("All SmobUser data items stored in local DB")
                         }
                     }
                 }
@@ -296,8 +300,8 @@ class SmobUserRepository(
         Timber.i("Sending GET request for SmobUser data...")
         getSmobUserViaApi(id).let {
             when (it) {
-                is Resource.Error -> Timber.i("Couldn't retrieve SmobUser from remote")
-                is Resource.Loading -> Timber.i("SmobUser still loading")
+                is Resource.Failure -> Timber.i("Couldn't retrieve SmobUser from remote")
+                is Resource.Empty -> Timber.i("SmobUser still loading")
                 is Resource.Success -> {
                     Timber.i("SmobUser data GET request complete (success)")
 
@@ -369,7 +373,7 @@ class SmobUserRepository(
         // overall result - haven't got anything yet
         // ... this is useless here --> but needs to be done like this in the viewModel
         val dummySmobUserDTO = SmobUserDTO()
-        var result: Resource<SmobUserDTO> = Resource.Loading
+        var result: Resource<SmobUserDTO> = Resource.Empty
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {

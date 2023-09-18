@@ -197,8 +197,8 @@ class AdminGroupsTableFragment : BaseFragment(), KoinComponent {
         // determine highest index in all smobGroups
         val highPos = viewModel.smobGroupsSF.value.let {
             when (it) {
-                is Resource.Error -> Timber.i("Couldn't retrieve SmobGroup from remote")
-                is Resource.Loading -> Timber.i("SmobGroup still loading")
+                is Resource.Failure -> Timber.i("Couldn't retrieve SmobGroup from remote")
+                is Resource.Empty -> Timber.i("SmobGroup still loading")
                 is Resource.Success -> {
                     it.data.let { daList ->
                         daList.fold(0L) { max, list ->

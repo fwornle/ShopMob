@@ -56,9 +56,9 @@ class SmobGroupRepository(
         wrapEspressoIdlingResource {
 
             return smobGroupDao.getSmobItemById(id)
-                .catch { ex -> Resource.Error(Exception(ex.localizedMessage)) }
+                .catch { ex -> Resource.Failure(Exception(ex.localizedMessage)) }
                 .asDomainModel()
-                .asResource("item with id $id not found in local group table")
+                .asResource()
 
         }  // idlingResource (testing)
 
@@ -74,9 +74,9 @@ class SmobGroupRepository(
         wrapEspressoIdlingResource {
 
             return smobGroupDao.getSmobItems()
-                .catch { ex -> Resource.Error(Exception(ex.localizedMessage)) }
+                .catch { ex -> Resource.Failure(Exception(ex.localizedMessage)) }
                 .asDomainModel()
-                .asResource("local group table empty")
+                .asResource()
 
         }  // idlingResource (testing)
 
@@ -97,7 +97,7 @@ class SmobGroupRepository(
                 // fetch data from DB (and convert to ATO)
                 atoFlow = smobGroupDao.getSmobGroupsByListId(id).asDomainModel()
                 // wrap data in Resource (--> error/success/[loading])
-                atoFlow.asResource("local group table empty")
+                atoFlow.asResource()
             } catch (e: Exception) {
                 // handle exceptions --> error message returned in Resource.Error
                 atoFlow.asResource(e.localizedMessage)
@@ -125,8 +125,8 @@ class SmobGroupRepository(
             if(networkConnectionManager.isNetworkConnected) {
                 getSmobGroupViaApi(dbGroup.id).let {
                     when (it) {
-                        is Resource.Error -> Timber.i("Couldn't retrieve SmobGroup from remote")
-                        is Resource.Loading -> Timber.i("SmobGroup still loading")
+                        is Resource.Failure -> Timber.i("Couldn't retrieve SmobGroup from remote")
+                        is Resource.Empty -> Timber.i("SmobGroup still loading")
                         is Resource.Success -> {
                             if (it.data.id != dbGroup.id) {
                                 // item not found in backend --> use POST to create it
@@ -220,8 +220,8 @@ class SmobGroupRepository(
                 if(networkConnectionManager.isNetworkConnected) {
                     getSmobGroupsViaApi().let {
                         when (it) {
-                            is Resource.Error -> Timber.i("Couldn't retrieve SmobGroup from remote")
-                            is Resource.Loading -> Timber.i("SmobGroup still loading")
+                            is Resource.Failure -> Timber.i("Couldn't retrieve SmobGroup from remote")
+                            is Resource.Empty -> Timber.i("SmobGroup still loading")
                             is Resource.Success -> {
                                 it.data.map { item -> smobGroupApi.deleteSmobItemById(item.id) }
                             }
@@ -245,20 +245,25 @@ class SmobGroupRepository(
         withContext(Dispatchers.IO) {
 
             Timber.i("Sending GET request for SmobGroup data...")
-            getSmobGroupsViaApi().let {
+
+            // use async/await here to avoid premature "null" result of smobXyzApi.getSmobItems()
+            async { getSmobGroupsViaApi() }.await().let {
                 when (it) {
-                    is Resource.Error -> Timber.i("Couldn't retrieve SmobGroup from remote")
-                    is Resource.Loading -> Timber.i("SmobGroup still loading")
+                    is Resource.Failure -> Timber.i("Couldn't retrieve SmobGroup from remote")
+                    is Resource.Empty -> Timber.i("SmobGroup still loading")
                     is Resource.Success -> {
                         Timber.i("SmobGroup data GET request complete (success)")
 
-                        // delete current table from local DB (= clear local cache)
-                        smobGroupDao.deleteSmobItems()
-
-                        // store group data in DB - if any
+                        // store list data in DB - if any
                         it.data.let { daList ->
+                            // delete current table from local DB (= clear local cache)
+                            Timber.i("Deleting all SmobGroup data from local DB")
+                            smobGroupDao.deleteSmobItems()
+                            Timber.i("Local DB table empty")
+
+                            Timber.i("Storing newly retrieved data in local DB")
                             daList.map { item -> smobGroupDao.saveSmobItem(item) }
-                            Timber.i("SmobGroup data items stored in local DB")
+                            Timber.i("All SmobGroup data items stored in local DB")
                         }
                     }
                 }
@@ -277,8 +282,8 @@ class SmobGroupRepository(
         Timber.i("Sending GET request for SmobGroup data...")
         getSmobGroupViaApi(id).let {
             when (it) {
-                is Resource.Error -> Timber.i("Couldn't retrieve SmobGroup from remote")
-                is Resource.Loading -> Timber.i("SmobGroup still loading")
+                is Resource.Failure -> Timber.i("Couldn't retrieve SmobGroup from remote")
+                is Resource.Empty -> Timber.i("SmobGroup still loading")
                 is Resource.Success -> {
                     Timber.i("SmobGroup data GET request complete (success)")
 
@@ -354,7 +359,7 @@ class SmobGroupRepository(
         // overall result - haven't got anything yet
         // ... this is useless here --> but needs to be done like this in the viewModel
         val dummySmobGroupDTO = SmobGroupDTO()
-        var result: Resource<SmobGroupDTO> = Resource.Loading
+        var result: Resource<SmobGroupDTO> = Resource.Empty
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {

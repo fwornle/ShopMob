@@ -130,8 +130,8 @@ class AdminListsTableFragment : BaseFragment(), KoinComponent {
         // determine highest index in all smobLists
         val highPos = viewModel.smobListsSF.value.let {
             when (it) {
-                is Resource.Error -> Timber.i("Couldn't retrieve SmobList from remote")
-                is Resource.Loading -> Timber.i("SmobList still loading")
+                is Resource.Failure -> Timber.i("Couldn't retrieve SmobList from remote")
+                is Resource.Empty -> Timber.i("SmobList still loading")
                 is Resource.Success -> {
                     it.data.let { daList ->
                         daList.fold(0L) { max, list ->

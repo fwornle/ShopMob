@@ -22,11 +22,11 @@ open class ResponseHandler: KoinComponent {
     fun <T : Any> handleException(e: Exception): Resource<T> {
         return when (e) {
             is ResponseException /* KTOR */ ->
-                Resource.Error(Exception(getErrorMessage(e.response.status.value, e.message)))
+                Resource.Failure(Exception(getErrorMessage(e.response.status.value, e.message)))
             is SocketTimeoutException ->
-                Resource.Error(Exception(getErrorMessage(ErrorCodes.SocketTimeOut.code, e.message)))
+                Resource.Failure(Exception(getErrorMessage(ErrorCodes.SocketTimeOut.code, e.message)))
             else ->
-                Resource.Error(Exception(getErrorMessage(Int.MAX_VALUE, e.message)))
+                Resource.Failure(Exception(getErrorMessage(Int.MAX_VALUE, e.message)))
         }
     }
 

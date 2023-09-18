@@ -21,11 +21,11 @@ inline fun <reified P: Ato, reified C: Ato, reified T: Ato> combineFlows(
 
         // unwrap list (from Resource)
         when (parentItemRes) {
-            is Resource.Error -> {
+            is Resource.Failure -> {
                 Timber.i("combineFlows: Couldn't retrieve list from remote")
                 listOf()
             }
-            is Resource.Loading -> {
+            is Resource.Empty -> {
                 Timber.i("combineFlows: list still loading")
                 listOf()
             }
@@ -34,11 +34,11 @@ inline fun <reified P: Ato, reified C: Ato, reified T: Ato> combineFlows(
 
                     // evaluate/unwrap Resource
                     when (childListRes) {
-                        is Resource.Error -> {
+                        is Resource.Failure -> {
                             Timber.i("combineFlows: Couldn't retrieve list items from remote")
                             listOf()
                         }
-                        is Resource.Loading -> {
+                        is Resource.Empty -> {
                             Timber.i("combineFlows: list items still loading")
                             listOf()
                         }

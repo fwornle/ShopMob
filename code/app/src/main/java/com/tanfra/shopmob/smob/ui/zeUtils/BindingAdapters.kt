@@ -49,8 +49,8 @@ object BindingAdapters {
         items: Resource<List<T>>
     ) {
         when (items) {
-            is Resource.Error -> Timber.i("setStateFlowResource: Couldn't retrieve item list from remote")
-            is Resource.Loading -> Timber.i("setStateFlowResource: Item list still loading")
+            is Resource.Empty -> Timber.i("setStateFlowResource: Item list still loading")
+            is Resource.Failure -> Timber.i("setStateFlowResource: Couldn't retrieve item list from local DB")
             is Resource.Success -> {
                 (recyclerView.adapter as? BaseRecyclerViewAdapter<T>)?.apply {
                     clear()
@@ -86,13 +86,13 @@ object BindingAdapters {
         if (view.tag == null) {
             view.tag = true
             view.visibility = when (resource) {
-                is Resource.Loading -> { View.VISIBLE }
+                is Resource.Empty -> { View.VISIBLE }
                 else -> { View.GONE }
             }
         } else {
             view.animate().cancel()
             when (resource) {
-                is Resource.Loading -> if (view.visibility == View.GONE) view.fadeIn()
+                is Resource.Empty -> if (view.visibility == View.GONE) view.fadeIn()
                 else -> if (view.visibility == View.VISIBLE) view.fadeOut()
             }
         }

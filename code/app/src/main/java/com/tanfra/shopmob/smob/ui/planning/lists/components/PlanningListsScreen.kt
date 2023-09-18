@@ -39,8 +39,8 @@ fun PlanningListsScreen(
 ) {
 
     // collect ui state flow
-    val uiState: PlanningListsUiState by viewModel.uiStateListsSF.collectAsStateWithLifecycle(
-        initialValue = PlanningListsUiState(isLoading = true),
+    val uiState: PlanningListsUiState by viewModel.uiStateLists.collectAsStateWithLifecycle(
+        initialValue = PlanningListsUiState(isLoaderVisible = true),
     )
 
     // state of swipe refresh mechanism
@@ -76,7 +76,7 @@ fun PlanningListsScreen(
                 }
             }
 
-            if (uiState.isLoading) {
+            if (uiState.isLoaderVisible) {
                 Box(Modifier.fillMaxSize()) {
                     CircularProgressIndicator(Modifier.align(Center))
                 }

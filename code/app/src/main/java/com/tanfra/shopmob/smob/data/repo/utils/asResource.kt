@@ -9,11 +9,12 @@ import kotlinx.coroutines.flow.transform
  * into a flow of Resource wrapped Ato-elements.
  * 
  * @param <T: Ato>        ATO type of the inline function
- * @param msgOnFailure    Resource.Error message (if flow member is null)
+ * @param errMessage?     error message to be wrapped as exception in Resource.Failure
 </T> */
-fun <T: Ato?> Flow<T?>.asResource(msgOnFailure: String?): Flow<Resource<T>> =
+fun <T: Ato?> Flow<T?>.asResource(errMessage: String? = null): Flow<Resource<T>> =
     transform { value ->
-        if (value == null) return@transform emit(Resource.Error(Exception("asResource: Flow is null - $msgOnFailure")))
+        errMessage?.let { return@transform emit(Resource.Failure(Exception(errMessage))) }
+        if (value == null) return@transform emit(Resource.Empty)
         else return@transform emit(Resource.Success(value))
     }
 
@@ -22,13 +23,14 @@ fun <T: Ato?> Flow<T?>.asResource(msgOnFailure: String?): Flow<Resource<T>> =
  * into a flow of Resource wrapped Ato-elements.
  *
  * @param <T: Ato>        ATO type of the inline function
- * @param msgOnFailure    Resource.Error message (if flow returns empty list)
+ * @param errMessage?     error message to be wrapped as exception in Resource.Failure
 </T> */
 //
 // ... need to add an annotation to avoid a clash at byte-code level (same signature as scalar case)
 @JvmName("asResourceOfListOfAto")
-fun <T: Ato?> Flow<List<T>>.asResource(msgOnFailure: String?): Flow<Resource<List<T>>> =
+fun <T: Ato?> Flow<List<T>>.asResource(errMessage: String? = null): Flow<Resource<List<T>>> =
     transform { value ->
-        if (value.isEmpty()) return@transform emit(Resource.Error(Exception("asResource: Flow is empty list - $msgOnFailure")))
+        errMessage?.let { return@transform emit(Resource.Failure(Exception(errMessage))) }
+        if (value.isEmpty()) return@transform emit(Resource.Empty)
         else return@transform emit(Resource.Success(value))
     }

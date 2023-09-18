@@ -33,6 +33,7 @@ class NetworkConnectionManagerImpl(
     //     (= without this, the connection status will always be reported as false!)
     override val isNetworkConnectedFlow: StateFlow<Boolean> =
         _currentNetwork
+//            .map { true } // work without network checking (in-flight, etc.)
             .map { it.isConnected() }
             .stateIn(
                 scope = coroutineScope,

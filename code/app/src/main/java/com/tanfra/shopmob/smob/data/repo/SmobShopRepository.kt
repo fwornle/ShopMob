@@ -56,9 +56,9 @@ class SmobShopRepository(
         wrapEspressoIdlingResource {
 
             return smobShopDao.getSmobItemById(id)
-                .catch { ex -> Resource.Error(Exception(ex.localizedMessage)) }
+                .catch { ex -> Resource.Failure(Exception(ex.localizedMessage)) }
                 .asDomainModel()
-                .asResource("item with id $id not found in local shop table")
+                .asResource()
 
         }  // idlingResource (testing)
     }
@@ -73,9 +73,9 @@ class SmobShopRepository(
         wrapEspressoIdlingResource {
 
             return smobShopDao.getSmobItems()
-                .catch { ex -> Resource.Error(Exception(ex.localizedMessage)) }
+                .catch { ex -> Resource.Failure(Exception(ex.localizedMessage)) }
                 .asDomainModel()
-                .asResource("local shop table empty")
+                .asResource()
 
         }  // idlingResource (testing)
 
@@ -100,8 +100,8 @@ class SmobShopRepository(
             if(networkConnectionManager.isNetworkConnected) {
                 getSmobShopViaApi(dbShop.id).let {
                     when (it) {
-                        is Resource.Error -> Timber.i("Couldn't retrieve SmobShop from remote")
-                        is Resource.Loading -> Timber.i("SmobShop still loading")
+                        is Resource.Failure -> Timber.i("Couldn't retrieve SmobShop from remote")
+                        is Resource.Empty -> Timber.i("SmobShop still loading")
                         is Resource.Success -> {
                             if (it.data.id != dbShop.id) {
                                 // item not found in backend --> use POST to create it
@@ -149,8 +149,8 @@ class SmobShopRepository(
                 if(networkConnectionManager.isNetworkConnected) {
                     getSmobShopViaApi(dbShop.id).let {
                         when (it) {
-                            is Resource.Error -> Timber.i("Couldn't retrieve SmobShop from remote")
-                            is Resource.Loading -> Timber.i("SmobShop still loading")
+                            is Resource.Failure -> Timber.i("Couldn't retrieve SmobShop from remote")
+                            is Resource.Empty -> Timber.i("SmobShop still loading")
                             is Resource.Success -> {
                                 if (it.data.id != dbShop.id) {
                                     // item not found in backend --> use POST to create it
@@ -209,8 +209,8 @@ class SmobShopRepository(
                 if(networkConnectionManager.isNetworkConnected) {
                     getSmobShopsViaApi().let {
                         when (it) {
-                            is Resource.Error -> Timber.i("Couldn't retrieve SmobShop from remote")
-                            is Resource.Loading -> Timber.i("SmobShop still loading")
+                            is Resource.Failure -> Timber.i("Couldn't retrieve SmobShop from remote")
+                            is Resource.Empty -> Timber.i("SmobShop still loading")
                             is Resource.Success -> {
                                 it.data.map { item -> smobShopApi.deleteSmobItemById(item.id) }
                             }
@@ -233,20 +233,25 @@ class SmobShopRepository(
 
             // initiate the (HTTP) GET request using the provided query parameters
             Timber.i("Sending GET request for SmobShop data...")
-            getSmobShopsViaApi().let {
+
+            // use async/await here to avoid premature "null" result of smobXyzApi.getSmobItems()
+            async { getSmobShopsViaApi() }.await().let {
                 when (it) {
-                    is Resource.Error -> Timber.i("Couldn't retrieve SmobShop from remote")
-                    is Resource.Loading -> Timber.i("SmobShop still loading")
+                    is Resource.Failure -> Timber.i("Couldn't retrieve SmobShop from remote")
+                    is Resource.Empty -> Timber.i("SmobShop still loading")
                     is Resource.Success -> {
                         Timber.i("SmobShop data GET request complete (success)")
 
-                        // delete current table from local DB (= clear local cache)
-                        smobShopDao.deleteSmobItems()
-
-                        // store group data in DB - if any
+                        // store shop data in DB - if any
                         it.data.let { daList ->
+                            // delete current table from local DB (= clear local cache)
+                            Timber.i("Deleting all SmobShop data from local DB")
+                            smobShopDao.deleteSmobItems()
+                            Timber.i("Local DB table empty")
+
+                            Timber.i("Storing newly retrieved data in local DB")
                             daList.map { item -> smobShopDao.saveSmobItem(item) }
-                            Timber.i("SmobShop data items stored in local DB")
+                            Timber.i("All SmobShop data items stored in local DB")
                         }
                     }
                 }
@@ -265,8 +270,8 @@ class SmobShopRepository(
         Timber.i("Sending GET request for SmobShop data...")
         getSmobShopViaApi(id).let {
             when (it) {
-                is Resource.Error -> Timber.i("Couldn't retrieve SmobShop from remote")
-                is Resource.Loading -> Timber.i("SmobShop still loading")
+                is Resource.Failure -> Timber.i("Couldn't retrieve SmobShop from remote")
+                is Resource.Empty -> Timber.i("SmobShop still loading")
                 is Resource.Success -> {
                     Timber.i("SmobShop data GET request complete (success)")
 
@@ -338,7 +343,7 @@ class SmobShopRepository(
         // overall result - haven't got anything yet
         // ... this is useless here --> but needs to be done like this in the viewModel
         val dummySmobShopDTO = SmobShopDTO()
-        var result: Resource<SmobShopDTO> = Resource.Loading
+        var result: Resource<SmobShopDTO> = Resource.Empty
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {

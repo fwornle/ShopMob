@@ -4,9 +4,12 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 
 // ui state
 data class PlanningListsUiState(
-    val isLoading: Boolean = false,
-    val isError: Boolean = false,
+    val isLoaderVisible: Boolean = false,
+    val isEmptyVisible: Boolean = false,
+    val isListsVisible: Boolean = false,
     val lists: List<SmobListATO> = listOf(),
-    val currListId: String = "invalid-list-id",
+    val isErrorVisible: Boolean = false,
+    val errorMessage: String = "",
+    val currListId: String = "no-list-selected",
     val navSource: String = "navDrawer",
 )

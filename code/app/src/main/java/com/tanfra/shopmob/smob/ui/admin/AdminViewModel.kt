@@ -165,7 +165,7 @@ class AdminViewModel(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = Resource.Loading
+            initialValue = Resource.Empty
         )
 
 
@@ -182,8 +182,8 @@ class AdminViewModel(
                 .take(1)
                 .collect {
                     when (it) {
-                        is Resource.Loading -> Timber.i("SmobGroups still loading")
-                        is Resource.Error -> {
+                        is Resource.Empty -> Timber.i("SmobGroups still loading")
+                        is Resource.Failure -> {
                             // these are errors handled at Room level --> display
                             showSnackBar.value = it.exception.message ?: "(no message)"
                         }
@@ -226,11 +226,11 @@ class AdminViewModel(
     @ExperimentalCoroutinesApi
     private fun updateShowNoData(smobListNewest: Resource<List<*>>) {
         showNoData.value = when(smobListNewest) {
-            is Resource.Error -> true
-            is Resource.Loading -> false
+            is Resource.Failure -> false
+            is Resource.Empty -> true
             is Resource.Success -> {
                 smobListNewest.data.isEmpty() ||
-                        smobListNewest.data.all { (it as Ato).status == ItemStatus.DELETED }
+                smobListNewest.data.all { (it as Ato).status == ItemStatus.DELETED }
             }
         }
     }
@@ -349,7 +349,7 @@ class AdminViewModel(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = Resource.Loading
+            initialValue = Resource.Empty
         )
 
 
@@ -364,7 +364,7 @@ class AdminViewModel(
         inFlow.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = Resource.Loading
+            initialValue = Resource.Empty
         )
 
 
@@ -379,7 +379,7 @@ class AdminViewModel(
         inFlow.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = Resource.Loading
+            initialValue = Resource.Empty
         )
 
 
@@ -445,8 +445,8 @@ class AdminViewModel(
             smobGroupMembersSF.take(1).collect {
 
                 when (it) {
-                    is Resource.Error -> { showSnackBar.value = it.exception.message }
-                    is Resource.Loading -> Timber.i("SmobUser still loading")
+                    is Resource.Failure -> { showSnackBar.value = it.exception.message }
+                    is Resource.Empty -> Timber.i("SmobUser still loading")
                     is Resource.Success -> updateShowNoData(it)
                 }
 
@@ -484,7 +484,7 @@ class AdminViewModel(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = Resource.Loading
+            initialValue = Resource.Empty
         )
 
 
@@ -501,8 +501,8 @@ class AdminViewModel(
                 .take(1)
                 .collect {
                     when (it) {
-                        is Resource.Loading -> Timber.i("SmobLists still loading")
-                        is Resource.Error -> {
+                        is Resource.Empty -> Timber.i("SmobLists still loading")
+                        is Resource.Failure -> {
                             // these are errors handled at Room level --> display
                             showSnackBar.value = it.exception.message ?: "(no message)"
                         }
@@ -532,8 +532,8 @@ class AdminViewModel(
             smobListsSF.take(1).collect {
 
                 when (it) {
-                    is Resource.Error -> { showSnackBar.value = it.exception.message }
-                    is Resource.Loading -> Timber.i("SmobList still loading")
+                    is Resource.Failure -> { showSnackBar.value = it.exception.message }
+                    is Resource.Empty -> Timber.i("SmobList still loading")
                     is Resource.Success -> updateShowNoData(it)
                 }
 
@@ -570,7 +570,7 @@ class AdminViewModel(
         inFlow.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = Resource.Loading
+            initialValue = Resource.Empty
         )
 
 
@@ -591,7 +591,7 @@ class AdminViewModel(
         inFlow.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = Resource.Loading
+            initialValue = Resource.Empty
         )
 
 

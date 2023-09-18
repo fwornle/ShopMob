@@ -57,9 +57,9 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
         wrapEspressoIdlingResource {
 
             return smobItemDao.getSmobItemById(id)
-                .catch { ex -> Resource.Error(Exception(ex.localizedMessage)) }
+                .catch { ex -> Resource.Failure(Exception(ex.localizedMessage)) }
                 ._asDomainModel<DTO, ATO>(dummySmobItemDTO)
-                .asResource("item with id $id not found in local table")
+                .asResource()
 
 //            // try to fetch data from the local DB
 //            var atoFlow: Flow<ATO?> = flowOf(null)
@@ -67,7 +67,7 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
 //                // fetch data from DB (and convert to ATO)
 //                atoFlow = smobItemDao.getSmobItemById(id)._asDomainModel(dummySmobItemDTO)
 //                // wrap data in Resource (--> error/success/[loading])
-//                atoFlow.asResource("item with id $id not found in local table")
+//                atoFlow.asResource()
 //            } catch (e: Exception) {
 //                // handle exceptions --> error message returned in Resource.Error
 //                atoFlow.asResource(e.localizedMessage)
@@ -87,9 +87,9 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
         wrapEspressoIdlingResource {
 
             return smobItemDao.getSmobItems()
-                .catch { ex -> Resource.Error(Exception(ex.localizedMessage)) }
+                .catch { ex -> Resource.Failure(Exception(ex.localizedMessage)) }
                 ._asDomainModel<DTO, ATO>(dummySmobItemDTO)
-                .asResource("local table empty")
+                .asResource()
 
 //            // try to fetch data from the local DB
 //            var atoFlow: Flow<List<ATO>> = flowOf(listOf())
@@ -97,7 +97,7 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
 //                // fetch data from DB (and convert to ATO)
 //                atoFlow = smobItemDao.getSmobItems()._asDomainModel(dummySmobItemDTO)
 //                // wrap data in Resource (--> error/success/[loading])
-//                atoFlow.asResource("local table empty")
+//                atoFlow.asResource()
 //            } catch (e: Exception) {
 //                // handle exceptions --> error message returned in Resource.Error
 //                atoFlow.asResource(e.localizedMessage)
@@ -128,8 +128,8 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
                 if(networkConnectionManager.isNetworkConnected) {
                     getSmobItemViaApi(dbItem.id).let {
                         when (it) {
-                            is Resource.Error -> Timber.i("Couldn't retrieve SmobItem from remote")
-                            is Resource.Loading -> Timber.i("SmobItem still loading")
+                            is Resource.Failure -> Timber.i("Couldn't retrieve SmobItem from remote")
+                            is Resource.Empty -> Timber.i("SmobItem still loading")
                             is Resource.Success -> {
                                 if (it.data.id != dbItem.id) {
                                     // item not found in backend --> use POST to create it
@@ -231,8 +231,8 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
                 if(networkConnectionManager.isNetworkConnected) {
                     getSmobItemsViaApi().let {
                         when (it) {
-                            is Resource.Error -> Timber.i("Couldn't retrieve SmobItem from remote")
-                            is Resource.Loading -> Timber.i("SmobItem still loading")
+                            is Resource.Failure -> Timber.i("Couldn't retrieve SmobItem from remote")
+                            is Resource.Empty -> Timber.i("SmobItem still loading")
                             is Resource.Success -> {
                                 it.data.map { itemOrNull -> 
                                     itemOrNull?.let { item -> 
@@ -261,8 +261,8 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
             Timber.i("Sending GET request for SmobItem data...")
             getSmobItemsViaApi().let {
                 when (it) {
-                    is Resource.Error -> Timber.i("Couldn't retrieve SmobItem from remote")
-                    is Resource.Loading -> Timber.i("SmobItem still loading")
+                    is Resource.Failure -> Timber.i("Couldn't retrieve SmobItem from remote")
+                    is Resource.Empty -> Timber.i("SmobItem still loading")
                     is Resource.Success -> {
                         Timber.i("SmobItem data GET request complete (success)")
 
@@ -294,8 +294,8 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
         Timber.i("Sending GET request for SmobItem data...")
         getSmobItemViaApi(id).let {
             when (it) {
-                is Resource.Error -> Timber.i("Couldn't retrieve SmobItem from remote")
-                is Resource.Loading -> Timber.i("SmobItem still loading")
+                is Resource.Failure -> Timber.i("Couldn't retrieve SmobItem from remote")
+                is Resource.Empty -> Timber.i("SmobItem still loading")
                 is Resource.Success -> {
                     Timber.i("SmobItem data GET request complete (success)")
                     it.data.let { item -> smobItemDao.saveSmobItem(item) }
@@ -356,7 +356,7 @@ open class SmobItemRepository<DTO: Dto, NTO: Nto, ATO: Ato>(
 
         // overall result - haven't got anything yet
         // ... this is useless here --> but needs to be done like this in the viewModel
-        var result: Resource<DTO> = Resource.Loading
+        var result: Resource<DTO> = Resource.Empty
 
         // support espresso testing (w/h coroutines)
         wrapEspressoIdlingResource {

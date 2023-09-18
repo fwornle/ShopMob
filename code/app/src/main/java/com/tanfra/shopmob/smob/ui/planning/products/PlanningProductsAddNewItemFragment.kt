@@ -118,8 +118,8 @@ class PlanningProductsAddNewItemFragment :
 
                     // valid data? (making sure...)
                     when (it) {
-                        is Resource.Error -> Timber.i("Couldn't retrieve SmobList from remote")
-                        is Resource.Loading -> Timber.i("SmobList still loading")
+                        is Resource.Failure -> Timber.i("Couldn't retrieve SmobList from remote")
+                        is Resource.Empty -> Timber.i("SmobList still loading")
                         is Resource.Success -> {
 
                             // store current SmobList
