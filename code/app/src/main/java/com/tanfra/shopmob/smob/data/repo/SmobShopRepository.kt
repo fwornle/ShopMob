@@ -235,7 +235,7 @@ class SmobShopRepository(
             Timber.i("Sending GET request for SmobShop data...")
 
             // use async/await here to avoid premature "null" result of smobXyzApi.getSmobItems()
-            async { getSmobShopsViaApi() }.await().let {
+            getSmobShopsViaApi().let {
                 when (it) {
                     is Resource.Failure -> Timber.i("Couldn't retrieve SmobShop from remote")
                     is Resource.Empty -> Timber.i("SmobShop still loading")

@@ -15,8 +15,12 @@ enum class ErrorCodes(val code: Int) {
 
 open class ResponseHandler: KoinComponent {
 
-    fun <T : Any> handleSuccess(data: T): Resource<T> {
-        return Resource.Success(data)
+  fun <T : Any> handleSuccess(data: T?): Resource<T> {
+        return if(data == null) {
+            Resource.Empty
+        } else {
+            Resource.Success(data)
+        }
     }
 
     fun <T : Any> handleException(e: Exception): Resource<T> {

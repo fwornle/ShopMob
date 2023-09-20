@@ -1,5 +1,6 @@
 package com.tanfra.shopmob.smob.data.repo
 
+import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobListRepository
 import com.tanfra.shopmob.smob.data.local.dto.SmobListDTO
@@ -17,6 +18,8 @@ import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -214,26 +217,31 @@ class SmobListRepository(
         withContext(Dispatchers.IO) {
 
             // initiate the (HTTP) GET request using the provided query parameters
-            Timber.i("Sending GET request for SmobList data...")
+            Timber.i("Sending GET request for SmobList data (refreshItemsInLocalDB: starting)")
 
-            // use async/await here to avoid premature "null" result of smobXyzApi.getSmobItems()
-            async { getSmobListsViaApi() }.await().let {
+            getSmobListsViaApi().let {
                 when (it) {
-                    is Resource.Failure -> Timber.i("Couldn't retrieve SmobList from remote")
-                    is Resource.Empty -> Timber.i("SmobList still loading")
+                    is Resource.Failure -> Timber.i("Failure when trying to retrieve SmobLists from remote (getSmobListsViaApi)")
+                    is Resource.Empty -> Timber.i("Received 'empty' on getSmobListsViaApi")
                     is Resource.Success -> {
                         Timber.i("SmobList data GET request complete (success)")
 
                         // store list data in DB - if any
                         it.data.let { daList ->
-                            // delete current table from local DB (= clear local cache)
-                            Timber.i("Deleting all SmobList data from local DB")
-                            smobListDao.deleteSmobItems()
-                            Timber.i("Local DB table empty")
+                            Timber.i("SmobLists data: $daList")
+//                            // delete current table from local DB (= clear local cache)
+//                            Timber.i("Deleting all SmobList data from local DB")
+//                            Timber.i("Dammit!!!")
+//                            smobListDao.deleteSmobItems()
+//                            Timber.i("Local DB table empty")
 
                             Timber.i("Storing newly retrieved data in local DB")
-                            daList.map { item -> smobListDao.saveSmobItem(item) }
-                            Timber.i("All SmobList data items stored in local DB")
+                            daList.map { item ->
+                                Timber.i("item: $item")
+                                smobListDao.saveSmobItem(item)
+                                Timber.i("... saved")
+                            }
+                            Timber.i("All SmobList data items stored in local DB (refreshItemsInLocalDB: done)")
                         }
                     }
                 }
@@ -306,14 +314,13 @@ class SmobListRepository(
 
             // network access - could fail --> handle consistently via ResponseHandler class
             return@withContext try {
+                networkConnectionManager.isNetworkConnected
                 // return successfully received data object (from Moshi --> PoJo)
-                val netResult = smobListApi.getSmobItems()
+                val netResult = async { smobListApi.getSmobItems() }.await()
                     .getOrNull()
                     ?.asRepoModel()
-                    ?: listOf()  // GET request returned empty handed --> return empty list
 
-                // return as successfully completed GET call to the backend
-                // --> wraps data in Response type (success/error/loading)
+                // return Resource.Success or Resource.Empty (on 'null')
                 responseHandler.handleSuccess(netResult)
 
             } catch (ex: Exception) {

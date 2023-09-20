@@ -74,8 +74,8 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
 //        }
 
 
-        // refresh local DB data from backend (for this list) - also updates 'showNoData'
-        viewModel.swipeRefreshListDataInLocalDB()
+        // collect SmobLists from local DB - if empty, triggers refresh from net resource
+        viewModel.loadLists()
 
         // construct view (compose)
         return ComposeView(requireContext()).apply {
@@ -90,8 +90,8 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // collect SmobLists flow
-        viewModel.loadLists()
+//        // collect SmobLists flow
+//        viewModel.loadLists()
 
 //        binding.lifecycleOwner = viewLifecycleOwner
 //

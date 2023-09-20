@@ -137,7 +137,7 @@ class PlanningViewModel(
 
     init {
         onClearList()
-    }
+   }
 
 
 
@@ -153,7 +153,11 @@ class PlanningViewModel(
     fun loadLists() {
 
         // cancel a possibly previously started collection job
-        loadListsJob?.cancel()
+        loadListsJob?.let {
+            Timber.i("Cancelling running co-routine job ($it)")
+            it.cancel()
+            loadListsJob = null
+        }
 
         // start new collection
         loadListsJob = viewModelScope.launch {
@@ -170,11 +174,14 @@ class PlanningViewModel(
 
 
             // attempt to collect SmobLists
-            smobListsSF.collect { result ->
+            smobListsSF
+                .onStart { Timber.i("SmobLists collection: starting (job: $loadListsJob)") }
+                .onCompletion { Timber.i("SmobLists collection: complete (job: $loadListsJob)") }
+                .collect { result ->
                 when (result) {
 
                     is Resource.Empty -> {
-                        Timber.i("Lists flow returns empty")
+                        Timber.i("Local lists table empty (job: $loadListsJob)")
                         _uiStateLists.update { currState ->
                             currState.copy(
                                 isLoaderVisible = false,
@@ -197,6 +204,8 @@ class PlanningViewModel(
                         }
                     }
                     is Resource.Success -> {
+                        Timber.i("Successfully collected SmobLists: ${result.data}")
+
                         _uiStateLists.update { currState ->
                             currState.copy(
                                 isLoaderVisible = false,
@@ -510,36 +519,6 @@ class PlanningViewModel(
     // (ex)-PlanningListsViewModel --------------------------------------------
 
     /**
-     * collect the flow of the upstream list the user just selected
-     */
-    @ExperimentalCoroutinesApi
-    fun collectSmobLists() {
-
-        viewModelScope.launch {
-
-            // collect flow / update SF
-            smobListsSF
-                .take(1)
-                .collect {
-                    when (it) {
-                        is Resource.Empty -> Timber.i("SmobLists still loading")
-                        is Resource.Failure -> {
-                            // these are errors handled at Room level --> display
-                            showSnackBar.value = it.exception.message ?: "(no message)"
-                        }
-                        is Resource.Success -> {
-                            // --> turn empty list into
-                            updateShowNoData(it)
-                        }
-                    }
-                }
-
-        }
-
-    }  // collectSmobLists
-
-
-    /**
      * update all items in the local DB by querying the backend - triggered on "swipe down"
      */
     @ExperimentalCoroutinesApi
@@ -553,13 +532,6 @@ class PlanningViewModel(
 
             // update local DB from backend DB (via net API)
             listRepository.refreshItemsInLocalDB()
-
-            // load SmobLists from local DB and store in StateFlow value
-            loadLists()
-//            collectSmobLists()
-
-            // check if the "no data" symbol has to be shown (empty list)
-            updateShowNoData(smobListsSF.value)
 
             // refreshing done
             isRefreshingMSF.emit(false)
@@ -586,6 +558,7 @@ class PlanningViewModel(
 
     /**
      * Validate the entered data then saves the smobList to the DataSource
+     * Validate the entered data then saves the smobList to the DataSource
      */
     fun validateAndSaveSmobList(shopMobData: SmobListATO) {
         if (validateEnteredData(shopMobData)) {
@@ -606,7 +579,7 @@ class PlanningViewModel(
         showLoading.value = false
 
         // load SmobLists from local DB to update StateFlow value
-        collectSmobLists()
+        loadLists()
 
         // check if the "no data" symbol has to be shown (empty list)
         updateShowNoData(smobListsSF.value)

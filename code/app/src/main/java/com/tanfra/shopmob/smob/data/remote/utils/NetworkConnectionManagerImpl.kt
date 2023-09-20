@@ -37,7 +37,9 @@ class NetworkConnectionManagerImpl(
             .map { it.isConnected() }
             .stateIn(
                 scope = coroutineScope,
-                started = SharingStarted.WhileSubscribed(),
+                // SharingStarted.Eagerly!! (collect flow right away or the network will seem
+                // unavailable until first collection is triggered... e.g. in BindingAdapter)
+                started = SharingStarted.Eagerly,
                 initialValue = _currentNetwork.value.isConnected()
             )
 
