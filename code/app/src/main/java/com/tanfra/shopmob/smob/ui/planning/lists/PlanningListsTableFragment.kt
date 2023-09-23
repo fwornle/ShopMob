@@ -10,33 +10,23 @@ import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
-import androidx.recyclerview.widget.ItemTouchHelper
 import com.firebase.ui.auth.AuthUI
-import com.tanfra.shopmob.databinding.FragmentPlanningListsTableBinding
-import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.smob.ui.planning.lists.components.PlanningListsScreen
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
-import com.tanfra.shopmob.utils.setup
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
-import timber.log.Timber
 
 class PlanningListsTableFragment : BaseFragment(), KoinComponent {
 
     // use Koin service locator to retrieve the ViewModel instance(s)
     override val viewModel: PlanningViewModel by activityViewModel()
-
-    // data binding for fragment_planning_lists.xml
-    private lateinit var binding: FragmentPlanningListsTableBinding
-
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
@@ -44,37 +34,11 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
         savedInstanceState: Bundle?
     ): View {
 
-//        // bind layout class
-//        binding =
-//            DataBindingUtil.inflate(
-//                inflater,
-//                R.layout.fragment_planning_lists_table, container, false
-//            )
-//
-//        // set injected viewModel (from KOIN service locator)
-//        binding.viewModel = viewModel
-
+        // TODO - remove --> to be done in Scaffold
         setDisplayHomeAsUpEnabled(true)
         setTitle(getString(R.string.app_name))
 
-//        // install listener for SwipeRefreshLayout view
-//        binding.refreshLayout.setOnRefreshListener {
-//
-//            // deactivate SwipeRefreshLayout spinner
-//            binding.refreshLayout.setRefreshing(false)
-//
-//            // refresh local DB data from backend (for this list) - also updates 'showNoData'
-//            viewModel.swipeRefreshListDataInLocalDB()
-//
-//            // empty? --> inform user that there is no point swiping for further updates...
-//            if (viewModel.showNoData.value == true) {
-//                Toast.makeText(activity, getString(R.string.error_add_smob_lists), Toast.LENGTH_SHORT).show()
-//            }
-//
-//        }
-
-
-        // collect SmobLists from local DB - if empty, triggers refresh from net resource
+        // collect SmobLists from local DB
         viewModel.loadLists()
 
         // construct view (compose)
@@ -84,17 +48,13 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
                 PlanningListsScreen(viewModel)
             }
         }
+
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        // collect SmobLists flow
-//        viewModel.loadLists()
-
-//        binding.lifecycleOwner = viewLifecycleOwner
-//
 //        // RV - incl. onClick listener for items
 //        setupRecyclerView()
 //
@@ -102,6 +62,8 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
 //        binding.addSmobItemFab.setOnClickListener { navigateToAddSmobList() }
 //        binding.goShop.setOnClickListener { navigateToShopping() }
 //        binding.defineShop.setOnClickListener { navigateToShopEditFragment() }
+
+        // TODO - removed this --> to be done in Scaffold
 
         // The usage of an interface lets you inject your own implementation
         val menuHost: MenuHost = requireActivity()
@@ -151,39 +113,6 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
 
     }
 
-    // "+" FAB handler --> navigate to selected fragment of the admin activity
-    private fun navigateToAddSmobList() {
-
-        // determine hightest index in all smobLists
-        val highPos = viewModel.smobListsSF.value.let {
-            when (it) {
-                is Resource.Failure -> Timber.i("Couldn't retrieve SmobGroup from remote")
-                is Resource.Empty -> Timber.i("SmobGroup still loading")
-                is Resource.Success -> {
-                    it.data.let { daList ->
-                        daList.fold(0L) { max, list ->
-                            if (list.position > max) list.position else max
-                        }
-                    }
-                }  // Resource.Success
-            }  // when
-        }
-
-        // communicate the currently highest list position
-        val bundle = bundleOf(
-            "listPosMax" to highPos,
-        )
-
-        // use the navigationCommand live data to navigate between the fragments
-        viewModel.navigationCommand.postValue(
-            NavigationCommand.ToWithBundle(
-                R.id.smobPlanningListsAddNewItemFragment,
-                bundle
-            )
-        )
-
-    }
-
     // "SHOP" FAB handler --> navigate to shopping activity (SmobShoppingActivity)
     private fun navigateToShopping() {
         val intent = SmobShoppingActivity.newIntent(requireContext())
@@ -200,37 +129,6 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
                 PlanningListsTableFragmentDirections.actionSmobPlanningListsTableFragmentToSmobPlanningShopsAddNewItemFragment()
             )
         )
-    }
-
-    private fun setupRecyclerView() {
-        val adapter = PlanningListsTableAdapter(binding.root) {
-
-            // this lambda is the 'callback' function which gets called when clicking an item in the
-            // RecyclerView - it gets the data behind the clicked item as parameter
-
-            // communicate the ID and name of the selected item (= shopping list)
-            val bundle = bundleOf(
-                "listId" to it.id,
-                "listName" to it.name,
-            )
-
-            // use the navigationCommand live data to navigate between the fragments
-            viewModel.navigationCommand.postValue(
-                NavigationCommand.ToWithBundle(
-                    R.id.smobPlanningProductsTableFragment,
-                    bundle
-                )
-            )
-
-        }  // "on-item-click" lambda
-
-        // setup the recycler view using the extension function
-        binding.smobItemsRecyclerView.setup(adapter)
-
-        // enable swiping left/right
-        val itemTouchHelper = ItemTouchHelper(PlanningListsTableSwipeActionHandler(adapter))
-        itemTouchHelper.attachToRecyclerView(binding.smobItemsRecyclerView)
-
     }
 
 }

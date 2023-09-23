@@ -1,6 +1,8 @@
 package com.tanfra.shopmob.smob.ui.planning
 
 import android.app.Application
+import android.os.Vibrator
+import androidx.core.os.bundleOf
 import androidx.lifecycle.*
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.SmobApp
@@ -19,9 +21,11 @@ import com.tanfra.shopmob.smob.data.repo.repoIf.SmobListRepository
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobProductRepository
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobShopRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
+import com.tanfra.shopmob.smob.data.types.SmobListItem
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsUiState
 import com.tanfra.shopmob.smob.ui.zeUtils.combineFlows
+import com.tanfra.shopmob.smob.ui.zeUtils.vibrateDevice
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
@@ -30,6 +34,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PlanningViewModel(
@@ -45,7 +50,6 @@ class PlanningViewModel(
     // navigation source - used to be able to have a "modal" list item click handler
     // ... depending on how we got to the list (and, as such, on how we want to use it)
     var navSource = "navDrawer"  // default
-
 
     // current list ID and list position (in the list of SmobLists)
     var currListId: String? = null
@@ -540,6 +544,160 @@ class PlanningViewModel(
 
     }
 
+
+    // swipeActionHandler
+    fun swipeActionConfirmed(item: SmobListATO) {
+
+        // consolidate list item data (prior to writing to the DB)
+        val itemAdjusted = if(item.status != ItemStatus.DELETED) {
+            // user swiped right --> marking all sub-entries as "IN_PROGRESS" + aggregating here
+            consolidateListItem(item)
+        } else {
+            // user swiped left --> delete list (by marking it as DELETED)
+            item
+        }
+
+        // update (PUT) adjusted smobList item
+        // ... also used to "DELETE" a list (marked as DELETED, then filtered out)
+        viewModelScope.launch {
+
+            // collect SmobList flow
+            val updatedList = SmobListATO(
+                itemAdjusted.id,
+                itemAdjusted.status,
+                itemAdjusted.position,
+                itemAdjusted.name,
+                itemAdjusted.description,
+                // replace list of products on smob list with updated list of products
+                itemAdjusted.items.map { product ->
+                    if(product.id == itemAdjusted.id) {
+                        // set new status (list property)
+                        SmobListItem(
+                            product.id,
+                            itemAdjusted.status,
+                            product.listPosition,
+                            product.mainCategory,
+                        )
+                    } else {
+                        product
+                    }
+                },
+                itemAdjusted.groups,
+                itemAdjusted.lifecycle,
+            )
+
+            // store updated smobList in local DB
+            // ... this also triggers an immediate push to the backend (once stored locally)
+            listRepository.updateSmobItem(updatedList)
+
+        }  // coroutine scope
+
+    }  // swipeActionConfirmed
+
+    fun sendToList(item: SmobListATO) {
+
+        // communicate the ID and name of the selected item (= shopping list)
+        val bundle = bundleOf(
+            "listId" to item.id,
+            "listName" to item.name,
+        )
+
+        // use the navigationCommand live data to navigate between the fragments
+        navigationCommand.postValue(
+            NavigationCommand.ToWithBundle(
+                R.id.smobPlanningProductsTableFragment,
+                bundle
+            )
+        )
+
+    }
+
+    // illegal transition --> vibrate phone
+    fun onIllegalTransition() {
+        val vib = app.applicationContext.getSystemService(Vibrator::class.java)
+        vibrateDevice(vib, 150)
+    }
+
+
+    // mechanism to filter out list items
+    fun listFilter(items: List<SmobListATO>): List<SmobListATO> {
+
+        // take out all items which have been deleted by swiping
+        return items
+            .filter { item -> item.groups
+                .map { group -> group.id }
+                .intersect((SmobApp.currUser?.groups ?: listOf()).toSet())
+                .any()
+            }
+            .filter { item -> item.status != ItemStatus.DELETED  }
+            .map { item -> consolidateListItem(item) }
+            .sortedWith(
+                compareBy { it.position }
+            )
+    }
+
+    // recompute status & completion rate from linked list items
+    private fun consolidateListItem(item: SmobListATO): SmobListATO {
+
+        // consolidate smobList...
+        val valItems = item.items.filter { itm -> itm.status != ItemStatus.DELETED }
+        val nValItems = valItems.size
+
+        // ... status
+        val aggListStatus =
+            valItems.fold(0) { sum, daItem -> sum + daItem.status.ordinal }
+        item.status = when (aggListStatus) {
+            in 0..nValItems -> ItemStatus.OPEN
+            nValItems * ItemStatus.DONE.ordinal -> ItemStatus.DONE
+            else -> ItemStatus.IN_PROGRESS
+        }
+
+        // ... completion rate (= nDONE/nTOTAL)
+        item.lifecycle.completion = when(nValItems) {
+            0 -> 0.0
+            else -> {
+                val doneItems = valItems.filter { daItem -> daItem.status == ItemStatus.DONE }.size
+                (100.0 * doneItems / nValItems).roundToInt().toDouble()
+            }
+        }
+
+        // return adjusted item
+        return item
+
+    }  // consolidateListItem
+
+    // "+" FAB handler --> navigate to selected fragment of the admin activity
+    fun navigateToAddSmobList() {
+
+        // determine hightest index in all smobLists
+        val highPos = smobListsSF.value.let {
+            when (it) {
+                is Resource.Failure -> Timber.i("Couldn't retrieve SmobGroup from remote")
+                is Resource.Empty -> Timber.i("SmobGroup still loading")
+                is Resource.Success -> {
+                    it.data.let { daList ->
+                        daList.fold(0L) { max, list ->
+                            if (list.position > max) list.position else max
+                        }
+                    }
+                }  // Resource.Success
+            }  // when
+        }
+
+        // communicate the currently highest list position
+        val bundle = bundleOf(
+            "listPosMax" to highPos,
+        )
+
+        // use the navigationCommand live data to navigate between the fragments
+        navigationCommand.postValue(
+            NavigationCommand.ToWithBundle(
+                R.id.smobPlanningListsAddNewItemFragment,
+                bundle
+            )
+        )
+
+    }
 
 
     // (ex)-PlanningListEditViewModel ---------------------------------------------

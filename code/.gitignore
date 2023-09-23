@@ -18,5 +18,6 @@ google-services.json
 /backend/node_modules
 /backend/.vscode
 .env
+.idea/misc.xml
 
 *.drawio.bkp

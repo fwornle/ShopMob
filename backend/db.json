@@ -1484,7 +1484,7 @@
     },
     {
       "id": "bd0bad36-8727-4b59-9ebc-cad6dec85ab3",
-      "status": "OPEN",
+      "status": "IN_PROGRESS",
       "position": 1,
       "name": "Xmas party",
       "description": "eos sunt voluptatem",
@@ -1497,13 +1497,13 @@
         },
         {
           "id": "5f19e073-cc7e-4376-9e4f-191afdce2634",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
           "listPosition": 1,
           "mainCategory": "FOODS"
         },
         {
           "id": "9effa33b-043f-4776-bc3c-d16f88d9d68a",
-          "status": "OPEN",
+          "status": "IN_PROGRESS",
           "listPosition": 2,
           "mainCategory": "SUPPLIES"
         }
@@ -1527,7 +1527,7 @@
       ],
       "lifecycle": {
         "status": "OPEN",
-        "completion": 33
+        "completion": 0
       }
     },
     {
