@@ -151,7 +151,12 @@ class PlanningViewModel(
 
     private var loadListsJob: Job? = null
 
-    private val _uiStateLists = MutableStateFlow(PlanningListsUiState(isLoaderVisible = true))
+    private val _uiStateLists = MutableStateFlow(
+        PlanningListsUiState(
+            isLoaderVisible = true,
+            screenTitle = "ShopMob",
+        )
+    )
     val uiStateLists = _uiStateLists.asStateFlow()
 
     fun loadLists() {

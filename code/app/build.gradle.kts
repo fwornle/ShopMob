@@ -136,6 +136,7 @@ dependencies {
     debugImplementation(libs.compose.ui.test.manifest)
 //    implementation(libs.compose.material.icons.extended)
 //    implementation(libs.compose.material3.window)
+    implementation(libs.compose.navigation)
     implementation(libs.compose.activity)
     implementation(libs.compose.viewmodel)
     implementation(libs.compose.runtime)

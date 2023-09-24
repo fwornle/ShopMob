@@ -5,8 +5,6 @@ import android.view.*
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
-import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
-import com.tanfra.shopmob.utils.setTitle
 import android.content.Intent
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
@@ -16,7 +14,7 @@ import androidx.lifecycle.Lifecycle
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
-import com.tanfra.shopmob.smob.ui.planning.lists.components.PlanningListsScreen
+import com.tanfra.shopmob.smob.ui.planning.components.PlanningNavHost
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,9 +32,9 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
         savedInstanceState: Bundle?
     ): View {
 
-        // TODO - remove --> to be done in Scaffold
-        setDisplayHomeAsUpEnabled(true)
-        setTitle(getString(R.string.app_name))
+//        // TODO - remove --> to be done in Scaffold
+//        setDisplayHomeAsUpEnabled(true)
+//        setTitle(getString(R.string.app_name))
 
         // collect SmobLists from local DB
         viewModel.loadLists()
@@ -45,7 +43,7 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                PlanningListsScreen(viewModel)
+                PlanningNavHost(requireContext(), viewModel)
             }
         }
 
@@ -55,11 +53,7 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        // RV - incl. onClick listener for items
-//        setupRecyclerView()
-//
-//        // handlers for "+" FAB, "SHOP" FAB and "STORE" FAB
-//        binding.addSmobItemFab.setOnClickListener { navigateToAddSmobList() }
+//        // handlers for "SHOP" FAB and "STORE" FAB
 //        binding.goShop.setOnClickListener { navigateToShopping() }
 //        binding.defineShop.setOnClickListener { navigateToShopEditFragment() }
 

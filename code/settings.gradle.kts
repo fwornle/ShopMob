@@ -186,8 +186,8 @@ dependencyResolutionManagement {
             library("compose-runtime", "androidx.lifecycle", "lifecycle-runtime-compose").versionRef("lifecycle") // integration (opt)
             library("compose-runtime-livedata", "androidx.compose.runtime", "runtime-livedata").withoutVersion()  // integration (opt)
             library("compose-runtime-rxjava2", "androidx.compose.runtime", "runtime-rxjava2").withoutVersion()  // integration (opt)
+            library("compose-navigation", "androidx.navigation", "navigation-compose").withoutVersion()
             library("compose-state-events", "com.github.leonard-palm", "compose-state-events").versionRef("state-events")  // 3rd party lib (!!)
-
 
             // appearance
             version("material", "1.9.0")
