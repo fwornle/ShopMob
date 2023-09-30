@@ -2,7 +2,6 @@ package com.tanfra.shopmob.smob.ui.planning.components
 
 import android.content.Context
 import android.content.Intent
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -201,27 +200,24 @@ fun PlanningScaffold(
                 }
             }
         ) {
-            Column(
+            NavHost(
                 modifier = Modifier
                     .padding(paddingValues)
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                navController = navController,
+                startDestination = PlanningNavRoutes.PlanningListsScreen.route
             ) {
-                NavHost(
-                    navController = navController,
-                    startDestination = PlanningNavRoutes.PlanningListsScreen.route
-                ) {
-                    composable(route = PlanningNavRoutes.PlanningListsScreen.route) {
-                        PlanningListsScreen(viewModel)
-                    }
-                    composable(route = PlanningNavRoutes.Screen2.route) {
-                        Screen2()
-                    }
-                    composable(route = PlanningNavRoutes.Screen3.route) {
-                        Screen3()
-                    }
-                    composable(route = PlanningNavRoutes.Settings.route) {
-                        SettingsScreen()
-                    }
+                composable(route = PlanningNavRoutes.PlanningListsScreen.route) {
+                    PlanningListsScreen(viewModel)
+                }
+                composable(route = PlanningNavRoutes.Screen2.route) {
+                    Screen2()
+                }
+                composable(route = PlanningNavRoutes.Screen3.route) {
+                    Screen3()
+                }
+                composable(route = PlanningNavRoutes.Settings.route) {
+                    SettingsScreen()
                 }
             }
         }
