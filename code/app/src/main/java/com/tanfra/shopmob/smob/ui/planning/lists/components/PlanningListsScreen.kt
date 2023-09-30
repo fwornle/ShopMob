@@ -2,7 +2,6 @@ package com.tanfra.shopmob.smob.ui.planning.lists.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
@@ -32,7 +31,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun PlanningListsScreen(
     viewModel: PlanningViewModel,
-    paddingValues: PaddingValues,
+//    paddingValues: PaddingValues,
 ) {
 
     // collect ui state flow
@@ -57,7 +56,9 @@ fun PlanningListsScreen(
     ) {
 
         // the actual list
-        Column(modifier = Modifier.padding(paddingValues)) {
+        Column(modifier = Modifier
+//            .padding(paddingValues)
+        ) {
             if (uiState.lists.isEmpty()) {
                 NoListItemsInfo()
             } else {

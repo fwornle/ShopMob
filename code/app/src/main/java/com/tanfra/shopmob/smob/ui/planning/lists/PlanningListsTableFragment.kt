@@ -14,10 +14,9 @@ import androidx.lifecycle.Lifecycle
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
-import com.tanfra.shopmob.smob.ui.planning.components.PlanningNavHost
+import com.tanfra.shopmob.smob.ui.planning.components.PlanningScaffold
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 
@@ -26,15 +25,10 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
     // use Koin service locator to retrieve the ViewModel instance(s)
     override val viewModel: PlanningViewModel by activityViewModel()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-//        // TODO - remove --> to be done in Scaffold
-//        setDisplayHomeAsUpEnabled(true)
-//        setTitle(getString(R.string.app_name))
 
         // collect SmobLists from local DB
         viewModel.loadLists()
@@ -42,9 +36,7 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
         // construct view (compose)
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                PlanningNavHost(requireContext(), viewModel)
-            }
+            setContent { PlanningScaffold(this.context, viewModel) }
         }
 
     }

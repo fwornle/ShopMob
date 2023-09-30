@@ -64,9 +64,9 @@ fun PlanningLists(
     lists: List<SmobListATO> = listOf(),
     listFilter: (List<SmobListATO>) -> List<SmobListATO> = { lists },
     snackbarHostState: SnackbarHostState = SnackbarHostState(),
-    onSwipeActionConfirmed: (SmobListATO) -> Unit = {},
-    onIllegalTransition: () -> Unit = {},
-    onClick: (SmobListATO) -> Unit = { item -> Timber.i("Clicked on list ${item.name}") }
+    onSwipeActionConfirmed: (SmobListATO) -> Unit = { Timber.i("Confirmed action")},
+    onIllegalTransition: () -> Unit = { Timber.i("Illegal swipe action triggered")},
+    onClick: (SmobListATO) -> Unit = { item -> Timber.i("Clicked on item ${item.name}") }
 ) {
 
     LazyColumn {

@@ -50,6 +50,7 @@ import com.tanfra.shopmob.smob.ui.planning.PlanningNavRoutes
 import com.tanfra.shopmob.smob.ui.planning.lists.components.PlanningListsScreen
 import com.tanfra.shopmob.smob.ui.planning.lists.components.Screen2
 import com.tanfra.shopmob.smob.ui.planning.lists.components.Screen3
+import com.tanfra.shopmob.smob.ui.planning.lists.components.SettingsScreen
 import com.tanfra.shopmob.smob.ui.zeUtils.TopLevelDestination
 import kotlinx.coroutines.launch
 
@@ -59,6 +60,23 @@ fun PlanningScaffold(
     context: Context,
     viewModel: PlanningViewModel
 ) {
+
+    // scaffold states
+    val showBottomBar = remember { mutableStateOf(true) }
+    val title = remember { mutableStateOf("ShopMob") }
+    val scope = rememberCoroutineScope()
+
+    // drawer menu states
+    val items = listOf(
+        Icons.Default.Favorite,
+        Icons.Default.Face,
+        Icons.Default.Email
+    )
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val selectedItem = remember { mutableStateOf(items[0]) }
+
+    // navigation state
+    val navController = rememberNavController()
 
     val topLevelDestinations = listOf(
         TopLevelDestination(
@@ -79,26 +97,8 @@ fun PlanningScaffold(
         )
     )
 
-    val showBottomBar = remember { mutableStateOf(true) }
-    val title = remember {
-        mutableStateOf("Home")
-    }
-    val navController = rememberNavController()
 
-
-    // Scaffold state
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val scope = rememberCoroutineScope()
-
-    // icons to mimic drawer destinations
-    val items = listOf(
-        Icons.Default.Favorite,
-        Icons.Default.Face,
-        Icons.Default.Email
-    )
-    val selectedItem = remember { mutableStateOf(items[0]) }
-
-
+    // composable...
     Scaffold(
         topBar = {
             TopAppBar(
@@ -107,7 +107,6 @@ fun PlanningScaffold(
                         text = topLevelDestinations[0].iconText,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-//                        text = title.value,
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
@@ -159,7 +158,8 @@ fun PlanningScaffold(
         },
         bottomBar = {
             if (showBottomBar.value) {
-                PlanningBottomBar(destinations = topLevelDestinations,
+                PlanningBottomBar(
+                    destinations = topLevelDestinations,
                     currentDestination = navController.currentBackStackEntryAsState().value?.destination,
                     onNavigateToDestination = {
                         title.value = when (it) {
@@ -201,22 +201,17 @@ fun PlanningScaffold(
                 }
             }
         ) {
-
             Column(
                 modifier = Modifier
                     .padding(paddingValues)
                     .fillMaxSize()
             ) {
                 NavHost(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f),
                     navController = navController,
-                    startDestination = PlanningNavRoutes.PlanningListsScreen.route,
+                    startDestination = PlanningNavRoutes.PlanningListsScreen.route
                 ) {
-
                     composable(route = PlanningNavRoutes.PlanningListsScreen.route) {
-                        PlanningListsScreen(viewModel, paddingValues)
+                        PlanningListsScreen(viewModel)
                     }
                     composable(route = PlanningNavRoutes.Screen2.route) {
                         Screen2()
@@ -224,12 +219,13 @@ fun PlanningScaffold(
                     composable(route = PlanningNavRoutes.Screen3.route) {
                         Screen3()
                     }
-
+                    composable(route = PlanningNavRoutes.Settings.route) {
+                        SettingsScreen()
+                    }
                 }
-
             }
         }
 
-    }  // NavDrawer
+    }
 
 }
