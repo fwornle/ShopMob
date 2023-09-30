@@ -37,6 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -46,8 +47,8 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.smob.ui.planning.PlanningNavRoutes
+import com.tanfra.shopmob.smob.ui.planning.lists.components.PlanningListsAddNewItemScreen
 import com.tanfra.shopmob.smob.ui.planning.lists.components.PlanningListsScreen
-import com.tanfra.shopmob.smob.ui.planning.lists.components.Screen2
 import com.tanfra.shopmob.smob.ui.planning.lists.components.Screen3
 import com.tanfra.shopmob.smob.ui.planning.lists.components.SettingsScreen
 import com.tanfra.shopmob.smob.ui.zeUtils.TopLevelDestination
@@ -57,6 +58,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun PlanningScaffold(
     context: Context,
+    navController: NavHostController = rememberNavController(),  // navigation state (opt passed in)
     viewModel: PlanningViewModel
 ) {
 
@@ -74,25 +76,23 @@ fun PlanningScaffold(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val selectedItem = remember { mutableStateOf(items[0]) }
 
-    // navigation state
-    val navController = rememberNavController()
-
+    // navigation destinations
     val topLevelDestinations = listOf(
         TopLevelDestination(
             route = PlanningNavRoutes.PlanningListsScreen.route,
-            selectedIcon = R.drawable.ic_no_data,
-            unselectedIcon = R.drawable.ic_baseline_delete_forever_24,
-            iconText = "smobLists"
+            selectedIcon = R.drawable.ic_baseline_view_list_24,
+            unselectedIcon = R.drawable.ic_baseline_view_list_24,
+            iconName = "Show Lists"
         ), TopLevelDestination(
-            route = PlanningNavRoutes.Screen2.route,
-            selectedIcon = R.drawable.ic_baseline_shopping_cart_24,
-            unselectedIcon = R.drawable.ic_baseline_broken_image_24,
-            iconText = "Screen2"
+            route = PlanningNavRoutes.PlanningListsAddNewItemScreen.route,
+            selectedIcon = R.drawable.ic_add,
+            unselectedIcon = R.drawable.ic_add,
+            iconName = "New List"
         ), TopLevelDestination(
             route = PlanningNavRoutes.Screen3.route,
             selectedIcon = R.drawable.ic_location,
             unselectedIcon = R.drawable.ic_save,
-            iconText = "Screen3"
+            iconName = "Screen 3",
         )
     )
 
@@ -103,7 +103,7 @@ fun PlanningScaffold(
             TopAppBar(
                 title = {
                     Text(
-                        text = topLevelDestinations[0].iconText,
+                        text = title.value,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         color = Color.White,
@@ -132,11 +132,6 @@ fun PlanningScaffold(
                 },
                 actions = {
                     IconButton(
-//                        modifier = Modifier
-//                            .clickable {
-//                                navigateTo(PlanningNavRoutes.Settings.route)
-//                            }
-//                            .padding(8.dp),
                         onClick = {
                             // logout
                             AuthUI.getInstance()
@@ -160,15 +155,15 @@ fun PlanningScaffold(
                 PlanningBottomBar(
                     destinations = topLevelDestinations,
                     currentDestination = navController.currentBackStackEntryAsState().value?.destination,
-                    onNavigateToDestination = {
-                        title.value = when (it) {
-                            "smobLists" -> "SmobLists"
-                            "screen2" -> "Screen 2"
+                    onNavigateToDestination = { route ->
+                        title.value = when (route) {
+                            "planningLists" -> "ShopMob"
+                            "planningListsAddNewItem" -> "Add New SmobList"
                             else -> {
-                                "Screen 3"
+                                "Title of Screen 3"
                             }
                         }
-                        navController.navigate(it) {
+                        navController.navigate(route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
@@ -210,8 +205,11 @@ fun PlanningScaffold(
                 composable(route = PlanningNavRoutes.PlanningListsScreen.route) {
                     PlanningListsScreen(viewModel)
                 }
-                composable(route = PlanningNavRoutes.Screen2.route) {
-                    Screen2()
+                composable(route = PlanningNavRoutes.PlanningListsAddNewItemScreen.route) {
+                    PlanningListsAddNewItemScreen(
+                        viewModel = viewModel,
+                        onNavigateBack = { navController.navigate("Show Lists") }
+                    )
                 }
                 composable(route = PlanningNavRoutes.Screen3.route) {
                     Screen3()

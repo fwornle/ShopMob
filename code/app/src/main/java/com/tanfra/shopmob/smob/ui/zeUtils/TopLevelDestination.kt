@@ -5,5 +5,5 @@ data class TopLevelDestination(
     val route: String,
     val selectedIcon: Int,
     val unselectedIcon: Int,
-    val iconText: String
+    val iconName: String,
 )

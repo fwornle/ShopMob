@@ -22,6 +22,7 @@ import com.tanfra.shopmob.smob.data.repo.repoIf.SmobProductRepository
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobShopRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.types.SmobListItem
+import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsAddNewItemsUiState
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsUiState
 import com.tanfra.shopmob.smob.ui.zeUtils.combineFlows
@@ -149,8 +150,7 @@ class PlanningViewModel(
     // UI state ------------------------------------------------------------------
     // UI state ------------------------------------------------------------------
 
-    private var loadListsJob: Job? = null
-
+    // UI: Lists (SmobLists)
     private val _uiStateLists = MutableStateFlow(
         PlanningListsUiState(
             isLoaderVisible = true,
@@ -158,6 +158,13 @@ class PlanningViewModel(
     )
     val uiStateLists = _uiStateLists.asStateFlow()
 
+    // UI: ListsAddNewItem
+    private val _uiStateListsAddNewItem = MutableStateFlow(PlanningListsAddNewItemsUiState())
+    val uiStateListsAddNewItem = _uiStateListsAddNewItem.asStateFlow()
+
+
+    // collect SmobLists flow
+    private var loadListsJob: Job? = null
     fun loadLists() {
 
         // cancel a possibly previously started collection job

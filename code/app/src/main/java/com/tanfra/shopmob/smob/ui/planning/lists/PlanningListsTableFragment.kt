@@ -36,7 +36,10 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
         // construct view (compose)
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent { PlanningScaffold(this.context, viewModel) }
+            setContent { PlanningScaffold(
+                context = this.context,
+                viewModel = viewModel
+            ) }
         }
 
     }

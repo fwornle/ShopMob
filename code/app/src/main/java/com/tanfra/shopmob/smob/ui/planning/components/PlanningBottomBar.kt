@@ -57,7 +57,7 @@ fun PlanningBottomBar(
                 },
                 label = {
                     Text(
-                        text = destination.iconText
+                        text = destination.iconName
                     )
                 }
             )
