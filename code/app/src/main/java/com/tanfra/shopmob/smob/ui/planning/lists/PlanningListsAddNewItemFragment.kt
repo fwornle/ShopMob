@@ -53,6 +53,11 @@ class PlanningListsAddNewItemFragment : BaseFragment(), KoinComponent {
         binding.viewModel = viewModel
 
         return binding.root
+//        // construct view (compose)
+//        return ComposeView(requireContext()).apply {
+//            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+//            setContent { PlanningScaffold(this.context, viewModel) }
+//        }
     }
 
 

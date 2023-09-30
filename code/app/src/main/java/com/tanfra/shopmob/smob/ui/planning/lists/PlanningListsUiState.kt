@@ -10,7 +10,4 @@ data class PlanningListsUiState(
     val lists: List<SmobListATO> = listOf(),
     val isErrorVisible: Boolean = false,
     val errorMessage: String = "",
-    val screenTitle: String = "",
-    val currListId: String = "no-list-selected",
-    val navSource: String = "navDrawer",
 )
