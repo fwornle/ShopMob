@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
-import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsUiState
+import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsBrowseUiState
 import com.tanfra.shopmob.smob.ui.zeComponents.NoListItemsInfo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -29,13 +29,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
     ExperimentalMaterialApi::class,
 )
 @Composable
-fun PlanningListsScreen(
+fun PlanningListsBrowseScreen(
     viewModel: PlanningViewModel,
 ) {
 
     // collect ui state flow
     val uiState by viewModel.uiStateLists.collectAsStateWithLifecycle(
-        initialValue = PlanningListsUiState(isLoaderVisible = true),
+        initialValue = PlanningListsBrowseUiState(isLoaderVisible = true),
     )
 
     // state of swipe refresh mechanism4
@@ -61,7 +61,7 @@ fun PlanningListsScreen(
             if (uiState.lists.isEmpty()) {
                 NoListItemsInfo()
             } else {
-                PlanningLists(
+                PlanningListsBrowse(
                     lists = uiState.lists,
                     listFilter = viewModel::listFilter,
                     snackbarHostState = snackbarHostState,

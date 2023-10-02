@@ -58,9 +58,8 @@ import com.tanfra.shopmob.smob.ui.zeUtils.statusColor
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-// the list
 @Composable
-fun PlanningLists(
+fun PlanningListsBrowse(
     lists: List<SmobListATO> = listOf(),
     listFilter: (List<SmobListATO>) -> List<SmobListATO> = { lists },
     snackbarHostState: SnackbarHostState = SnackbarHostState(),
@@ -299,7 +298,7 @@ fun PreviewPlanningLists() {
     val daList = listOf(dE1, dE1, dE1, dE2, dE1, dE2, dE1, dE1, dE2, dE1, dE2, dE1)
 
     ShopMobTheme {
-        PlanningLists(daList)
+        PlanningListsBrowse(daList)
     }
 
 }

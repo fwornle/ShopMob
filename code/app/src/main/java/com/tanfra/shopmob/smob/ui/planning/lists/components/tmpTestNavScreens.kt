@@ -15,13 +15,6 @@ fun SettingsScreen() {
 }
 
 @Composable
-fun Screen2() {
-    Column(modifier = Modifier.fillMaxSize()) {
-        Text(text = "Two Screen", fontSize = 20.sp)
-    }
-}
-
-@Composable
 fun Screen3() {
     Column(modifier = Modifier.fillMaxSize()) {
         Text(text = "Three Screen", fontSize = 20.sp)

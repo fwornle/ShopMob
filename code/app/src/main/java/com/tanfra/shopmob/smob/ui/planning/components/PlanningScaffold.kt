@@ -49,7 +49,7 @@ import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.smob.ui.planning.PlanningNavRoutes
 import com.tanfra.shopmob.smob.ui.planning.lists.components.PlanningListsAddItemScreen
-import com.tanfra.shopmob.smob.ui.planning.lists.components.PlanningListsScreen
+import com.tanfra.shopmob.smob.ui.planning.lists.components.PlanningListsBrowseScreen
 import com.tanfra.shopmob.smob.ui.planning.lists.components.Screen3
 import com.tanfra.shopmob.smob.ui.planning.lists.components.SettingsScreen
 import com.tanfra.shopmob.smob.ui.zeUtils.TopLevelDestination
@@ -226,7 +226,7 @@ fun PlanningScaffold(
                 startDestination = PlanningNavRoutes.PlanningListsScreen.route
             ) {
                 composable(route = PlanningNavRoutes.PlanningListsScreen.route) {
-                    PlanningListsScreen(viewModel)
+                    PlanningListsBrowseScreen(viewModel)
                 }
                 composable(route = PlanningNavRoutes.PlanningListsAddNewItem.route) {
                     PlanningListsAddItemScreen(

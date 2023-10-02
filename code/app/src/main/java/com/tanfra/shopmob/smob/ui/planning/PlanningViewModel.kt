@@ -27,7 +27,7 @@ import com.tanfra.shopmob.smob.data.types.SmobListItem
 import com.tanfra.shopmob.smob.data.types.SmobListLifecycle
 import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsAddItemUiState
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
-import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsUiState
+import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsBrowseUiState
 import com.tanfra.shopmob.smob.ui.zeUtils.combineFlows
 import com.tanfra.shopmob.smob.ui.zeUtils.vibrateDevice
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -240,7 +240,7 @@ class PlanningViewModel(
     // UI state ------------------------------------------------------------------
 
     // UI: Lists (SmobLists)
-    private val _uiStateLists = MutableStateFlow(PlanningListsUiState(isLoaderVisible = true))
+    private val _uiStateLists = MutableStateFlow(PlanningListsBrowseUiState(isLoaderVisible = true))
     val uiStateLists = _uiStateLists.asStateFlow()
 
     // collect SmobLists flow
@@ -827,17 +827,6 @@ class PlanningViewModel(
     }
 
     /**
-     * Validate the entered data then saves the smobList to the DataSource
-     * Validate the entered data then saves the smobList to the DataSource
-     */
-    fun validateAndSaveSmobList(shopMobData: SmobListATO) {
-        if (validateEnteredData(shopMobData)) {
-            saveSmobListItem(shopMobData)
-            navigationCommand.value = NavigationCommand.Back
-        }
-    }
-
-    /**
      * Save the smobList item to the data source
      */
     private fun saveSmobListItem(smobListData: SmobListATO) {
@@ -853,20 +842,6 @@ class PlanningViewModel(
 
         // check if the "no data" symbol has to be shown (empty list)
         updateShowNoData(smobListsSF.value)
-    }
-
-    /**
-     * Validate the entered data and show error to the user if there's any invalid data
-     */
-    private fun validateEnteredData(shopMobData: SmobListATO): Boolean {
-
-        if (shopMobData.name.isEmpty()) {
-            showSnackBarInt.value = R.string.err_enter_title
-            return false
-        }
-
-        // successful validation
-        return true
     }
 
 }
