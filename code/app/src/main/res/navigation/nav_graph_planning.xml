@@ -26,22 +26,8 @@
             android:id="@+id/action_smobPlanningListsTableFragment_to_smobPlanningProductsTableFragment"
             app:destination="@id/smobPlanningProductsTableFragment" />
         <action
-            android:id="@+id/action_smobPlanningListsTableFragment_to_smobPlanningListsAddNewItemFragment"
-            app:destination="@id/smobPlanningListsAddNewItemFragment" />
-        <action
             android:id="@+id/action_smobPlanningListsTableFragment_to_smobPlanningShopsAddNewItemFragment"
             app:destination="@id/smobPlanningShopsAddNewItemFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/smobPlanningListsAddNewItemFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsAddNewItemFragment"
-        android:label="Planning Lists - Add New Item"
-        tools:layout="@layout/fragment_planning_lists_add_new_item"
-        >
-        <action
-            android:id="@+id/action_smobPlanningListsAddNewItemFragment_to_smobPlanningProductListsTableFragment"
-            app:destination="@id/smobPlanningProductsTableFragment" />
     </fragment>
 
     <fragment
