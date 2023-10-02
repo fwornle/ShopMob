@@ -101,7 +101,7 @@ router.render = (req, res) => {
             data: {
                 method: req.method,
                 table: incoming[0],
-                element: incoming[1],
+                element: incoming[1] == undefined ? res.locals.data.id : incoming[1],
             },
             topic: topic
             };

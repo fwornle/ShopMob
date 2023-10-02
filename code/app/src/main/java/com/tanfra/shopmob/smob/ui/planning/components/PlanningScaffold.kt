@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -47,7 +48,7 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.smob.ui.planning.PlanningNavRoutes
-import com.tanfra.shopmob.smob.ui.planning.lists.components.PlanningListsAddNewItemScreen
+import com.tanfra.shopmob.smob.ui.planning.lists.components.PlanningListsAddItemScreen
 import com.tanfra.shopmob.smob.ui.planning.lists.components.PlanningListsScreen
 import com.tanfra.shopmob.smob.ui.planning.lists.components.Screen3
 import com.tanfra.shopmob.smob.ui.planning.lists.components.SettingsScreen
@@ -84,7 +85,7 @@ fun PlanningScaffold(
             unselectedIcon = R.drawable.ic_baseline_view_list_24,
             iconName = "Show Lists"
         ), TopLevelDestination(
-            route = PlanningNavRoutes.PlanningListsAddNewItemScreen.route,
+            route = PlanningNavRoutes.PlanningListsAddNewItem.route,
             selectedIcon = R.drawable.ic_add,
             unselectedIcon = R.drawable.ic_add,
             iconName = "New List"
@@ -95,6 +96,9 @@ fun PlanningScaffold(
             iconName = "Screen 3",
         )
     )
+
+//    // local state (should possibly be in uiState)
+//    var isFabVisible by rememberSaveable { mutableStateOf(false) }
 
 
     // composable...
@@ -163,6 +167,7 @@ fun PlanningScaffold(
                                 "Title of Screen 3"
                             }
                         }
+//                        isFabVisible = (route == "planningListsAddNewItem")
                         navController.navigate(route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
@@ -172,7 +177,25 @@ fun PlanningScaffold(
                         }
                     })
             }
-        }
+        },
+        floatingActionButton = {
+//            if (isFabVisible) {
+//                FloatingActionButton(
+//                    onClick = (viewModel::saveNewSmobList)(
+//                        newListName,
+//                        newListDescription,
+//                        0,
+//                    ) {
+//                        isFabVisible = false
+//                        title.value = "ShopMob"
+//                        navController.navigate("planningLists")
+//                    }
+//                ) {
+//                    Icon(Icons.Default.Send, contentDescription = "Save")
+//                }
+//            }
+        },
+        floatingActionButtonPosition = FabPosition.End,
     ) { paddingValues ->
 
         ModalNavigationDrawer(
@@ -205,11 +228,10 @@ fun PlanningScaffold(
                 composable(route = PlanningNavRoutes.PlanningListsScreen.route) {
                     PlanningListsScreen(viewModel)
                 }
-                composable(route = PlanningNavRoutes.PlanningListsAddNewItemScreen.route) {
-                    PlanningListsAddNewItemScreen(
-                        viewModel = viewModel,
-                        onNavigateBack = { navController.navigate("Show Lists") }
-                    )
+                composable(route = PlanningNavRoutes.PlanningListsAddNewItem.route) {
+                    PlanningListsAddItemScreen(
+                        viewModel
+                    ) { navController.navigate("planningLists") }
                 }
                 composable(route = PlanningNavRoutes.Screen3.route) {
                     Screen3()

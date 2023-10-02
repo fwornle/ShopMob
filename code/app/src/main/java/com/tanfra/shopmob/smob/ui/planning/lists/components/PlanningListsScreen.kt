@@ -89,7 +89,7 @@ fun PlanningListsScreen(
             hostState = snackbarHostState,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 60.dp)  // move above FABs
+                .padding(bottom = 8.dp)  // 60 to move it above FABs
         )
 
     }  // Box

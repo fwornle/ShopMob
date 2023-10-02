@@ -17,12 +17,15 @@ import com.tanfra.shopmob.smob.data.local.utils.*
 import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.ato.*
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseViewModel
+import com.tanfra.shopmob.smob.data.repo.repoIf.SmobGroupRepository
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobListRepository
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobProductRepository
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobShopRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
+import com.tanfra.shopmob.smob.data.types.SmobGroupItem
 import com.tanfra.shopmob.smob.data.types.SmobListItem
-import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsAddNewItemsUiState
+import com.tanfra.shopmob.smob.data.types.SmobListLifecycle
+import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsAddItemUiState
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.smob.ui.planning.lists.PlanningListsUiState
 import com.tanfra.shopmob.smob.ui.zeUtils.combineFlows
@@ -35,6 +38,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
+import java.util.UUID
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -43,6 +47,7 @@ class PlanningViewModel(
     val listRepository: SmobListRepository,  // public, as used (externally) to update the smobList
     private val productRepository: SmobProductRepository,
     val shopRepository: SmobShopRepository,
+    groupRepository: SmobGroupRepository,
     ) : BaseViewModel(app), KoinComponent {
 
     // fetch worker class form service locator
@@ -136,13 +141,97 @@ class PlanningViewModel(
     // (ex)-PlanningListEditViewModel ---------------------------------------------
     // (ex)-PlanningListEditViewModel ---------------------------------------------
 
+    // UI: PlanningListsAddItem
+    private val _uiStateListsAddItem = MutableStateFlow(PlanningListsAddItemUiState())
+    val uiStateListsAddItem = _uiStateListsAddItem.asStateFlow()
+
     val smobListName = MutableLiveData<String?>()
     val smobListDescription = MutableLiveData<String?>()
     private val smobListImageUrl = MutableLiveData<String?>()
 
     init {
         onClearList()
-   }
+    }
+
+
+    // static StateFlows (independent of user choice / id)
+    private val smobGroupsSF = groupRepository.getSmobItems()
+        .stateIn(
+            scope = viewModelScope,
+            started = WhileSubscribed(5000),
+            initialValue = Resource.Empty
+        )
+
+    // collect SmobGroups flow
+    private var loadGroupsJob: Job? = null
+    fun loadGroups() {
+
+        // cancel a possibly previously started collection job
+        loadGroupsJob?.let {
+            Timber.i("Cancelling running co-routine job ($it)")
+            it.cancel()
+            loadGroupsJob = null
+        }
+
+        // start new collection
+        loadGroupsJob = viewModelScope.launch {
+
+            // display loading indicator
+            _uiStateListsAddItem.update { currState ->
+                currState.copy(
+                    isLoaderVisible = true,
+                    isEmptyVisible = false,
+                    isErrorVisible = false,
+                    )
+            }
+
+
+            // attempt to collect SmobGroups
+            smobGroupsSF
+                .onStart { Timber.i("SmobGroups collection: starting (job: $loadGroupsJob)") }
+                .onCompletion { Timber.i("SmobGroups collection: complete (job: $loadGroupsJob)") }
+                .collect { result ->
+                    when (result) {
+
+                        is Resource.Empty -> {
+                            Timber.i("Local groups table empty (job: $loadGroupsJob)")
+                            _uiStateListsAddItem.update { currState ->
+                                currState.copy(
+                                    isLoaderVisible = false,
+                                    isEmptyVisible = true,
+                                    isErrorVisible = false,
+                                    )
+                            }
+                        }
+                        is Resource.Failure -> {
+                            Timber.i("Error collecting SmobGroups")
+                            _uiStateListsAddItem.update { currState ->
+                                currState.copy(
+                                    isLoaderVisible = false,
+                                    isEmptyVisible = false,
+                                    isErrorVisible = true,
+                                    errorMessage = result.exception.message ?: "Error collecting SmobGroups"
+                                )
+                            }
+                        }
+                        is Resource.Success -> {
+                            Timber.i("Successfully collected SmobGroups: ${result.data}")
+
+                            _uiStateListsAddItem.update { currState ->
+                                currState.copy(
+                                    isLoaderVisible = false,
+                                    isEmptyVisible = false,
+                                    isErrorVisible = false,
+                                    groupItems = result.data.map { group -> Pair(group.id, group.name) }
+                                )
+                            }
+                        }
+
+                    }  // when (result)
+                }  // collect flow
+        }  // coroutine scope
+
+    }
 
 
 
@@ -151,17 +240,8 @@ class PlanningViewModel(
     // UI state ------------------------------------------------------------------
 
     // UI: Lists (SmobLists)
-    private val _uiStateLists = MutableStateFlow(
-        PlanningListsUiState(
-            isLoaderVisible = true,
-        )
-    )
+    private val _uiStateLists = MutableStateFlow(PlanningListsUiState(isLoaderVisible = true))
     val uiStateLists = _uiStateLists.asStateFlow()
-
-    // UI: ListsAddNewItem
-    private val _uiStateListsAddNewItem = MutableStateFlow(PlanningListsAddNewItemsUiState())
-    val uiStateListsAddNewItem = _uiStateListsAddNewItem.asStateFlow()
-
 
     // collect SmobLists flow
     private var loadListsJob: Job? = null
@@ -237,6 +317,59 @@ class PlanningViewModel(
         }  // coroutine scope
 
     }
+
+
+    // save newly created SmobList and navigate to wherever 'onSaveDone' takes us...
+    fun saveNewSmobList(
+        name: String = "mystery list",
+        description: String = "something exciting",
+        group: Pair<String, String> = Pair("", ""),
+        navBackCallback: () -> Unit = {},
+    ) {
+        // at least the list name has to be specified for it to be saved
+        if (name.isNotEmpty()) {
+
+            // Deferred (position for the new list)
+            viewModelScope.launch {
+                smobListsSF.take(1).collect {
+                    when (it) {
+
+                        is Resource.Success -> {
+                            // initialize new SmobList data record to be written to DB
+                            val daSmobListATO = SmobListATO(
+                                UUID.randomUUID().toString(),
+                                ItemStatus.NEW,
+                                it.data.size + 1L,
+                                name,
+                                description,
+                                listOf(),
+                                listOf(
+                                    SmobGroupItem(
+                                        group.first,
+                                        ItemStatus.NEW,
+                                        0L,
+                                    )
+                                ),
+                                SmobListLifecycle(ItemStatus.NEW, 0.0),
+                            )
+
+                            // store smob List in DB
+                            saveSmobListItem(daSmobListATO)
+
+                        }
+
+                        else -> Timber.i("Failed to save newly defined list $name - list empty? ($it)")
+
+                    }  // when
+                }  // collect
+            }  // launch
+
+        }  // name not empty (should never happen)
+
+        // navigate back
+        navBackCallback()
+    }   // saveNewSmobList
+
 
 
     // ===========================================================================
@@ -677,38 +810,6 @@ class PlanningViewModel(
 
     }  // consolidateListItem
 
-    // "+" FAB handler --> navigate to selected fragment of the admin activity
-    fun navigateToAddSmobList() {
-
-        // determine hightest index in all smobLists
-        val highPos = smobListsSF.value.let {
-            when (it) {
-                is Resource.Failure -> Timber.i("Couldn't retrieve SmobGroup from remote")
-                is Resource.Empty -> Timber.i("SmobGroup still loading")
-                is Resource.Success -> {
-                    it.data.let { daList ->
-                        daList.fold(0L) { max, list ->
-                            if (list.position > max) list.position else max
-                        }
-                    }
-                }  // Resource.Success
-            }  // when
-        }
-
-        // communicate the currently highest list position
-        val bundle = bundleOf(
-            "listPosMax" to highPos,
-        )
-
-        // use the navigationCommand live data to navigate between the fragments
-        navigationCommand.postValue(
-            NavigationCommand.ToWithBundle(
-                R.id.smobPlanningListsAddNewItemFragment,
-                bundle
-            )
-        )
-
-    }
 
 
     // (ex)-PlanningListEditViewModel ---------------------------------------------

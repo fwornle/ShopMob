@@ -1,6 +1,5 @@
 package com.tanfra.shopmob.smob.data.repo
 
-import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobListRepository
 import com.tanfra.shopmob.smob.data.local.dto.SmobListDTO
@@ -18,8 +17,6 @@ import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -367,7 +364,7 @@ class SmobListRepository(
                 Timber.e(ex.message)
 
                 // return with exception --> handle it...
-                responseHandler.handleException<SmobListDTO>(ex)
+                responseHandler.handleException(ex)
 
             }
 

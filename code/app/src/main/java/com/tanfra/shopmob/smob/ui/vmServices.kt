@@ -21,6 +21,7 @@ val vmServices = module {
             get() as SmobListRepository,  // repo as data source
             get() as SmobProductRepository,  // repo as data source
             get() as SmobShopRepository,  // repo as data source
+            get() as SmobGroupRepository,  // repo as data source
         )
     }
 

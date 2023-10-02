@@ -17,6 +17,7 @@ import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
 import com.tanfra.shopmob.smob.ui.planning.components.PlanningScaffold
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
 import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 
@@ -25,13 +26,15 @@ class PlanningListsTableFragment : BaseFragment(), KoinComponent {
     // use Koin service locator to retrieve the ViewModel instance(s)
     override val viewModel: PlanningViewModel by activityViewModel()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        // collect SmobLists from local DB
+        // collect SmobLists and SmobGroups from local DB
         viewModel.loadLists()
+        viewModel.loadGroups()
 
         // construct view (compose)
         return ComposeView(requireContext()).apply {
