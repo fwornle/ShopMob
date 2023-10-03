@@ -18,8 +18,8 @@ import com.tanfra.shopmob.databinding.FragmentShoppingZonesBinding
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsViewModel
-import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
-import com.tanfra.shopmob.utils.setTitle
+import com.tanfra.shopmob.app.utils.setDisplayHomeAsUpEnabled
+import com.tanfra.shopmob.app.utils.setTitle
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 import timber.log.Timber

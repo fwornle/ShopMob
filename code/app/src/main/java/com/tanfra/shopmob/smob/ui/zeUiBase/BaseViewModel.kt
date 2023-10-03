@@ -3,7 +3,7 @@ package com.tanfra.shopmob.smob.ui.zeUiBase
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.tanfra.shopmob.utils.SingleLiveEvent
+import com.tanfra.shopmob.app.utils.SingleLiveEvent
 
 /**
  * Base class for View Models to declare the common LiveData objects in one place

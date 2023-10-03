@@ -7,7 +7,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.tanfra.shopmob.smob.data.repo.ato.Ato
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
-import com.tanfra.shopmob.smob.ui.zeTheme.ShopMobTheme
+import com.tanfra.shopmob.features.common.theme.ShopMobTheme
 import timber.log.Timber
 
 @Composable

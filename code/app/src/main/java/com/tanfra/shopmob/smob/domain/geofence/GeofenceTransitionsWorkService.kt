@@ -7,9 +7,9 @@ import com.tanfra.shopmob.smob.data.types.ProductMainCategory
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
-import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
+import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModel
 import com.tanfra.shopmob.smob.ui.zeUtils.hasProduct
-import com.tanfra.shopmob.utils.sendNotificationOnGeofenceHit
+import com.tanfra.shopmob.app.utils.sendNotificationOnGeofenceHit
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import org.koin.core.component.KoinComponent

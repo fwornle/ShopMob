@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.tanfra.shopmob.smob.ui.planning.shops.addNewItem.PlanningShopsAddNewItemViewModel" />
+            type="com.tanfra.shopmob.features.smobPlanning.presentation.view.shops.addNewItem.PlanningShopsAddNewItemViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

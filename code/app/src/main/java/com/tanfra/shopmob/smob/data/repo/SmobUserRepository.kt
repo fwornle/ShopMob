@@ -13,7 +13,7 @@ import com.tanfra.shopmob.smob.data.remote.nto2dto.asRepoModel
 import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.repo.utils.asResource
-import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
+import com.tanfra.shopmob.app.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

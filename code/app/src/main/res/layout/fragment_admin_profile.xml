@@ -10,7 +10,7 @@
             type="com.tanfra.shopmob.smob.ui.admin.AdminViewModel" />
         <variable
             name="smobApp"
-            type="com.tanfra.shopmob.SmobApp" />
+            type="com.tanfra.shopmob.app.SmobApp" />
     </data>
 
     <ScrollView

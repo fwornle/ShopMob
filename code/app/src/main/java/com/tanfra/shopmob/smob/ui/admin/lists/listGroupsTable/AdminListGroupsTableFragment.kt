@@ -11,9 +11,9 @@ import com.tanfra.shopmob.databinding.FragmentAdminListGroupsTableBinding
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
-import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
-import com.tanfra.shopmob.utils.setTitle
-import com.tanfra.shopmob.utils.setup
+import com.tanfra.shopmob.app.utils.setDisplayHomeAsUpEnabled
+import com.tanfra.shopmob.app.utils.setTitle
+import com.tanfra.shopmob.app.utils.setup
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent

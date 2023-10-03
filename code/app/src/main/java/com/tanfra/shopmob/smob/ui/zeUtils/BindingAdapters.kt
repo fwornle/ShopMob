@@ -13,8 +13,8 @@ import com.tanfra.shopmob.smob.ui.zeUiBase.BaseRecyclerViewAdapter
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
-import com.tanfra.shopmob.utils.fadeIn
-import com.tanfra.shopmob.utils.fadeOut
+import com.tanfra.shopmob.app.utils.fadeIn
+import com.tanfra.shopmob.app.utils.fadeOut
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
 

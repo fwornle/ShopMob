@@ -27,8 +27,8 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
-import com.tanfra.shopmob.smob.ui.zeComponents.KeyValueText
-import com.tanfra.shopmob.smob.ui.zeTheme.ShopMobTheme
+import com.tanfra.shopmob.features.common.view.KeyValueText
+import com.tanfra.shopmob.features.common.theme.ShopMobTheme
 
 @Composable
 fun DetailsProduct(

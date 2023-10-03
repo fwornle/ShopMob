@@ -2,11 +2,11 @@ package com.tanfra.shopmob.smob.data.remote.fcm
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.tanfra.shopmob.SmobApp
+import com.tanfra.shopmob.app.SmobApp
 import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.repoIf.*
 import com.tanfra.shopmob.smob.domain.work.SmobAppWork
-import com.tanfra.shopmob.utils.sendNotificationOnFcmUpdate
+import com.tanfra.shopmob.app.utils.sendNotificationOnFcmUpdate
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

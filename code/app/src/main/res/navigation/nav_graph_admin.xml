@@ -15,14 +15,14 @@
     -->
     <activity
         android:id="@+id/smobPlanningActivity"
-        android:name="com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity"
+        android:name="com.tanfra.shopmob.app.SmobPlanningActivity"
         android:label="Smob Planning Activity"
         tools:layout="@layout/activity_planning"
         />
 
     <fragment
         android:id="@id/smobPlanningShopsTableFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.shops.PlanningShopsTableFragment"
+        android:name="com.tanfra.shopmob.features.smobPlanning.presentation.view.shops.PlanningShopsTableFragment"
         android:label="Planning Shops Table"
         tools:layout="@layout/fragment_planning_shops_table"
         >
@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/smobPlanningShopsAddNewItemFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.shops.addNewItem.PlanningShopsAddNewItemFragment"
+        android:name="com.tanfra.shopmob.features.smobPlanning.presentation.view.shops.addNewItem.PlanningShopsAddNewItemFragment"
         android:label="Planning Shops - Add New Item"
         tools:layout="@layout/fragment_planning_shops_add_new_item"
         >
@@ -45,7 +45,7 @@
 
     <fragment
         android:id="@+id/smobPlanningShopMapFragment"
-        android:name="com.tanfra.shopmob.smob.ui.planning.shops.addNewItem.PlanningShopMapFragment"
+        android:name="com.tanfra.shopmob.features.smobPlanning.presentation.view.shops.addNewItem.PlanningShopMapFragment"
         android:label="Select Store Location"
         tools:layout="@layout/fragment_planning_shop_map"
         />

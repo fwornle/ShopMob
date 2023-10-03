@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.databinding.ActivityShoppingBinding
 import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
-import com.tanfra.shopmob.utils.createIntent
+import com.tanfra.shopmob.app.utils.createIntent
 
 
 /**

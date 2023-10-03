@@ -1,8 +1,8 @@
 package com.tanfra.shopmob.smob.data.local
 
 import android.os.CountDownTimer
-import com.tanfra.shopmob.Constants.WORK_POLLING_FAST_VALUE
-import com.tanfra.shopmob.SmobApp
+import com.tanfra.shopmob.app.Constants.WORK_POLLING_FAST_VALUE
+import com.tanfra.shopmob.app.SmobApp
 import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.repoIf.*
 import com.tanfra.shopmob.smob.domain.work.SmobAppWork

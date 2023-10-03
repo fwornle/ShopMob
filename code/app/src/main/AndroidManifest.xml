@@ -33,7 +33,7 @@
          TODO: This can/should be removed in production.
      -->
     <application
-        android:name=".SmobApp"
+        android:name=".app.SmobApp"
         android:allowBackup="false"
         android:icon="@drawable/shopping_icon"
         android:label="@string/app_name"
@@ -114,7 +114,7 @@
 
         <activity
             android:exported="true"
-            android:name=".smob.ui.planning.SmobPlanningActivity">
+            android:name=".app.SmobPlanningActivity">
             <nav-graph android:value="@navigation/nav_graph_planning" />
             <meta-data
                 android:name="android.app.shortcuts"

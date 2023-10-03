@@ -13,8 +13,8 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductWithListDataATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationSource
-import com.tanfra.shopmob.utils.createIntent
-import com.tanfra.shopmob.utils.getSerializable
+import com.tanfra.shopmob.app.utils.createIntent
+import com.tanfra.shopmob.app.utils.getSerializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.*
 import kotlinx.serialization.modules.*

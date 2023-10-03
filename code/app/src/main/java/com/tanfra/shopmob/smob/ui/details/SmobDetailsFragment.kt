@@ -4,8 +4,8 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.*
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
-import com.tanfra.shopmob.utils.setTitle
+import com.tanfra.shopmob.app.utils.setDisplayHomeAsUpEnabled
+import com.tanfra.shopmob.app.utils.setTitle
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.ActivityResult

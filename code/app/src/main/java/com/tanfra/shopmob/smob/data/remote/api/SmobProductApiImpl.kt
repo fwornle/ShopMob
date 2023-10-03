@@ -1,7 +1,7 @@
 package com.tanfra.shopmob.smob.data.remote.api
 
 import com.tanfra.shopmob.BuildConfig
-import com.tanfra.shopmob.Constants
+import com.tanfra.shopmob.app.Constants
 import com.tanfra.shopmob.smob.data.remote.api.crud.deleteItem
 import com.tanfra.shopmob.smob.data.remote.api.crud.getItem
 import com.tanfra.shopmob.smob.data.remote.api.crud.postItem

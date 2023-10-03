@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.ui.zeTheme.ShopMobTheme
+import com.tanfra.shopmob.features.common.theme.ShopMobTheme
 
 
 @Composable

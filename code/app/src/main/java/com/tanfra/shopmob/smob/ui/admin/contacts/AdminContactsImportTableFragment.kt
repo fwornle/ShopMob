@@ -10,8 +10,8 @@ import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
-import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
-import com.tanfra.shopmob.utils.setTitle
+import com.tanfra.shopmob.app.utils.setDisplayHomeAsUpEnabled
+import com.tanfra.shopmob.app.utils.setTitle
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,8 +22,8 @@ import com.tanfra.shopmob.BuildConfig
 import org.koin.core.component.KoinComponent
 import com.tanfra.shopmob.databinding.FragmentAdminContactsImportTableBinding
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
-import com.tanfra.shopmob.utils.hasPermission
-import com.tanfra.shopmob.utils.setup
+import com.tanfra.shopmob.app.utils.hasPermission
+import com.tanfra.shopmob.app.utils.setup
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 

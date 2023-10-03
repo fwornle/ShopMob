@@ -9,7 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:openDrawer="start"
-            tools:context=".smob.ui.planning.SmobPlanningActivity"
+            tools:context=".app.SmobPlanningActivity"
             >
 
                 <!-- note: the fragment container has to be the FIRST CHILD,

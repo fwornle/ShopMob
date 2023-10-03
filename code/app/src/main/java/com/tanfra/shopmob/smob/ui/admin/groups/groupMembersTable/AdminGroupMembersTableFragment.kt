@@ -6,8 +6,8 @@ import androidx.databinding.DataBindingUtil
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
-import com.tanfra.shopmob.utils.setDisplayHomeAsUpEnabled
-import com.tanfra.shopmob.utils.setTitle
+import com.tanfra.shopmob.app.utils.setDisplayHomeAsUpEnabled
+import com.tanfra.shopmob.app.utils.setTitle
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import org.koin.core.component.KoinComponent
@@ -15,7 +15,7 @@ import timber.log.Timber
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tanfra.shopmob.databinding.FragmentAdminGroupMembersTableBinding
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
-import com.tanfra.shopmob.utils.setup
+import com.tanfra.shopmob.app.utils.setup
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 

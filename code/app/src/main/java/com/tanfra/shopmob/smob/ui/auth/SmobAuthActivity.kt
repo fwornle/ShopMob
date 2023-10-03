@@ -11,14 +11,14 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.smob.ui.planning.SmobPlanningActivity
+import com.tanfra.shopmob.app.SmobPlanningActivity
 import timber.log.Timber
 import com.google.firebase.auth.FirebaseAuth
-import com.tanfra.shopmob.SmobApp
+import com.tanfra.shopmob.app.SmobApp
 import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
-import com.tanfra.shopmob.smob.ui.zeTheme.ShopMobTheme
-import com.tanfra.shopmob.utils.wrapEspressoIdlingResource
+import com.tanfra.shopmob.features.common.theme.ShopMobTheme
+import com.tanfra.shopmob.app.utils.wrapEspressoIdlingResource
 import org.koin.android.ext.android.inject
 
 

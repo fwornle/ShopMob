@@ -3,8 +3,8 @@ package com.tanfra.shopmob.smob.ui
 import com.tanfra.shopmob.smob.data.repo.repoIf.*
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsViewModel
-import com.tanfra.shopmob.smob.ui.planning.PlanningViewModel
-import com.tanfra.shopmob.smob.ui.planning.shops.addNewItem.PlanningShopsAddNewItemViewModel
+import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModel
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.shops.addNewItem.PlanningShopsAddNewItemViewModel
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
