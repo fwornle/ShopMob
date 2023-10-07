@@ -17,16 +17,18 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModel
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.PlanningListsAddItemUiState
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PlanningListsAddItemScreen(
-    viewModel: PlanningViewModel,
     onNavigateBack: () -> Unit,
 ) {
+    // inject VM
+    val viewModel: PlanningViewModel = koinViewModel()
 
     // collect ui state flow
     val uiState by viewModel.uiStateListsAddItem.collectAsStateWithLifecycle(
-        initialValue = PlanningListsAddItemUiState(isLoaderVisible = true),
+        initialValue = PlanningListsAddItemUiState(),
     )
 
     // state of snackbar host
