@@ -14,9 +14,7 @@ import androidx.lifecycle.Lifecycle
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModel
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.PlanningScaffold
-import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingActivity
-import com.tanfra.shopmob.app.utils.wrapEspressoIdlingResource
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.PlanningNavGraph
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
@@ -39,10 +37,9 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
         // construct view (compose)
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent { PlanningScaffold(
-                context = this.context,
-                viewModel = viewModel
-            ) }
+            setContent { PlanningNavGraph() }
+//            setContent { PlanningScaffold(context = this.context) }
+
         }
 
     }
@@ -51,12 +48,7 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        // handlers for "SHOP" FAB and "STORE" FAB
-//        binding.goShop.setOnClickListener { navigateToShopping() }
-//        binding.defineShop.setOnClickListener { navigateToShopEditFragment() }
-
         // TODO - removed this --> to be done in Scaffold
-
         // The usage of an interface lets you inject your own implementation
         val menuHost: MenuHost = requireActivity()
 
@@ -105,22 +97,22 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
 
     }
 
-    // "SHOP" FAB handler --> navigate to shopping activity (SmobShoppingActivity)
-    private fun navigateToShopping() {
-        val intent = SmobShoppingActivity.newIntent(requireContext())
-        wrapEspressoIdlingResource {
-            startActivity(intent)
-        }
-    }
-
-    // "STORE" FAB handler --> navigate to shop/store management fragment
-    private fun navigateToShopEditFragment() {
-        // use the navigationCommand live data to navigate between the fragments
-        viewModel.navigationCommand.postValue(
-            NavigationCommand.To(
-                SmobPlanningListsTableFragmentDirections.actionSmobPlanningListsTableFragmentToSmobPlanningShopsAddNewItemFragment()
-            )
-        )
-    }
+//    // "SHOP" FAB handler --> navigate to shopping activity (SmobShoppingActivity)
+//    private fun navigateToShopping() {
+//        val intent = SmobShoppingActivity.newIntent(requireContext())
+//        wrapEspressoIdlingResource {
+//            startActivity(intent)
+//        }
+//    }
+//
+//    // "STORE" FAB handler --> navigate to shop/store management fragment
+//    private fun navigateToShopEditFragment() {
+//        // use the navigationCommand live data to navigate between the fragments
+//        viewModel.navigationCommand.postValue(
+//            NavigationCommand.To(
+//                SmobPlanningListsTableFragmentDirections.actionSmobPlanningListsTableFragmentToSmobPlanningShopsAddNewItemFragment()
+//            )
+//        )
+//    }
 
 }
