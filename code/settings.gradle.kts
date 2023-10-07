@@ -198,6 +198,7 @@ dependencyResolutionManagement {
             version("koin", "3.4.3")
             library("koin-core", "io.insert-koin", "koin-core").versionRef("koin")
             library("koin-android", "io.insert-koin", "koin-android").versionRef("koin")
+            library("koin-androidx-compose", "io.insert-koin", "koin-androidx-compose").versionRef("koin")
 
             
             // serialization
