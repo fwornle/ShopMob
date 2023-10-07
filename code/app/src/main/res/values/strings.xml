@@ -76,6 +76,8 @@
     <string name="err_enter_list_name">Please enter list name</string>
     <string name="err_select_location">Please select location</string>
 
+    <string name="err_generic">Some unspecified error occurred</string>
+
     <string name="err_enter_name">Please enter product name</string>
     <string name="err_enter_catMain">Please enter product main category (e.g. FOODS)</string>
     <string name="err_enter_catSub">Please enter product sub category (e.g. DAIRY)</string>
