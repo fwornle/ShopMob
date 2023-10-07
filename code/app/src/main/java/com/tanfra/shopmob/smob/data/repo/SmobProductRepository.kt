@@ -262,9 +262,9 @@ class SmobProductRepository(
                             // delete current table from local DB (= clear local cache)
                             Timber.i("Deleting all SmobProduct data from local DB")
                             smobProductDao.deleteSmobItems()
-                            Timber.i("Local DB table empty")
+                            Timber.i("Local product DB table empty")
 
-                            Timber.i("Storing newly retrieved data in local DB")
+                            Timber.i("Storing newly retrieved product data in local DB")
                             daList.map { item -> smobProductDao.saveSmobItem(item) }
                             Timber.i("All SmobProduct data items stored in local DB")
                         }

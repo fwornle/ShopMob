@@ -26,7 +26,7 @@ interface SmobListLocalDataSource: SmobItemLocalDataSource<SmobListDTO> {
     //
     // note: Flow types must not be declared as "suspend"able functions, see the third answer in:
     //       https://stackoverflow.com/questions/46445964/room-not-sure-how-to-convert-a-cursor-to-this-methods-return-type-which-meth
-    @Query("SELECT * FROM smobLists")
+    @Query("SELECT * FROM smobLists ORDER BY listId ASC")
     override fun getSmobItems(): Flow<List<SmobListDTO>>
 
     /**

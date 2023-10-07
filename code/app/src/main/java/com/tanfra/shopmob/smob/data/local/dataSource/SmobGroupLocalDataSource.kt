@@ -20,7 +20,7 @@ interface SmobGroupLocalDataSource: SmobItemLocalDataSource<SmobGroupDTO> {
     /**
      * @return all smobGroups - returns an empty list, if the table is empty
      */
-    @Query("SELECT * FROM smobGroups")
+    @Query("SELECT * FROM smobGroups ORDER BY groupId ASC")
     override fun getSmobItems(): Flow<List<SmobGroupDTO>>
 
     /**

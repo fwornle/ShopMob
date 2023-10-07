@@ -226,13 +226,12 @@ class SmobListRepository(
                         // store list data in DB - if any
                         it.data.let { daList ->
                             Timber.i("SmobLists data: $daList")
-//                            // delete current table from local DB (= clear local cache)
-//                            Timber.i("Deleting all SmobList data from local DB")
-//                            Timber.i("Dammit!!!")
-//                            smobListDao.deleteSmobItems()
-//                            Timber.i("Local DB table empty")
+                            // delete current table from local DB (= clear local cache)
+                            Timber.i("Deleting all SmobList data from local DB")
+                            smobListDao.deleteSmobItems()
+                            Timber.i("Local list DB table empty")
 
-                            Timber.i("Storing newly retrieved data in local DB")
+                            Timber.i("Storing newly retrieved list data in local DB")
                             daList.map { item ->
                                 Timber.i("item: $item")
                                 smobListDao.saveSmobItem(item)
