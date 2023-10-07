@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.features.smobPlanning.presentation.view
+package com.tanfra.shopmob.features.common.view
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -18,10 +18,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import com.tanfra.shopmob.smob.ui.zeUtils.TopLevelDestination
 
 @Composable
-fun PlanningBottomBar(
+fun BottomBar(
     destinations: List<TopLevelDestination>,
     currentDestination: NavDestination?,
     onNavigateToDestination: (route: String) -> Unit
@@ -67,3 +66,12 @@ fun PlanningBottomBar(
     }  // NavigationBar
 
 }
+
+// data type for the definition of destinations reachable via the BottomBar
+data class TopLevelDestination(
+    val route: String,
+    val selectedIcon: Int,
+    val unselectedIcon: Int,
+    val iconName: String,
+    val title: String,
+)
