@@ -190,10 +190,11 @@ class PlanningViewModel(
             smobGroupsSF
                 .onStart { Timber.i("SmobGroups collection: starting (job: $loadGroupsJob)") }
                 .onCompletion { Timber.i("SmobGroups collection: complete (job: $loadGroupsJob)") }
+                .distinctUntilChanged()
                 .collect { result ->
                     when (result) {
 
-                        is Resource.Empty -> {
+                        Resource.Empty -> {
                             Timber.i("Local groups table empty (job: $loadGroupsJob)")
                             _uiStateListsAddItem.update { currState ->
                                 currState.copy(
@@ -240,7 +241,7 @@ class PlanningViewModel(
     // UI state ------------------------------------------------------------------
 
     // UI: Lists (SmobLists)
-    private val _uiStateLists = MutableStateFlow(PlanningListsBrowseUiState(isLoaderVisible = true))
+    private val _uiStateLists = MutableStateFlow(PlanningListsBrowseUiState())
     val uiStateLists = _uiStateLists.asStateFlow()
 
     // collect SmobLists flow
@@ -270,13 +271,14 @@ class PlanningViewModel(
 
             // attempt to collect SmobLists
             smobListsSF
-                .onStart { Timber.i("SmobLists collection: starting (job: $loadListsJob)") }
-                .onCompletion { Timber.i("SmobLists collection: complete (job: $loadListsJob)") }
+                .onStart { Timber.i("loadLists: SmobLists collection: starting (job: $loadListsJob)") }
+                .onCompletion { Timber.i("loadLists: SmobLists collection: complete (job: $loadListsJob)") }
+                .distinctUntilChanged()
                 .collect { result ->
                 when (result) {
 
                     is Resource.Empty -> {
-                        Timber.i("Local lists table empty (job: $loadListsJob)")
+                        Timber.i("loadLists: Local lists table empty (job: $loadListsJob)")
                         _uiStateLists.update { currState ->
                             currState.copy(
                                 isLoaderVisible = false,
@@ -287,7 +289,7 @@ class PlanningViewModel(
                         }
                     }
                     is Resource.Failure -> {
-                        Timber.i("Error collecting SmobLists")
+                        Timber.i("loadLists: Error collecting SmobLists")
                         _uiStateLists.update { currState ->
                             currState.copy(
                                 isLoaderVisible = false,
@@ -299,7 +301,7 @@ class PlanningViewModel(
                         }
                     }
                     is Resource.Success -> {
-                        Timber.i("Successfully collected SmobLists: ${result.data}")
+                        Timber.i("loadLists: Successfully collected SmobLists: ${result.data}")
 
                         _uiStateLists.update { currState ->
                             currState.copy(
