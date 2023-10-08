@@ -33,6 +33,8 @@
     <string name="smob_item_subCat">ShopMob Item Sub Category (e.g. DAIRY)</string>
 
     <string name="smob_lists_name">ShopMob Shopping Lists</string>
+    <string name="smob_lists_action_reload">Reload</string>
+    <string name="smob_connection_unavailable">Offline</string>
 
     <string name="smob_shop_name">ShopMob Shop Name</string>
     <string name="smob_shop_desc">ShopMob Shop Description</string>

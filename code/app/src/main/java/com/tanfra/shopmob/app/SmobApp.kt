@@ -8,6 +8,8 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.app.Constants.FCM_TOPIC
+import com.tanfra.shopmob.features.common.commonModule
+import com.tanfra.shopmob.features.smobPlanning.di.smobPlanningModule
 import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 import com.tanfra.shopmob.smob.data.local.dbServices
 import com.tanfra.shopmob.smob.data.remote.netServices
@@ -60,7 +62,21 @@ class SmobApp : Application(), KoinComponent, Configuration.Provider {
             androidContext(this@SmobApp)
 
             // declare modules of provided services
-            modules(listOf(wmServices, vmServices, netServices, dbServices, repoServices, useCases))
+            modules(
+                listOf(
+                    // general services
+                    wmServices,
+                    vmServices,
+                    netServices,
+                    dbServices,
+                    repoServices,
+                    useCases,
+
+                    // specific features
+                    commonModule,
+                    smobPlanningModule,
+                )
+            )
 
         }
 
@@ -87,7 +103,6 @@ class SmobApp : Application(), KoinComponent, Configuration.Provider {
 
         // fetch worker class form service locator
         val wManager: SmobAppWork by inject()
-
         // cancel WorkManager job (slow polling)
         wManager.cancelRecurringWorkSlow()
 

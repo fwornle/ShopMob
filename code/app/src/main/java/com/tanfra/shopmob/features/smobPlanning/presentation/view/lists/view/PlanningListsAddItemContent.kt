@@ -35,7 +35,7 @@ import com.tanfra.shopmob.features.common.theme.ShopMobTheme
 // add a new SmobList (state hoisted to calling function, as "save" done via "FAB living upstairs")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun PlanningListsAddItem(
+fun PlanningListsAddItemContent(
     groupItems: List<Pair<String, String>>,
     onSaveClicked: (String, String, Pair<String, String>) -> Unit,
 ) {
@@ -171,7 +171,7 @@ fun PreviewPlanningListsAddItem() {
     val groups = listOf(Pair("id1", "item 1"), Pair("id2", "item 2"))
 
     ShopMobTheme {
-        PlanningListsAddItem(
+        PlanningListsAddItemContent(
             groupItems = groups,
             onSaveClicked = { _: String, _: String, _: Pair<String, String> -> },
         )

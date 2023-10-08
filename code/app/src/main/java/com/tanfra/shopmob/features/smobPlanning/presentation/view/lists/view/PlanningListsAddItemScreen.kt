@@ -44,7 +44,7 @@ fun PlanningListsAddItemScreen(
             Column(
                 modifier = Modifier
             ) {
-                PlanningListsAddItem(
+                PlanningListsAddItemContent(
                     groupItems = groupItems,
                     onSaveClicked = {
                             daName: String,

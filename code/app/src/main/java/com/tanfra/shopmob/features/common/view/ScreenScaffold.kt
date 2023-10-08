@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.DrawerValue
@@ -45,14 +44,14 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenScaffold(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     title: String,
     canGoBack: Boolean = false,
     onBack: () -> Unit = {},
     bottomBarDestinations: List<TopLevelDestination> = listOf(),
-    drawerMenuItems: List<Pair<ImageVector, String>> = listOf(Pair(Icons.Default.Favorite, "Favorite")),
+    drawerMenuItems: List<Pair<ImageVector, String>> = listOf(),
     isFabVisible: Boolean = false,
-    navController: NavHostController = rememberNavController(),  // nav state (can also be passed)
+    navController: NavHostController = rememberNavController(),
     content: @Composable (PaddingValues) -> Unit,
 ) {
     // local store

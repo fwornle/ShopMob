@@ -1,9 +1,17 @@
 package com.tanfra.shopmob.smob.ui
 
+import com.tanfra.shopmob.features.common.arch.ActionProcessor
+import com.tanfra.shopmob.features.common.arch.Reducer
+import com.tanfra.shopmob.features.common.dispatcher.DispatcherProvider
 import com.tanfra.shopmob.smob.data.repo.repoIf.*
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsViewModel
 import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModel
+import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModelMvi
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.Action
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.Event
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.Mutation
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.ViewState
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.shops.addNewItem.PlanningShopsAddNewItemViewModel
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -14,14 +22,23 @@ val vmServices = module {
 
     // planning view models ---------------------------------------------------
 
+    viewModel {
+        PlanningViewModelMvi(
+            actionProcessors = get() as Collection< ActionProcessor<Action, Mutation, Event>>,
+            reducers = get() as Collection<Reducer<Mutation, ViewState>>,
+            dispatcherProvider = get() as DispatcherProvider,
+            initialState = get() as ViewState,
+        )
+    }
+
     // ProductList fragment & ProductEdit & ShopEdit
     viewModel {
         PlanningViewModel(
-            get(),  // app (context)
-            get() as SmobListRepository,  // repo as data source
-            get() as SmobProductRepository,  // repo as data source
-            get() as SmobShopRepository,  // repo as data source
-            get() as SmobGroupRepository,  // repo as data source
+            app = get(),
+            listRepository = get() as SmobListRepository,  // repo as data source
+            productRepository = get() as SmobProductRepository,  // repo as data source
+            shopRepository = get() as SmobShopRepository,  // repo as data source
+            groupRepository = get() as SmobGroupRepository,  // repo as data source
         )
     }
 
