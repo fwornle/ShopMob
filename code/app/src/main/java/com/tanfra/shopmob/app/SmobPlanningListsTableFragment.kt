@@ -15,7 +15,6 @@ import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModel
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.PlanningNavGraph
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 
@@ -24,21 +23,15 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
     // use Koin service locator to retrieve the ViewModel instance(s)
     override val viewModel: PlanningViewModel by activityViewModel()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        // collect SmobLists and SmobGroups from local DB
-        viewModel.loadLists()
-        viewModel.loadGroups()
-
         // construct view (compose)
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent { PlanningNavGraph(this.context) }
-//            setContent { PlanningScaffold(context = this.context) }
 
         }
 
@@ -96,23 +89,5 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
         )
 
     }
-
-//    // "SHOP" FAB handler --> navigate to shopping activity (SmobShoppingActivity)
-//    private fun navigateToShopping() {
-//        val intent = SmobShoppingActivity.newIntent(requireContext())
-//        wrapEspressoIdlingResource {
-//            startActivity(intent)
-//        }
-//    }
-//
-//    // "STORE" FAB handler --> navigate to shop/store management fragment
-//    private fun navigateToShopEditFragment() {
-//        // use the navigationCommand live data to navigate between the fragments
-//        viewModel.navigationCommand.postValue(
-//            NavigationCommand.To(
-//                SmobPlanningListsTableFragmentDirections.actionSmobPlanningListsTableFragmentToSmobPlanningShopsAddNewItemFragment()
-//            )
-//        )
-//    }
 
 }

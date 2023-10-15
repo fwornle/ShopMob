@@ -38,7 +38,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
+import com.tanfra.shopmob.features.smobPlanning.router.PlanningListsRoutes
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -117,7 +117,8 @@ fun ScreenScaffold(
                     destinations = bottomBarDestinations,
                     currentDestination = navController.currentBackStackEntryAsState().value?.destination,
                     onNavigateToDestination = { route: String ->
-                        bottomBarDestinations.first { dest -> route == dest.route }
+                        bottomBarDestinations
+                            .first { dest -> route == dest.route }
                             .let { cachedTitle = it.title }
                         navController.navigate(route) {
                             popUpTo(navController.graph.findStartDestination().id) {
@@ -158,19 +159,19 @@ private fun ScreenScaffoldPreview() {
     // navigation destinations
     val topLevelDestinations = listOf(
         TopLevelDestination(
-            route = PlanningRoutes.PlanningListsScreen.route,
+            route = PlanningListsRoutes.BrowsingScreen.route,
             selectedIcon = R.drawable.ic_baseline_view_list_24,
             unselectedIcon = R.drawable.ic_baseline_view_list_24,
             iconName = "Show Lists",
             title = "ShopMob"
         ), TopLevelDestination(
-            route = PlanningRoutes.PlanningListsAddNewItem.route,
+            route = PlanningListsRoutes.AddItemScreen.route,
             selectedIcon = R.drawable.ic_add,
             unselectedIcon = R.drawable.ic_add,
             iconName = "New List",
             title = "Add New SmobList"
         ), TopLevelDestination(
-            route = PlanningRoutes.Screen3.route,
+            route = PlanningListsRoutes.Screen3Screen.route,
             selectedIcon = R.drawable.ic_location,
             unselectedIcon = R.drawable.ic_save,
             iconName = "Screen 3",

@@ -24,8 +24,8 @@ class DefaultActionProcessor(
             checkConnectivity()
         } else flow {
             when (action) {
-                Action.LoadLists -> load()
-                Action.ReloadLists -> reload()
+                Action.LoadLists -> loadLists()
+                Action.ReloadLists -> reloadLists()
                 else -> {
                     //no-op
                 }
@@ -49,7 +49,7 @@ class DefaultActionProcessor(
 
 
     // load lists from local DB
-    private suspend fun FlowCollector<Pair<Mutation?, Event?>>.load() {
+    private suspend fun FlowCollector<Pair<Mutation?, Event?>>.loadLists() {
         emit(Mutation.ShowLoader to null)
 
         listRepository.getSmobItems().collect {
@@ -72,7 +72,7 @@ class DefaultActionProcessor(
 
 
     // refreshing view (= load lists from backend)
-    private suspend fun FlowCollector<Pair<Mutation?, Event?>>.reload() {
+    private suspend fun FlowCollector<Pair<Mutation?, Event?>>.reloadLists() {
         emit(null to Event.Refreshing(true))
 
         // update local DB from backend DB (via net API)

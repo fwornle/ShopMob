@@ -5,6 +5,7 @@ import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModelMv
 import com.tanfra.shopmob.features.smobPlanning.presentation.DefaultActionProcessor
 import com.tanfra.shopmob.features.smobPlanning.presentation.DefaultReducer
 import com.tanfra.shopmob.features.smobPlanning.presentation.UserActionProcessor
+import com.tanfra.shopmob.features.smobPlanning.presentation.UserActionReducer
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -20,6 +21,7 @@ val smobPlanningModule = module {
                     )
                 ),
                 UserActionProcessor(
+                    context = androidContext(),
                     listRepository = get(),
                     groupRepository = get()
                 )
@@ -27,7 +29,8 @@ val smobPlanningModule = module {
             reducers = listOf(
                 DefaultReducer(
                     resources = androidContext().resources,
-                )
+                ),
+                UserActionReducer()
             ),
             dispatcherProvider = get(),
         )

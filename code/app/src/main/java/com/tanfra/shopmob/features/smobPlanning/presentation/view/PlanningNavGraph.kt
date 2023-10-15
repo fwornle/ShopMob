@@ -1,24 +1,19 @@
 package com.tanfra.shopmob.features.smobPlanning.presentation.view
 
 import android.content.Context
-import android.os.Vibrator
 import androidx.compose.runtime.Composable
 import androidx.core.os.bundleOf
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.app.SmobApp
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view.PlanningListsAddItemScreen
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view.Screen3
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view.SettingsScreen
-import com.tanfra.shopmob.features.smobPlanning.router.PlanningRouter
-import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
+import com.tanfra.shopmob.features.smobPlanning.router.PlanningListsRoutes
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.ui.zeUtils.consolidateListItem
-import com.tanfra.shopmob.smob.ui.zeUtils.vibrateDevice
 
 @Composable
 fun PlanningNavGraph(
@@ -28,35 +23,40 @@ fun PlanningNavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = PlanningRouter.route
+        startDestination = "planningLists"
     ) {
         // all planning routes
-//        navigation(startDestination = "planningLists", route = "planning") {
-            composable(route = PlanningRouter.route) {
-                PlanningRouter.Screen(
+        navigation(
+            startDestination = PlanningListsRoutes.BrowsingScreen.route,
+            route = "planningLists"
+        ) {
+
+            composable(route = PlanningListsRoutes.BrowsingScreen.route) {
+                PlanningListsRoutes.BrowsingScreen.Screen(
                     navController = navController,
                     onFilterList = { list -> onFilterList(list) },
-                    onSwipeIllegalTransition = { onSwipeIllegalTransition(context) },
                     onClickItem = { item -> sendToList(navController, item) },
                 )
             }
-            composable(route = PlanningRoutes.PlanningListsAddNewItem.route) {
-                PlanningListsAddItemScreen { navController.navigate("planningLists") }
+
+            composable(route = PlanningListsRoutes.AddItemScreen.route) {
+                PlanningListsRoutes.AddItemScreen.Screen(
+                    navController = navController,
+                    navigateTo = { navController.navigate(PlanningListsRoutes.BrowsingScreen.route) }
+                )
             }
-            composable(route = PlanningRoutes.Screen3.route) {
-                Screen3()
+
+            composable(route = PlanningListsRoutes.Screen3Screen.route) {
+                PlanningListsRoutes.Screen3Screen.Screen()
             }
-            composable(route = PlanningRoutes.Settings.route) {
-                SettingsScreen()
-            }
+
         }
-//    }
+    }
 }
 
 
 // mechanism to filter out list items
 private fun onFilterList(items: List<SmobListATO>): List<SmobListATO> {
-
     // take out all items which have been deleted by swiping
     return items
         .filter { item -> item.groups
@@ -94,12 +94,3 @@ private fun sendToList(navController: NavHostController, item: SmobListATO) {
     )
 
 }
-
-// illegal swipe transition --> vibrate phone
-private fun onSwipeIllegalTransition(context: Context) {
-    val vib = context.getSystemService(Vibrator::class.java)
-    vibrateDevice(vib, 150)
-}
-
-
-

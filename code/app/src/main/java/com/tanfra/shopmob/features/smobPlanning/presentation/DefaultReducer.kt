@@ -5,8 +5,6 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.features.common.arch.Reducer
 import com.tanfra.shopmob.features.smobPlanning.presentation.model.Mutation
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.ViewState
-import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
-import java.lang.Exception
 
 class DefaultReducer(
     private val resources: Resources,
@@ -15,26 +13,17 @@ class DefaultReducer(
         when (mutation) {
             Mutation.DismissLostConnection ->
                 currentState.mutateToDismissLostConnection()
-            is Mutation.ShowContent ->
-                currentState.mutateToShowContent(items = mutation.lists)
             is Mutation.ShowError ->
                 currentState.mutateToShowError(exception = mutation.exception)
             Mutation.ShowLoader ->
                 currentState.mutateToShowLoader()
             Mutation.ShowLostConnection ->
                 currentState.mutateToShowLostConnection()
+            else -> currentState // mutation not handled in this reducer --> keep current state
         }
 
     private fun ViewState.mutateToDismissLostConnection() =
         copy(isConnectivityVisible = false)
-
-    private fun ViewState.mutateToShowContent(items: List<SmobListATO>) =
-        copy(
-            isLoaderVisible = false,
-            isListItemsVisible = true,
-            listItems = items,
-            isErrorVisible = false,
-        )
 
     private fun ViewState.mutateToShowError(exception: Exception) =
         copy(

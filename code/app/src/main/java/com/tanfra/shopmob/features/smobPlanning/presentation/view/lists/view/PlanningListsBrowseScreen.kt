@@ -40,13 +40,13 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun PlanningListsBrowseScreen(
     viewModel: PlanningViewModelMvi,
+    navController: NavHostController,
     bottomBarDestinations: List<TopLevelDestination>,
     drawerMenuItems: List<Pair<ImageVector, String>>,
-    navController: NavHostController,
     onFilterList: (List<SmobListATO>) -> List<SmobListATO>,
-    onSwipeIllegalTransition: () -> Unit,
     onClickItem: (SmobListATO) -> Unit,
 ) {
+    // lifecycle aware collection of viewState flow
     val lifecycleOwner = LocalLifecycleOwner.current
     val viewState by viewModel.viewStateFlow
         .collectAsStateWithLifecycle(
@@ -64,29 +64,23 @@ fun PlanningListsBrowseScreen(
     // state of snackbar host
     val snackbarHostState = remember { SnackbarHostState() }
 
+    // actions to be triggered (once) on CREATED
     LaunchedEffect(Unit) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
             viewModel.process(action = Action.CheckConnectivity)
         }
     }
 
+    // actions to be triggered (once) on STARTED
     LaunchedEffect(Unit) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.process(action = Action.LoadLists)
 
+            // collect event flow - triggers reactions to signals from VM
             viewModel.eventFlow.collectLatest { event ->
                 when (event) {
-                    // TODO
-                    // TODO
-                    // TODO
-                    // TODO
-                    // TODO
-                    // TODO
-                    // TODO
-                    // TODO
-                    // TODO
                     is Event.Refreshing -> { /* TODO */ }  // ???
-                    is Event.GroupsLoaded -> { /* TODO */ }  // ???
+                    else -> { /* ignore */ }
                     // further events...
                 }
             }
@@ -98,7 +92,7 @@ fun PlanningListsBrowseScreen(
         title = stringResource(id = R.string.app_name),
         bottomBarDestinations = bottomBarDestinations,
         drawerMenuItems = drawerMenuItems,
-        navController = navController,  // needed in Scaffold for (dyn.) BottomBar navigation
+        navController = navController,
     ) { paddingValues ->
 
         // Scaffold content
@@ -116,7 +110,7 @@ fun PlanningListsBrowseScreen(
                 preFilteredItems = onFilterList(viewState.listItems),
                 onSwipeActionConfirmed = { item: SmobListATO ->
                     viewModel.process(Action.ConfirmSwipe(item)) },
-                onSwipeIllegalTransition = onSwipeIllegalTransition,
+                onSwipeIllegalTransition = { viewModel.process(Action.IllegalSwipe) },
                 onClickItem = onClickItem,
                 onReload = reloadLists,
             )

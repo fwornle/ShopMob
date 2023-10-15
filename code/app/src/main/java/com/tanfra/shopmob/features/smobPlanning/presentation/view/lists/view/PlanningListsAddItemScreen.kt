@@ -1,82 +1,98 @@
 package com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModel
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.PlanningListsAddItemUiState
-import org.koin.androidx.compose.koinViewModel
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
+import com.tanfra.shopmob.R
+import com.tanfra.shopmob.features.common.view.ScreenScaffold
+import com.tanfra.shopmob.features.common.view.TopLevelDestination
+import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModelMvi
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.Action
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.Event
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.ViewState
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun PlanningListsAddItemScreen(
+    viewModel: PlanningViewModelMvi,
+    navController: NavHostController,
+    bottomBarDestinations: List<TopLevelDestination>,
+    drawerMenuItems: List<Pair<ImageVector, String>>,
     onNavigateBack: () -> Unit,
 ) {
-    // inject VM
-    val viewModel: PlanningViewModel = koinViewModel()
+    // lifecycle aware collection of viewState flow
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val viewState by viewModel.viewStateFlow
+        .collectAsStateWithLifecycle(
+            initialValue = ViewState(),
+            lifecycleOwner = lifecycleOwner,
+            minActiveState = Lifecycle.State.STARTED,
+            context = viewModel.viewModelScope.coroutineContext,
+        )
 
-    // collect ui state flow
-    val uiState by viewModel.uiStateListsAddItem.collectAsStateWithLifecycle(
-        initialValue = PlanningListsAddItemUiState(),
-    )
+    // actions to be triggered (once) on CREATED
+    LaunchedEffect(Unit) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
+            viewModel.process(action = Action.CheckConnectivity)
+        }
+    }
 
-    // state of snackbar host
-    val snackbarHostState = remember { SnackbarHostState() }
+    // actions to be triggered (once) on STARTED
+    LaunchedEffect(Unit) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.process(action = Action.LoadGroups)
 
-    Box(
-        Modifier
-            .fillMaxSize()
-    ) {
-
-        with(uiState) {
-
-            Column(
-                modifier = Modifier
-            ) {
-                PlanningListsAddItemContent(
-                    groupItems = groupItems,
-                    onSaveClicked = {
-                            daName: String,
-                            daDescription: String,
-                            daSelection: Pair<String, String>,
-                        ->
-                        viewModel.saveNewSmobList(
-                            daName,
-                            daDescription,
-                            daSelection,
-                            onNavigateBack
-                        )
-                    },
-                )
-            }
-
-            // or a loader
-            if (uiState.isLoaderVisible) {
-                Box(Modifier.fillMaxSize()) {
-                    CircularProgressIndicator(Modifier.align(Center))
+            // collect event flow - triggers reactions to signals from VM
+            viewModel.eventFlow.collectLatest { event ->
+                when (event) {
+                    is Event.NavigateBack -> onNavigateBack()
+                    else -> { /* ignore */ }
                 }
             }
+        }
+    }
 
-            SnackbarHost(
-                hostState = snackbarHostState,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 60.dp)  // move above FABs
+    ScreenScaffold(
+        modifier = Modifier.fillMaxSize(),
+        title = stringResource(id = R.string.add_smob_item),
+        bottomBarDestinations = bottomBarDestinations,
+        drawerMenuItems = drawerMenuItems,
+        navController = navController,
+    ) { paddingValues ->
+
+        Box(
+            Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+        ) {
+
+            PlanningListsAddItemContent(
+                groupItems = viewState.groupItems.map { group -> Pair(group.id, group.name) },
+                onSaveClicked = {
+                        daName: String,
+                        daDescription: String,
+                        daSelection: Pair<String, String>,
+                    ->
+                    viewModel.process(
+                        Action.SaveNewItem(daName, daDescription, daSelection)
+                    )
+                },
             )
 
-        }  // with (uiState)
+        }  // Box
 
-    }  // Box
+    }  // Scaffold
 
 }

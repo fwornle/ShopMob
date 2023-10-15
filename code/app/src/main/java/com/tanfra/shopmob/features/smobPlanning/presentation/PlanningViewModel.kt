@@ -22,9 +22,7 @@ import com.tanfra.shopmob.smob.data.repo.repoIf.SmobListRepository
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobProductRepository
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobShopRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
-import com.tanfra.shopmob.smob.data.types.SmobGroupItem
 import com.tanfra.shopmob.smob.data.types.SmobListItem
-import com.tanfra.shopmob.smob.data.types.SmobListLifecycle
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.PlanningListsAddItemUiState
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.PlanningListsBrowseUiState
@@ -38,7 +36,6 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
-import java.util.UUID
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -323,56 +320,6 @@ class PlanningViewModel(
 
 
 
-    // save newly created SmobList and navigate to wherever 'onSaveDone' takes us...
-    fun saveNewSmobList(
-        name: String = "mystery list",
-        description: String = "something exciting",
-        group: Pair<String, String> = Pair("", ""),
-        navBackCallback: () -> Unit = {},
-    ) {
-        // at least the list name has to be specified for it to be saved
-        if (name.isNotEmpty()) {
-
-            // Deferred (position for the new list)
-            viewModelScope.launch {
-                smobListsSF.take(1).collect {
-                    when (it) {
-
-                        is Resource.Success -> {
-                            // initialize new SmobList data record to be written to DB
-                            val daSmobListATO = SmobListATO(
-                                UUID.randomUUID().toString(),
-                                ItemStatus.NEW,
-                                it.data.size + 1L,
-                                name,
-                                description,
-                                listOf(),
-                                listOf(
-                                    SmobGroupItem(
-                                        group.first,
-                                        ItemStatus.NEW,
-                                        0L,
-                                    )
-                                ),
-                                SmobListLifecycle(ItemStatus.NEW, 0.0),
-                            )
-
-                            // store smob List in DB
-                            saveSmobListItem(daSmobListATO)
-
-                        }
-
-                        else -> Timber.i("Failed to save newly defined list $name - list empty? ($it)")
-
-                    }  // when
-                }  // collect
-            }  // launch
-
-        }  // name not empty (should never happen)
-
-        // navigate back
-        navBackCallback()
-    }   // saveNewSmobList
 
 
 
