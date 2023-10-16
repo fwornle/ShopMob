@@ -42,7 +42,7 @@ fun PlanningNavGraph(
             composable(route = PlanningListsRoutes.AddItemScreen.route) {
                 PlanningListsRoutes.AddItemScreen.Screen(
                     navController = navController,
-                    navigateTo = { navController.navigate(PlanningListsRoutes.BrowsingScreen.route) }
+                    goBack = { navController.popBackStack() }
                 )
             }
 

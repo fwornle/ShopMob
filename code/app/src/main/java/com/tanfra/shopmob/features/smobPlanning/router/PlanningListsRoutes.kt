@@ -70,13 +70,13 @@ sealed class PlanningListsRoutes {
         @Composable
         fun Screen(
             navController: NavHostController,
-            navigateTo: (route: String) -> Unit,
+            goBack: () -> Unit,
         ) = PlanningListsAddItemScreen(
             viewModel = koinViewModel(),
             navController = navController,
             bottomBarDestinations = bottomBarDestinations,
             drawerMenuItems = drawerMenuDestinations,
-            onNavigateBack = { navigateTo(BrowsingScreen.route) }
+            onNavigateBack = goBack
         )
     }
 
