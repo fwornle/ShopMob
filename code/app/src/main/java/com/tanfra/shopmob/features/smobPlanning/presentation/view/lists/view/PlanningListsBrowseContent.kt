@@ -1,6 +1,8 @@
 package com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.SnackbarHostState
@@ -32,45 +34,51 @@ fun PlanningListsBrowseContent(
     onReload: () -> Unit,
 ) {
 
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center,
-    ) {
+    Column {
 
-        if (viewState.isErrorVisible) {
-            ErrorView(
-                message = viewState.errorMessage,
-                buttonText = stringResource(id = R.string.smob_lists_action_reload),
-                onReload = onReload,
+        if (viewState.isConnectivityVisible) {
+            BannerView(
+                modifier = Modifier
+                    .padding(
+                        start = 8.dp,
+                        end = 8.dp,
+                        top = 8.dp,
+                        bottom = 8.dp,
+                    )
             )
         }
 
-        if (viewState.isListItemsVisible) {
-            PlanningListsBrowseView(
-                snackbarHostState = snackbarHostState,
-                lists = preFilteredItems,
-                onSwipeActionConfirmed = onSwipeActionConfirmed,
-                onIllegalTransition = onSwipeIllegalTransition,
-                onClickItem = onClickItem,
-            )
+        Box(
+            modifier = modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+
+            if (viewState.isLoaderVisible) {
+                CircularProgressIndicator(
+                    color = Color.Black,
+                )
+            }
+
+            if (viewState.isErrorVisible) {
+                ErrorView(
+                    message = viewState.errorMessage,
+                    buttonText = stringResource(id = R.string.smob_lists_action_reload),
+                    onReload = onReload,
+                )
+            }
+
+            if (viewState.isContentVisible) {
+                PlanningListsBrowseView(
+                    snackbarHostState = snackbarHostState,
+                    lists = preFilteredItems,
+                    onSwipeActionConfirmed = onSwipeActionConfirmed,
+                    onIllegalTransition = onSwipeIllegalTransition,
+                    onClickItem = onClickItem,
+                )
+            }
+
         }
 
-        if (viewState.isLoaderVisible) {
-            CircularProgressIndicator(
-                color = Color.Black,
-            )
-        }
-    }
-
-    if (viewState.isConnectivityVisible) {
-        BannerView(
-            modifier = Modifier.padding(
-                start = 8.dp,
-                end = 8.dp,
-                top = 8.dp,
-                bottom = 8.dp,
-            ),
-        )
     }
 
 }
@@ -81,14 +89,18 @@ fun PlanningListsBrowseContent(
     showSystemUi = true,
 )
 @Composable
-fun PreviewPlanningLists() {
+fun PreviewPlanningListsBrowseContent() {
 
     val dE1 = SmobListATO(status = ItemStatus.IN_PROGRESS)
     val dE2 = SmobListATO(status = ItemStatus.DONE)
     val daList = listOf(dE1, dE1, dE1, dE2, dE1, dE2, dE1, dE1, dE2, dE1, dE2, dE1)
 
     val viewState = ViewState(
-        isListItemsVisible = true,
+        isConnectivityVisible = true,
+        isLoaderVisible = false,
+        isErrorVisible = false,
+        errorMessage = "some error occured",
+        isContentVisible = true,
         listItems = daList
     )
 

@@ -6,11 +6,11 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 data class ViewState(
     val isConnectivityVisible: Boolean = false,
     val isLoaderVisible: Boolean = false,
-    val isListItemsVisible: Boolean = false,
-    val listItems: List<SmobListATO> = listOf(),
-    val groupItems: List<GroupItemState> = listOf(),
     val isErrorVisible: Boolean = false,
     val errorMessage: String = "",
+    val isContentVisible: Boolean = false,
+    val listItems: List<SmobListATO> = listOf(),
+    val groupItems: List<GroupItemState> = listOf(),
 )
 
 @Immutable

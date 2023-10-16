@@ -28,7 +28,7 @@ class DefaultReducer(
     private fun ViewState.mutateToShowError(exception: Exception) =
         copy(
             isLoaderVisible = false,
-            isListItemsVisible = false,
+            isContentVisible = false,
             isErrorVisible = true,
             errorMessage = resources.getString(R.string.err_generic)
                 .format(exception.message),

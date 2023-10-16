@@ -20,7 +20,7 @@ class UserActionReducer : Reducer<Mutation, ViewState> {
     private fun ViewState.mutateToShowContent(items: List<SmobListATO>) =
         copy(
             isLoaderVisible = false,
-            isListItemsVisible = true,
+            isContentVisible = true,
             listItems = items,
             isErrorVisible = false,
         )
@@ -28,7 +28,7 @@ class UserActionReducer : Reducer<Mutation, ViewState> {
     private fun ViewState.mutateToShowFormWithGroups(items: List<SmobGroupATO>) =
         copy(
             isLoaderVisible = false,
-            isListItemsVisible = false,
+            isContentVisible = false,
             groupItems = items.map { item -> GroupItemState(item.id, item.name) },
             isErrorVisible = false,
         )
