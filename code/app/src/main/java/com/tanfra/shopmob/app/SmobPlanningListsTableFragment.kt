@@ -31,7 +31,7 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
         // construct view (compose)
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent { PlanningNavGraph(this.context) }
+            setContent { PlanningNavGraph() }
 
         }
 

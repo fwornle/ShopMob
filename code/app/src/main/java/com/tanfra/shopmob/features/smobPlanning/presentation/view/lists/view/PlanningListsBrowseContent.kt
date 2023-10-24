@@ -48,6 +48,16 @@ fun PlanningListsBrowseContent(
             )
         }
 
+        if (viewState.isContentVisible) {
+            PlanningListsBrowseView(
+                snackbarHostState = snackbarHostState,
+                lists = preFilteredItems,
+                onSwipeActionConfirmed = onSwipeActionConfirmed,
+                onIllegalTransition = onSwipeIllegalTransition,
+                onClickItem = onClickItem,
+            )
+        }
+
         Box(
             modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
@@ -66,17 +76,6 @@ fun PlanningListsBrowseContent(
                     onReload = onReload,
                 )
             }
-
-            if (viewState.isContentVisible) {
-                PlanningListsBrowseView(
-                    snackbarHostState = snackbarHostState,
-                    lists = preFilteredItems,
-                    onSwipeActionConfirmed = onSwipeActionConfirmed,
-                    onIllegalTransition = onSwipeIllegalTransition,
-                    onClickItem = onClickItem,
-                )
-            }
-
         }
 
     }

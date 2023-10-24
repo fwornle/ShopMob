@@ -1,6 +1,5 @@
 package com.tanfra.shopmob.features.smobPlanning.presentation.view
 
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.core.os.bundleOf
 import androidx.navigation.NavHostController
@@ -17,7 +16,6 @@ import com.tanfra.shopmob.smob.ui.zeUtils.consolidateListItem
 
 @Composable
 fun PlanningNavGraph(
-    context: Context,
     navController: NavHostController = rememberNavController(),
 ) {
 
