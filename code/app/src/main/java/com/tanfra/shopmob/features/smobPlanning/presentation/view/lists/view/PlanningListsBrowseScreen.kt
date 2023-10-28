@@ -1,7 +1,6 @@
 package com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
@@ -88,7 +87,6 @@ fun PlanningListsBrowseScreen(
     }
 
     ScreenScaffold(
-        modifier = Modifier.fillMaxSize(),
         title = stringResource(id = R.string.app_name),
         bottomBarDestinations = bottomBarDestinations,
         drawerMenuItems = drawerMenuItems,
@@ -97,13 +95,10 @@ fun PlanningListsBrowseScreen(
 
         // Scaffold content
         Box(
-            Modifier
-                .pullRefresh(pullRefreshState)
-                .fillMaxSize()
+            Modifier.pullRefresh(pullRefreshState)
         ) {
 
             PlanningListsBrowseContent(
-                modifier = Modifier,
                 viewState = viewState,
                 snackbarHostState = snackbarHostState,
                 preFilteredItems = onFilterList(viewState.listItems),

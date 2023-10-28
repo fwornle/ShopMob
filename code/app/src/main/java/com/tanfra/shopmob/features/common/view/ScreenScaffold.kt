@@ -47,7 +47,6 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenScaffold(
-    modifier: Modifier = Modifier,
     title: String,
     canGoBack: Boolean = false,
     onBack: () -> Unit = {},
@@ -65,7 +64,7 @@ fun ScreenScaffold(
     var cachedTitle by remember { mutableStateOf(title) }
 
     Scaffold(
-        modifier = modifier,
+        modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
                 title = {
@@ -146,14 +145,13 @@ fun ScreenScaffold(
         floatingActionButtonPosition = FabPosition.End,
     ) { paddingValues ->
         NavDrawer(
+            modifier = Modifier.padding(paddingValues),
             drawerMenuItems = drawerMenuItems,
             drawerState = drawerState,
             coroutineScope = scope,
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
+                modifier = Modifier.fillMaxSize()
             ) {
                 content()
             }
@@ -198,7 +196,6 @@ private fun ScreenScaffoldPreview() {
 
     MaterialTheme {
         ScreenScaffold(
-            modifier = Modifier.fillMaxSize(),
             title = "App",
             bottomBarDestinations = topLevelDestinations,
             drawerMenuItems = drawerMenuDestinations,

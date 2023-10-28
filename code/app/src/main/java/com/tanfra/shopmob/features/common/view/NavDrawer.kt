@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun NavDrawer(
+    modifier: Modifier,
     drawerMenuItems: List<Pair<ImageVector, String>>,
     drawerState: DrawerState,
     coroutineScope: CoroutineScope,
@@ -29,6 +30,7 @@ fun NavDrawer(
     val selectedItem = remember { mutableStateOf(drawerMenuItems[0]) }
 
     ModalNavigationDrawer(
+        modifier = modifier,
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {

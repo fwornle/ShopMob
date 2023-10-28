@@ -24,7 +24,6 @@ import timber.log.Timber
 
 @Composable
 fun PlanningListsBrowseContent(
-    modifier: Modifier,
     viewState: ViewState,
     snackbarHostState: SnackbarHostState,
     preFilteredItems: List<SmobListATO>,
@@ -59,7 +58,7 @@ fun PlanningListsBrowseContent(
         }
 
         Box(
-            modifier = modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
         ) {
 
@@ -105,7 +104,6 @@ fun PreviewPlanningListsBrowseContent() {
 
     ShopMobTheme {
         PlanningListsBrowseContent(
-            modifier = Modifier,
             viewState = viewState,
             snackbarHostState = SnackbarHostState(),
             preFilteredItems = daList,

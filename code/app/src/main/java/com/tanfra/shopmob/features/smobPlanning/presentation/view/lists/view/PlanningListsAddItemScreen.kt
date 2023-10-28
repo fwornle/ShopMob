@@ -1,12 +1,8 @@
 package com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
@@ -65,34 +61,23 @@ fun PlanningListsAddItemScreen(
     }
 
     ScreenScaffold(
-        modifier = Modifier.fillMaxSize(),
         title = stringResource(id = R.string.add_smob_item),
         bottomBarDestinations = bottomBarDestinations,
         drawerMenuItems = drawerMenuItems,
         navController = navController,
-    ) { paddingValues ->
-
-        Box(
-            Modifier
-                .padding(paddingValues)
-                .fillMaxSize()
-        ) {
-
-            PlanningListsAddItemContent(
-                groupItems = viewState.groupItems.map { group -> Pair(group.id, group.name) },
-                onSaveClicked = {
-                        daName: String,
-                        daDescription: String,
-                        daSelection: Pair<String, String>,
-                    ->
-                    viewModel.process(
-                        Action.SaveNewItem(daName, daDescription, daSelection)
-                    )
-                },
-            )
-
-        }  // Box
-
+    ) {
+        PlanningListsAddItemContent(
+            groupItems = viewState.groupItems.map { group -> Pair(group.id, group.name) },
+            onSaveClicked = {
+                    daName: String,
+                    daDescription: String,
+                    daSelection: Pair<String, String>,
+                ->
+                viewModel.process(
+                    Action.SaveNewItem(daName, daDescription, daSelection)
+                )
+            },
+        )
     }  // Scaffold
 
 }
