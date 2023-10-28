@@ -93,12 +93,11 @@ fun PlanningListsBrowseScreen(
         bottomBarDestinations = bottomBarDestinations,
         drawerMenuItems = drawerMenuItems,
         navController = navController,
-    ) { paddingValues ->
+    ) {
 
         // Scaffold content
         Box(
             Modifier
-                .padding(paddingValues)
                 .pullRefresh(pullRefreshState)
                 .fillMaxSize()
         ) {

@@ -21,7 +21,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun NavDrawer(
-    modifier: Modifier,
     drawerMenuItems: List<Pair<ImageVector, String>>,
     drawerState: DrawerState,
     coroutineScope: CoroutineScope,
@@ -36,7 +35,7 @@ fun NavDrawer(
                 Spacer(Modifier.height(12.dp))
                 drawerMenuItems.forEach { item ->
                     NavigationDrawerItem(
-                        modifier = modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+                        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
                         icon = { Icon(item.first, contentDescription = null) },
                         label = { Text(item.first.name) },
                         selected = item == selectedItem.value,

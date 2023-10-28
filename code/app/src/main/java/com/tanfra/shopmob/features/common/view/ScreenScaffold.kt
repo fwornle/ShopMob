@@ -1,11 +1,14 @@
 package com.tanfra.shopmob.features.common.view
 
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.DrawerValue
@@ -52,7 +55,7 @@ fun ScreenScaffold(
     drawerMenuItems: List<Pair<ImageVector, String>> = listOf(),
     isFabVisible: Boolean = false,
     navController: NavHostController = rememberNavController(),
-    content: @Composable (PaddingValues) -> Unit,
+    content: @Composable () -> Unit,
 ) {
     // local store
     val scope = rememberCoroutineScope()
@@ -143,11 +146,18 @@ fun ScreenScaffold(
         floatingActionButtonPosition = FabPosition.End,
     ) { paddingValues ->
         NavDrawer(
-            modifier = Modifier.padding(paddingValues),
             drawerMenuItems = drawerMenuItems,
             drawerState = drawerState,
             coroutineScope = scope,
-        ) { content(paddingValues) }
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+            ) {
+                content()
+            }
+        }
     }
 }
 
@@ -179,15 +189,21 @@ private fun ScreenScaffoldPreview() {
         )
     )
 
-    val navController = rememberNavController()
+    // drawer menu destinations
+    val drawerMenuDestinations = listOf(
+        Pair(Icons.Default.Favorite, "Favorite"),
+        Pair(Icons.Default.Face, "Face"),
+        Pair(Icons.Default.Email, "Email"),
+    )
 
     MaterialTheme {
         ScreenScaffold(
             modifier = Modifier.fillMaxSize(),
             title = "App",
-            navController = navController,
             bottomBarDestinations = topLevelDestinations,
-            content = {},
-        )
+            drawerMenuItems = drawerMenuDestinations,
+        ) {
+            Text("Test Screen")
+        }
     }
 }
