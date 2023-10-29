@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
 
-class DefaultActionProcessor(
+class ActionProcessorDefault(
     private val listRepository: SmobListRepository,
     private val connectivityMonitor: ConnectivityMonitor,
 ) : ActionProcessor<Action, Mutation, Event> {
@@ -56,7 +56,7 @@ class DefaultActionProcessor(
             when(it) {
                 Resource.Empty -> {
                     Timber.i("list flow collection returns empty")
-                    emit(Mutation.ShowContent(lists = listOf()) to null)
+                    emit(Mutation.ShowLists(lists = listOf()) to null)
                 }
                 is Resource.Failure -> {
                     Timber.i("list flow collection returns error")
@@ -64,7 +64,7 @@ class DefaultActionProcessor(
                 }
                 is Resource.Success -> {
                     Timber.i("list flow collection successful")
-                    emit(Mutation.ShowContent(lists = it.data) to null)
+                    emit(Mutation.ShowLists(lists = it.data) to null)
                 }
             }
         }

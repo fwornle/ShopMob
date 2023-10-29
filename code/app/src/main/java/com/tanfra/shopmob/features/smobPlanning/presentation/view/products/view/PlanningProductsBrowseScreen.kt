@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view
+package com.tanfra.shopmob.features.smobPlanning.presentation.view.products.view
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -16,34 +16,34 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
-import com.tanfra.shopmob.R
 import com.tanfra.shopmob.features.common.view.ScreenScaffold
 import com.tanfra.shopmob.features.common.view.TopLevelDestination
 import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModelMvi
 import com.tanfra.shopmob.features.smobPlanning.presentation.model.Action
 import com.tanfra.shopmob.features.smobPlanning.presentation.model.Event
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.ViewState
-import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(
     ExperimentalMaterialApi::class,
 )
 @Composable
-fun PlanningListsBrowseScreen(
+fun PlanningProductsBrowseScreen(
     viewModel: PlanningViewModelMvi,
     navController: NavHostController,
     bottomBarDestinations: List<TopLevelDestination>,
     drawerMenuItems: List<Pair<ImageVector, String>>,
-    onFilterList: (List<SmobListATO>) -> List<SmobListATO>,
+    listId: String,
+    listName: String,
+    onClickItem: (SmobProductATO) -> Unit,
 ) {
     // lifecycle aware collection of viewState flow
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -73,18 +73,11 @@ fun PlanningListsBrowseScreen(
     // actions to be triggered (once) on STARTED
     LaunchedEffect(Unit) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.process(action = Action.LoadLists)
+            viewModel.process(action = Action.LoadProductList(listId))
 
             // collect event flow - triggers reactions to signals from VM
             viewModel.eventFlow.collectLatest { event ->
                 when (event) {
-                    is Event.NavigateToList -> {
-                        navController.navigate(
-                        PlanningRoutes.SelectedListProductsScreen.route
-                                + "?listId=${event.list.id}"
-                                + "?listName=${event.list.name}"
-                        )
-                    }
                     is Event.Refreshing -> { /* TODO */ }  // ???
                     else -> { /* ignore */ }
                     // further events...
@@ -94,10 +87,11 @@ fun PlanningListsBrowseScreen(
     }
 
     ScreenScaffold(
-        title = stringResource(id = R.string.app_name),
+        title = listName,
         bottomBarDestinations = bottomBarDestinations,
         drawerMenuItems = drawerMenuItems,
         navController = navController,
+        canGoBack = true,
     ) {
 
         // Scaffold content
@@ -105,15 +99,15 @@ fun PlanningListsBrowseScreen(
             Modifier.pullRefresh(pullRefreshState)
         ) {
 
-            PlanningListsBrowseContent(
+            PlanningProductsBrowseContent(
                 viewState = viewState,
                 snackbarHostState = snackbarHostState,
-                preFilteredItems = onFilterList(viewState.listItems),
-                onSwipeActionConfirmed = { item: SmobListATO ->
-                    viewModel.process(Action.ConfirmListSwipe(item)) },
+                list = viewState.selectedList,
+                preFilteredItems = viewState.productItemsOnList,
+                onSwipeActionConfirmed = { list: SmobListATO, product: SmobProductATO ->
+                    viewModel.process(Action.ConfirmProductOnListSwipe(list, product)) },
                 onSwipeIllegalTransition = { viewModel.process(Action.IllegalSwipe) },
-                onClickItem = { list: SmobListATO ->
-                    viewModel.process(Action.NavigateToProductsOnList(list)) },
+                onClickItem = onClickItem,
                 onReload = reloadLists,
             )
 

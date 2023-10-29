@@ -1,15 +1,15 @@
 package com.tanfra.shopmob.features.smobPlanning.presentation.view
 
 import androidx.compose.runtime.Composable
-import androidx.core.os.bundleOf
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.tanfra.shopmob.R
 import com.tanfra.shopmob.app.SmobApp
-import com.tanfra.shopmob.features.smobPlanning.router.PlanningListsRoutes
+import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.ui.zeUtils.consolidateListItem
@@ -25,27 +25,47 @@ fun PlanningNavGraph(
     ) {
         // all planning routes
         navigation(
-            startDestination = PlanningListsRoutes.BrowsingScreen.route,
+            startDestination = PlanningRoutes.ListsBrowsingScreen.route,
             route = "planningLists"
         ) {
 
-            composable(route = PlanningListsRoutes.BrowsingScreen.route) {
-                PlanningListsRoutes.BrowsingScreen.Screen(
+            composable(route = PlanningRoutes.ListsBrowsingScreen.route) {
+                PlanningRoutes.ListsBrowsingScreen.Screen(
                     navController = navController,
                     onFilterList = { list -> onFilterList(list) },
-                    onClickItem = { item -> sendToList(navController, item) },
                 )
             }
 
-            composable(route = PlanningListsRoutes.AddItemScreen.route) {
-                PlanningListsRoutes.AddItemScreen.Screen(
+            composable(route = PlanningRoutes.ListsAddItemScreen.route) {
+                PlanningRoutes.ListsAddItemScreen.Screen(
                     navController = navController,
-                    goBack = { navController.popBackStack() }
                 )
             }
 
-            composable(route = PlanningListsRoutes.Screen3Screen.route) {
-                PlanningListsRoutes.Screen3Screen.Screen()
+            composable(
+                route = PlanningRoutes.SelectedListProductsScreen.route
+                        + "?listId={listId}"
+                        + "?listName={listName}",
+                arguments = listOf(
+                    navArgument("listId") { type = NavType.StringType },
+                    navArgument("listName") { type = NavType.StringType },
+                ),
+            ) { backStackEntry ->
+                PlanningRoutes.SelectedListProductsScreen.Screen(
+                    navController = navController,
+                    listId = backStackEntry.arguments?.getString("listId") ?: "unknown list id",
+                    listName = backStackEntry.arguments?.getString("listName") ?: "ShopMob",
+                    onShowProductDetails = { product ->
+                        navController.navigate(
+                            PlanningRoutes.SelectedListProductsScreen.route
+                                    + "?productId=${product.id}"
+                        )
+                    },
+                )
+            }
+
+            composable(route = PlanningRoutes.Screen3Screen.route) {
+                PlanningRoutes.Screen3Screen.Screen()
             }
 
         }
@@ -67,28 +87,4 @@ private fun onFilterList(items: List<SmobListATO>): List<SmobListATO> {
         .sortedWith(
             compareBy { it.position }
         )
-}
-
-
-private fun sendToList(navController: NavHostController, item: SmobListATO) {
-
-    // communicate the ID and name of the selected item (= shopping list)
-    val bundle = bundleOf(
-        "listId" to item.id,
-        "listName" to item.name,
-    )
-
-//        // use the navigationCommand live data to navigate between the fragments
-//        navigationCommand.postValue(
-//            NavigationCommand.ToWithBundle(
-//                R.id.smobPlanningProductsTableFragment,
-//                bundle
-//            )
-//        )
-
-    navController.navigate(
-        R.id.smobPlanningProductsTableFragment,
-        bundle
-    )
-
 }

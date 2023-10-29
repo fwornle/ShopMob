@@ -11,21 +11,23 @@ import com.tanfra.shopmob.features.common.view.TopLevelDestination
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view.PlanningListsAddItemScreen
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view.PlanningListsBrowseScreen
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view.Screen3
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.products.view.PlanningProductsBrowseScreen
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import org.koin.androidx.compose.koinViewModel
 
-sealed class PlanningListsRoutes {
+sealed class PlanningRoutes {
 
     // navigation destinations
     protected val bottomBarDestinations = listOf(
         TopLevelDestination(
-            route = BrowsingScreen.route,
+            route = ListsBrowsingScreen.route,
             selectedIcon = R.drawable.ic_baseline_view_list_24,
             unselectedIcon = R.drawable.ic_baseline_view_list_24,
             iconName = "Show Lists",
             title = "ShopMob"
         ), TopLevelDestination(
-            route = AddItemScreen.route,
+            route = ListsAddItemScreen.route,
             selectedIcon = R.drawable.ic_add,
             unselectedIcon = R.drawable.ic_add,
             iconName = "New List",
@@ -46,41 +48,57 @@ sealed class PlanningListsRoutes {
         Pair(Icons.Default.Email, "Email"),
     )
 
-    data object BrowsingScreen : PlanningListsRoutes() {
+    data object ListsBrowsingScreen : PlanningRoutes() {
         const val route = "planningListsBrowsing"
 
         @Composable
         fun Screen(
             navController: NavHostController,
             onFilterList: (List<SmobListATO>) -> List<SmobListATO>,
-            onClickItem: (SmobListATO) -> Unit,
         ) = PlanningListsBrowseScreen(
             viewModel = koinViewModel(),
             navController = navController,
             bottomBarDestinations = bottomBarDestinations,
             drawerMenuItems = drawerMenuDestinations,
-            onFilterList = onFilterList,
-            onClickItem = onClickItem,
+            onFilterList = onFilterList
         )
     }
 
-    data object AddItemScreen : PlanningListsRoutes() {
+    data object ListsAddItemScreen : PlanningRoutes() {
         const val route = "planningListsAddItem"
 
         @Composable
         fun Screen(
             navController: NavHostController,
-            goBack: () -> Unit,
         ) = PlanningListsAddItemScreen(
             viewModel = koinViewModel(),
             navController = navController,
             bottomBarDestinations = bottomBarDestinations,
             drawerMenuItems = drawerMenuDestinations,
-            onNavigateBack = goBack
         )
     }
 
-    data object Screen3Screen : PlanningListsRoutes() {
+    data object SelectedListProductsScreen : PlanningRoutes() {
+        const val route = "planningProductsBrowsing"
+
+        @Composable
+        fun Screen(
+            navController: NavHostController,
+            listId: String,
+            listName: String,
+            onShowProductDetails: (SmobProductATO) -> Unit,
+        ) = PlanningProductsBrowseScreen(
+            viewModel = koinViewModel(),
+            navController = navController,
+            bottomBarDestinations = bottomBarDestinations,
+            drawerMenuItems = drawerMenuDestinations,
+            listId = listId,
+            listName = listName,
+            onClickItem = onShowProductDetails,
+        )
+    }
+
+    data object Screen3Screen : PlanningRoutes() {
         const val route = "planningListsSreen3"
 
         @Composable

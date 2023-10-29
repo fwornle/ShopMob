@@ -7,8 +7,10 @@ import com.tanfra.shopmob.features.smobPlanning.presentation.model.Action
 import com.tanfra.shopmob.features.smobPlanning.presentation.model.Event
 import com.tanfra.shopmob.features.smobPlanning.presentation.model.Mutation
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobGroupRepository
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobListRepository
+import com.tanfra.shopmob.smob.data.repo.repoIf.SmobProductRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.types.SmobGroupItem
@@ -23,9 +25,10 @@ import kotlinx.coroutines.flow.take
 import timber.log.Timber
 import java.util.UUID
 
-class UserActionProcessor(
+class ActionProcessorSmobLists(
     private val context: Context,
     private val listRepository: SmobListRepository,
+    private val productRepository: SmobProductRepository,
     private val groupRepository: SmobGroupRepository,
 ) : ActionProcessor<Action, Mutation, Event> {
 
@@ -33,8 +36,14 @@ class UserActionProcessor(
         flow {
             when (action) {
                 is Action.LoadGroups -> loadGroups()
-                is Action.ConfirmSwipe -> confirmSwipeAction(action.item)
+                is Action.ConfirmListSwipe -> confirmListSwipeAction(action.item)
+                is Action.ConfirmProductOnListSwipe -> confirmProductSwipeAction(
+                    action.list,
+                    action.product
+                )
                 is Action.IllegalSwipe -> illegalSwipeAction()
+                is Action.NavigateToProductsOnList -> navigateToProductsOnList(action.list)
+                is Action.LoadProductList -> loadProductList(action.listId)
                 is Action.SaveNewItem ->
                     saveNewSmobList(
                         action.name,
@@ -74,8 +83,8 @@ class UserActionProcessor(
     }
 
 
-    // valid swipe transition --> handle it
-    private suspend fun confirmSwipeAction(
+    // valid swipe transition on SmobList --> handle it
+    private suspend fun confirmListSwipeAction(
         item: SmobListATO,
     ) {
         // consolidate list item data (prior to writing to the DB)
@@ -120,11 +129,106 @@ class UserActionProcessor(
 
     }
 
+
+    // valid swipe transition on SmobProduct --> handle it
+    private suspend fun confirmProductSwipeAction(
+        list: SmobListATO,
+        product: SmobProductATO,
+    ) {
+
+        // change product status in selected list and re-compute list statistics
+        val updatedList = consolidateListItem(
+            list.copy(
+                items = list.items.map { item ->
+                    if(item.id == product.id) {
+                        // set new status (list property)
+                        SmobListItem(
+                            item.id,
+                            product.status,
+                            item.listPosition,
+                            item.mainCategory,
+                        )
+                    } else {
+                        item
+                    }
+                }
+            )  // copy
+        )  // consolidate
+
+        // store updated smobList in local DB
+        // ... this also triggers an immediate push to the backend (once stored locally)
+        listRepository.updateSmobItem(updatedList)
+
+    }
+
+
     // illegal swipe transition --> vibrate phone
     private fun illegalSwipeAction() {
         val vib = context.getSystemService(Vibrator::class.java)
         vibrateDevice(vib, 150)
     }
+
+
+    // save newly created SmobList and navigate to wherever 'onSaveDone' takes us...
+    private suspend fun FlowCollector<Pair<Mutation?, Event?>>.navigateToProductsOnList(
+        list: SmobListATO,
+    ) = emit(null to Event.NavigateToList(list))
+
+
+    // load list of products associated with currently selected SmobList
+    private suspend fun FlowCollector<Pair<Mutation?, Event?>>.loadProductList(
+        listId: String,
+    ) {
+        emit(Mutation.ShowLoader to null)
+
+        // fetch selected list contents
+        listRepository.getSmobItem(listId).collect {
+            when(it) {
+                Resource.Empty -> {
+                    Timber.i("selected list flow collection returns empty")
+                    // TODO: should there be a user perceivable reaction as in Failure?
+                }
+                is Resource.Failure -> {
+                    Timber.i("list flow collection returns error")
+                    emit(Mutation.ShowError(exception = it.exception) to null)
+                }
+                is Resource.Success -> {
+                    Timber.i("list flow collection successful")
+                    val selList = it.data
+
+                    // fetch products on selected list
+                    productRepository.getSmobProductsByListId(listId).collect {
+                        when (it) {
+                            Resource.Empty -> {
+                                Timber.i("product list flow collection returns empty")
+                                emit(
+                                    Mutation.ShowProductsOnList(
+                                        list = selList, products = listOf()
+                                    ) to Event.NavigateToList(selList)
+                                )
+                            }
+
+                            is Resource.Failure -> {
+                                Timber.i("list flow collection returns error")
+                                emit(Mutation.ShowError(exception = it.exception) to null)
+                            }
+
+                            is Resource.Success -> {
+                                Timber.i("list flow collection successful")
+                                emit(
+                                    Mutation.ShowProductsOnList(
+                                        list = selList, products = it.data
+                                    ) to Event.NavigateToList(selList)
+                                )
+                            }
+                        }  // when
+                    }  // productRepository
+                }
+            }  // when
+        }  // listRepository
+
+    }
+
 
     // save newly created SmobList and navigate to wherever 'onSaveDone' takes us...
     private suspend fun FlowCollector<Pair<Mutation?, Event?>>.saveNewSmobList(
@@ -142,7 +246,7 @@ class UserActionProcessor(
                 when(it) {
                     Resource.Empty -> {
                         Timber.i("list flow collection returns empty")
-                        emit(Mutation.ShowContent(lists = listOf()) to null)
+                        emit(Mutation.ShowLists(lists = listOf()) to null)
                     }
                     is Resource.Failure -> {
                         Timber.i("list flow collection returns error")
@@ -150,7 +254,7 @@ class UserActionProcessor(
                     }
                     is Resource.Success -> {
                         Timber.i("list flow collection successful")
-                        emit(Mutation.ShowContent(lists = it.data) to null)
+                        emit(Mutation.ShowLists(lists = it.data) to null)
 
                         // initialize new SmobList data record to be written to DB
                         val daSmobListATO = SmobListATO(

@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.features.smobPlanning.presentation.view.lists
+package com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.oldViewModelRemove
 
 // ui state
 data class PlanningListsAddItemUiState(

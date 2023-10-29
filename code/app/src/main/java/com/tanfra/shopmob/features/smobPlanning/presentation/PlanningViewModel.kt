@@ -23,9 +23,9 @@ import com.tanfra.shopmob.smob.data.repo.repoIf.SmobProductRepository
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobShopRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.data.types.SmobListItem
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.PlanningListsAddItemUiState
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.oldViewModelRemove.PlanningListsAddItemUiState
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.PlanningListsBrowseUiState
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.oldViewModelRemove.PlanningListsBrowseUiState
 import com.tanfra.shopmob.smob.ui.zeUtils.combineFlows
 import com.tanfra.shopmob.smob.ui.zeUtils.vibrateDevice
 import kotlinx.coroutines.ExperimentalCoroutinesApi

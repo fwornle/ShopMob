@@ -26,7 +26,6 @@ fun PlanningListsAddItemScreen(
     navController: NavHostController,
     bottomBarDestinations: List<TopLevelDestination>,
     drawerMenuItems: List<Pair<ImageVector, String>>,
-    onNavigateBack: () -> Unit,
 ) {
     // lifecycle aware collection of viewState flow
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -53,7 +52,7 @@ fun PlanningListsAddItemScreen(
             // collect event flow - triggers reactions to signals from VM
             viewModel.eventFlow.collectLatest { event ->
                 when (event) {
-                    is Event.NavigateBack -> onNavigateBack()
+                    is Event.NavigateBack -> navController.popBackStack()
                     else -> { /* ignore */ }
                 }
             }
@@ -62,6 +61,7 @@ fun PlanningListsAddItemScreen(
 
     ScreenScaffold(
         title = stringResource(id = R.string.add_smob_item),
+        canGoBack = true,
         bottomBarDestinations = bottomBarDestinations,
         drawerMenuItems = drawerMenuItems,
         navController = navController,
