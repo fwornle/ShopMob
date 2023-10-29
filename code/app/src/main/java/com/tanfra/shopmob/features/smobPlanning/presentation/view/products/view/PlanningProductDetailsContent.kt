@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,17 +18,12 @@ import com.tanfra.shopmob.features.common.theme.ShopMobTheme
 import com.tanfra.shopmob.features.common.view.BannerView
 import com.tanfra.shopmob.features.common.view.ErrorView
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.ViewState
-import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import timber.log.Timber
 
 @Composable
-fun PlanningProductsBrowseContent(
+fun PlanningProductDetailsContent(
     viewState: ViewState,
-    snackbarHostState: SnackbarHostState,
-    onSwipeActionConfirmed: (SmobListATO, SmobProductATO) -> Unit,
-    onSwipeIllegalTransition: () -> Unit,
-    onClickItem: (SmobProductATO) -> Unit,
     onReload: () -> Unit,
 ) {
 
@@ -48,13 +42,8 @@ fun PlanningProductsBrowseContent(
         }
 
         if (viewState.isContentVisible) {
-            PlanningProductsBrowseView(
-                snackbarHostState = snackbarHostState,
-                list = viewState.selectedList,
-                products = viewState.productItemsOnList,
-                onSwipeActionConfirmed = onSwipeActionConfirmed,
-                onIllegalTransition = onSwipeIllegalTransition,
-                onClickItem = onClickItem,
+            PlanningProductDetailsView(
+                product = viewState.selectedProduct,
             )
         }
 
@@ -84,15 +73,13 @@ fun PlanningProductsBrowseContent(
 
 
 @Preview(
-    name = "Planning Products",
+    name = "Product Details",
     showSystemUi = true,
 )
 @Composable
-fun PreviewPlanningProductsBrowseContent() {
+fun PreviewPlanningProductDetailsContent() {
 
     val dE1 = SmobProductATO(status = ItemStatus.IN_PROGRESS)
-    val dE2 = SmobProductATO(status = ItemStatus.DONE)
-    val daProducts = listOf(dE1, dE1, dE1, dE2, dE1, dE2, dE1, dE1, dE2, dE1, dE2, dE1)
 
     val viewState = ViewState(
         isConnectivityVisible = true,
@@ -100,16 +87,12 @@ fun PreviewPlanningProductsBrowseContent() {
         isErrorVisible = false,
         errorMessage = "some error occured",
         isContentVisible = true,
-        productItemsOnList = daProducts
+        selectedProduct = dE1
     )
 
     ShopMobTheme {
-        PlanningProductsBrowseContent(
+        PlanningProductDetailsContent(
             viewState = viewState,
-            snackbarHostState = SnackbarHostState(),
-            onSwipeActionConfirmed = { _, _ -> },
-            onSwipeIllegalTransition = {},
-            onClickItem = {},
             onReload = { Timber.i("Reload button pressed")}
         )
     }

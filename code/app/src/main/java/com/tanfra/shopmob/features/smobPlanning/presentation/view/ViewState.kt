@@ -14,6 +14,7 @@ data class ViewState(
     val groupItems: List<GroupItemState> = listOf(),
     val selectedList: SmobListATO = SmobListATO(),
     val productItemsOnList: List<SmobProductATO> = listOf(),
+    val selectedProduct: SmobProductATO = SmobProductATO(),
 )
 
 @Immutable

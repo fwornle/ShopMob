@@ -5,14 +5,18 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 
 sealed interface Mutation {
+
     data object ShowLostConnection : Mutation
     data object DismissLostConnection : Mutation
     data object ShowLoader : Mutation
+    data class ShowError(val exception: Exception) : Mutation
+
     data class ShowFormWithGroups(val groups: List<SmobGroupATO>) : Mutation
     data class ShowLists(val lists: List<SmobListATO>) : Mutation
     data class ShowProductsOnList(
         val list: SmobListATO,
         val products: List<SmobProductATO>
     ) : Mutation
-    data class ShowError(val exception: Exception) : Mutation
+    data class ShowProductDetails(val product: SmobProductATO) : Mutation
+
 }

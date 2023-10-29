@@ -7,13 +7,16 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import com.tanfra.shopmob.R
+import com.tanfra.shopmob.app.SmobApp
 import com.tanfra.shopmob.features.common.view.TopLevelDestination
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view.PlanningListsAddItemScreen
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view.PlanningListsBrowseScreen
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view.Screen3
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.products.view.PlanningProductDetailsScreen
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.products.view.PlanningProductsBrowseScreen
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
-import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
+import com.tanfra.shopmob.smob.data.types.ItemStatus
+import com.tanfra.shopmob.smob.ui.zeUtils.consolidateListItem
 import org.koin.androidx.compose.koinViewModel
 
 sealed class PlanningRoutes {
@@ -51,16 +54,31 @@ sealed class PlanningRoutes {
     data object ListsBrowsingScreen : PlanningRoutes() {
         const val route = "planningListsBrowsing"
 
+        // mechanism to filter out SmobList items which belong to the current user
+        private fun onFilterList(items: List<SmobListATO>): List<SmobListATO> {
+            // take out all items which have been deleted by swiping
+            return items
+                .filter { item -> item.groups
+                    .map { group -> group.id }
+                    .intersect((SmobApp.currUser?.groups ?: listOf()).toSet())
+                    .any()
+                }
+                .filter { item -> item.status != ItemStatus.DELETED  }
+                .map { item -> consolidateListItem(item) }
+                .sortedWith(
+                    compareBy { it.position }
+                )
+        }
+
         @Composable
         fun Screen(
             navController: NavHostController,
-            onFilterList: (List<SmobListATO>) -> List<SmobListATO>,
         ) = PlanningListsBrowseScreen(
             viewModel = koinViewModel(),
             navController = navController,
             bottomBarDestinations = bottomBarDestinations,
             drawerMenuItems = drawerMenuDestinations,
-            onFilterList = onFilterList
+            onFilterList = { list -> onFilterList(list) }
         )
     }
 
@@ -78,7 +96,7 @@ sealed class PlanningRoutes {
         )
     }
 
-    data object SelectedListProductsScreen : PlanningRoutes() {
+    data object SelectedListProductsBrowseScreen : PlanningRoutes() {
         const val route = "planningProductsBrowsing"
 
         @Composable
@@ -86,7 +104,6 @@ sealed class PlanningRoutes {
             navController: NavHostController,
             listId: String,
             listName: String,
-            onShowProductDetails: (SmobProductATO) -> Unit,
         ) = PlanningProductsBrowseScreen(
             viewModel = koinViewModel(),
             navController = navController,
@@ -94,7 +111,24 @@ sealed class PlanningRoutes {
             drawerMenuItems = drawerMenuDestinations,
             listId = listId,
             listName = listName,
-            onClickItem = onShowProductDetails,
+        )
+    }
+
+    data object SelectedProductDetailsScreen : PlanningRoutes() {
+        const val route = "planningProductDetails"
+
+        @Composable
+        fun Screen(
+            navController: NavHostController,
+            productId: String,
+            productName: String,
+        ) = PlanningProductDetailsScreen(
+            viewModel = koinViewModel(),
+            navController = navController,
+            bottomBarDestinations = bottomBarDestinations,
+            drawerMenuItems = drawerMenuDestinations,
+            productId = productId,
+            productName = productName,
         )
     }
 

@@ -8,11 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.tanfra.shopmob.app.SmobApp
 import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
-import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
-import com.tanfra.shopmob.smob.data.types.ItemStatus
-import com.tanfra.shopmob.smob.ui.zeUtils.consolidateListItem
 
 @Composable
 fun PlanningNavGraph(
@@ -30,37 +26,42 @@ fun PlanningNavGraph(
         ) {
 
             composable(route = PlanningRoutes.ListsBrowsingScreen.route) {
-                PlanningRoutes.ListsBrowsingScreen.Screen(
-                    navController = navController,
-                    onFilterList = { list -> onFilterList(list) },
-                )
+                PlanningRoutes.ListsBrowsingScreen.Screen(navController)
             }
 
             composable(route = PlanningRoutes.ListsAddItemScreen.route) {
-                PlanningRoutes.ListsAddItemScreen.Screen(
-                    navController = navController,
-                )
+                PlanningRoutes.ListsAddItemScreen.Screen(navController)
             }
 
             composable(
-                route = PlanningRoutes.SelectedListProductsScreen.route
-                        + "?listId={listId}"
+                route = PlanningRoutes.SelectedListProductsBrowseScreen.route
+                        + "/{listId}"
                         + "?listName={listName}",
                 arguments = listOf(
                     navArgument("listId") { type = NavType.StringType },
                     navArgument("listName") { type = NavType.StringType },
                 ),
             ) { backStackEntry ->
-                PlanningRoutes.SelectedListProductsScreen.Screen(
+                PlanningRoutes.SelectedListProductsBrowseScreen.Screen(
                     navController = navController,
                     listId = backStackEntry.arguments?.getString("listId") ?: "unknown list id",
                     listName = backStackEntry.arguments?.getString("listName") ?: "ShopMob",
-                    onShowProductDetails = { product ->
-                        navController.navigate(
-                            PlanningRoutes.SelectedListProductsScreen.route
-                                    + "?productId=${product.id}"
-                        )
-                    },
+                )
+            }
+
+            composable(
+                route = PlanningRoutes.SelectedProductDetailsScreen.route
+                        + "/{productId}"
+                        + "?productName={productName}",
+                arguments = listOf(
+                    navArgument("productId") { type = NavType.StringType },
+                    navArgument("productName") { type = NavType.StringType },
+                ),
+            ) { backStackEntry ->
+                PlanningRoutes.SelectedProductDetailsScreen.Screen(
+                    navController = navController,
+                    productId = backStackEntry.arguments?.getString("productId") ?: "unknown product id",
+                    productName = backStackEntry.arguments?.getString("productName") ?: "Mystery",
                 )
             }
 
@@ -70,21 +71,4 @@ fun PlanningNavGraph(
 
         }
     }
-}
-
-
-// mechanism to filter out list items
-private fun onFilterList(items: List<SmobListATO>): List<SmobListATO> {
-    // take out all items which have been deleted by swiping
-    return items
-        .filter { item -> item.groups
-            .map { group -> group.id }
-            .intersect((SmobApp.currUser?.groups ?: listOf()).toSet())
-            .any()
-        }
-        .filter { item -> item.status != ItemStatus.DELETED  }
-        .map { item -> consolidateListItem(item) }
-        .sortedWith(
-            compareBy { it.position }
-        )
 }

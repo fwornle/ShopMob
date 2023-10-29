@@ -56,7 +56,7 @@ fun PlanningListsBrowseScreen(
         )
 
     // state of swipe refresh mechanism
-    val reloadLists = { viewModel.process(Action.ReloadLists) }
+    val reloadLists = { viewModel.process(Action.RefreshLists) }
     val isRefreshing by viewModel.isRefreshingSF.collectAsStateWithLifecycle()
     val pullRefreshState = rememberPullRefreshState(isRefreshing, reloadLists)
 
@@ -80,8 +80,8 @@ fun PlanningListsBrowseScreen(
                 when (event) {
                     is Event.NavigateToList -> {
                         navController.navigate(
-                        PlanningRoutes.SelectedListProductsScreen.route
-                                + "?listId=${event.list.id}"
+                        PlanningRoutes.SelectedListProductsBrowseScreen.route
+                                + "/${event.list.id}"
                                 + "?listName=${event.list.name}"
                         )
                     }
