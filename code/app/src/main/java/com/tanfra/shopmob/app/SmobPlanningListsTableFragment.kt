@@ -6,15 +6,21 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import android.content.Intent
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.stringResource
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import com.firebase.ui.auth.AuthUI
+import com.tanfra.shopmob.features.common.view.TopLevelDestination
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModel
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.PlanningNavGraph
+import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 
@@ -28,10 +34,46 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
         savedInstanceState: Bundle?
     ): View {
 
+        // navigation destinations
+        val smobBottomBarDestinations = listOf(
+            TopLevelDestination(
+                route = PlanningRoutes.ListsBrowsingScreen.route,
+                selectedIcon = R.drawable.ic_baseline_view_list_24,
+                unselectedIcon = R.drawable.ic_baseline_view_list_24,
+                iconName = "Show Lists",
+                title = "ShopMob"
+            ), TopLevelDestination(
+                route = PlanningRoutes.ListsAddItemScreen.route,
+                selectedIcon = R.drawable.ic_add,
+                unselectedIcon = R.drawable.ic_add,
+                iconName = "New List",
+                title = "Add New SmobList"
+            ), TopLevelDestination(
+                route = PlanningRoutes.Screen3Screen.route,
+                selectedIcon = R.drawable.ic_location,
+                unselectedIcon = R.drawable.ic_save,
+                iconName = "Screen 3",
+                title = "Screen 3"
+            )
+        )
+
+        // drawer menu destinations
+        val smobDrawerMenuItems = listOf(
+            Pair(Icons.Default.Favorite, "Favorite"),
+            Pair(Icons.Default.Face, "Face"),
+            Pair(Icons.Default.Email, "Email"),
+        )
+
         // construct view (compose)
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent { PlanningNavGraph() }
+            setContent {
+                SmobAppScaffold(
+                    title = stringResource(id = R.string.app_name),
+                    bottomBarDestinations = smobBottomBarDestinations,
+                    drawerMenuItems = smobDrawerMenuItems
+                )
+            }
 
         }
 

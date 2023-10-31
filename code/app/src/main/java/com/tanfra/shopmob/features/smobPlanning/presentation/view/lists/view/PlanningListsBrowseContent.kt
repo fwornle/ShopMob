@@ -32,8 +32,9 @@ fun PlanningListsBrowseContent(
     onClickItem: (SmobListATO) -> Unit,
     onReload: () -> Unit,
 ) {
-
-    Column {
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
 
         if (viewState.isConnectivityVisible) {
             BannerView(

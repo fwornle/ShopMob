@@ -1,36 +1,47 @@
-package com.tanfra.shopmob.features.smobPlanning.presentation.view
+package com.tanfra.shopmob.app
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
+import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 
 @Composable
-fun PlanningNavGraph(
-    navController: NavHostController = rememberNavController(),
+fun SmobAppNavGraph(
+    navController: NavHostController,
+    onSetGoBackFlag: (Boolean) -> Unit,
 ) {
-
     NavHost(
         navController = navController,
-        startDestination = "planningLists"
+        startDestination = "planningRoutes"
     ) {
         // all planning routes
         navigation(
             startDestination = PlanningRoutes.ListsBrowsingScreen.route,
-            route = "planningLists"
+            route = "planningRoutes"
         ) {
 
             composable(route = PlanningRoutes.ListsBrowsingScreen.route) {
-                PlanningRoutes.ListsBrowsingScreen.Screen(navController)
+                PlanningRoutes.ListsBrowsingScreen.Screen(
+                    onSetGoBackFlag = onSetGoBackFlag,
+                    navigateToList = { list: SmobListATO ->
+                        navController.navigate(
+                            PlanningRoutes.SelectedListProductsBrowseScreen.route
+                                    + "/${list.id}"
+                                    + "?listName=${list.name}"
+                        )
+                    },
+                )
             }
 
             composable(route = PlanningRoutes.ListsAddItemScreen.route) {
-                PlanningRoutes.ListsAddItemScreen.Screen(navController)
+                PlanningRoutes.ListsAddItemScreen.Screen(
+                    goBack = { navController.popBackStack() }
+                )
             }
 
             composable(
@@ -43,9 +54,13 @@ fun PlanningNavGraph(
                 ),
             ) { backStackEntry ->
                 PlanningRoutes.SelectedListProductsBrowseScreen.Screen(
-                    navController = navController,
                     listId = backStackEntry.arguments?.getString("listId") ?: "unknown list id",
-                    listName = backStackEntry.arguments?.getString("listName") ?: "ShopMob",
+                    onSetGoBackFlag = onSetGoBackFlag,
+                    navigateToProductDetails = { product -> navController.navigate(
+                        PlanningRoutes.SelectedProductDetailsScreen.route
+                                + "/${product.id}"
+                                + "?productName=${product.name}")
+                    }
                 )
             }
 
@@ -59,9 +74,9 @@ fun PlanningNavGraph(
                 ),
             ) { backStackEntry ->
                 PlanningRoutes.SelectedProductDetailsScreen.Screen(
-                    navController = navController,
                     productId = backStackEntry.arguments?.getString("productId") ?: "unknown product id",
                     productName = backStackEntry.arguments?.getString("productName") ?: "Mystery",
+                    onSetGoBackFlag = onSetGoBackFlag,
                 )
             }
 

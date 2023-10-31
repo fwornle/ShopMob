@@ -1,6 +1,8 @@
 package com.tanfra.shopmob.features.smobPlanning.presentation.view.products.view
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
@@ -10,15 +12,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavHostController
-import com.tanfra.shopmob.features.common.view.ScreenScaffold
-import com.tanfra.shopmob.features.common.view.TopLevelDestination
 import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModelMvi
 import com.tanfra.shopmob.features.smobPlanning.presentation.model.Action
 import com.tanfra.shopmob.features.smobPlanning.presentation.model.Event
@@ -31,11 +29,9 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun PlanningProductDetailsScreen(
     viewModel: PlanningViewModelMvi,
-    navController: NavHostController,
-    bottomBarDestinations: List<TopLevelDestination>,
-    drawerMenuItems: List<Pair<ImageVector, String>>,
     productId: String,
     productName: String,
+    onSetGoBackFlag: (Boolean) -> Unit,
 ) {
     // lifecycle aware collection of viewState flow
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -75,12 +71,11 @@ fun PlanningProductDetailsScreen(
         }
     }
 
-    ScreenScaffold(
-        title = "Details: $productName",
-        canGoBack = true,
-        bottomBarDestinations = bottomBarDestinations,
-        drawerMenuItems = drawerMenuItems,
-        navController = navController,
+    // activate "back" arrow in TopAppBar
+    onSetGoBackFlag(true)
+
+    Column(
+        modifier = Modifier.fillMaxSize()
     ) {
 
         // Scaffold content

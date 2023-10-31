@@ -1,6 +1,5 @@
 package com.tanfra.shopmob.features.common.view
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,11 +23,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -48,19 +43,21 @@ import kotlinx.coroutines.launch
 @Composable
 fun ScreenScaffold(
     title: String,
-    canGoBack: Boolean = false,
+    onSetTitle: (String) -> Unit = {},
+    goBackFlag: Boolean = false,
+    onSetGoBackFlag: (Boolean) -> Unit = {},
     bottomBarDestinations: List<TopLevelDestination> = listOf(),
     drawerMenuItems: List<Pair<ImageVector, String>> = listOf(),
     isFabVisible: Boolean = false,
     navController: NavHostController = rememberNavController(),
-    content: @Composable () -> Unit,
+    navGraph: @Composable (
+        navController: NavHostController,
+        onSetGoBackFlag: (Boolean) -> Unit
+    ) -> Unit,
 ) {
     // local store
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-
-    // BottomBar navigation can alter the title (currently: local state)
-    var cachedTitle by remember { mutableStateOf(title) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -69,7 +66,7 @@ fun ScreenScaffold(
                 title = {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = cachedTitle,
+                        text = title,
                         style = MaterialTheme.typography.headlineSmall,
                         color = Color.White,
                         overflow = TextOverflow.Ellipsis,
@@ -81,7 +78,7 @@ fun ScreenScaffold(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
                 navigationIcon = {
-                    if (canGoBack) {
+                    if (goBackFlag) {
                         IconButton(
                             modifier = Modifier,
                             onClick = { navController.popBackStack() },
@@ -120,7 +117,7 @@ fun ScreenScaffold(
                     onNavigateToDestination = { route: String ->
                         bottomBarDestinations
                             .first { dest -> route == dest.route }
-                            .let { cachedTitle = it.title }
+                            .let { onSetTitle(it.title) }
                         navController.navigate(route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
@@ -149,11 +146,7 @@ fun ScreenScaffold(
             drawerState = drawerState,
             coroutineScope = scope,
         ) {
-            Column(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                content()
-            }
+            navGraph(navController, onSetGoBackFlag)
         }
     }
 }
@@ -198,8 +191,6 @@ private fun ScreenScaffoldPreview() {
             title = "App",
             bottomBarDestinations = topLevelDestinations,
             drawerMenuItems = drawerMenuDestinations,
-        ) {
-            Text("Test Screen")
-        }
+        ) { _, _ -> }
     }
 }

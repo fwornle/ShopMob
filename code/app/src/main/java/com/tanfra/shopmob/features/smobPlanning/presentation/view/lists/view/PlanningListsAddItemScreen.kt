@@ -1,19 +1,16 @@
 package com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavHostController
-import com.tanfra.shopmob.R
-import com.tanfra.shopmob.features.common.view.ScreenScaffold
-import com.tanfra.shopmob.features.common.view.TopLevelDestination
 import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModelMvi
 import com.tanfra.shopmob.features.smobPlanning.presentation.model.Action
 import com.tanfra.shopmob.features.smobPlanning.presentation.model.Event
@@ -23,9 +20,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun PlanningListsAddItemScreen(
     viewModel: PlanningViewModelMvi,
-    navController: NavHostController,
-    bottomBarDestinations: List<TopLevelDestination>,
-    drawerMenuItems: List<Pair<ImageVector, String>>,
+    goBack: () -> Unit,
 ) {
     // lifecycle aware collection of viewState flow
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -52,19 +47,15 @@ fun PlanningListsAddItemScreen(
             // collect event flow - triggers reactions to signals from VM
             viewModel.eventFlow.collectLatest { event ->
                 when (event) {
-                    is Event.NavigateBack -> navController.popBackStack()
+                    is Event.NavigateBack -> goBack()
                     else -> { /* ignore */ }
                 }
             }
         }
     }
 
-    ScreenScaffold(
-        title = stringResource(id = R.string.add_smob_item),
-        canGoBack = true,
-        bottomBarDestinations = bottomBarDestinations,
-        drawerMenuItems = drawerMenuItems,
-        navController = navController,
+    Column (
+        modifier = Modifier.fillMaxSize()
     ) {
         PlanningListsAddItemContent(
             groupItems = viewState.groupItems.map { group -> Pair(group.id, group.name) },
