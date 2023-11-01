@@ -28,14 +28,13 @@ fun SmobAppNavGraph(
             composable(route = PlanningRoutes.ListsBrowsingScreen.route) {
                 PlanningRoutes.ListsBrowsingScreen.Screen(
                     onSetGoBackFlag = onSetGoBackFlag,
-                    navigateToList = { list: SmobListATO ->
-                        navController.navigate(
-                            PlanningRoutes.SelectedListProductsBrowseScreen.route
-                                    + "/${list.id}"
-                                    + "?listName=${list.name}"
-                        )
-                    },
-                )
+                ) { list: SmobListATO ->
+                    navController.navigate(
+                        PlanningRoutes.SelectedListProductsBrowseScreen.route
+                                + "/${list.id}"
+                                + "?listName=${list.name}"
+                    )
+                }
             }
 
             composable(route = PlanningRoutes.ListsAddItemScreen.route) {
@@ -55,13 +54,14 @@ fun SmobAppNavGraph(
             ) { backStackEntry ->
                 PlanningRoutes.SelectedListProductsBrowseScreen.Screen(
                     listId = backStackEntry.arguments?.getString("listId") ?: "unknown list id",
-                    onSetGoBackFlag = onSetGoBackFlag,
-                    navigateToProductDetails = { product -> navController.navigate(
+                    onSetGoBackFlag = onSetGoBackFlag
+                ) { product ->
+                    navController.navigate(
                         PlanningRoutes.SelectedProductDetailsScreen.route
                                 + "/${product.id}"
-                                + "?productName=${product.name}")
-                    }
-                )
+                                + "?productName=${product.name}"
+                    )
+                }
             }
 
             composable(

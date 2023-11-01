@@ -42,8 +42,7 @@ sealed class PlanningRoutes {
             viewModel = koinViewModel(),
             onSetGoBackFlag = onSetGoBackFlag,
             onNavigateToList = navigateToList,
-            onFilterList = { list -> onFilterList(list) },
-        )
+        ) { list -> onFilterList(list) }
     }
 
     data object ListsAddItemScreen : PlanningRoutes() {

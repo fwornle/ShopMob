@@ -38,23 +38,23 @@ import androidx.navigation.compose.rememberNavController
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenScaffold(
     title: String,
-    onSetTitle: (String) -> Unit = {},
+    setTitle: (String) -> Unit = {},
     goBackFlag: Boolean = false,
-    onSetGoBackFlag: (Boolean) -> Unit = {},
     bottomBarDestinations: List<TopLevelDestination> = listOf(),
     drawerMenuItems: List<Pair<ImageVector, String>> = listOf(),
     isFabVisible: Boolean = false,
     navController: NavHostController = rememberNavController(),
-    navGraph: @Composable (
-        navController: NavHostController,
-        onSetGoBackFlag: (Boolean) -> Unit
-    ) -> Unit,
+    navGraph: @Composable () -> Unit,
 ) {
+    // trace re-composes
+    Timber.i("recomposing 'ScreenScaffold' - title: $title")
+
     // local store
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -64,6 +64,7 @@ fun ScreenScaffold(
         topBar = {
             TopAppBar(
                 title = {
+                    // Timber.i("recomposing 'TopAppBar' title: $title")
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = title,
@@ -117,7 +118,7 @@ fun ScreenScaffold(
                     onNavigateToDestination = { route: String ->
                         bottomBarDestinations
                             .first { dest -> route == dest.route }
-                            .let { onSetTitle(it.title) }
+                            .let { setTitle(it.title) }
                         navController.navigate(route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
@@ -146,7 +147,7 @@ fun ScreenScaffold(
             drawerState = drawerState,
             coroutineScope = scope,
         ) {
-            navGraph(navController, onSetGoBackFlag)
+            navGraph()
         }
     }
 }
@@ -191,6 +192,6 @@ private fun ScreenScaffoldPreview() {
             title = "App",
             bottomBarDestinations = topLevelDestinations,
             drawerMenuItems = drawerMenuDestinations,
-        ) { _, _ -> }
+        ) {}
     }
 }

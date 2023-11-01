@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.tanfra.shopmob.features.common.view.ScreenScaffold
 import com.tanfra.shopmob.features.common.view.TopLevelDestination
@@ -19,23 +18,22 @@ fun SmobAppScaffold(
 ) {
     // hoist state for topBar "title" to be able to change it from within the content pages
     var cachedTitle by remember { mutableStateOf(title) }
-    val setCachedTitle = { daTitle: String -> cachedTitle = daTitle }
+    val setTitle = { daTitle: String -> cachedTitle = daTitle }
 
     // hoist state for topBar "goBackFlag" to be able to change it from within the content pages
     var cachedGoBackFlag by remember { mutableStateOf(false) }
     val setGoBackFlag = { daFlag: Boolean -> cachedGoBackFlag = daFlag }
 
+    val navController = rememberNavController()
+
     ScreenScaffold(
         title = cachedTitle,
-        onSetTitle = setCachedTitle,
+        setTitle = setTitle,
         goBackFlag = cachedGoBackFlag,
-        onSetGoBackFlag = setGoBackFlag,
         bottomBarDestinations = bottomBarDestinations,
         drawerMenuItems = drawerMenuItems,
-        navController = rememberNavController(),
+        navController = navController,
     ) {
-            navController: NavHostController,
-            onSetGoBackFlag: (Boolean) -> Unit ->
-        SmobAppNavGraph(navController, onSetGoBackFlag)
+        SmobAppNavGraph(navController, setGoBackFlag)
     }
 }
