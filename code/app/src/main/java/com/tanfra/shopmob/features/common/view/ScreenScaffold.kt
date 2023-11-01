@@ -37,6 +37,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
+import com.tanfra.shopmob.smob.data.types.ImmutableList
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -47,7 +48,7 @@ fun ScreenScaffold(
     setTitle: (String) -> Unit = {},
     goBackFlag: Boolean = false,
     bottomBarDestinations: List<TopLevelDestination> = listOf(),
-    drawerMenuItems: List<Pair<ImageVector, String>> = listOf(),
+    drawerMenuItems: ImmutableList<Pair<ImageVector, String>> = ImmutableList(listOf()),
     isFabVisible: Boolean = false,
     navController: NavHostController = rememberNavController(),
     navGraph: @Composable () -> Unit,
@@ -191,7 +192,7 @@ private fun ScreenScaffoldPreview() {
         ScreenScaffold(
             title = "App",
             bottomBarDestinations = topLevelDestinations,
-            drawerMenuItems = drawerMenuDestinations,
+            drawerMenuItems = ImmutableList(drawerMenuDestinations),
         ) {}
     }
 }

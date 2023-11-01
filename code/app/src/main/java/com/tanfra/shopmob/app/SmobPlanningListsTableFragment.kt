@@ -21,6 +21,7 @@ import com.tanfra.shopmob.features.common.view.TopLevelDestination
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.features.smobPlanning.presentation.obsoleteRemove.PlanningViewModel
 import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
+import com.tanfra.shopmob.smob.data.types.ImmutableList
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 
@@ -71,7 +72,7 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
                 SmobAppScaffold(
                     title = stringResource(id = R.string.app_name),
                     bottomBarDestinations = smobBottomBarDestinations,
-                    drawerMenuItems = smobDrawerMenuItems
+                    drawerMenuItems = ImmutableList(smobDrawerMenuItems)
                 )
             }
 

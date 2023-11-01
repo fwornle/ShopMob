@@ -9,12 +9,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.compose.rememberNavController
 import com.tanfra.shopmob.features.common.view.ScreenScaffold
 import com.tanfra.shopmob.features.common.view.TopLevelDestination
+import com.tanfra.shopmob.smob.data.types.ImmutableList
 
 @Composable
 fun SmobAppScaffold(
     title: String,
     bottomBarDestinations: List<TopLevelDestination>,
-    drawerMenuItems: List<Pair<ImageVector, String>>,
+    drawerMenuItems: ImmutableList<Pair<ImageVector, String>>,
 ) {
     // hoist state for topBar "title" to be able to change it from within the content pages
     var cachedTitle by remember { mutableStateOf(title) }
