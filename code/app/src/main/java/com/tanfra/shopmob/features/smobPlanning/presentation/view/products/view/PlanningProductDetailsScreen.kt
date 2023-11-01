@@ -30,7 +30,6 @@ import kotlinx.coroutines.flow.collectLatest
 fun PlanningProductDetailsScreen(
     viewModel: PlanningViewModelMvi,
     productId: String,
-    productName: String,
     onSetGoBackFlag: (Boolean) -> Unit,
 ) {
     // lifecycle aware collection of viewState flow

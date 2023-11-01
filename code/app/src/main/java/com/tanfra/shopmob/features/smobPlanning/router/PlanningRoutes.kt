@@ -79,12 +79,10 @@ sealed class PlanningRoutes {
         @Composable
         fun Screen(
             productId: String,
-            productName: String,
             onSetGoBackFlag: (Boolean) -> Unit,
         ) = PlanningProductDetailsScreen(
             viewModel = koinViewModel(),
             productId = productId,
-            productName = productName,
             onSetGoBackFlag = onSetGoBackFlag,
         )
     }

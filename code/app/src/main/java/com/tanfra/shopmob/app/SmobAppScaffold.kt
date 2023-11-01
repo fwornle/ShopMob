@@ -35,6 +35,6 @@ fun SmobAppScaffold(
         drawerMenuItems = drawerMenuItems,
         navController = navController,
     ) {
-        SmobAppNavGraph(navController, setGoBackFlag)
+        SmobAppNavGraph(navController, title, setTitle, setGoBackFlag)
     }
 }

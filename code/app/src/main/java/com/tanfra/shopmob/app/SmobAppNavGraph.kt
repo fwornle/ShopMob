@@ -13,6 +13,8 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 @Composable
 fun SmobAppNavGraph(
     navController: NavHostController,
+    mainTitle: String,
+    onSetTitle: (String) -> Unit,
     onSetGoBackFlag: (Boolean) -> Unit,
 ) {
     NavHost(
@@ -29,53 +31,51 @@ fun SmobAppNavGraph(
                 PlanningRoutes.ListsBrowsingScreen.Screen(
                     onSetGoBackFlag = onSetGoBackFlag,
                 ) { list: SmobListATO ->
+                    onSetTitle(list.name)  // fw231101 - currently ineffective (state not reachable)
                     navController.navigate(
                         PlanningRoutes.SelectedListProductsBrowseScreen.route
                                 + "/${list.id}"
-                                + "?listName=${list.name}"
                     )
                 }
             }
 
             composable(route = PlanningRoutes.ListsAddItemScreen.route) {
                 PlanningRoutes.ListsAddItemScreen.Screen(
-                    goBack = { navController.popBackStack() }
+                    goBack = {
+                        onSetTitle(mainTitle)
+                        navController.popBackStack()
+                    }
                 )
             }
 
             composable(
                 route = PlanningRoutes.SelectedListProductsBrowseScreen.route
-                        + "/{listId}"
-                        + "?listName={listName}",
+                        + "/{listId}",
                 arguments = listOf(
                     navArgument("listId") { type = NavType.StringType },
-                    navArgument("listName") { type = NavType.StringType },
                 ),
             ) { backStackEntry ->
                 PlanningRoutes.SelectedListProductsBrowseScreen.Screen(
                     listId = backStackEntry.arguments?.getString("listId") ?: "unknown list id",
                     onSetGoBackFlag = onSetGoBackFlag
                 ) { product ->
+                    onSetTitle(product.name)  // fw231101 - currently ineffective
                     navController.navigate(
                         PlanningRoutes.SelectedProductDetailsScreen.route
                                 + "/${product.id}"
-                                + "?productName=${product.name}"
                     )
                 }
             }
 
             composable(
                 route = PlanningRoutes.SelectedProductDetailsScreen.route
-                        + "/{productId}"
-                        + "?productName={productName}",
+                        + "/{productId}",
                 arguments = listOf(
                     navArgument("productId") { type = NavType.StringType },
-                    navArgument("productName") { type = NavType.StringType },
                 ),
             ) { backStackEntry ->
                 PlanningRoutes.SelectedProductDetailsScreen.Screen(
                     productId = backStackEntry.arguments?.getString("productId") ?: "unknown product id",
-                    productName = backStackEntry.arguments?.getString("productName") ?: "Mystery",
                     onSetGoBackFlag = onSetGoBackFlag,
                 )
             }

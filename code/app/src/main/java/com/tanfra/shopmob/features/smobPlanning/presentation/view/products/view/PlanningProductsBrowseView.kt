@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.tanfra.shopmob.R
+import com.tanfra.shopmob.features.common.view.NoListItemsInfo
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.types.ItemStatus
@@ -51,19 +52,25 @@ internal fun PlanningProductsBrowseView(
     onIllegalTransition: () -> Unit,
     onClickItem: (SmobProductATO) -> Unit,
 ) {
-    LazyColumn {
-        items(
-            products,
-        ) {
-            ListItem(
-                item = it,
-                snackbarHostState = snackbarHostState,
-                onSwipeActionConfirmed = { product: SmobProductATO ->
-                    onSwipeActionConfirmed(list, product) },
-                onIllegalTransition = onIllegalTransition,
-                onClickItem = onClickItem,
-            )
+    if(list.items.isNotEmpty()) {
+        // some content
+        LazyColumn {
+            items(
+                products,
+            ) {
+                ListItem(
+                    item = it,
+                    snackbarHostState = snackbarHostState,
+                    onSwipeActionConfirmed = { product: SmobProductATO ->
+                        onSwipeActionConfirmed(list, product) },
+                    onIllegalTransition = onIllegalTransition,
+                    onClickItem = onClickItem,
+                )
+            }
         }
+    } else {
+        // empty list
+        NoListItemsInfo()
     }
 }
 
