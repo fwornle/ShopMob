@@ -6,7 +6,7 @@ import com.tanfra.shopmob.features.common.dispatcher.DispatcherProvider
 import com.tanfra.shopmob.smob.data.repo.repoIf.*
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsViewModel
-import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModel
+import com.tanfra.shopmob.features.smobPlanning.presentation.obsoleteRemove.PlanningViewModel
 import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModelMvi
 import com.tanfra.shopmob.features.smobPlanning.presentation.model.Action
 import com.tanfra.shopmob.features.smobPlanning.presentation.model.Event

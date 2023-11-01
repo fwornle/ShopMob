@@ -2,12 +2,12 @@ package com.tanfra.shopmob.features.smobPlanning.di
 
 import com.tanfra.shopmob.features.common.monitor.ConnectivityMonitorImpl
 import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModelMvi
-import com.tanfra.shopmob.features.smobPlanning.presentation.DefaultActionProcessor
-import com.tanfra.shopmob.features.smobPlanning.presentation.DefaultReducer
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.SmobListsActionProcessor
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.products.SmobProductsActionProcessor
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.SmobListsReducer
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.products.SmobProductsReducer
+import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningDefaultActionProcessor
+import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningDefaultMutationReducer
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.PlanningListsActionProcessor
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.products.PlanningProductsActionProcessor
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.PlanningListsMutationReducer
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.products.PlanningProductsMutationReducer
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -16,7 +16,7 @@ val smobPlanningModule = module {
     viewModel {
         PlanningViewModelMvi(
             actionProcessors = listOf(
-                DefaultActionProcessor(
+                PlanningDefaultActionProcessor(
                     context = androidContext(),
                     listRepository = get(),
                     productRepository = get(),
@@ -25,20 +25,20 @@ val smobPlanningModule = module {
                         context = androidContext(),
                     )
                 ),
-                SmobListsActionProcessor(
+                PlanningListsActionProcessor(
                     listRepository = get(),
                 ),
-                SmobProductsActionProcessor(
+                PlanningProductsActionProcessor(
                     listRepository = get(),
                     productRepository = get(),
                 ),
             ),
             reducers = listOf(
-                DefaultReducer(
+                PlanningDefaultMutationReducer(
                     resources = androidContext().resources,
                 ),
-                SmobListsReducer(),
-                SmobProductsReducer(),
+                PlanningListsMutationReducer(),
+                PlanningProductsMutationReducer(),
             ),
             dispatcherProvider = get(),
         )

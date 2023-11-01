@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.take
 import timber.log.Timber
 import java.util.UUID
 
-class SmobListsActionProcessor(
+class PlanningListsActionProcessor(
     private val listRepository: SmobListRepository,
 ) : ActionProcessor<Action, Mutation, Event> {
 

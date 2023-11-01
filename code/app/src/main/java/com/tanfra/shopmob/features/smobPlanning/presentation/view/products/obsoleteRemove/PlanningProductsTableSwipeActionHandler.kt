@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.features.smobPlanning.presentation.view.products
+package com.tanfra.shopmob.features.smobPlanning.presentation.view.products.obsoleteRemove
 
 import android.os.Vibrator
 import androidx.recyclerview.widget.ItemTouchHelper

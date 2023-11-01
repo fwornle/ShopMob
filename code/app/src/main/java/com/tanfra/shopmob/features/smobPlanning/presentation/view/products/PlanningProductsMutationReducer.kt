@@ -6,7 +6,7 @@ import com.tanfra.shopmob.features.smobPlanning.presentation.view.ViewState
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 
-class SmobProductsReducer : Reducer<Mutation, ViewState> {
+class PlanningProductsMutationReducer : Reducer<Mutation, ViewState> {
     override fun invoke(mutation: Mutation, currentState: ViewState): ViewState =
         when (mutation) {
             is Mutation.ShowProductsOnList ->

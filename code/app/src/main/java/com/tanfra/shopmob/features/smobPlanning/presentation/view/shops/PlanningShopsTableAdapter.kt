@@ -8,7 +8,7 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseRecyclerViewAdapter
-import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModel
+import com.tanfra.shopmob.features.smobPlanning.presentation.obsoleteRemove.PlanningViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

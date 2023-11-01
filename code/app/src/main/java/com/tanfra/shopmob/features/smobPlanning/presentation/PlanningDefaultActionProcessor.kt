@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
 
-class DefaultActionProcessor(
+class PlanningDefaultActionProcessor(
     private val context: Context,
     private val listRepository: SmobListRepository,
     private val productRepository: SmobProductRepository,

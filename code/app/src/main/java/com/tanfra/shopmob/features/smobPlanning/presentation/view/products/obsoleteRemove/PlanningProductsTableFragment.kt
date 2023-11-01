@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.features.smobPlanning.presentation.view.products
+package com.tanfra.shopmob.features.smobPlanning.presentation.view.products.obsoleteRemove
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,7 +17,7 @@ import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsActivity
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationSource
-import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModel
+import com.tanfra.shopmob.features.smobPlanning.presentation.obsoleteRemove.PlanningViewModel
 import com.tanfra.shopmob.app.utils.setDisplayHomeAsUpEnabled
 import com.tanfra.shopmob.app.utils.setTitle
 import com.tanfra.shopmob.app.utils.setup

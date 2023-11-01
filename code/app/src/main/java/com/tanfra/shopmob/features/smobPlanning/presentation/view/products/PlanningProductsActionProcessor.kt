@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
-class SmobProductsActionProcessor(
+class PlanningProductsActionProcessor(
     private val listRepository: SmobListRepository,
     private val productRepository: SmobProductRepository,
 ) : ActionProcessor<Action, Mutation, Event> {

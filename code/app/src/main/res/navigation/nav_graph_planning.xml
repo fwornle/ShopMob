@@ -32,7 +32,7 @@
 
     <fragment
         android:id="@+id/smobPlanningProductsTableFragment"
-        android:name="com.tanfra.shopmob.features.smobPlanning.presentation.view.products.PlanningProductsTableFragment"
+        android:name="com.tanfra.shopmob.features.smobPlanning.presentation.view.products.obsoleteRemove.PlanningProductsTableFragment"
         android:label="Planning Products Table"
         tools:layout="@layout/fragment_planning_products_table"
         >
@@ -46,7 +46,7 @@
 
     <fragment
         android:id="@+id/smobPlanningProductsAddNewItemFragment"
-        android:name="com.tanfra.shopmob.features.smobPlanning.presentation.view.products.PlanningProductsAddNewItemFragment"
+        android:name="com.tanfra.shopmob.features.smobPlanning.presentation.view.products.obsoleteRemove.PlanningProductsAddNewItemFragment"
         android:label="Planning Products - Add New Item"
         tools:layout="@layout/fragment_planning_products_add_new_item"
         >

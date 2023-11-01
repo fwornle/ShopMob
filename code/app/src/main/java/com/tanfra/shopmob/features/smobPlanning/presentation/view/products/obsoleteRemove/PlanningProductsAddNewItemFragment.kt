@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.features.smobPlanning.presentation.view.products
+package com.tanfra.shopmob.features.smobPlanning.presentation.view.products.obsoleteRemove
 
 import android.annotation.SuppressLint
 import android.icu.text.SimpleDateFormat
@@ -29,7 +29,7 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
-import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModel
+import com.tanfra.shopmob.features.smobPlanning.presentation.obsoleteRemove.PlanningViewModel
 import com.tanfra.shopmob.smob.ui.zeUtils.closeSoftKeyboard
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch

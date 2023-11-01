@@ -19,7 +19,7 @@ import androidx.lifecycle.Lifecycle
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.features.common.view.TopLevelDestination
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
-import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModel
+import com.tanfra.shopmob.features.smobPlanning.presentation.obsoleteRemove.PlanningViewModel
 import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
