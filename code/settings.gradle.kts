@@ -19,7 +19,7 @@ dependencyResolutionManagement {
         create("build") {
 
             // general android
-            version("android", "8.1.1")
+            version("android", "8.1.2")
             plugin("android-application", "com.android.application").versionRef("android")
             plugin("android-library", "com.android.library").versionRef("android")
 
@@ -169,7 +169,7 @@ dependencyResolutionManagement {
 
             // compose
             // ref: https://developer.android.com/jetpack/compose/setup#kotlin_1
-            version("compose-bom", "2023.09.00")
+            version("compose-bom", "2023.10.01")
             version("state-events", "2.0.3")
             library("compose-bom", "androidx.compose", "compose-bom").versionRef("compose-bom")
             library("compose-material", "androidx.compose.material", "material").withoutVersion()
