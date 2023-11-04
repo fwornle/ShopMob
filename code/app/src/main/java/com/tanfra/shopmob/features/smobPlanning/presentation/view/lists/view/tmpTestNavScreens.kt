@@ -6,11 +6,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
+import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModelMvi
+import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 
 @Composable
-fun SettingsScreen() {
+fun PlanningShopsBrowseScreen(
+    viewModel: PlanningViewModelMvi,
+    onSetGoBackFlag: (Boolean) -> Unit,
+    onNavigateToShopsDetails: (SmobShopATO) -> Unit,
+) {
     Column(modifier = Modifier.fillMaxSize()) {
-        Text(text = "Settings Screen", fontSize = 20.sp)
+        Text(text = "Temporary dummy screen: PlanningShopsBrowseScreen", fontSize = 20.sp)
     }
 }
 

@@ -23,7 +23,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -33,9 +38,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.tanfra.shopmob.R
+import com.tanfra.shopmob.app.routes
 import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
 import com.tanfra.shopmob.smob.data.types.ImmutableList
 import kotlinx.coroutines.launch
@@ -44,31 +51,45 @@ import timber.log.Timber
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenScaffold(
-    title: String,
-    setTitle: (String) -> Unit = {},
-    goBackFlag: Boolean = false,
+    startTitle: String,
+    startDestination: String,
     bottomBarDestinations: List<TopLevelDestination> = listOf(),
     drawerMenuItems: ImmutableList<Pair<ImageVector, String>> = ImmutableList(listOf()),
-    isFabVisible: Boolean = false,
-    navController: NavHostController = rememberNavController(),
-    navGraph: @Composable () -> Unit,
+    isFabVisible: Boolean = false
 ) {
     // trace re-composes
-    Timber.i("recomposing 'ScreenScaffold' - title: $title")
+    Timber.i("recomposing 'ScreenScaffold' - title: $startTitle")
 
     // local store
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
+
+    // TopAppBar title management
+    var currentTitle by remember { mutableStateOf(startTitle) }
+    val setTitle = { newTitle: String -> currentTitle = newTitle }
+    val previousTitles = remember { mutableStateListOf<String>() }
+    val saveCurrentTitle: () -> Unit = { previousTitles.add(currentTitle) }
+    val restorePreviousTitle: () -> Unit = {
+        setTitle(previousTitles.removeAt(previousTitles.lastIndex))
+    }
+
+
+    // TopAppBar nav behavior (icon --> goBack or sidebar)
+    var cachedGoBackFlag by remember { mutableStateOf(false) }
+    val setGoBackFlag = { daFlag: Boolean -> cachedGoBackFlag = daFlag }
+
+    // navigation root
+    val navController: NavHostController = rememberNavController()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
                 title = {
-                    // Timber.i("recomposing 'TopAppBar' title: $title")
+                    // Timber.i("recomposing 'TopAppBar' title: $cachedTitle")
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = title,
+                        text = currentTitle,
                         style = MaterialTheme.typography.headlineSmall,
                         color = Color.White,
                         overflow = TextOverflow.Ellipsis,
@@ -80,10 +101,12 @@ fun ScreenScaffold(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
                 navigationIcon = {
-                    if (goBackFlag) {
+                    if (cachedGoBackFlag) {
                         IconButton(
                             modifier = Modifier,
-                            onClick = { navController.popBackStack() },
+                            onClick = {
+                                restorePreviousTitle()
+                                navController.popBackStack() },
                         ) {
                             Icon(
                                 modifier = Modifier.padding(start = 4.dp),
@@ -148,7 +171,12 @@ fun ScreenScaffold(
             drawerState = drawerState,
             coroutineScope = scope,
         ) {
-            navGraph()
+            NavHost(
+                navController = navController,
+                startDestination = startDestination
+            ) {
+                routes(navController, setTitle, saveCurrentTitle, restorePreviousTitle, setGoBackFlag)
+            }
         }
     }
 }
@@ -161,7 +189,7 @@ private fun ScreenScaffoldPreview() {
     // navigation destinations
     val topLevelDestinations = listOf(
         TopLevelDestination(
-            route = PlanningRoutes.ListsBrowsingScreen.route,
+            route = PlanningRoutes.ListsBrowseScreen.route,
             selectedIcon = R.drawable.ic_baseline_view_list_24,
             unselectedIcon = R.drawable.ic_baseline_view_list_24,
             iconName = "Show Lists",
@@ -190,9 +218,10 @@ private fun ScreenScaffoldPreview() {
 
     MaterialTheme {
         ScreenScaffold(
-            title = "App",
+            startTitle = "App",
+            startDestination = "AppStartDest",
             bottomBarDestinations = topLevelDestinations,
-            drawerMenuItems = ImmutableList(drawerMenuDestinations),
-        ) {}
+            drawerMenuItems = ImmutableList(drawerMenuDestinations)
+        )
     }
 }

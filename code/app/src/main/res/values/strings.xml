@@ -29,7 +29,9 @@
 
     <string name="smob_item_name">ShopMob Item</string>
     <string name="smob_item_desc">ShopMob Item Description (optional)</string>
-    <string name="smob_item_mainCat">ShopMob Item Main Category (e.g. FOODS)</string>
+    <string name="smob_item_mainCat_prompt">Choose Main Category (e.g. FOODS)</string>
+    <string name="smob_item_mainCat">ShopMob Item Main Category</string>
+    <string name="smob_item_subCat_prompt">Choose Sub Category (e.g. DAIRY)</string>
     <string name="smob_item_subCat">ShopMob Item Sub Category (e.g. DAIRY)</string>
 
     <string name="smob_lists_name">ShopMob Shopping Lists</string>
@@ -38,6 +40,7 @@
 
     <string name="smob_shop_name">ShopMob Shop Name</string>
     <string name="smob_shop_desc">ShopMob Shop Description</string>
+    <string name="smob_shop_category">Shop Type</string>
     <string name="smob_shop_prompt">Select Shop</string>
     <string name="smob_shop_locate">Locate Shop</string>
     <string name="smob_shop_saved">ShopMob Shop Saved!</string>
@@ -90,10 +93,16 @@
 
     <!-- Smob UI strings -->
     <string name="smob_icon">ShopMob icon</string>
-    <string name="add_smob_item">Add ShopMob item</string>
+    <string name="add_smob_item_name">Add ShopMob item name</string>
+    <string name="add_smob_item_desc">Add ShopMob item description</string>
+    <string name="add_smob_list_name">Add ShopMob list name</string>
+    <string name="add_smob_list_desc">Add ShopMob list description</string>
     <string name="add_smob_shop">Add ShopMob shop</string>
     <string name="add_smob_group">Add ShopMob group</string>
     <string name="add_smob_group_member">Add ShopMob group member</string>
+    <string name="add_smob_group_member_prompt">You are in the following groups…</string>
+    <string name="add_smob_group_select">Select SmobList group</string>
+
     <string name="import_device_contacts">Import contacts from device</string>
     <string name="add_smob_list_member">Add ShopMob list member</string>
     <string name="save_smob_item">Save ShopMob item</string>

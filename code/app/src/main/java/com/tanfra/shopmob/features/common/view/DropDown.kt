@@ -26,11 +26,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tanfra.shopmob.features.common.theme.ShopMobTheme
+import com.tanfra.shopmob.smob.data.types.ImmutableList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropDown(
-    items: List<Pair<String, String>>,
+    list: ImmutableList<Pair<String, String>>,
     onItemSelected: (Pair<String, String>) -> Unit,
     prompt: String,
     label: @Composable (() -> Unit)?,
@@ -52,7 +53,7 @@ fun DropDown(
             TextField(
                 value = selectedItem.second,
                 onValueChange = { selectedItem =
-                    items.find { item -> item.second == it } ?: Pair("invalid-id", "invalid-name")
+                    list.items.find { item -> item.second == it } ?: Pair("invalid-id", "invalid-name")
                 },
                 readOnly = true,
                 trailingIcon = {
@@ -90,7 +91,7 @@ fun DropDown(
                 }
             ) {
                 Column {
-                    items.forEach { item ->
+                    list.items.forEach { item ->
                         DropdownMenuItem(
                             text = {
                                 Text(text = item.second)  // group name
@@ -121,10 +122,12 @@ fun DropDown(
 @Composable
 fun PreviewDropDown() {
 
-    val selectionList = listOf(
-        Pair("id1", "first item"),
-        Pair("id2", "second item"),
-        Pair("id3", "third item"),
+    val selectionList = ImmutableList(
+        listOf(
+            Pair("id1", "first item"),
+            Pair("id2", "second item"),
+            Pair("id3", "third item"),
+        )
     )
     val chosenItem by remember { mutableStateOf(Pair("", "")) }
 
@@ -134,7 +137,7 @@ fun PreviewDropDown() {
             Spacer(modifier = Modifier.height(16.dp))
 
             DropDown(
-                items = selectionList,
+                list = selectionList,
                 onItemSelected = {},
                 prompt = "Make your move...",
                 label = { Text("Select item") },

@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_normal"
                 android:src="@drawable/ic_add"
-                android:contentDescription="@string/add_smob_item"
+                android:contentDescription="@string/add_smob_item_name"
                 app:fabSize="normal"
                 app:layout_anchor="@id/smobItemsRecyclerView"
                 app:layout_anchorGravity="bottom|right|end"

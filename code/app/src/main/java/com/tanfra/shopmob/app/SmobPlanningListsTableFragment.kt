@@ -12,11 +12,11 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.compose.ui.res.stringResource
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import com.firebase.ui.auth.AuthUI
+import com.tanfra.shopmob.features.common.view.ScreenScaffold
 import com.tanfra.shopmob.features.common.view.TopLevelDestination
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.features.smobPlanning.presentation.obsoleteRemove.PlanningViewModel
@@ -38,7 +38,7 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
         // navigation destinations
         val smobBottomBarDestinations = listOf(
             TopLevelDestination(
-                route = PlanningRoutes.ListsBrowsingScreen.route,
+                route = PlanningRoutes.ListsBrowseScreen.route,
                 selectedIcon = R.drawable.ic_baseline_view_list_24,
                 unselectedIcon = R.drawable.ic_baseline_view_list_24,
                 iconName = "Show Lists",
@@ -69,8 +69,9 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                SmobAppScaffold(
-                    title = stringResource(id = R.string.app_name),
+                ScreenScaffold(
+                    startTitle = PlanningRoutes.PlanningScreens.title,
+                    startDestination = PlanningRoutes.PlanningScreens.route,
                     bottomBarDestinations = smobBottomBarDestinations,
                     drawerMenuItems = ImmutableList(smobDrawerMenuItems)
                 )

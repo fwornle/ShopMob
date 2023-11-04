@@ -3,6 +3,7 @@ package com.tanfra.shopmob.features.smobPlanning.presentation.view
 import androidx.compose.runtime.Immutable
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 
 data class ViewState(
     val isConnectivityVisible: Boolean = false,
@@ -15,6 +16,7 @@ data class ViewState(
     val selectedList: SmobListATO = SmobListATO(),
     val productItemsOnList: List<SmobProductATO> = listOf(),
     val selectedProduct: SmobProductATO = SmobProductATO(),
+    val selectedShop: SmobShopATO = SmobShopATO(),
 )
 
 @Immutable

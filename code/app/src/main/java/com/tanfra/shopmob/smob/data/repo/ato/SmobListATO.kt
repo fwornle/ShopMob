@@ -1,5 +1,6 @@
 package com.tanfra.shopmob.smob.data.repo.ato
 
+import com.tanfra.shopmob.app.Constants.INVALID_SMOB_ITEM_ID
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.data.types.SmobGroupItem
 import com.tanfra.shopmob.smob.data.types.SmobListItem
@@ -11,7 +12,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("smobListATO")
 data class SmobListATO(
-    override val id: String = "invalid id",
+    override val id: String = INVALID_SMOB_ITEM_ID,
     override var status: ItemStatus = ItemStatus.INVALID,
     override var position: Long = -1,
     val name: String = "invalidName",
