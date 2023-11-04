@@ -82,7 +82,7 @@ fun PlanningListsAddItemContent(
                     .fillMaxWidth()
                     .onKeyEvent {
                         if (
-                            it.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_ENTER ||
+//                            it.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_ENTER ||
                             it.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_TAB
                         ) {
                             focusManager.moveFocus(FocusDirection.Next)
@@ -110,7 +110,7 @@ fun PlanningListsAddItemContent(
                     .fillMaxWidth()
                     .onKeyEvent {
                         if (
-                            it.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_ENTER ||
+//                            it.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_ENTER ||
                             it.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_TAB
                         ) {
                             focusManager.moveFocus(FocusDirection.Next)
