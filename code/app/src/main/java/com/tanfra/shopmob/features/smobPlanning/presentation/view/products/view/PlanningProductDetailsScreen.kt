@@ -30,7 +30,6 @@ import kotlinx.coroutines.flow.collectLatest
 fun PlanningProductDetailsScreen(
     viewModel: PlanningViewModelMvi,
     productId: String,
-    onSetGoBackFlag: (Boolean) -> Unit,
 ) {
     // lifecycle aware collection of viewState flow
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -69,9 +68,6 @@ fun PlanningProductDetailsScreen(
             }
         }
     }
-
-    // activate "back" arrow in TopAppBar
-    onSetGoBackFlag(true)
 
     Column(
         modifier = Modifier.fillMaxSize()

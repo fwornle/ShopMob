@@ -12,7 +12,6 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 @Composable
 fun PlanningShopsBrowseScreen(
     viewModel: PlanningViewModelMvi,
-    onSetGoBackFlag: (Boolean) -> Unit,
     onNavigateToShopsDetails: (SmobShopATO) -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {

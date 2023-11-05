@@ -37,7 +37,6 @@ import kotlinx.coroutines.flow.collectLatest
 fun PlanningProductsBrowseScreen(
     viewModel: PlanningViewModelMvi,
     listId: String,
-    onSetGoBackFlag: (Boolean) -> Unit,
     onNavigateToProductDetails: (SmobProductATO) -> Unit,
 ) {
     // lifecycle aware collection of viewState flow
@@ -80,9 +79,6 @@ fun PlanningProductsBrowseScreen(
             }
         }
     }
-
-    // activate "back" arrow in TopAppBar
-    onSetGoBackFlag(true)
 
     Column(
         modifier = Modifier.fillMaxSize()

@@ -73,7 +73,7 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
                     startTitle = PlanningRoutes.PlanningScreens.title,
                     startDestination = PlanningRoutes.PlanningScreens.route,
                     bottomBarDestinations = smobBottomBarDestinations,
-                    drawerMenuItems = ImmutableList(smobDrawerMenuItems)
+                    drawerMenuItems = ImmutableList(smobDrawerMenuItems),
                 )
             }
 

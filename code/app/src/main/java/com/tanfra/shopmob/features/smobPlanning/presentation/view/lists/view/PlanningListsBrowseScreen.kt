@@ -35,7 +35,6 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun PlanningListsBrowseScreen(
     viewModel: PlanningViewModelMvi,
-    onSetGoBackFlag: (Boolean) -> Unit,
     onNavigateToList: (SmobListATO) -> Unit,
     onFilterList: (List<SmobListATO>) -> List<SmobListATO>,
 ) {
@@ -80,9 +79,6 @@ fun PlanningListsBrowseScreen(
             }
         }
     }
-
-    // de-activate "back" arrow in TopAppBar
-    onSetGoBackFlag(false)
 
     Column(
         modifier = Modifier.fillMaxSize()

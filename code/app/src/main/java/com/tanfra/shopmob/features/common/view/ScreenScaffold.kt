@@ -9,11 +9,9 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -55,31 +53,37 @@ fun ScreenScaffold(
     startDestination: String,
     bottomBarDestinations: List<TopLevelDestination> = listOf(),
     drawerMenuItems: ImmutableList<Pair<ImageVector, String>> = ImmutableList(listOf()),
-    isFabVisible: Boolean = false
 ) {
-    // trace re-composes
-    Timber.i("recomposing 'ScreenScaffold' - title: $startTitle")
-
     // local store
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
-    // TopAppBar title management
+    // local store for TopAppBar title management
     var currentTitle by remember { mutableStateOf(startTitle) }
     val setTitle = { newTitle: String -> currentTitle = newTitle }
     val previousTitles = remember { mutableStateListOf<String>() }
     val saveCurrentTitle: () -> Unit = { previousTitles.add(currentTitle) }
     val restorePreviousTitle: () -> Unit = {
-        setTitle(previousTitles.removeAt(previousTitles.lastIndex))
+        currentTitle = if(previousTitles.size > 0) previousTitles.removeLast()
+            else "(no previous title stored)"
     }
 
+    // local store for TopAppBar nav behavior (icon --> goBack or sidebar)
+    var currentGoBackFlag by remember { mutableStateOf(false) }
+    val setGoBackFlag = { daFlag: Boolean -> currentGoBackFlag = daFlag }
 
-    // TopAppBar nav behavior (icon --> goBack or sidebar)
-    var cachedGoBackFlag by remember { mutableStateOf(false) }
-    val setGoBackFlag = { daFlag: Boolean -> cachedGoBackFlag = daFlag }
+    // local store for FAB behavior (visibility, content)
+    var currentFabVisibleFlag by remember { mutableStateOf(false) }
+    var currentFab: @Composable () -> Unit by remember { mutableStateOf({}) }
+    val setFab = { newFab: @Composable () -> Unit ->
+        currentFab = newFab; currentFabVisibleFlag = true }
+    val resetFab = { currentFabVisibleFlag = false; currentFab = {} }
 
     // navigation root
     val navController: NavHostController = rememberNavController()
+
+    // trace re-composes
+    Timber.i("recomposing 'ScreenScaffold' - title: $currentTitle")
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -101,7 +105,7 @@ fun ScreenScaffold(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
                 navigationIcon = {
-                    if (cachedGoBackFlag) {
+                    if (currentGoBackFlag) {
                         IconButton(
                             modifier = Modifier,
                             onClick = {
@@ -154,15 +158,7 @@ fun ScreenScaffold(
                 )
             }  // any BottomBar destinations at all?
         },
-        floatingActionButton = {
-            if (isFabVisible) {
-                FloatingActionButton(
-                    onClick = { /* some reaction */ }
-                ) {
-                    Icon(Icons.Default.Send, contentDescription = "Save")
-                }
-            }
-        },
+        floatingActionButton = { if (currentFabVisibleFlag) { currentFab() } },
         floatingActionButtonPosition = FabPosition.End,
     ) { paddingValues ->
         NavDrawer(
@@ -175,7 +171,15 @@ fun ScreenScaffold(
                 navController = navController,
                 startDestination = startDestination
             ) {
-                routes(navController, setTitle, saveCurrentTitle, restorePreviousTitle, setGoBackFlag)
+                routes(
+                    navController = navController,
+                    setTitle = setTitle,
+                    saveTitle = saveCurrentTitle,
+                    restorePreviousTitle = restorePreviousTitle,
+                    setGoBackFlag = setGoBackFlag,
+                    setFab = setFab,
+                    resetFab = resetFab,
+                )
             }
         }
     }

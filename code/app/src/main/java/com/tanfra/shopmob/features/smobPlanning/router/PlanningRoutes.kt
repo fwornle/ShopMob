@@ -26,6 +26,7 @@ sealed class PlanningRoutes {
 
     data object ListsBrowseScreen : PlanningRoutes() {
         const val route = "planningListsBrowsing"
+        const val title = "ShopMob"
 
         // mechanism to filter out SmobList items which belong to the current user
         private fun onFilterList(items: List<SmobListATO>): List<SmobListATO> {
@@ -45,17 +46,16 @@ sealed class PlanningRoutes {
 
         @Composable
         fun Screen(
-            onSetGoBackFlag: (Boolean) -> Unit,
             navigateToList: (list: SmobListATO) -> Unit,
         ) = PlanningListsBrowseScreen(
             viewModel = koinViewModel(),
-            onSetGoBackFlag = onSetGoBackFlag,
             onNavigateToList = navigateToList,
         ) { list -> onFilterList(list) }
     }
 
     data object ListsAddItemScreen : PlanningRoutes() {
         const val route = "planningListsAddItem"
+        const val title = "Add New List"
 
         @Composable
         fun Screen(
@@ -68,22 +68,22 @@ sealed class PlanningRoutes {
 
     data object ProductsBrowseScreen : PlanningRoutes() {
         const val route = "planningProductsBrowsing"
+        const val title = "ShopMob Products"
 
         @Composable
         fun Screen(
             listId: String,
-            onSetGoBackFlag: (Boolean) -> Unit,
             navigateToProductDetails: (SmobProductATO) -> Unit,
         ) = PlanningProductsBrowseScreen(
             viewModel = koinViewModel(),
             listId = listId,
-            onSetGoBackFlag = onSetGoBackFlag,
             onNavigateToProductDetails = navigateToProductDetails,
         )
     }
 
     data object ProductsAddItemScreen : PlanningRoutes() {
         const val route = "planningProductsAddItem"
+        const val title = "Add New Product"
 
         @Composable
         fun Screen(
@@ -98,34 +98,33 @@ sealed class PlanningRoutes {
 
     data object ProductDetailsScreen : PlanningRoutes() {
         const val route = "planningProductDetails"
+        const val title = "Product Details"
 
         @Composable
         fun Screen(
             productId: String,
-            onSetGoBackFlag: (Boolean) -> Unit,
         ) = PlanningProductDetailsScreen(
             viewModel = koinViewModel(),
             productId = productId,
-            onSetGoBackFlag = onSetGoBackFlag,
         )
     }
 
     data object ShopsBrowseScreen : PlanningRoutes() {
         const val route = "planningShopsBrowsing"
+        const val title = "ShopMob Shops"
 
         @Composable
         fun Screen(
-            onSetGoBackFlag: (Boolean) -> Unit,
             navigateToShopDetails: (SmobShopATO) -> Unit,
         ) = PlanningShopsBrowseScreen(
             viewModel = koinViewModel(),
-            onSetGoBackFlag = onSetGoBackFlag,
             onNavigateToShopsDetails = navigateToShopDetails,
         )
     }
 
     data object Screen3Screen : PlanningRoutes() {
         const val route = "planningListsSreen3"
+        const val title = "Screen 3"
 
         @Composable
         fun Screen() = Screen3()

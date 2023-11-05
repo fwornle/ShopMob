@@ -99,6 +99,7 @@
     <string name="add_smob_list_desc">Add ShopMob list description</string>
     <string name="add_smob_shop">Add ShopMob shop</string>
     <string name="add_smob_group">Add ShopMob group</string>
+    <string name="add_smob_item">Add ShopMob item</string>
     <string name="add_smob_group_member">Add ShopMob group member</string>
     <string name="add_smob_group_member_prompt">You are in the following groups…</string>
     <string name="add_smob_group_select">Select SmobList group</string>
