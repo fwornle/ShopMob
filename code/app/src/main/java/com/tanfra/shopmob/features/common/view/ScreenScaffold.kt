@@ -58,26 +58,25 @@ fun ScreenScaffold(
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
-    // local store for TopAppBar title management
+    // local store and setters for TopAppBar title management
     var currentTitle by remember { mutableStateOf(startTitle) }
-    val setTitle = { newTitle: String -> currentTitle = newTitle }
     val previousTitles = remember { mutableStateListOf<String>() }
-    val saveCurrentTitle: () -> Unit = { previousTitles.add(currentTitle) }
+    val setNewTitle = { newTitle: String ->
+        previousTitles.add(currentTitle)
+        currentTitle = newTitle
+    }
     val restorePreviousTitle: () -> Unit = {
         currentTitle = if(previousTitles.size > 0) previousTitles.removeLast()
             else "(no previous title stored)"
     }
 
-    // local store for TopAppBar nav behavior (icon --> goBack or sidebar)
+    // local store and setter for TopAppBar nav behavior (icon --> goBack or sidebar)
     var currentGoBackFlag by remember { mutableStateOf(false) }
     val setGoBackFlag = { daFlag: Boolean -> currentGoBackFlag = daFlag }
 
-    // local store for FAB behavior (visibility, content)
-    var currentFabVisibleFlag by remember { mutableStateOf(false) }
-    var currentFab: @Composable () -> Unit by remember { mutableStateOf({}) }
-    val setFab = { newFab: @Composable () -> Unit ->
-        currentFab = newFab; currentFabVisibleFlag = true }
-    val resetFab = { currentFabVisibleFlag = false; currentFab = {} }
+    // local store and setter for FAB behavior (visibility, content)
+    var currentFab: (@Composable () -> Unit)? by remember { mutableStateOf(null) }
+    val setFab = { newFab: (@Composable () -> Unit)? -> currentFab = newFab }
 
     // navigation root
     val navController: NavHostController = rememberNavController()
@@ -146,7 +145,7 @@ fun ScreenScaffold(
                     onNavigateToDestination = { route: String ->
                         bottomBarDestinations
                             .first { dest -> route == dest.route }
-                            .let { setTitle(it.title) }
+                            .let { setNewTitle(it.title) }
                         navController.navigate(route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
@@ -158,7 +157,7 @@ fun ScreenScaffold(
                 )
             }  // any BottomBar destinations at all?
         },
-        floatingActionButton = { if (currentFabVisibleFlag) { currentFab() } },
+        floatingActionButton = { currentFab?.let { it() } },
         floatingActionButtonPosition = FabPosition.End,
     ) { paddingValues ->
         NavDrawer(
@@ -173,12 +172,10 @@ fun ScreenScaffold(
             ) {
                 routes(
                     navController = navController,
-                    setTitle = setTitle,
-                    saveTitle = saveCurrentTitle,
+                    setNewTitle = setNewTitle,
                     restorePreviousTitle = restorePreviousTitle,
                     setGoBackFlag = setGoBackFlag,
                     setFab = setFab,
-                    resetFab = resetFab,
                 )
             }
         }

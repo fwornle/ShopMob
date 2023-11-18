@@ -11,14 +11,14 @@ class PlanningDefaultMutationReducer(
 ) : Reducer<Mutation, ViewState> {
     override fun invoke(mutation: Mutation, currentState: ViewState): ViewState =
         when (mutation) {
-            Mutation.DismissLostConnection ->
-                currentState.mutateToDismissLostConnection()
-            is Mutation.ShowError ->
-                currentState.mutateToShowError(exception = mutation.exception)
             Mutation.ShowLoader ->
                 currentState.mutateToShowLoader()
             Mutation.ShowLostConnection ->
                 currentState.mutateToShowLostConnection()
+            Mutation.DismissLostConnection ->
+                currentState.mutateToDismissLostConnection()
+            is Mutation.ShowError ->
+                currentState.mutateToShowError(exception = mutation.exception)
             else -> currentState // mutation not handled in this reducer --> keep current state
         }
 

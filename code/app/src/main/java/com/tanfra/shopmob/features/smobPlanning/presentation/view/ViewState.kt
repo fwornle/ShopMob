@@ -6,11 +6,15 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 
 data class ViewState(
+
+    // generic
     val isConnectivityVisible: Boolean = false,
     val isLoaderVisible: Boolean = false,
     val isErrorVisible: Boolean = false,
     val errorMessage: String = "",
     val isContentVisible: Boolean = false,
+
+    // app specific
     val listItems: List<SmobListATO> = listOf(),
     val groupItems: List<GroupItemState> = listOf(),
     val selectedList: SmobListATO = SmobListATO(),
