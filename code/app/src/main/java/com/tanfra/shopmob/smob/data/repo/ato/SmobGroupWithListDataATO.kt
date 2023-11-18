@@ -1,6 +1,6 @@
 package com.tanfra.shopmob.smob.data.repo.ato
 
-import com.tanfra.shopmob.app.Constants.INVALID_SMOB_ITEM_ID
+import com.tanfra.shopmob.app.Constants.INVALID_ITEM_ID
 import com.tanfra.shopmob.smob.data.types.ActivityStatus
 import com.tanfra.shopmob.smob.data.types.GroupType
 import com.tanfra.shopmob.smob.data.types.ItemStatus
@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("smobGroupWithListDataATO")
 data class SmobGroupWithListDataATO(
-    override val id: String = INVALID_SMOB_ITEM_ID,
+    override val id: String = INVALID_ITEM_ID,
     override var status: ItemStatus = ItemStatus.INVALID,
     override var position: Long = -1,
     val groupName: String = "invalid name",
@@ -23,7 +23,7 @@ data class SmobGroupWithListDataATO(
     val groupType: GroupType = GroupType.OTHER,
     val groupMembers: List<SmobMemberItem> = listOf(),
     val groupActivity: ActivityStatus = ActivityStatus("invalid date", -1),
-    val listId: String = INVALID_SMOB_ITEM_ID,
+    val listId: String = INVALID_ITEM_ID,
     val listStatus: ItemStatus = ItemStatus.INVALID,
     val listPosition: Long = -1,
     val listName: String = "invalid name",

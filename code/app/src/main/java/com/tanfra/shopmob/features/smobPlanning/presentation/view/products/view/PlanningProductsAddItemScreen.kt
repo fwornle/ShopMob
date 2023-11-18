@@ -59,6 +59,7 @@ fun PlanningProductsAddItemScreen(
         }
     }
 
+
     // fetch main and sub categories (onyl done once)
     val mainCategories = remember {
         ImmutableList(ProductMainCategory.values().map { item ->

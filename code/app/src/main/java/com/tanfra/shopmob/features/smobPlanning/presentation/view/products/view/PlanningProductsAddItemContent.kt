@@ -39,7 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tanfra.shopmob.R
-import com.tanfra.shopmob.app.Constants.INVALID_SMOB_ITEM_ID
+import com.tanfra.shopmob.app.Constants.INVALID_ITEM_ID
 import com.tanfra.shopmob.features.common.view.DropDown
 import com.tanfra.shopmob.features.common.theme.ShopMobTheme
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
@@ -70,7 +70,7 @@ fun PlanningProductsAddItemContent(
     val isDescriptionValid = description.matches(inputValidPattern)
 
     // valid shop?
-    val selectedShopValid = selectedShop.id != INVALID_SMOB_ITEM_ID
+    val selectedShopValid = selectedShop.id != INVALID_ITEM_ID
 
     Column(
         modifier = Modifier

@@ -69,6 +69,7 @@ fun PlanningProductDetailsScreen(
         }
     }
 
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {

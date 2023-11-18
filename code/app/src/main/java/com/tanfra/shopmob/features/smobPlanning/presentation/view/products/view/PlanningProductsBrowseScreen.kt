@@ -80,6 +80,7 @@ fun PlanningProductsBrowseScreen(
         }
     }
 
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
