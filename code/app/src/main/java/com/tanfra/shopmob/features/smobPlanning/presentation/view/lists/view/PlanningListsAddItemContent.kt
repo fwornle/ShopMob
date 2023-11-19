@@ -3,13 +3,10 @@ package com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view
 import android.view.KeyEvent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -26,17 +23,17 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.features.common.view.DropDown
 import com.tanfra.shopmob.features.common.theme.ShopMobTheme
+import com.tanfra.shopmob.features.common.view.FabSaveNewItem
 import com.tanfra.shopmob.smob.data.types.ImmutableList
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun PlanningListsAddItemContent(
     groupItems: List<Pair<String, String>>,
+    setFab: ((@Composable () -> Unit)?) -> Unit,
     onSaveClicked: (String, String, Pair<String, String>) -> Unit,
 ) {
 
@@ -53,6 +50,29 @@ fun PlanningListsAddItemContent(
     val isNameValid = name.matches(inputValidPattern)
     val isDescriptionValid = description.matches(inputValidPattern)
 
+
+    // activate floating action button (FAB) - if save conditions have been met
+    if(isNameValid) {
+        setFab {
+            FabSaveNewItem {
+                onSaveClicked(
+                    name,
+                    description,
+                    groupItemSelected,
+                )
+
+                // reset inputs
+                name = ""
+                description = ""
+                groupItemSelected = Pair("", "")
+
+                // remove FAB
+                setFab(null)
+            }
+        }
+    } else {
+        setFab(null)
+    }
 
     Column(
         modifier = Modifier
@@ -128,33 +148,6 @@ fun PlanningListsAddItemContent(
 
         }
 
-        if(name.isNotEmpty() && isNameValid) {
-            Button(
-                onClick = {
-                    // store list
-                    onSaveClicked(
-                        name,
-                        description,
-                        groupItemSelected,
-                    )
-
-                    // reset inputs
-                    name = ""
-                    description = ""
-                    groupItemSelected = Pair("", "")
-                },
-                contentPadding = PaddingValues(horizontal = 80.dp, vertical = 5.dp),
-                modifier = Modifier
-                    .padding(vertical = 2.dp)
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    text = stringResource(R.string.save_smob_list),
-                    fontSize = 16.sp
-                )
-            }
-        }
-
     }  // Column
 
 }
@@ -173,6 +166,7 @@ fun PreviewPlanningListsAddItem() {
     ShopMobTheme {
         PlanningListsAddItemContent(
             groupItems = groups,
+            setFab = {},
             onSaveClicked = { _: String, _: String, _: Pair<String, String> -> },
         )
     }

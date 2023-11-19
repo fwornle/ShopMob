@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun PlanningListsAddItemScreen(
     viewModel: PlanningViewModelMvi,
+    setFab: ((@Composable () -> Unit)?) -> Unit,
     goBack: () -> Unit,
 ) {
     // lifecycle aware collection of viewState flow
@@ -60,6 +61,7 @@ fun PlanningListsAddItemScreen(
     ) {
         PlanningListsAddItemContent(
             groupItems = viewState.groupItems.map { group -> Pair(group.id, group.name) },
+            setFab = setFab,
             onSaveClicked = {
                     daName: String,
                     daDescription: String,

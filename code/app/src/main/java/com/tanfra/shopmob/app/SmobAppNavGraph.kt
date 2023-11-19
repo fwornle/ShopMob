@@ -58,13 +58,8 @@ fun NavGraphBuilder.routes(
             composable(route) {
                 setNewTitle(title)
                 setGoBackFlag(true)
-                setFab {
-                    FabSaveNewItem {
-                        /* onFab: TODO: save and return  */
-                        setFab(null)
-                    }
-                }
-                Screen {
+                setFab(null)  // set inside screen logic, when "save" conditions have been met
+                Screen(setFab) {
                     /* goBack */
                     restorePreviousTitle()
                     navController.popBackStack()
@@ -74,7 +69,7 @@ fun NavGraphBuilder.routes(
 
         with(PlanningRoutes.ProductsBrowseScreen) {
             composable(
-                route = route + "/{listId}?{listName}",
+                route = "$route/{listId}?{listName}",
                 arguments = listOf(
                     navArgument("listId") { type = NavType.StringType },
                     navArgument("listName") { type = NavType.StringType }
@@ -128,7 +123,7 @@ fun NavGraphBuilder.routes(
 
         with(PlanningRoutes.ProductDetailsScreen) {
             composable(
-                route = route + "/{productId}?{productName}",
+                route = "$route/{productId}?{productName}",
                 arguments = listOf(
                     navArgument("productId") { type = NavType.StringType },
                     navArgument("productName") { type = NavType.StringType }

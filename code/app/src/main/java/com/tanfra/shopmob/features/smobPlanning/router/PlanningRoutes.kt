@@ -59,9 +59,11 @@ sealed class PlanningRoutes {
 
         @Composable
         fun Screen(
+            setFab: ((@Composable () -> Unit)?) -> Unit,
             goBack: () -> Unit,
         ) = PlanningListsAddItemScreen(
             viewModel = koinViewModel(),
+            setFab = setFab,
             goBack = goBack,
         )
     }
