@@ -9,6 +9,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.app.Constants.FCM_TOPIC
 import com.tanfra.shopmob.features.common.commonModule
+import com.tanfra.shopmob.features.commonScaffold.di.commonScaffoldModule
 import com.tanfra.shopmob.features.smobPlanning.di.smobPlanningModule
 import com.tanfra.shopmob.smob.data.local.RefreshLocalDB
 import com.tanfra.shopmob.smob.data.local.dbServices
@@ -74,6 +75,7 @@ class SmobApp : Application(), KoinComponent, Configuration.Provider {
 
                     // specific features
                     commonModule,
+                    commonScaffoldModule,
                     smobPlanningModule,
                 )
             )

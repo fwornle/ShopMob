@@ -3,15 +3,20 @@ package com.tanfra.shopmob.smob.ui
 import com.tanfra.shopmob.features.common.arch.ActionProcessor
 import com.tanfra.shopmob.features.common.arch.Reducer
 import com.tanfra.shopmob.features.common.dispatcher.DispatcherProvider
+import com.tanfra.shopmob.features.commonScaffold.presentation.ScaffoldViewModelMvi
+import com.tanfra.shopmob.features.commonScaffold.presentation.model.ScaffoldAction
+import com.tanfra.shopmob.features.commonScaffold.presentation.model.ScaffoldEvent
+import com.tanfra.shopmob.features.commonScaffold.presentation.model.ScaffoldMutation
+import com.tanfra.shopmob.features.commonScaffold.presentation.view.ScaffoldViewState
+import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModelMvi
 import com.tanfra.shopmob.smob.data.repo.repoIf.*
 import com.tanfra.shopmob.smob.ui.admin.AdminViewModel
 import com.tanfra.shopmob.smob.ui.details.SmobDetailsViewModel
 import com.tanfra.shopmob.features.smobPlanning.presentation.obsoleteRemove.PlanningViewModel
-import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModelMvi
-import com.tanfra.shopmob.features.smobPlanning.presentation.model.Action
-import com.tanfra.shopmob.features.smobPlanning.presentation.model.Event
-import com.tanfra.shopmob.features.smobPlanning.presentation.model.Mutation
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.ViewState
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningAction
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningEvent
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningMutation
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.PlanningViewState
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.shops.addNewItem.PlanningShopsAddNewItemViewModel
 import com.tanfra.shopmob.smob.ui.shopping.SmobShoppingViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -23,11 +28,20 @@ val vmServices = module {
     // planning view models ---------------------------------------------------
 
     viewModel {
-        PlanningViewModelMvi(
-            actionProcessors = get() as Collection< ActionProcessor<Action, Mutation, Event>>,
-            reducers = get() as Collection<Reducer<Mutation, ViewState>>,
+        ScaffoldViewModelMvi(
+            actionProcessors = get() as Collection< ActionProcessor<ScaffoldAction, ScaffoldMutation, ScaffoldEvent>>,
+            reducers = get() as Collection<Reducer<ScaffoldMutation, ScaffoldViewState>>,
             dispatcherProvider = get() as DispatcherProvider,
-            initialState = get() as ViewState,
+            initialState = get() as ScaffoldViewState,
+        )
+    }
+
+    viewModel {
+        PlanningViewModelMvi(
+            actionProcessors = get() as Collection< ActionProcessor<PlanningAction, PlanningMutation, PlanningEvent>>,
+            reducers = get() as Collection<Reducer<PlanningMutation, PlanningViewState>>,
+            dispatcherProvider = get() as DispatcherProvider,
+            initialState = get() as PlanningViewState,
         )
     }
 

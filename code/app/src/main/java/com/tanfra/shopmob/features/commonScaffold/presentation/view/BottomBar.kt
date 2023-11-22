@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.features.common.view
+package com.tanfra.shopmob.features.commonScaffold.presentation.view
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides

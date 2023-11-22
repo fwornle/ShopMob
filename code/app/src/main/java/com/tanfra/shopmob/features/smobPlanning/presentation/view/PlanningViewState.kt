@@ -5,7 +5,7 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 
-data class ViewState(
+data class PlanningViewState(
 
     // generic
     val isConnectivityVisible: Boolean = false,

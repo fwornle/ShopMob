@@ -17,13 +17,13 @@ import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.features.common.theme.ShopMobTheme
 import com.tanfra.shopmob.features.common.view.BannerView
 import com.tanfra.shopmob.features.common.view.ErrorView
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.ViewState
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.PlanningViewState
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import timber.log.Timber
 
 @Composable
 fun PlanningProductDetailsContent(
-    viewState: ViewState,
+    viewState: PlanningViewState,
     onReload: () -> Unit,
 ) {
 
@@ -81,7 +81,7 @@ fun PreviewPlanningProductDetailsContent() {
 
     val dE1 = SmobProductATO(status = ItemStatus.IN_PROGRESS)
 
-    val viewState = ViewState(
+    val viewState = PlanningViewState(
         isConnectivityVisible = true,
         isLoaderVisible = false,
         isErrorVisible = false,

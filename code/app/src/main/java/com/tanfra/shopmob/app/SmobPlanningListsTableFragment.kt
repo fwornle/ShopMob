@@ -16,12 +16,13 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import com.firebase.ui.auth.AuthUI
-import com.tanfra.shopmob.features.common.view.ScreenScaffold
-import com.tanfra.shopmob.features.common.view.TopLevelDestination
+import com.tanfra.shopmob.features.commonScaffold.presentation.view.ScaffoldScreen
+import com.tanfra.shopmob.features.commonScaffold.presentation.view.TopLevelDestination
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.features.smobPlanning.presentation.obsoleteRemove.PlanningViewModel
 import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
 import com.tanfra.shopmob.smob.data.types.ImmutableList
+import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
 
@@ -69,7 +70,8 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                ScreenScaffold(
+                ScaffoldScreen(
+                    viewModel = koinViewModel(),
                     startTitle = PlanningRoutes.PlanningScreens.title,
                     startDestination = PlanningRoutes.PlanningScreens.route,
                     bottomBarDestinations = smobBottomBarDestinations,

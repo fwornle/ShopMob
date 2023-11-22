@@ -12,9 +12,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModelMvi
-import com.tanfra.shopmob.features.smobPlanning.presentation.model.Action
-import com.tanfra.shopmob.features.smobPlanning.presentation.model.Event
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.ViewState
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningAction
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningEvent
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.PlanningViewState
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -27,7 +27,7 @@ fun PlanningListsAddItemScreen(
     val lifecycleOwner = LocalLifecycleOwner.current
     val viewState by viewModel.viewStateFlow
         .collectAsStateWithLifecycle(
-            initialValue = ViewState(),
+            initialValue = PlanningViewState(),
             lifecycleOwner = lifecycleOwner,
             minActiveState = Lifecycle.State.STARTED,
             context = viewModel.viewModelScope.coroutineContext,
@@ -36,19 +36,19 @@ fun PlanningListsAddItemScreen(
     // actions to be triggered (once) on CREATED
     LaunchedEffect(Unit) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-            viewModel.process(action = Action.CheckConnectivity)
+            viewModel.process(action = PlanningAction.CheckConnectivity)
         }
     }
 
     // actions to be triggered (once) on STARTED
     LaunchedEffect(Unit) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.process(action = Action.LoadGroups)
+            viewModel.process(action = PlanningAction.LoadGroups)
 
             // collect event flow - triggers reactions to signals from VM
             viewModel.eventFlow.collectLatest { event ->
                 when (event) {
-                    is Event.NavigateBack -> goBack()
+                    is PlanningEvent.NavigateBack -> goBack()
                     else -> { /* ignore */ }
                 }
             }
@@ -68,7 +68,7 @@ fun PlanningListsAddItemScreen(
                     daSelection: Pair<String, String>,
                 ->
                 viewModel.process(
-                    Action.SaveNewItem(daName, daDescription, daSelection)
+                    PlanningAction.SaveNewItem(daName, daDescription, daSelection)
                 )
             },
         )

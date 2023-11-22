@@ -1,9 +1,9 @@
 package com.tanfra.shopmob.features.smobPlanning.presentation.view.products
 
 import com.tanfra.shopmob.features.common.arch.ActionProcessor
-import com.tanfra.shopmob.features.smobPlanning.presentation.model.Action
-import com.tanfra.shopmob.features.smobPlanning.presentation.model.Event
-import com.tanfra.shopmob.features.smobPlanning.presentation.model.Mutation
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningAction
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningEvent
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningMutation
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobListRepository
@@ -19,17 +19,17 @@ import timber.log.Timber
 class PlanningProductsActionProcessor(
     private val listRepository: SmobListRepository,
     private val productRepository: SmobProductRepository,
-) : ActionProcessor<Action, Mutation, Event> {
+) : ActionProcessor<PlanningAction, PlanningMutation, PlanningEvent> {
 
-    override fun invoke(action: Action): Flow<Pair<Mutation?, Event?>> =
+    override fun invoke(action: PlanningAction): Flow<Pair<PlanningMutation?, PlanningEvent?>> =
         flow {
             when (action) {
-                is Action.ConfirmProductOnListSwipe -> confirmProductSwipeAction(
+                is PlanningAction.ConfirmProductOnListSwipe -> confirmProductSwipeAction(
                     action.list,
                     action.product
                 )
-                is Action.LoadProductsOnList -> loadProductList(action.listId)
-                is Action.LoadProduct -> loadProduct(action.productId)
+                is PlanningAction.LoadProductsOnList -> loadProductList(action.listId)
+                is PlanningAction.LoadProduct -> loadProduct(action.productId)
                 else -> {
                     //no-op
                 }
@@ -75,10 +75,10 @@ class PlanningProductsActionProcessor(
 
 
     // load list of products associated with currently selected SmobList
-    private suspend fun FlowCollector<Pair<Mutation?, Event?>>.loadProductList(
+    private suspend fun FlowCollector<Pair<PlanningMutation?, PlanningEvent?>>.loadProductList(
         listId: String,
     ) {
-        emit(Mutation.ShowLoader to null)
+        emit(PlanningMutation.ShowLoader to null)
 
         // fetch selected list contents
         listRepository.getSmobItem(listId).collect {
@@ -89,7 +89,7 @@ class PlanningProductsActionProcessor(
                 }
                 is Resource.Failure -> {
                     Timber.i("selected list flow collection returns error")
-                    emit(Mutation.ShowError(exception = it.exception) to null)
+                    emit(PlanningMutation.ShowError(exception = it.exception) to null)
                 }
                 is Resource.Success -> {
                     Timber.i("selected list flow collection successful")
@@ -101,23 +101,23 @@ class PlanningProductsActionProcessor(
                             Resource.Empty -> {
                                 Timber.i("product list flow collection returns empty")
                                 emit(
-                                    Mutation.ShowProductsOnList(
+                                    PlanningMutation.ShowProductsOnList(
                                         list = selList, products = listOf()
-                                    ) to Event.NavigateToList(selList)
+                                    ) to PlanningEvent.NavigateToList(selList)
                                 )
                             }
 
                             is Resource.Failure -> {
                                 Timber.i("product list flow collection returns error")
-                                emit(Mutation.ShowError(exception = it.exception) to null)
+                                emit(PlanningMutation.ShowError(exception = it.exception) to null)
                             }
 
                             is Resource.Success -> {
                                 Timber.i("product list flow collection successful")
                                 emit(
-                                    Mutation.ShowProductsOnList(
+                                    PlanningMutation.ShowProductsOnList(
                                         list = selList, products = it.data
-                                    ) to Event.NavigateToList(selList)
+                                    ) to PlanningEvent.NavigateToList(selList)
                                 )
                             }
                         }  // when
@@ -130,26 +130,26 @@ class PlanningProductsActionProcessor(
 
 
     // load specific product
-    private suspend fun FlowCollector<Pair<Mutation?, Event?>>.loadProduct(
+    private suspend fun FlowCollector<Pair<PlanningMutation?, PlanningEvent?>>.loadProduct(
         productId: String,
     ) {
-        emit(Mutation.ShowLoader to null)
+        emit(PlanningMutation.ShowLoader to null)
 
         // fetch selected product contents
         productRepository.getSmobItem(productId).collect {
             when(it) {
                 Resource.Empty -> {
                     Timber.i("product flow collection returns empty")
-                    emit(Mutation.ShowProductDetails(product = SmobProductATO()) to null)
+                    emit(PlanningMutation.ShowProductDetails(product = SmobProductATO()) to null)
                     // TODO: should there be a more useful reaction than displaying an invalid item?
                 }
                 is Resource.Failure -> {
                     Timber.i("product flow collection returns error")
-                    emit(Mutation.ShowError(exception = it.exception) to null)
+                    emit(PlanningMutation.ShowError(exception = it.exception) to null)
                 }
                 is Resource.Success -> {
                     Timber.i("product flow collection successful")
-                    emit(Mutation.ShowProductDetails(product = it.data) to null)
+                    emit(PlanningMutation.ShowProductDetails(product = it.data) to null)
                 }
             }  // when
         }  // productRepository

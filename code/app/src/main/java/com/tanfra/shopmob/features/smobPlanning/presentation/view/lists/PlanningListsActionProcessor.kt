@@ -1,9 +1,9 @@
 package com.tanfra.shopmob.features.smobPlanning.presentation.view.lists
 
 import com.tanfra.shopmob.features.common.arch.ActionProcessor
-import com.tanfra.shopmob.features.smobPlanning.presentation.model.Action
-import com.tanfra.shopmob.features.smobPlanning.presentation.model.Event
-import com.tanfra.shopmob.features.smobPlanning.presentation.model.Mutation
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningAction
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningEvent
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningMutation
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobListRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
@@ -21,14 +21,14 @@ import java.util.UUID
 
 class PlanningListsActionProcessor(
     private val listRepository: SmobListRepository,
-) : ActionProcessor<Action, Mutation, Event> {
+) : ActionProcessor<PlanningAction, PlanningMutation, PlanningEvent> {
 
-    override fun invoke(action: Action): Flow<Pair<Mutation?, Event?>> =
+    override fun invoke(action: PlanningAction): Flow<Pair<PlanningMutation?, PlanningEvent?>> =
         flow {
             when (action) {
-                is Action.ConfirmListSwipe -> confirmListSwipeAction(action.item)
-                is Action.NavigateToProductsOnList -> navigateToProductsOnList(action.list)
-                is Action.SaveNewItem ->
+                is PlanningAction.ConfirmListSwipe -> confirmListSwipeAction(action.item)
+                is PlanningAction.NavigateToProductsOnList -> navigateToProductsOnList(action.list)
+                is PlanningAction.SaveNewItem ->
                     saveNewSmobList(
                         action.name,
                         action.description,
@@ -96,13 +96,13 @@ class PlanningListsActionProcessor(
 
 
     // save newly created SmobList and navigate to wherever 'onSaveDone' takes us...
-    private suspend fun FlowCollector<Pair<Mutation?, Event?>>.navigateToProductsOnList(
+    private suspend fun FlowCollector<Pair<PlanningMutation?, PlanningEvent?>>.navigateToProductsOnList(
         list: SmobListATO,
-    ) = emit(null to Event.NavigateToList(list))
+    ) = emit(null to PlanningEvent.NavigateToList(list))
 
 
     // save newly created SmobList and navigate to wherever 'onSaveDone' takes us...
-    private suspend fun FlowCollector<Pair<Mutation?, Event?>>.saveNewSmobList(
+    private suspend fun FlowCollector<Pair<PlanningMutation?, PlanningEvent?>>.saveNewSmobList(
         name: String = "mystery list",
         description: String = "something exciting",
         group: Pair<String, String> = Pair("", ""),
@@ -117,15 +117,15 @@ class PlanningListsActionProcessor(
                 when(it) {
                     Resource.Empty -> {
                         Timber.i("list flow collection returns empty")
-                        emit(Mutation.ShowLists(lists = listOf()) to null)
+                        emit(PlanningMutation.ShowLists(lists = listOf()) to null)
                     }
                     is Resource.Failure -> {
                         Timber.i("list flow collection returns error")
-                        emit(Mutation.ShowError(exception = it.exception) to null)
+                        emit(PlanningMutation.ShowError(exception = it.exception) to null)
                     }
                     is Resource.Success -> {
                         Timber.i("list flow collection successful")
-                        emit(Mutation.ShowLists(lists = it.data) to null)
+                        emit(PlanningMutation.ShowLists(lists = it.data) to null)
 
                         // initialize new SmobList data record to be written to DB
                         val daSmobListATO = SmobListATO(
@@ -149,7 +149,7 @@ class PlanningListsActionProcessor(
                         listRepository.saveSmobItem(daSmobListATO)
 
                         // travel back
-                        emit(null to Event.NavigateBack)
+                        emit(null to PlanningEvent.NavigateBack)
 
                     }
                 }

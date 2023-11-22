@@ -19,12 +19,12 @@ import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.features.common.theme.ShopMobTheme
 import com.tanfra.shopmob.features.common.view.BannerView
 import com.tanfra.shopmob.features.common.view.ErrorView
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.ViewState
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.PlanningViewState
 import timber.log.Timber
 
 @Composable
 fun PlanningListsBrowseContent(
-    viewState: ViewState,
+    viewState: PlanningViewState,
     snackbarHostState: SnackbarHostState,
     preFilteredItems: List<SmobListATO>,
     onSwipeActionConfirmed: (SmobListATO) -> Unit,
@@ -94,7 +94,7 @@ fun PreviewPlanningListsBrowseContent() {
     val dE2 = SmobListATO(status = ItemStatus.DONE)
     val daList = listOf(dE1, dE1, dE1, dE2, dE1, dE2, dE1, dE1, dE2, dE1, dE2, dE1)
 
-    val viewState = ViewState(
+    val viewState = PlanningViewState(
         isConnectivityVisible = true,
         isLoaderVisible = false,
         isErrorVisible = false,

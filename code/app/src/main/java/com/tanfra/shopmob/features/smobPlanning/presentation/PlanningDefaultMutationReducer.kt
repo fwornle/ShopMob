@@ -3,29 +3,29 @@ package com.tanfra.shopmob.features.smobPlanning.presentation
 import android.content.res.Resources
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.features.common.arch.Reducer
-import com.tanfra.shopmob.features.smobPlanning.presentation.model.Mutation
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.ViewState
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningMutation
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.PlanningViewState
 
 class PlanningDefaultMutationReducer(
     private val resources: Resources,
-) : Reducer<Mutation, ViewState> {
-    override fun invoke(mutation: Mutation, currentState: ViewState): ViewState =
+) : Reducer<PlanningMutation, PlanningViewState> {
+    override fun invoke(mutation: PlanningMutation, currentState: PlanningViewState): PlanningViewState =
         when (mutation) {
-            Mutation.ShowLoader ->
+            PlanningMutation.ShowLoader ->
                 currentState.mutateToShowLoader()
-            Mutation.ShowLostConnection ->
+            PlanningMutation.ShowLostConnection ->
                 currentState.mutateToShowLostConnection()
-            Mutation.DismissLostConnection ->
+            PlanningMutation.DismissLostConnection ->
                 currentState.mutateToDismissLostConnection()
-            is Mutation.ShowError ->
+            is PlanningMutation.ShowError ->
                 currentState.mutateToShowError(exception = mutation.exception)
             else -> currentState // mutation not handled in this reducer --> keep current state
         }
 
-    private fun ViewState.mutateToDismissLostConnection() =
+    private fun PlanningViewState.mutateToDismissLostConnection() =
         copy(isConnectivityVisible = false)
 
-    private fun ViewState.mutateToShowError(exception: Exception) =
+    private fun PlanningViewState.mutateToShowError(exception: Exception) =
         copy(
             isLoaderVisible = false,
             isContentVisible = false,
@@ -34,10 +34,10 @@ class PlanningDefaultMutationReducer(
                 .format(exception.message),
         )
 
-    private fun ViewState.mutateToShowLostConnection() =
+    private fun PlanningViewState.mutateToShowLostConnection() =
         copy(isConnectivityVisible = true)
 
-    private fun ViewState.mutateToShowLoader() =
+    private fun PlanningViewState.mutateToShowLoader() =
         copy(isLoaderVisible = true)
 
 }

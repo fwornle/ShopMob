@@ -23,9 +23,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
 import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModelMvi
-import com.tanfra.shopmob.features.smobPlanning.presentation.model.Action
-import com.tanfra.shopmob.features.smobPlanning.presentation.model.Event
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.ViewState
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningAction
+import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningEvent
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.PlanningViewState
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import kotlinx.coroutines.flow.collectLatest
@@ -43,14 +43,14 @@ fun PlanningProductsBrowseScreen(
     val lifecycleOwner = LocalLifecycleOwner.current
     val viewState by viewModel.viewStateFlow
         .collectAsStateWithLifecycle(
-            initialValue = ViewState(),
+            initialValue = PlanningViewState(),
             lifecycleOwner = lifecycleOwner,
             minActiveState = Lifecycle.State.STARTED,
             context = viewModel.viewModelScope.coroutineContext,
         )
 
     // state of swipe refresh mechanism
-    val refreshProducts = { viewModel.process(Action.RefreshProducts) }
+    val refreshProducts = { viewModel.process(PlanningAction.RefreshProducts) }
     val isRefreshing by viewModel.isRefreshingSF.collectAsStateWithLifecycle()
     val pullRefreshState = rememberPullRefreshState(isRefreshing, refreshProducts)
 
@@ -60,19 +60,19 @@ fun PlanningProductsBrowseScreen(
     // actions to be triggered (once) on CREATED
     LaunchedEffect(Unit) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-            viewModel.process(action = Action.CheckConnectivity)
+            viewModel.process(action = PlanningAction.CheckConnectivity)
         }
     }
 
     // actions to be triggered (once) on STARTED
     LaunchedEffect(Unit) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.process(action = Action.LoadProductsOnList(listId))
+            viewModel.process(action = PlanningAction.LoadProductsOnList(listId))
 
             // collect event flow - triggers reactions to signals from VM
             viewModel.eventFlow.collectLatest { event ->
                 when (event) {
-                    is Event.Refreshing -> { /* TODO */ }  // ???
+                    is PlanningEvent.Refreshing -> { /* TODO */ }  // ???
                     else -> { /* ignore */ }
                     // further events...
                 }
@@ -94,8 +94,8 @@ fun PlanningProductsBrowseScreen(
                 viewState = viewState,
                 snackbarHostState = snackbarHostState,
                 onSwipeActionConfirmed = { list: SmobListATO, product: SmobProductATO ->
-                    viewModel.process(Action.ConfirmProductOnListSwipe(list, product)) },
-                onSwipeIllegalTransition = { viewModel.process(Action.IllegalSwipe) },
+                    viewModel.process(PlanningAction.ConfirmProductOnListSwipe(list, product)) },
+                onSwipeIllegalTransition = { viewModel.process(PlanningAction.IllegalSwipe) },
                 onClickItem = onNavigateToProductDetails,
                 onReload = refreshProducts,
             )
