@@ -22,6 +22,7 @@ import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningActio
 import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningEvent
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.PlanningViewState
 import kotlinx.coroutines.flow.collectLatest
+import timber.log.Timber
 
 @OptIn(
     ExperimentalMaterialApi::class,
@@ -43,8 +44,7 @@ fun PlanningProductDetailsScreen(
 
     // state of swipe refresh mechanism
     val reloadLists = { viewModel.process(PlanningAction.RefreshProducts) }
-    val isRefreshing by viewModel.isRefreshingSF.collectAsStateWithLifecycle()
-    val pullRefreshState = rememberPullRefreshState(isRefreshing, reloadLists)
+    val pullRefreshState = rememberPullRefreshState(viewState.isRefreshing, reloadLists)
 
     // actions to be triggered (once) on CREATED
     LaunchedEffect(Unit) {
@@ -61,9 +61,8 @@ fun PlanningProductDetailsScreen(
             // collect event flow - triggers reactions to signals from VM
             viewModel.eventFlow.collectLatest { event ->
                 when (event) {
-                    is PlanningEvent.Refreshing -> { /* TODO */ }  // ???
-                    else -> { /* ignore */ }
-                    // further events...
+                    is PlanningEvent.SampleEvent -> { /* sampleEventReaction here... */ }
+                    else -> { Timber.i("Received unspecified PlanningEvent: $event") }
                 }
             }
         }
@@ -85,7 +84,7 @@ fun PlanningProductDetailsScreen(
             )
 
             PullRefreshIndicator(
-                refreshing = isRefreshing,
+                refreshing = viewState.isRefreshing,
                 state = pullRefreshState,
                 modifier = Modifier.align(Alignment.TopCenter)
             )

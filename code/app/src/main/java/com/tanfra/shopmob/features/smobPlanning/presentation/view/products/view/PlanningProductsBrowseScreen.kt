@@ -9,11 +9,9 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -29,6 +27,7 @@ import com.tanfra.shopmob.features.smobPlanning.presentation.view.PlanningViewSt
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import kotlinx.coroutines.flow.collectLatest
+import timber.log.Timber
 
 @OptIn(
     ExperimentalMaterialApi::class,
@@ -51,11 +50,7 @@ fun PlanningProductsBrowseScreen(
 
     // state of swipe refresh mechanism
     val refreshProducts = { viewModel.process(PlanningAction.RefreshProducts) }
-    val isRefreshing by viewModel.isRefreshingSF.collectAsStateWithLifecycle()
-    val pullRefreshState = rememberPullRefreshState(isRefreshing, refreshProducts)
-
-    // state of snackbar host
-    val snackbarHostState = remember { SnackbarHostState() }
+    val pullRefreshState = rememberPullRefreshState(viewState.isRefreshing, refreshProducts)
 
     // actions to be triggered (once) on CREATED
     LaunchedEffect(Unit) {
@@ -72,8 +67,8 @@ fun PlanningProductsBrowseScreen(
             // collect event flow - triggers reactions to signals from VM
             viewModel.eventFlow.collectLatest { event ->
                 when (event) {
-                    is PlanningEvent.Refreshing -> { /* TODO */ }  // ???
-                    else -> { /* ignore */ }
+                    is PlanningEvent.SampleEvent -> { /* sampleEventReaction here... */ }
+                    else -> { Timber.i("Received unspecified PlanningEvent: $event") }
                     // further events...
                 }
             }
@@ -92,7 +87,6 @@ fun PlanningProductsBrowseScreen(
 
             PlanningProductsBrowseContent(
                 viewState = viewState,
-                snackbarHostState = snackbarHostState,
                 onSwipeActionConfirmed = { list: SmobListATO, product: SmobProductATO ->
                     viewModel.process(PlanningAction.ConfirmProductOnListSwipe(list, product)) },
                 onSwipeIllegalTransition = { viewModel.process(PlanningAction.IllegalSwipe) },
@@ -101,13 +95,13 @@ fun PlanningProductsBrowseScreen(
             )
 
             PullRefreshIndicator(
-                refreshing = isRefreshing,
+                refreshing = viewState.isRefreshing,
                 state = pullRefreshState,
                 modifier = Modifier.align(Alignment.TopCenter)
             )
 
             SnackbarHost(
-                hostState = snackbarHostState,
+                hostState = viewState.snackbarHostState,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 8.dp)  // 60 to move it above FABs

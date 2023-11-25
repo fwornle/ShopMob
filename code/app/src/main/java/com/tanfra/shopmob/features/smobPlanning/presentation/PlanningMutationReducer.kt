@@ -6,7 +6,7 @@ import com.tanfra.shopmob.features.common.arch.Reducer
 import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningMutation
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.PlanningViewState
 
-class PlanningDefaultMutationReducer(
+class PlanningMutationReducer(
     private val resources: Resources,
 ) : Reducer<PlanningMutation, PlanningViewState> {
     override fun invoke(mutation: PlanningMutation, currentState: PlanningViewState): PlanningViewState =

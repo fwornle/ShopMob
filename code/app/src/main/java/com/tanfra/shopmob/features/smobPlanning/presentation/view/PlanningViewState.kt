@@ -1,5 +1,6 @@
 package com.tanfra.shopmob.features.smobPlanning.presentation.view
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Immutable
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
@@ -13,6 +14,8 @@ data class PlanningViewState(
     val isErrorVisible: Boolean = false,
     val errorMessage: String = "",
     val isContentVisible: Boolean = false,
+    val isRefreshing: Boolean = false,
+    val snackbarHostState: SnackbarHostState = SnackbarHostState(),
 
     // app specific
     val listItems: List<SmobListATO> = listOf(),

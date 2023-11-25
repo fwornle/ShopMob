@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
 
-class PlanningDefaultActionProcessor(
+class PlanningActionProcessor(
     private val context: Context,
     private val listRepository: SmobListRepository,
     private val productRepository: SmobProductRepository,
@@ -103,25 +103,10 @@ class PlanningDefaultActionProcessor(
 
 
     // refreshing view (= load lists from backend)
-    private suspend fun FlowCollector<Pair<PlanningMutation?, PlanningEvent?>>.refreshLists() {
-        emit(null to PlanningEvent.Refreshing(true))
-
-        // update local DB from backend DB (via net API)
-        listRepository.refreshItemsInLocalDB()
-
-        emit(null to PlanningEvent.Refreshing(false))
-    }
-
+    private suspend fun refreshLists() = listRepository.refreshItemsInLocalDB()
 
     // refreshing view (= load products from backend)
-    private suspend fun FlowCollector<Pair<PlanningMutation?, PlanningEvent?>>.refreshProducts() {
-        emit(null to PlanningEvent.Refreshing(true))
-
-        // update local DB from backend DB (via net API)
-        productRepository.refreshItemsInLocalDB()
-
-        emit(null to PlanningEvent.Refreshing(false))
-    }
+    private suspend fun refreshProducts() = productRepository.refreshItemsInLocalDB()
 
 
     // illegal swipe transition --> vibrate phone

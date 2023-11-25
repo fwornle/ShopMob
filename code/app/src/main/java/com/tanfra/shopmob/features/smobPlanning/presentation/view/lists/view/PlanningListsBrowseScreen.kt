@@ -9,11 +9,9 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -48,13 +46,12 @@ fun PlanningListsBrowseScreen(
             context = viewModel.viewModelScope.coroutineContext,
         )
 
-    // state of swipe refresh mechanism
+    // local state of pull refresh mechanism (incl. associated refresh action)
     val reloadLists = { viewModel.process(PlanningAction.RefreshLists) }
-    val isRefreshing by viewModel.isRefreshingSF.collectAsStateWithLifecycle()
-    val pullRefreshState = rememberPullRefreshState(isRefreshing, reloadLists)
+    val pullRefreshState = rememberPullRefreshState(viewState.isRefreshing, reloadLists)
 
-    // state of snackbar host
-    val snackbarHostState = remember { SnackbarHostState() }
+//    // state of snackbar host
+//    val snackbarHostState = remember { SnackbarHostState() }
 
     // actions to be triggered (once) on CREATED
     LaunchedEffect(Unit) {
@@ -72,7 +69,6 @@ fun PlanningListsBrowseScreen(
             viewModel.eventFlow.collectLatest { event ->
                 when (event) {
                     is PlanningEvent.NavigateToList -> onNavigateToList(event.list)
-                    is PlanningEvent.Refreshing -> { /* TODO */ }  // ???
                     else -> { /* ignore */ }
                     // further events...
                 }
@@ -92,7 +88,6 @@ fun PlanningListsBrowseScreen(
 
             PlanningListsBrowseContent(
                 viewState = viewState,
-                snackbarHostState = snackbarHostState,
                 preFilteredItems = onFilterList(viewState.listItems),
                 onSwipeActionConfirmed = { item: SmobListATO ->
                     viewModel.process(PlanningAction.ConfirmListSwipe(item)) },
@@ -103,13 +98,13 @@ fun PlanningListsBrowseScreen(
             )
 
             PullRefreshIndicator(
-                refreshing = isRefreshing,
+                refreshing = viewState.isRefreshing,
                 state = pullRefreshState,
                 modifier = Modifier.align(Alignment.TopCenter)
             )
 
             SnackbarHost(
-                hostState = snackbarHostState,
+                hostState = viewState.snackbarHostState,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 8.dp)  // 60 to move it above FABs

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +24,6 @@ import timber.log.Timber
 @Composable
 fun PlanningListsBrowseContent(
     viewState: PlanningViewState,
-    snackbarHostState: SnackbarHostState,
     preFilteredItems: List<SmobListATO>,
     onSwipeActionConfirmed: (SmobListATO) -> Unit,
     onSwipeIllegalTransition: () -> Unit,
@@ -50,7 +48,7 @@ fun PlanningListsBrowseContent(
 
         if (viewState.isContentVisible) {
             PlanningListsBrowseView(
-                snackbarHostState = snackbarHostState,
+                snackbarHostState = viewState.snackbarHostState,
                 lists = preFilteredItems,
                 onSwipeActionConfirmed = onSwipeActionConfirmed,
                 onIllegalTransition = onSwipeIllegalTransition,
@@ -106,7 +104,6 @@ fun PreviewPlanningListsBrowseContent() {
     ShopMobTheme {
         PlanningListsBrowseContent(
             viewState = viewState,
-            snackbarHostState = SnackbarHostState(),
             preFilteredItems = daList,
             onSwipeActionConfirmed = {},
             onSwipeIllegalTransition = {},

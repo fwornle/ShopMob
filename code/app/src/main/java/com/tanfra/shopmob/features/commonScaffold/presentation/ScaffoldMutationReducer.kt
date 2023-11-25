@@ -7,7 +7,7 @@ import com.tanfra.shopmob.features.common.arch.Reducer
 import com.tanfra.shopmob.features.commonScaffold.presentation.model.ScaffoldMutation
 import com.tanfra.shopmob.features.commonScaffold.presentation.view.ScaffoldViewState
 
-class ScaffoldDefaultMutationReducer(
+class ScaffoldMutationReducer(
     private val resources: Resources,
 ) : Reducer<ScaffoldMutation, ScaffoldViewState> {
     override fun invoke(mutation: ScaffoldMutation, currentState: ScaffoldViewState): ScaffoldViewState =

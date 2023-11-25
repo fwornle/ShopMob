@@ -2,8 +2,8 @@ package com.tanfra.shopmob.features.smobPlanning.di
 
 import com.tanfra.shopmob.features.common.monitor.ConnectivityMonitorImpl
 import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningViewModelMvi
-import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningDefaultActionProcessor
-import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningDefaultMutationReducer
+import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningActionProcessor
+import com.tanfra.shopmob.features.smobPlanning.presentation.PlanningMutationReducer
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.PlanningListsActionProcessor
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.products.PlanningProductsActionProcessor
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.PlanningListsMutationReducer
@@ -16,7 +16,7 @@ val smobPlanningModule = module {
     viewModel {
         PlanningViewModelMvi(
             actionProcessors = listOf(
-                PlanningDefaultActionProcessor(
+                PlanningActionProcessor(
                     context = androidContext(),
                     listRepository = get(),
                     productRepository = get(),
@@ -34,7 +34,7 @@ val smobPlanningModule = module {
                 ),
             ),
             reducers = listOf(
-                PlanningDefaultMutationReducer(
+                PlanningMutationReducer(
                     resources = androidContext().resources,
                 ),
                 PlanningListsMutationReducer(),

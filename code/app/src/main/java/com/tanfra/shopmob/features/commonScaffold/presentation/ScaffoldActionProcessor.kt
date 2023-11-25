@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
-class ScaffoldDefaultActionProcessor(
+class ScaffoldActionProcessor(
     private val connectivityMonitor: ConnectivityMonitor,
 ) : ActionProcessor<ScaffoldAction, ScaffoldMutation, ScaffoldEvent> {
 

@@ -1,8 +1,8 @@
 package com.tanfra.shopmob.features.commonScaffold.di
 
 import com.tanfra.shopmob.features.common.monitor.ConnectivityMonitorImpl
-import com.tanfra.shopmob.features.commonScaffold.presentation.ScaffoldDefaultActionProcessor
-import com.tanfra.shopmob.features.commonScaffold.presentation.ScaffoldDefaultMutationReducer
+import com.tanfra.shopmob.features.commonScaffold.presentation.ScaffoldActionProcessor
+import com.tanfra.shopmob.features.commonScaffold.presentation.ScaffoldMutationReducer
 import com.tanfra.shopmob.features.commonScaffold.presentation.ScaffoldViewModelMvi
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -12,14 +12,14 @@ val commonScaffoldModule = module {
     viewModel {
         ScaffoldViewModelMvi(
             actionProcessors = listOf(
-                ScaffoldDefaultActionProcessor(
+                ScaffoldActionProcessor(
                     connectivityMonitor = ConnectivityMonitorImpl(
                         context = androidContext(),
                     )
                 ),
             ),
             reducers = listOf(
-                ScaffoldDefaultMutationReducer(
+                ScaffoldMutationReducer(
                     resources = androidContext().resources,
                 ),
             ),
