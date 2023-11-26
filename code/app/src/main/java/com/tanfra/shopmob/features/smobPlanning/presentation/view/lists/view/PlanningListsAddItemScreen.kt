@@ -68,7 +68,7 @@ fun PlanningListsAddItemScreen(
                     daSelection: Pair<String, String>,
                 ->
                 viewModel.process(
-                    PlanningAction.SaveNewItem(daName, daDescription, daSelection)
+                    PlanningAction.SaveNewListItem(daName, daDescription, daSelection)
                 )
             },
         )

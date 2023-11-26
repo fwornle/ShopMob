@@ -50,8 +50,6 @@ fun PlanningListsBrowseScreen(
     val reloadLists = { viewModel.process(PlanningAction.RefreshLists) }
     val pullRefreshState = rememberPullRefreshState(viewState.isRefreshing, reloadLists)
 
-//    // state of snackbar host
-//    val snackbarHostState = remember { SnackbarHostState() }
 
     // actions to be triggered (once) on CREATED
     LaunchedEffect(Unit) {
@@ -70,7 +68,6 @@ fun PlanningListsBrowseScreen(
                 when (event) {
                     is PlanningEvent.NavigateToList -> onNavigateToList(event.list)
                     else -> { /* ignore */ }
-                    // further events...
                 }
             }
         }

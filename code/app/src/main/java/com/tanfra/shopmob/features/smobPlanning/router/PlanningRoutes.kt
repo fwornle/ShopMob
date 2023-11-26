@@ -89,10 +89,12 @@ sealed class PlanningRoutes {
 
         @Composable
         fun Screen(
+            selectedListId: String,
             navigateToShopSelect: () -> Unit,
             goBack: () -> Unit,
         ) = PlanningProductsAddItemScreen(
             viewModel = koinViewModel(),
+            selectedListId = selectedListId,
             navigateToShopSelect = navigateToShopSelect,
             goBack = goBack,
         )

@@ -44,22 +44,41 @@ import com.tanfra.shopmob.features.common.view.DropDown
 import com.tanfra.shopmob.features.common.theme.ShopMobTheme
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.types.ImmutableList
+import com.tanfra.shopmob.smob.data.types.InShop
+import com.tanfra.shopmob.smob.data.types.ProductCategory
+import com.tanfra.shopmob.smob.data.types.ProductMainCategory
+import com.tanfra.shopmob.smob.data.types.ProductSubCategory
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun PlanningProductsAddItemContent(
+    selectedListId: String,
     selectedShop: SmobShopATO,
     mainCategoryItems: ImmutableList<Pair<String, String>>,
     subCategoryItems: ImmutableList<Pair<String, String>>,
     onSelectShopClicked: () -> Unit,
-    onSaveClicked: (String, String, Pair<String, String>) -> Unit,
+    onSaveClicked: (String, String, String, ProductCategory, InShop) -> Unit,
 ) {
 
     // local uiState
     var name by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var mainCategorySelected by remember { mutableStateOf(Pair("", "")) }
-    var subCategorySelected by remember { mutableStateOf(Pair("", "")) }
+    var mainCategorySelected by remember {
+        mutableStateOf(
+            Pair(
+                ProductMainCategory.entries.first().ordinal.toString(),
+                ProductMainCategory.entries.first().name
+            )
+        )
+    }
+    var subCategorySelected by remember {
+        mutableStateOf(
+            Pair(
+                ProductSubCategory.entries.first().ordinal.toString(),
+                ProductSubCategory.entries.first().name
+            )
+        )
+    }
 
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -191,15 +210,25 @@ fun PlanningProductsAddItemContent(
 
         }
 
-
         if(name.isNotEmpty() && isNameValid) {
             Button(
                 onClick = {
                     // store list
                     onSaveClicked(
+                        selectedListId,
                         name,
                         description,
-                        mainCategorySelected,
+                        ProductCategory(
+                            main = ProductMainCategory.entries
+                                .elementAt(mainCategorySelected.first.toInt()),
+                            sub = ProductSubCategory.entries
+                                .elementAt(subCategorySelected.first.toInt())
+                        ),
+                        InShop(
+                            selectedShop.category,
+                            selectedShop.name,
+                            selectedShop.location
+                        )
                     )
 
                     // reset inputs
@@ -234,25 +263,31 @@ fun PreviewPlanningProductsAddItem() {
     // static parameters
     val mainCategory = ImmutableList(
         listOf(
-            Pair("mainCat1", "main 1"),
-            Pair("mainCat2", "main 2"),
+            Pair("0", "main 1"),
+            Pair("1", "main 2"),
         )
     )
 
     val subCategory = ImmutableList(
         listOf(
-            Pair("subCat1", "sub 1"),
-            Pair("subCat2", "sub 2"),
+            Pair("0", "sub 1"),
+            Pair("1", "sub 2"),
         )
     )
 
     ShopMobTheme {
         PlanningProductsAddItemContent(
+            selectedListId = "invalid list Id",
             selectedShop = SmobShopATO(),
             mainCategoryItems = mainCategory,
             subCategoryItems = subCategory,
             onSelectShopClicked = {},
-            onSaveClicked = { _: String, _: String, _: Pair<String, String> -> },
+            onSaveClicked = {
+                    _: String,
+                    _: String,
+                    _: String,
+                    _: ProductCategory,
+                    _: InShop -> },
         )
     }
 

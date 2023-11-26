@@ -39,16 +39,8 @@ fun NavGraphBuilder.routes(
                 Screen {
                     /* navigateToList */
                         list: SmobListATO ->
-                    setNewTitle(list.name)
-                    setFab {
-                        FabAddNewItem {
-                            /* onFab: navigate to add item screen in order to add new product */
-                            navController.navigate(PlanningRoutes.ProductsAddItemScreen.route)
-                        }
-                    }
                     navController.navigate(
-                        PlanningRoutes.ProductsBrowseScreen.route
-                                + "/${list.id}?${list.name}"
+                    PlanningRoutes.ProductsBrowseScreen.route + "/${list.id}?${list.name}"
                     )
                 }
             }
@@ -75,18 +67,20 @@ fun NavGraphBuilder.routes(
                     navArgument("listName") { type = NavType.StringType }
                 ),
             ) { backStackEntry ->
-                setNewTitle(backStackEntry.arguments?.getString("listName") ?: title)
+                val listId = backStackEntry.arguments?.getString("listId") ?: INVALID_ITEM_ID
+                val listName = backStackEntry.arguments?.getString("listName") ?: title
+                setNewTitle(listName)
                 setGoBackFlag(true)
                 setFab {
                     FabAddNewItem {
                         /* onFab: navigate to add item screen in order to add new product */
-                        navController.navigate(PlanningRoutes.ProductsAddItemScreen.route)
+                        navController.navigate(
+                            PlanningRoutes.ProductsAddItemScreen.route
+                            + "/${listId}"
+                        )
                     }
                 }
-                Screen(
-                    listId = backStackEntry.arguments
-                        ?.getString("listId") ?: INVALID_ITEM_ID,
-                ) { product ->
+                Screen(listId) { product ->
                     /* navigateToProductDetails */
                     setNewTitle(product.name)
                     setGoBackFlag(true)
@@ -101,7 +95,13 @@ fun NavGraphBuilder.routes(
 
 
         with(PlanningRoutes.ProductsAddItemScreen) {
-           composable(route) {
+           composable(
+               route = "$route/{listId}",
+               arguments = listOf(
+                   navArgument("listId") { type = NavType.StringType },
+               )
+           ) { backStackEntry ->
+               val listId = backStackEntry.arguments?.getString("listId") ?: INVALID_ITEM_ID
                setNewTitle(title)
                setGoBackFlag(true)
                setFab {
@@ -111,6 +111,7 @@ fun NavGraphBuilder.routes(
                    }
                }
                Screen(
+                   selectedListId = listId,
                    navigateToShopSelect= {
                        navController.navigate(PlanningRoutes.ShopsBrowseScreen.route) },
                    goBack = {

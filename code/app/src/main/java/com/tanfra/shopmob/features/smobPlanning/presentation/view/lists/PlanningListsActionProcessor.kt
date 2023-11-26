@@ -28,7 +28,7 @@ class PlanningListsActionProcessor(
             when (action) {
                 is PlanningAction.ConfirmListSwipe -> confirmListSwipeAction(action.item)
                 is PlanningAction.NavigateToProductsOnList -> navigateToProductsOnList(action.list)
-                is PlanningAction.SaveNewItem ->
+                is PlanningAction.SaveNewListItem ->
                     saveNewSmobList(
                         action.name,
                         action.description,
@@ -95,10 +95,10 @@ class PlanningListsActionProcessor(
     }
 
 
-    // save newly created SmobList and navigate to wherever 'onSaveDone' takes us...
-    private suspend fun FlowCollector<Pair<PlanningMutation?, PlanningEvent?>>.navigateToProductsOnList(
-        list: SmobListATO,
-    ) = emit(null to PlanningEvent.NavigateToList(list))
+    // trigger navigation to list details screen
+    private suspend fun FlowCollector<Pair<PlanningMutation?, PlanningEvent?>>
+            .navigateToProductsOnList(list: SmobListATO) =
+        emit(null to PlanningEvent.NavigateToList(list))
 
 
     // save newly created SmobList and navigate to wherever 'onSaveDone' takes us...

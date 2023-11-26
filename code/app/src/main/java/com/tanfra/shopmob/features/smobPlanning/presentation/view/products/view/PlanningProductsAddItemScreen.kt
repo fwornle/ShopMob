@@ -17,6 +17,8 @@ import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningActio
 import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningEvent
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.PlanningViewState
 import com.tanfra.shopmob.smob.data.types.ImmutableList
+import com.tanfra.shopmob.smob.data.types.InShop
+import com.tanfra.shopmob.smob.data.types.ProductCategory
 import com.tanfra.shopmob.smob.data.types.ProductMainCategory
 import com.tanfra.shopmob.smob.data.types.ProductSubCategory
 import kotlinx.coroutines.flow.collectLatest
@@ -24,6 +26,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun PlanningProductsAddItemScreen(
     viewModel: PlanningViewModelMvi,
+    selectedListId: String,
     navigateToShopSelect: () -> Unit,
     goBack: () -> Unit,
 ) {
@@ -47,7 +50,6 @@ fun PlanningProductsAddItemScreen(
     // actions to be triggered (once) on STARTED
     LaunchedEffect(Unit) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.process(action = PlanningAction.LoadGroups)
 
             // collect event flow - triggers reactions to signals from VM
             viewModel.eventFlow.collectLatest { event ->
@@ -74,17 +76,26 @@ fun PlanningProductsAddItemScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         PlanningProductsAddItemContent(
-            viewState.selectedShop,
+            selectedListId = selectedListId,
+            selectedShop = viewState.selectedShop,
             mainCategoryItems = mainCategories,
             subCategoryItems = subCategories,
             onSelectShopClicked = {},
             onSaveClicked = {
-                    daName: String,
-                    daDescription: String,
-                    daSelection: Pair<String, String>,
+                    daSelectedListId: String,
+                    daProductName: String,
+                    daProductDescription: String,
+                    daProductCategory: ProductCategory,
+                    daProductInShop: InShop,
                 ->
                 viewModel.process(
-                    PlanningAction.SaveNewItem(daName, daDescription, daSelection)
+                    PlanningAction.SaveNewProductOnListItem(
+                        daSelectedListId,
+                        daProductName,
+                        daProductDescription,
+                        daProductCategory,
+                        daProductInShop,
+                    )
                 )
             },
         )
