@@ -26,7 +26,7 @@ sealed class PlanningRoutes {
 
     data object ListsBrowseScreen : PlanningRoutes() {
         const val route = "planningListsBrowsing"
-        const val title = "ShopMob"
+        const val title = "ShopMob Lists"
 
         // mechanism to filter out SmobList items which belong to the current user
         private fun onFilterList(items: List<SmobListATO>): List<SmobListATO> {

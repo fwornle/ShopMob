@@ -59,7 +59,7 @@ fun ScaffoldScreen(
     viewModel: ScaffoldViewModelMvi,
     startTitle: String,
     startDestination: String,
-    bottomBarDestinations: List<TopLevelDestination> = listOf(),
+    bottomBarDestinations: ImmutableList<TopLevelDestination> = ImmutableList(listOf()),
     drawerMenuItems: ImmutableList<Pair<ImageVector, String>> = ImmutableList(listOf()),
 ) {
     // lifecycle aware collection of viewState flow
@@ -106,7 +106,7 @@ fun ScaffoldScreen(
     val navController: NavHostController = rememberNavController()
 
     // trace re-composes
-    Timber.i("recomposing 'ScreenScaffold' - title: ${viewState.currentTitle}")
+    Timber.i("recomposing 'ScreenScaffold' - titleStack: ${viewState.titleStack.items}")
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -116,7 +116,7 @@ fun ScaffoldScreen(
                     // Timber.i("recomposing 'TopAppBar' title: $cachedTitle")
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = viewState.currentTitle,
+                        text = viewState.titleStack.items.last(),
                         style = MaterialTheme.typography.headlineSmall,
                         color = Color.White,
                         overflow = TextOverflow.Ellipsis,
@@ -162,12 +162,12 @@ fun ScaffoldScreen(
             )
         },
         bottomBar = {
-            if(bottomBarDestinations.isNotEmpty()) {
+            if(bottomBarDestinations.items.isNotEmpty()) {
                 BottomBar(
                     destinations = bottomBarDestinations,
                     currentDestination = navController.currentBackStackEntryAsState().value?.destination,
                     onNavigateToDestination = { route: String ->
-                        bottomBarDestinations
+                        bottomBarDestinations.items
                             .first { dest -> route == dest.route }
                             .let { setNewTitle(it.title) }
                         navController.navigate(route) {
@@ -214,7 +214,7 @@ fun ScaffoldScreen(
 private fun ScreenScaffoldPreview() {
 
     // navigation destinations
-    val topLevelDestinations = listOf(
+    val topLevelDestinations = ImmutableList(listOf(
         TopLevelDestination(
             route = PlanningRoutes.ListsBrowseScreen.route,
             selectedIcon = R.drawable.ic_baseline_view_list_24,
@@ -234,7 +234,7 @@ private fun ScreenScaffoldPreview() {
             iconName = "Shops",
             title = "Shops"
         )
-    )
+    ))
 
     // drawer menu destinations
     val drawerMenuDestinations = listOf(

@@ -1,12 +1,12 @@
 package com.tanfra.shopmob.features.commonScaffold.presentation.view
 
 import androidx.compose.runtime.Composable
+import com.tanfra.shopmob.smob.data.types.ImmutableList
 
 data class ScaffoldViewState(
 
     // scaffold states
-    val currentTitle: String = "App",
-    val previousTitle: List<String> = listOf(),
+    val titleStack: ImmutableList<String> = ImmutableList(listOf("App")),
     val currentGoBackFlag: Boolean = false,
     val currentFab: (@Composable () -> Unit)? = null,
 
@@ -17,4 +17,4 @@ data class ScaffoldViewState(
     val errorMessage: String = "",
     val isContentVisible: Boolean = false,
 
-)
+    )

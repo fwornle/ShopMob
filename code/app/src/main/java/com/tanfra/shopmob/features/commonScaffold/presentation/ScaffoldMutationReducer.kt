@@ -6,6 +6,7 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.features.common.arch.Reducer
 import com.tanfra.shopmob.features.commonScaffold.presentation.model.ScaffoldMutation
 import com.tanfra.shopmob.features.commonScaffold.presentation.view.ScaffoldViewState
+import com.tanfra.shopmob.smob.data.types.ImmutableList
 
 class ScaffoldMutationReducer(
     private val resources: Resources,
@@ -41,20 +42,26 @@ class ScaffoldMutationReducer(
         copy(currentFab = newFab)
 
     private fun ScaffoldViewState.mutateToNewTitle(newTitle: String): ScaffoldViewState {
-        val newTitleStack = previousTitle.toMutableList()
-        newTitleStack.add(currentTitle)
-        return copy(
-            currentTitle = newTitle,
-            previousTitle = newTitleStack.toList(),
-        )
+        // fw-240103:
+        // somehow, compose sees the need to recompose the screen (twice) --> screws up this
+        // accumulative memory - the following "if" fixes this (workaround)
+        return if(this.titleStack.items.contains(newTitle).not()) {
+            val newTitleStack = titleStack.items.toMutableList()
+            newTitleStack.add(newTitle)
+            copy(
+                titleStack = ImmutableList(newTitleStack),
+            )
+        } else {
+            this
+        }
     }
 
     private fun ScaffoldViewState.mutateToPreviousTitle(): ScaffoldViewState {
-        val newTitleStack = previousTitle.toMutableList()
+        val newTitleStack = titleStack.items.toMutableList()
+        newTitleStack.removeLast()
 
         return copy(
-            currentTitle = newTitleStack.removeLast(),
-            previousTitle = newTitleStack.toList(),
+            titleStack = ImmutableList(newTitleStack),
         )
     }
 

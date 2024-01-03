@@ -37,7 +37,7 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
     ): View {
 
         // navigation destinations
-        val smobBottomBarDestinations = listOf(
+        val smobBottomBarDestinations = ImmutableList(listOf(
             TopLevelDestination(
                 route = PlanningRoutes.ListsBrowseScreen.route,
                 selectedIcon = R.drawable.ic_baseline_view_list_24,
@@ -57,7 +57,7 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
                 iconName = "Shops",
                 title = "Shops"
             )
-        )
+        ))
 
         // drawer menu destinations
         val smobDrawerMenuItems = listOf(

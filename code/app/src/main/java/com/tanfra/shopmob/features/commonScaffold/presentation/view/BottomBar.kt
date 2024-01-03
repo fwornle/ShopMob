@@ -18,10 +18,11 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import com.tanfra.shopmob.smob.data.types.ImmutableList
 
 @Composable
 fun BottomBar(
-    destinations: List<TopLevelDestination>,
+    destinations: ImmutableList<TopLevelDestination>,
     currentDestination: NavDestination?,
     onNavigateToDestination: (route: String) -> Unit
 ) {
@@ -33,7 +34,7 @@ fun BottomBar(
             )
             .height(70.dp),
     ) {
-        destinations.forEach { destination ->
+        destinations.items.forEach { destination ->
 
             val selected = currentDestination
                 ?.hierarchy
