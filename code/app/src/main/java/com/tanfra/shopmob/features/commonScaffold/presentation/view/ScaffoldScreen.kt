@@ -106,7 +106,7 @@ fun ScaffoldScreen(
     val navController: NavHostController = rememberNavController()
 
     // trace re-composes
-    Timber.i("recomposing 'ScreenScaffold' - title: $viewState.currentTitle")
+    Timber.i("recomposing 'ScreenScaffold' - title: ${viewState.currentTitle}")
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -228,11 +228,11 @@ private fun ScreenScaffoldPreview() {
             iconName = "New List",
             title = "Add New SmobList"
         ), TopLevelDestination(
-            route = PlanningRoutes.Screen3Screen.route,
-            selectedIcon = R.drawable.ic_location,
-            unselectedIcon = R.drawable.ic_save,
-            iconName = "Screen 3",
-            title = "Screen 3"
+            route = PlanningRoutes.ShopsBrowseScreen.route,
+            selectedIcon = R.drawable.ic_baseline_shopping_cart_24,
+            unselectedIcon = R.drawable.ic_baseline_shopping_cart_24,
+            iconName = "Shops",
+            title = "Shops"
         )
     )
 

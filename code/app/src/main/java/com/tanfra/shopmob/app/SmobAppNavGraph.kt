@@ -145,13 +145,37 @@ fun NavGraphBuilder.routes(
                 setNewTitle(title)
                 setGoBackFlag(true)
                 setFab(null)
-                Screen { /* TODO: navigateToShopDetails */ }
+                Screen { shop ->
+                    /* navigateToShopDetails */
+                    setNewTitle(shop.name)
+                    setGoBackFlag(true)
+                    setFab(null)
+                    navController.navigate(
+                        PlanningRoutes.ShopDetailsScreen.route
+                                + "/${shop.id}?${shop.name}"
+                    )
+                }
             }
         }
 
-        composable(route = PlanningRoutes.Screen3Screen.route) {
-            PlanningRoutes.Screen3Screen.Screen()
+        with(PlanningRoutes.ShopDetailsScreen) {
+            composable(
+                route = "$route/{shopId}?{shopName}",
+                arguments = listOf(
+                    navArgument("shopId") { type = NavType.StringType },
+                    navArgument("shopName") { type = NavType.StringType }
+                ),
+            ) { backStackEntry ->
+                setNewTitle(backStackEntry.arguments?.getString("shopName") ?: title)
+                setGoBackFlag(true)
+                setFab(null)
+                Screen(
+                    shopId = backStackEntry.arguments
+                        ?.getString("shopId") ?: INVALID_ITEM_ID,
+                )
+            }
         }
 
     }
+
 }

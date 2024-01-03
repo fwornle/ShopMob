@@ -23,6 +23,7 @@ class PlanningShopsActionProcessor(
         flow {
             when (action) {
                 is PlanningAction.ConfirmShopSwipe -> confirmShopSwipeAction(action.item)
+                is PlanningAction.LoadShop -> loadShop(action.shopId)
                 is PlanningAction.NavigateToShopDetails -> navigateToShopDetails(action.shop)
                 is PlanningAction.SaveNewShopItem ->
                     saveNewSmobShop(
@@ -80,6 +81,35 @@ class PlanningShopsActionProcessor(
         // ... this also triggers an immediate push to the backend (once stored locally)
         shopRepository.updateSmobItem(updatedShop)
 
+    }
+
+
+    // load specific shop
+    private suspend fun FlowCollector<Pair<PlanningMutation?, PlanningEvent?>>.loadShop(
+        shopId: String,
+    ) {
+        emit(PlanningMutation.ShowLoader to null)
+
+        // fetch selected shop contents
+        shopRepository.getSmobItem(shopId).collect {
+            when(it) {
+                Resource.Empty -> {
+                    Timber.i("shop flow collection returns empty")
+                    emit(PlanningMutation.ShowShopDetails(shop = SmobShopATO()) to null)
+                    emit(PlanningMutation.ShowError(
+                        Exception("Collection of shop details from backend returns empty")
+                    ) to null)
+                }
+                is Resource.Failure -> {
+                    Timber.i("shop flow collection returns error")
+                    emit(PlanningMutation.ShowError(exception = it.exception) to null)
+                }
+                is Resource.Success -> {
+                    Timber.i("shop flow collection successful")
+                    emit(PlanningMutation.ShowShopDetails(shop = it.data) to null)
+                }
+            }  // when
+        }  // shopRepository
     }
 
 

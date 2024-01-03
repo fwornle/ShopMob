@@ -51,8 +51,7 @@ fun KeyValueText(
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
             modifier = modifier
-                .weight(2f)
-                .padding(horizontal = 12.dp),
+                .weight(1.3f)
         )
         Text(
             modifier = if (animate) {
@@ -60,9 +59,11 @@ fun KeyValueText(
                     .graphicsLayer(alpha = alpha)
                     .background(Color.LightGray)
                     .weight(3.5f)
+                    .padding(horizontal = 12.dp)
             } else {
                 modifier
                     .weight(3.5f)
+                    .padding(horizontal = 12.dp)
             },
             text = value,
             color = valueColor,

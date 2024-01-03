@@ -44,6 +44,7 @@ sealed interface PlanningAction {
 
     // shops actions
     data class ConfirmShopSwipe(val item: SmobShopATO) : PlanningAction
+    data class LoadShop(val shopId: String) : PlanningAction
     data class NavigateToShopDetails(val shop: SmobShopATO) : PlanningAction
     data class SaveNewShopItem(
         val name: String,

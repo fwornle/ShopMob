@@ -4,10 +4,10 @@ import androidx.compose.runtime.Composable
 import com.tanfra.shopmob.app.SmobApp
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view.PlanningListsAddItemScreen
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view.PlanningListsBrowseScreen
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view.Screen3
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.products.view.PlanningProductDetailsScreen
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.products.view.PlanningProductsAddItemScreen
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.products.view.PlanningProductsBrowseScreen
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.shops.view.PlanningShopDetailsScreen
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.shops.view.PlanningShopsBrowseScreen
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
@@ -136,12 +136,17 @@ sealed class PlanningRoutes {
         ) { list -> onFilterList(list) }
     }
 
-    data object Screen3Screen : PlanningRoutes() {
-        const val route = "planningListsSreen3"
-        const val title = "Screen 3"
+    data object ShopDetailsScreen : PlanningRoutes() {
+        const val route = "planningShopDetails"
+        const val title = "Shop Details"
 
         @Composable
-        fun Screen() = Screen3()
+        fun Screen(
+            shopId: String,
+        ) = PlanningShopDetailsScreen(
+            viewModel = koinViewModel(),
+            shopId = shopId,
+        )
     }
 
 }
