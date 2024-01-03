@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.features.smobPlanning.presentation.view.shops
+package com.tanfra.shopmob.features.smobPlanning.presentation.view.shops.obsoleteRemove
 
 import android.os.Vibrator
 import androidx.core.content.ContextCompat.startActivity

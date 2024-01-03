@@ -2,6 +2,7 @@ package com.tanfra.shopmob.features.smobPlanning.presentation.model
 
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
 import com.tanfra.shopmob.smob.data.types.InShop
 import com.tanfra.shopmob.smob.data.types.ProductCategory
 
@@ -11,8 +12,10 @@ sealed interface PlanningAction {
     data object CheckConnectivity : PlanningAction
     data object IllegalSwipe : PlanningAction
     data object LoadLists : PlanningAction
+    data object LoadShops : PlanningAction
     data object LoadGroups : PlanningAction
     data object RefreshLists : PlanningAction
+    data object RefreshShops : PlanningAction
     data object RefreshProducts : PlanningAction
 
     // lists actions
@@ -37,6 +40,15 @@ sealed interface PlanningAction {
         val productDescription: String,
         val productCategory: ProductCategory,
         val productInShop: InShop,
+    ) : PlanningAction
+
+    // shops actions
+    data class ConfirmShopSwipe(val item: SmobShopATO) : PlanningAction
+    data class NavigateToShopDetails(val shop: SmobShopATO) : PlanningAction
+    data class SaveNewShopItem(
+        val name: String,
+        val description: String,
+        val group: Pair<String, String>
     ) : PlanningAction
 
 }

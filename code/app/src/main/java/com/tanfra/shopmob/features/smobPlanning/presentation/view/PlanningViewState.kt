@@ -24,6 +24,7 @@ data class PlanningViewState(
     val productItemsOnList: List<SmobProductATO> = listOf(),
     val selectedProduct: SmobProductATO = SmobProductATO(),
     val selectedShop: SmobShopATO = SmobShopATO(),
+    val shopItems: List<SmobShopATO> = listOf(),
 )
 
 @Immutable

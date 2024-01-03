@@ -4,11 +4,11 @@ import androidx.compose.runtime.Composable
 import com.tanfra.shopmob.app.SmobApp
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view.PlanningListsAddItemScreen
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view.PlanningListsBrowseScreen
-import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view.PlanningShopsBrowseScreen
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.lists.view.Screen3
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.products.view.PlanningProductDetailsScreen
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.products.view.PlanningProductsAddItemScreen
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.products.view.PlanningProductsBrowseScreen
+import com.tanfra.shopmob.features.smobPlanning.presentation.view.shops.view.PlanningShopsBrowseScreen
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
@@ -117,13 +117,23 @@ sealed class PlanningRoutes {
         const val route = "planningShopsBrowsing"
         const val title = "ShopMob Shops"
 
+        // mechanism to filter out SmobList items which belong to the current user
+        private fun onFilterList(items: List<SmobShopATO>): List<SmobShopATO> {
+            // take out all items which have been deleted by swiping
+            return items
+                .filter { item -> item.status != ItemStatus.DELETED  }
+                .sortedWith(
+                    compareBy { it.position }
+                )
+        }
+
         @Composable
         fun Screen(
             navigateToShopDetails: (SmobShopATO) -> Unit,
         ) = PlanningShopsBrowseScreen(
             viewModel = koinViewModel(),
-            onNavigateToShopsDetails = navigateToShopDetails,
-        )
+            onNavigateToShop = navigateToShopDetails,
+        ) { list -> onFilterList(list) }
     }
 
     data object Screen3Screen : PlanningRoutes() {

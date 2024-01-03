@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@id/smobPlanningShopsTableFragment"
-        android:name="com.tanfra.shopmob.features.smobPlanning.presentation.view.shops.PlanningShopsTableFragment"
+        android:name="com.tanfra.shopmob.features.smobPlanning.presentation.view.shops.obsoleteRemove.PlanningShopsTableFragment"
         android:label="Planning Shops Table"
         tools:layout="@layout/fragment_planning_shops_table"
         >

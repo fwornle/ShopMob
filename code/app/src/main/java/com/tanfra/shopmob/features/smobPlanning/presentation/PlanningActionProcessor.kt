@@ -11,6 +11,7 @@ import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningMutat
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobGroupRepository
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobListRepository
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobProductRepository
+import com.tanfra.shopmob.smob.data.repo.repoIf.SmobShopRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.zeUtils.vibrateDevice
 import kotlinx.coroutines.flow.Flow
@@ -22,6 +23,7 @@ import timber.log.Timber
 class PlanningActionProcessor(
     private val context: Context,
     private val listRepository: SmobListRepository,
+    private val shopRepository: SmobShopRepository,
     private val productRepository: SmobProductRepository,
     private val groupRepository: SmobGroupRepository,
     private val connectivityMonitor: ConnectivityMonitor,
@@ -33,8 +35,10 @@ class PlanningActionProcessor(
         } else flow {
             when (action) {
                 PlanningAction.LoadLists -> loadLists()
+                PlanningAction.LoadShops -> loadShops()
                 PlanningAction.LoadGroups -> loadGroups()
                 PlanningAction.RefreshLists -> refreshLists()
+                PlanningAction.RefreshShops -> refreshShops()
                 PlanningAction.RefreshProducts -> refreshProducts()
                 PlanningAction.IllegalSwipe -> illegalSwipeAction()
                 else -> {
@@ -82,6 +86,29 @@ class PlanningActionProcessor(
     }
 
 
+    // load lists from local DB
+    private suspend fun FlowCollector<Pair<PlanningMutation?, PlanningEvent?>>.loadShops() {
+        emit(PlanningMutation.ShowLoader to null)
+
+        shopRepository.getSmobItems().collect {
+            when(it) {
+                Resource.Empty -> {
+                    Timber.i("shop flow collection returns empty")
+                    emit(PlanningMutation.ShowShops(shops = listOf()) to null)
+                }
+                is Resource.Failure -> {
+                    Timber.i("shop flow collection returns error")
+                    emit(PlanningMutation.ShowError(exception = it.exception) to null)
+                }
+                is Resource.Success -> {
+                    Timber.i("shop flow collection successful")
+                    emit(PlanningMutation.ShowShops(shops = it.data) to null)
+                }
+            }
+        }
+    }
+
+
     private suspend fun FlowCollector<Pair<PlanningMutation?, PlanningEvent?>>.loadGroups() {
         groupRepository.getSmobItems().collect {
             when(it) {
@@ -104,6 +131,9 @@ class PlanningActionProcessor(
 
     // refreshing view (= load lists from backend)
     private suspend fun refreshLists() = listRepository.refreshItemsInLocalDB()
+
+    // refreshing view (= load shops from backend)
+    private suspend fun refreshShops() = shopRepository.refreshItemsInLocalDB()
 
     // refreshing view (= load products from backend)
     private suspend fun refreshProducts() = productRepository.refreshItemsInLocalDB()

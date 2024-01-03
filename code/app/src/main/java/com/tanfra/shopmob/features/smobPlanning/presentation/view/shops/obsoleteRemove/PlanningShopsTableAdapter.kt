@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.features.smobPlanning.presentation.view.shops
+package com.tanfra.shopmob.features.smobPlanning.presentation.view.shops.obsoleteRemove
 
 import android.view.View
 import androidx.databinding.ViewDataBinding
@@ -35,9 +35,7 @@ class PlanningShopsTableAdapter(rootView: View, callBack: (selectedSmobATO: Smob
         return items
             .filter { item -> item.status != ItemStatus.DELETED  }
             .sortedWith(
-                compareBy(
-                    { it.position },
-                )
+                compareBy { it.position }
             )
     }
 

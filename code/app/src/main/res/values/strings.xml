@@ -96,7 +96,9 @@
     <string name="add_smob_item_name">Add ShopMob item name</string>
     <string name="add_smob_item_desc">Add ShopMob item description</string>
     <string name="add_smob_list_name">Add ShopMob list name</string>
+    <string name="add_smob_shop_name">Add ShopMob shop name</string>
     <string name="add_smob_list_desc">Add ShopMob list description</string>
+    <string name="add_smob_shop_desc">Add ShopMob shop description</string>
     <string name="add_smob_shop">Add ShopMob shop</string>
     <string name="add_smob_group">Add ShopMob group</string>
     <string name="add_smob_item">Add ShopMob item</string>

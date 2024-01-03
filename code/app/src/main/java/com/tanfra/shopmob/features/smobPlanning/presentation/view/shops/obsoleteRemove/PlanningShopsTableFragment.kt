@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.features.smobPlanning.presentation.view.shops
+package com.tanfra.shopmob.features.smobPlanning.presentation.view.shops.obsoleteRemove
 
 import android.content.Intent
 import android.os.Bundle
@@ -66,7 +66,7 @@ class PlanningShopsTableFragment : BaseFragment(), KoinComponent {
         binding.rlPlanningShopList.setOnRefreshListener {
 
             // deactivate SwipeRefreshLayout spinner
-            binding.rlPlanningShopList.setRefreshing(false)
+            binding.rlPlanningShopList.isRefreshing = false
 
             // refresh local DB data from backend (for this list) - also updates 'showNoData'
             viewModel.swipeRefreshShopDataInLocalDB()
