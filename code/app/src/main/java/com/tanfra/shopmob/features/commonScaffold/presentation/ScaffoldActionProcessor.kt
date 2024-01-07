@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 
 class ScaffoldActionProcessor(
     private val connectivityMonitor: ConnectivityMonitor,
@@ -23,14 +24,18 @@ class ScaffoldActionProcessor(
             when (action) {
 
                 // Scaffold management
-                is ScaffoldAction.SetGoBackFlag -> setGoBackFlag(action.newFlag)
+                is ScaffoldAction.SetNewScaffold -> setNewScaffold(
+                    action.newTitle,
+                    action.newGoBackFlag,
+                    action.newFab
+                )
+                ScaffoldAction.SetPreviousScaffold-> setPreviousScaffold()
                 is ScaffoldAction.SetNewFab -> setNewFab(action.newFab)
-                is ScaffoldAction.SetNewTitle -> setNewTitle(action.newTitle)
-                ScaffoldAction.SetPreviousTitle -> setPreviousTitle()
 
                 // generic
                 else -> {
                     //no-op
+                    Timber.i("MVI.UI: ${action.toString().take(50)}... not found in ScaffoldActionProcessor")
                 }
             }
         }
@@ -40,24 +45,25 @@ class ScaffoldActionProcessor(
     // Actions ---------------------------------------------------------------------------
     // Actions ---------------------------------------------------------------------------
 
-    // set new state of GoBack flag in Scaffold
-    private suspend fun FlowCollector<Pair<ScaffoldMutation?, ScaffoldEvent?>>.setGoBackFlag(
-        daFlag : Boolean
-    ) = emit(ScaffoldMutation.SetGoBackFlag(daFlag) to null)
+    // set new Scaffold parameters (title, GoBack icon, FAB)
+    private suspend fun FlowCollector<Pair<ScaffoldMutation?, ScaffoldEvent?>>.setNewScaffold(
+        daTitle : String,
+        daFlag: Boolean,
+        daFab: (@Composable () -> Unit)?,
+    ) = emit(ScaffoldMutation.SetNewScaffold(
+        daTitle = daTitle,
+        daFlag = daFlag,
+        daFab = daFab
+    ) to null)
+
+    // set new title in TopAppBar of Scaffold
+    private suspend fun FlowCollector<Pair<ScaffoldMutation?, ScaffoldEvent?>>
+            .setPreviousScaffold() = emit(ScaffoldMutation.SetPreviousScaffold to null)
 
     // set new Fab in Scaffold
     private suspend fun FlowCollector<Pair<ScaffoldMutation?, ScaffoldEvent?>>.setNewFab(
         daFab : (@Composable () -> Unit)?
     ) = emit(ScaffoldMutation.SetNewFab(daFab) to null)
-
-    // set new title in TopAppBar of Scaffold
-    private suspend fun FlowCollector<Pair<ScaffoldMutation?, ScaffoldEvent?>>.setNewTitle(
-        daTitle : String
-    ) = emit(ScaffoldMutation.SetNewTitle(daTitle) to null)
-
-    // set new title in TopAppBar of Scaffold
-    private suspend fun FlowCollector<Pair<ScaffoldMutation?, ScaffoldEvent?>>.setPreviousTitle() =
-        emit(ScaffoldMutation.SetPreviousTitle to null)
 
     private fun checkConnectivity() =
         connectivityMonitor.statusFlow

@@ -43,19 +43,25 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
                 selectedIcon = R.drawable.ic_baseline_view_list_24,
                 unselectedIcon = R.drawable.ic_baseline_view_list_24,
                 iconName = "Show Lists",
-                title = "ShopMob"
+                title = "ShopMob",
+                goBackFlag = false,
+                fab = null
             ), TopLevelDestination(
                 route = PlanningRoutes.ListsAddItemScreen.route,
                 selectedIcon = R.drawable.ic_add,
                 unselectedIcon = R.drawable.ic_add,
                 iconName = "New List",
-                title = "Add New SmobList"
+                title = "Add New SmobList",
+                goBackFlag = true,
+                fab = null
             ), TopLevelDestination(
                 route = PlanningRoutes.ShopsBrowseScreen.route,
                 selectedIcon = R.drawable.ic_baseline_shopping_cart_24,
                 unselectedIcon = R.drawable.ic_baseline_shopping_cart_24,
                 iconName = "Shops",
-                title = "Shops"
+                title = "Shops",
+                goBackFlag = false,
+                fab = null
             )
         ))
 

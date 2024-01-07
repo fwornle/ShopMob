@@ -74,5 +74,9 @@ data class TopLevelDestination(
     val selectedIcon: Int,
     val unselectedIcon: Int,
     val iconName: String,
+
+    // behavioral elements
     val title: String,
+    val goBackFlag: Boolean,
+    val fab: (@Composable () -> Unit)?,
 )

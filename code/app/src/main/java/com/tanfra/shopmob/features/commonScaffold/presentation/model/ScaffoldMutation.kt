@@ -5,10 +5,13 @@ import androidx.compose.runtime.Composable
 sealed interface ScaffoldMutation {
 
     // Scaffold mutations
-    data class SetGoBackFlag(val daFlag: Boolean) : ScaffoldMutation
+    data class SetNewScaffold(
+        val daTitle: String,
+        val daFlag: Boolean,
+        val daFab: (@Composable () -> Unit)?
+    ) : ScaffoldMutation
+    data object SetPreviousScaffold : ScaffoldMutation
     data class SetNewFab(val daFab: (@Composable () -> Unit)?) : ScaffoldMutation
-    data class SetNewTitle(val daTitle: String) : ScaffoldMutation
-    data object SetPreviousTitle : ScaffoldMutation
 
     // generic content mutations
     data object ShowLostConnection : ScaffoldMutation

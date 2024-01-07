@@ -40,12 +40,6 @@ fun PlanningProductsAddItemScreen(
             context = viewModel.viewModelScope.coroutineContext,
         )
 
-    // actions to be triggered (once) on CREATED
-    LaunchedEffect(Unit) {
-        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-            viewModel.process(action = PlanningAction.CheckConnectivity)
-        }
-    }
 
     // actions to be triggered (once) on STARTED
     LaunchedEffect(Unit) {
@@ -64,11 +58,11 @@ fun PlanningProductsAddItemScreen(
 
     // fetch main and sub categories (onyl done once)
     val mainCategories = remember {
-        ImmutableList(ProductMainCategory.values().map { item ->
+        ImmutableList(ProductMainCategory.entries.map { item ->
             Pair(item.ordinal.toString(), item.name) })
     }
     val subCategories = remember {
-        ImmutableList(ProductSubCategory.values().map { item ->
+        ImmutableList(ProductSubCategory.entries.map { item ->
             Pair(item.ordinal.toString(), item.name) })
     }
 

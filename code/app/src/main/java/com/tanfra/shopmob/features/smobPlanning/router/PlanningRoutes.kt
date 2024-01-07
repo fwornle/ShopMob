@@ -24,9 +24,15 @@ sealed class PlanningRoutes {
         const val title = "ShopMob"
     }
 
+    // planning screens cluster (nested NavGraph)
+    data object PlanningStart : PlanningRoutes() {
+        const val route = "planningStart"
+        const val title = "ShopMob Planning"
+    }
+
     data object ListsBrowseScreen : PlanningRoutes() {
         const val route = "planningListsBrowsing"
-        const val title = "ShopMob Lists"
+        const val title = "Planning Lists"
 
         // mechanism to filter out SmobList items which belong to the current user
         private fun onFilterList(items: List<SmobListATO>): List<SmobListATO> {

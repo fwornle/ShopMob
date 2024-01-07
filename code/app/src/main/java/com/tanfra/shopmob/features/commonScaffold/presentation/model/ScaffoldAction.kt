@@ -5,10 +5,13 @@ import androidx.compose.runtime.Composable
 sealed interface ScaffoldAction {
 
     // scaffold management
-    data class SetGoBackFlag(val newFlag: Boolean): ScaffoldAction
+    data class SetNewScaffold(
+        val newTitle: String,
+        val newGoBackFlag: Boolean,
+        val newFab: (@Composable () -> Unit)?,
+    ): ScaffoldAction
+    data object SetPreviousScaffold : ScaffoldAction
     data class SetNewFab(val newFab: (@Composable () -> Unit)?) : ScaffoldAction
-    data class SetNewTitle(val newTitle: String): ScaffoldAction
-    data object SetPreviousTitle : ScaffoldAction
 
     // default actions
     data object CheckConnectivity : ScaffoldAction

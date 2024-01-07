@@ -62,6 +62,28 @@ fun ScaffoldScreen(
     bottomBarDestinations: ImmutableList<TopLevelDestination> = ImmutableList(listOf()),
     drawerMenuItems: ImmutableList<Pair<ImageVector, String>> = ImmutableList(listOf()),
 ) {
+
+    // local store
+    val scope = rememberCoroutineScope()
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+
+    // setters for Scaffold parameters: title, GoBack icon, FAB
+    val setNewScaffold = { daTitle: String, daFlag: Boolean, daFab: (@Composable () -> Unit)? ->
+        Timber.i("MVI.UI: setting new Scaffold parameters ($daTitle, $daFlag, $daFab)")
+        viewModel.process(ScaffoldAction.SetNewScaffold(daTitle, daFlag, daFab))
+    }
+    val restorePreviousScaffold = {
+        Timber.i("MVI.UI: restoring previous Scaffold parameters")
+        viewModel.process(ScaffoldAction.SetPreviousScaffold)
+    }
+    val setNewFab = { newFab: (@Composable () -> Unit)? ->
+        Timber.i("MVI.UI: setting new FAB (${newFab.toString()})")
+        viewModel.process(ScaffoldAction.SetNewFab(newFab))
+    }
+
+    // navigation root
+    val navController: NavHostController = rememberNavController()
+
     // lifecycle aware collection of viewState flow
     val lifecycleOwner = LocalLifecycleOwner.current
     val viewState by viewModel.viewStateFlow
@@ -76,7 +98,7 @@ fun ScaffoldScreen(
     LaunchedEffect(Unit) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
             viewModel.process(ScaffoldAction.CheckConnectivity)
-            viewModel.process(ScaffoldAction.SetNewTitle(startTitle))
+            setNewScaffold(startTitle, false, null)
         }
     }
 
@@ -94,26 +116,15 @@ fun ScaffoldScreen(
     }
 
 
-    // local store
-    val scope = rememberCoroutineScope()
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
-
-    // setters for TopAppBar title management
-    val setNewTitle = { daTitle: String -> viewModel.process(ScaffoldAction.SetNewTitle(daTitle)) }
-    val restorePreviousTitle = { viewModel.process(ScaffoldAction.SetPreviousTitle) }
-
-    // navigation root
-    val navController: NavHostController = rememberNavController()
-
     // trace re-composes
-    Timber.i("recomposing 'ScreenScaffold' - titleStack: ${viewState.titleStack.items}")
+    Timber.i("MVI.UI: recomposing 'ScreenScaffold' - titleStack: ${viewState.titleStack.items}")
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
                 title = {
-                    // Timber.i("recomposing 'TopAppBar' title: $cachedTitle")
+                    // Timber.i("MVI.UI: recomposing 'TopAppBar' title: $cachedTitle")
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = viewState.titleStack.items.last(),
@@ -128,11 +139,11 @@ fun ScaffoldScreen(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
                 navigationIcon = {
-                    if (viewState.currentGoBackFlag) {
+                    if (viewState.goBackFlagStack.items.last()) {
                         IconButton(
                             modifier = Modifier,
                             onClick = {
-                                restorePreviousTitle()
+                                restorePreviousScaffold()
                                 navController.popBackStack() },
                         ) {
                             Icon(
@@ -169,7 +180,7 @@ fun ScaffoldScreen(
                     onNavigateToDestination = { route: String ->
                         bottomBarDestinations.items
                             .first { dest -> route == dest.route }
-                            .let { setNewTitle(it.title) }
+                            .let { setNewScaffold(it.title, it.goBackFlag, it.fab) }
                         navController.navigate(route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
@@ -181,7 +192,7 @@ fun ScaffoldScreen(
                 )
             }  // any BottomBar destinations at all?
         },
-        floatingActionButton = { viewState.currentFab?.let { it() } },
+        floatingActionButton = { viewState.fabStack.items.last()?.let { it() } },
         floatingActionButtonPosition = FabPosition.End,
     ) { paddingValues ->
         NavDrawer(
@@ -196,12 +207,9 @@ fun ScaffoldScreen(
             ) {
                 routes(
                     navController = navController,
-                    setNewTitle = setNewTitle,
-                    restorePreviousTitle = restorePreviousTitle,
-                    setGoBackFlag = { daFlag: Boolean ->
-                        viewModel.process(ScaffoldAction.SetGoBackFlag(daFlag)) },
-                    setFab = { newFab: (@Composable () -> Unit)? ->
-                        viewModel.process(ScaffoldAction.SetNewFab(newFab)) },
+                    setNewScaffold = setNewScaffold,
+                    restorePreviousScaffold = restorePreviousScaffold,
+                    setNewFab = setNewFab,
                 )
             }
         }
@@ -220,20 +228,26 @@ private fun ScreenScaffoldPreview() {
             selectedIcon = R.drawable.ic_baseline_view_list_24,
             unselectedIcon = R.drawable.ic_baseline_view_list_24,
             iconName = "Show Lists",
-            title = "ShopMob"
+            title = "ShopMob",
+            goBackFlag = false,
+            fab = null,
         ), TopLevelDestination(
             route = PlanningRoutes.ListsAddItemScreen.route,
             selectedIcon = R.drawable.ic_add,
             unselectedIcon = R.drawable.ic_add,
             iconName = "New List",
-            title = "Add New SmobList"
+            title = "Add New SmobList",
+            goBackFlag = false,
+            fab = null,
         ), TopLevelDestination(
             route = PlanningRoutes.ShopsBrowseScreen.route,
             selectedIcon = R.drawable.ic_baseline_shopping_cart_24,
             unselectedIcon = R.drawable.ic_baseline_shopping_cart_24,
             iconName = "Shops",
-            title = "Shops"
-        )
+            title = "Shops",
+            goBackFlag = false,
+            fab = null,
+            )
     ))
 
     // drawer menu destinations

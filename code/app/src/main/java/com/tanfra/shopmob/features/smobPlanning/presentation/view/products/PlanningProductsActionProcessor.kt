@@ -51,6 +51,7 @@ class PlanningProductsActionProcessor(
                     )
                 else -> {
                     //no-op
+                    Timber.i("MVI.UI: ${action.toString().take(50)}... not found in PlanningProductsActionProcessor")
                 }
             }
         }

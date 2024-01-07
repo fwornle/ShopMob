@@ -7,6 +7,9 @@ data class ScaffoldViewState(
 
     // scaffold states
     val titleStack: ImmutableList<String> = ImmutableList(listOf("App")),
+    val goBackFlagStack: ImmutableList<Boolean> = ImmutableList(listOf(false)),
+    val fabStack: ImmutableList<(@Composable () -> Unit)?> = ImmutableList(listOf(null)),
+
     val currentGoBackFlag: Boolean = false,
     val currentFab: (@Composable () -> Unit)? = null,
 

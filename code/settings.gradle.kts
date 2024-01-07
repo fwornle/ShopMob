@@ -19,7 +19,7 @@ dependencyResolutionManagement {
         create("build") {
 
             // general android
-            version("android", "8.2.0")
+            version("android", "8.2.1")
             plugin("android-application", "com.android.application").versionRef("android")
             plugin("android-library", "com.android.library").versionRef("android")
 

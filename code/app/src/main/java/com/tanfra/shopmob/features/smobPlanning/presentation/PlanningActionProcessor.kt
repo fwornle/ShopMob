@@ -43,6 +43,7 @@ class PlanningActionProcessor(
                 PlanningAction.IllegalSwipe -> illegalSwipeAction()
                 else -> {
                     //no-op
+                    Timber.i("MVI.UI: ${action.toString().take(50)}... not found in PlanningActionProcessor")
                 }
             }
         }

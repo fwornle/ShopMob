@@ -1,5 +1,6 @@
 package com.tanfra.shopmob.features.smobPlanning.presentation
 
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import com.tanfra.shopmob.features.common.arch.ActionProcessor
 import com.tanfra.shopmob.features.common.arch.Reducer
@@ -11,6 +12,8 @@ import com.tanfra.shopmob.features.smobPlanning.presentation.model.PlanningMutat
 import com.tanfra.shopmob.features.smobPlanning.presentation.view.PlanningViewState
 import kotlinx.coroutines.flow.Flow
 
+// VM declared STABLE, as VM consumers will be notified when any contents change (via observers)
+@Stable
 class PlanningViewModelMvi(
     actionProcessors: Collection<ActionProcessor<PlanningAction, PlanningMutation, PlanningEvent>>,
     reducers: Collection<Reducer<PlanningMutation, PlanningViewState>>,

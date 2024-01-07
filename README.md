@@ -66,8 +66,7 @@ The use of firebase's login UI with the federated login credentials from **googl
 to be registered at the firebase developer console. During development, this SHA-1 can be obtained from the _.android keystore_ on the development 
 machine as described here: [https://developers.google.com/android/guides/client-auth](https://developers.google.com/android/guides/client-auth):
 
-`keytool -list -v \
--alias androiddebugkey -keystore %USERPROFILE%\.android\debug.keystore
+`keytool -list -v -alias androiddebugkey -keystore %USERPROFILE%\.android\debug.keystore
 `
 
 Make sure to be using the keytool distributed with Java, at _%JAVA_HOME%/bin_. The default password

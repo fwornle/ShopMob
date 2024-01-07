@@ -15,13 +15,19 @@ class ScaffoldMutationReducer(
         when (mutation) {
 
             // Scaffold management mutations
-            is ScaffoldMutation.SetGoBackFlag ->
-                currentState.mutateToNewGoBackFlag(newFlag = mutation.daFlag)
-            is ScaffoldMutation.SetNewFab -> currentState.mutateToNewFab(newFab = mutation.daFab)
-            is ScaffoldMutation.SetNewTitle ->
-                currentState.mutateToNewTitle(newTitle = mutation.daTitle)
-            ScaffoldMutation.SetPreviousTitle ->
-                currentState.mutateToPreviousTitle()
+            is ScaffoldMutation.SetNewScaffold ->
+                currentState.mutateToNewScaffold(
+                    newTitle = mutation.daTitle,
+                    newGoBackFlag = mutation.daFlag,
+                    newFab = mutation.daFab
+                    )
+            ScaffoldMutation.SetPreviousScaffold ->
+                currentState.mutateToPreviousScaffold()
+            // Scaffold management mutations
+            is ScaffoldMutation.SetNewFab ->
+                currentState.mutateToNewFab(
+                    newFab = mutation.daFab
+                )
 
             // generic content mutations
             ScaffoldMutation.ShowLoader ->
@@ -35,33 +41,63 @@ class ScaffoldMutationReducer(
 
         }
 
-    private fun ScaffoldViewState.mutateToNewGoBackFlag(newFlag: Boolean) =
-        copy(currentGoBackFlag = newFlag)
-
-    private fun ScaffoldViewState.mutateToNewFab(newFab: (@Composable () -> Unit)?) =
-        copy(currentFab = newFab)
-
-    private fun ScaffoldViewState.mutateToNewTitle(newTitle: String): ScaffoldViewState {
+    private fun ScaffoldViewState.mutateToNewScaffold(
+        newTitle: String,
+        newGoBackFlag: Boolean,
+        newFab: (@Composable () -> Unit)?
+    ): ScaffoldViewState {
         // fw-240103:
         // somehow, compose sees the need to recompose the screen (twice) --> screws up this
         // accumulative memory - the following "if" fixes this (workaround)
         return if(this.titleStack.items.contains(newTitle).not()) {
+
             val newTitleStack = titleStack.items.toMutableList()
             newTitleStack.add(newTitle)
+
+            val newGoBackFlagStack = goBackFlagStack.items.toMutableList()
+            newGoBackFlagStack.add(newGoBackFlag)
+
+            val newFabStack = fabStack.items.toMutableList()
+            newFabStack.add(newFab)
+
             copy(
                 titleStack = ImmutableList(newTitleStack),
+                goBackFlagStack = ImmutableList(newGoBackFlagStack),
+                fabStack = ImmutableList(newFabStack),
             )
+
         } else {
             this
         }
     }
 
-    private fun ScaffoldViewState.mutateToPreviousTitle(): ScaffoldViewState {
+    private fun ScaffoldViewState.mutateToPreviousScaffold(): ScaffoldViewState {
+
         val newTitleStack = titleStack.items.toMutableList()
         newTitleStack.removeLast()
 
+        val newGoBackFlagStack = goBackFlagStack.items.toMutableList()
+        newGoBackFlagStack.removeLast()
+
+        val newFabStack = fabStack.items.toMutableList()
+        newFabStack.removeLast()
+
         return copy(
             titleStack = ImmutableList(newTitleStack),
+            goBackFlagStack = ImmutableList(newGoBackFlagStack),
+            fabStack = ImmutableList(newFabStack),
+        )
+    }
+
+    private fun ScaffoldViewState.mutateToNewFab(
+        newFab: (@Composable () -> Unit)?
+    ): ScaffoldViewState {
+        val newFabStack = fabStack.items.toMutableList()
+        newFabStack.removeLast()
+        newFabStack.add(newFab)
+
+        return copy(
+            fabStack = ImmutableList(newFabStack),
         )
     }
 

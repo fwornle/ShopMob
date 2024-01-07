@@ -1,6 +1,7 @@
 package com.tanfra.shopmob.app
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -15,32 +16,68 @@ import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 
 fun NavGraphBuilder.routes(
     navController: NavHostController,
-    setNewTitle: (String) -> Unit = {},
-    restorePreviousTitle: () -> Unit = {},
-    setGoBackFlag: (Boolean) -> Unit = {},
-    setFab: ((@Composable () -> Unit)?) -> Unit = {},
+    setNewScaffold: (String, Boolean, (@Composable () -> Unit)?) -> Unit = { _, _, _ -> },
+    restorePreviousScaffold: () -> Unit = {},
+    setNewFab: ((@Composable () -> Unit)?) -> Unit = {},
 ) {
     // all planning routes
     navigation(
-        startDestination = PlanningRoutes.ListsBrowseScreen.route,
+        startDestination = PlanningRoutes.PlanningStart.route,
         route = PlanningRoutes.PlanningScreens.route
     ) {
 
-        with(PlanningRoutes.ListsBrowseScreen) {
+        // (invisible) start-up screen (to allow Scaffold control for actual "startDestion")
+        with(PlanningRoutes.PlanningStart) {
+
             composable(route) {
-                setNewTitle(title)
-                setGoBackFlag(false)
-                setFab {
+
+                // prepare scaffold of actual "startDestination"
+                setNewScaffold(PlanningRoutes.ListsBrowseScreen.title, false) {
+                    /* FAB: navigate to add item screen in order to add new list */
                     FabAddNewItem {
-                        /* onFab: navigate to add item screen in order to add new list */
+                        setNewScaffold(PlanningRoutes.ListsAddItemScreen.title, true, null)
                         navController.navigate(PlanningRoutes.ListsAddItemScreen.route)
                     }
                 }
+
+                // navigate to actual "startDestination"
+                navController.navigate(PlanningRoutes.ListsBrowseScreen.route) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    restoreState = true
+                    launchSingleTop = true
+                }
+
+            }
+        }
+
+        // actual "startupDestination"
+        with(PlanningRoutes.ListsBrowseScreen) {
+            composable(route) {
                 Screen {
                     /* navigateToList */
                         list: SmobListATO ->
+
+                    // adjust Scaffold items
+                    setNewScaffold(list.name, true) {
+                        FabAddNewItem {
+                            /* onFab: navigate to "add new product" (on list) screen */
+                            setNewScaffold(
+                                "${PlanningRoutes.ProductsAddItemScreen.title} to '${list.name}'",
+                                true,
+                                null    // FAB only appears when "save" conditions have been met
+                            )
+                            navController.navigate(
+                                PlanningRoutes.ProductsAddItemScreen.route
+                                        + "/${list.id}"
+                            )
+                        }
+                    }
+
+                    // navigate to "browse products" (of selected list)
                     navController.navigate(
-                    PlanningRoutes.ProductsBrowseScreen.route + "/${list.id}?${list.name}"
+                    PlanningRoutes.ProductsBrowseScreen.route + "/${list.id}"
                     )
                 }
             }
@@ -48,12 +85,9 @@ fun NavGraphBuilder.routes(
 
         with(PlanningRoutes.ListsAddItemScreen) {
             composable(route) {
-                setNewTitle(title)
-                setGoBackFlag(true)
-                setFab(null)  // set inside screen logic, when "save" conditions have been met
-                Screen(setFab) {
+                Screen(setNewFab) {
                     /* goBack */
-                    restorePreviousTitle()
+                    restorePreviousScaffold()
                     navController.popBackStack()
                 }
             }
@@ -61,30 +95,19 @@ fun NavGraphBuilder.routes(
 
         with(PlanningRoutes.ProductsBrowseScreen) {
             composable(
-                route = "$route/{listId}?{listName}",
+                route = "$route/{listId}",
                 arguments = listOf(
                     navArgument("listId") { type = NavType.StringType },
-                    navArgument("listName") { type = NavType.StringType }
                 ),
             ) { backStackEntry ->
                 val listId = backStackEntry.arguments?.getString("listId") ?: INVALID_ITEM_ID
-                val listName = backStackEntry.arguments?.getString("listName") ?: title
-                setNewTitle(listName)
-                setGoBackFlag(true)
-                setFab {
-                    FabAddNewItem {
-                        /* onFab: navigate to add item screen in order to add new product */
-                        navController.navigate(
-                            PlanningRoutes.ProductsAddItemScreen.route
-                            + "/${listId}"
-                        )
-                    }
-                }
                 Screen(listId) { product ->
                     /* navigateToProductDetails */
-                    setNewTitle(product.name)
-                    setGoBackFlag(true)
-                    setFab(null)
+                    setNewScaffold(
+                        product.name,
+                        true,
+                        null
+                    )
                     navController.navigate(
                         PlanningRoutes.ProductDetailsScreen.route
                                 + "/${product.id}?${product.name}"
@@ -102,12 +125,10 @@ fun NavGraphBuilder.routes(
                )
            ) { backStackEntry ->
                val listId = backStackEntry.arguments?.getString("listId") ?: INVALID_ITEM_ID
-               setNewTitle(title)
-               setGoBackFlag(true)
-               setFab {
+               setNewScaffold(title, true) {
                    FabSaveNewItem {
                        /* onFab: TODO: save and return  */
-                       setFab(null)
+                       setNewFab(null)
                    }
                }
                Screen(
@@ -115,7 +136,7 @@ fun NavGraphBuilder.routes(
                    navigateToShopSelect= {
                        navController.navigate(PlanningRoutes.ShopsBrowseScreen.route) },
                    goBack = {
-                       restorePreviousTitle()
+                       restorePreviousScaffold()
                        navController.popBackStack()
                    }
                )
@@ -130,9 +151,6 @@ fun NavGraphBuilder.routes(
                     navArgument("productName") { type = NavType.StringType }
                 ),
             ) { backStackEntry ->
-                setNewTitle(backStackEntry.arguments?.getString("productName") ?: title)
-                setGoBackFlag(true)
-                setFab(null)
                 Screen(
                     productId = backStackEntry.arguments
                         ?.getString("productId") ?: INVALID_ITEM_ID,
@@ -142,17 +160,13 @@ fun NavGraphBuilder.routes(
 
         with (PlanningRoutes.ShopsBrowseScreen) {
             composable(route) {
-                setNewTitle(title)
-                setGoBackFlag(true)
-                setFab(null)
+                setNewScaffold(title, false, null)
                 Screen { shop ->
                     /* navigateToShopDetails */
-                    setNewTitle(shop.name)
-                    setGoBackFlag(true)
-                    setFab(null)
+                    setNewScaffold(shop.name, true, null)
                     navController.navigate(
                         PlanningRoutes.ShopDetailsScreen.route
-                                + "/${shop.id}?${shop.name}"
+                                + "/${shop.id}"
                     )
                 }
             }
@@ -160,15 +174,11 @@ fun NavGraphBuilder.routes(
 
         with(PlanningRoutes.ShopDetailsScreen) {
             composable(
-                route = "$route/{shopId}?{shopName}",
+                route = "$route/{shopId}",
                 arguments = listOf(
                     navArgument("shopId") { type = NavType.StringType },
-                    navArgument("shopName") { type = NavType.StringType }
                 ),
             ) { backStackEntry ->
-                setNewTitle(backStackEntry.arguments?.getString("shopName") ?: title)
-                setGoBackFlag(true)
-                setFab(null)
                 Screen(
                     shopId = backStackEntry.arguments
                         ?.getString("shopId") ?: INVALID_ITEM_ID,

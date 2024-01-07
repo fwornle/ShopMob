@@ -33,13 +33,6 @@ fun PlanningListsAddItemScreen(
             context = viewModel.viewModelScope.coroutineContext,
         )
 
-    // actions to be triggered (once) on CREATED
-    LaunchedEffect(Unit) {
-        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-            viewModel.process(action = PlanningAction.CheckConnectivity)
-        }
-    }
-
     // actions to be triggered (once) on STARTED
     LaunchedEffect(Unit) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {

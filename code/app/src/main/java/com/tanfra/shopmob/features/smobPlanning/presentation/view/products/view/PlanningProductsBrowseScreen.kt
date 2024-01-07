@@ -52,12 +52,6 @@ fun PlanningProductsBrowseScreen(
     val refreshProducts = { viewModel.process(PlanningAction.RefreshProducts) }
     val pullRefreshState = rememberPullRefreshState(viewState.isRefreshing, refreshProducts)
 
-    // actions to be triggered (once) on CREATED
-    LaunchedEffect(Unit) {
-        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-            viewModel.process(action = PlanningAction.CheckConnectivity)
-        }
-    }
 
     // actions to be triggered (once) on STARTED
     LaunchedEffect(Unit) {
