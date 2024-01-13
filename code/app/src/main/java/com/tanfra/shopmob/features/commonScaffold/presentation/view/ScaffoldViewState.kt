@@ -10,14 +10,11 @@ data class ScaffoldViewState(
     val goBackFlagStack: ImmutableList<Boolean> = ImmutableList(listOf(false)),
     val fabStack: ImmutableList<(@Composable () -> Unit)?> = ImmutableList(listOf(null)),
 
-    val currentGoBackFlag: Boolean = false,
-    val currentFab: (@Composable () -> Unit)? = null,
-
     // generic content
     val isConnectivityVisible: Boolean = false,
     val isLoaderVisible: Boolean = false,
     val isErrorVisible: Boolean = false,
     val errorMessage: String = "",
-    val isContentVisible: Boolean = false,
+    val isContentVisible: Boolean = false
 
-    )
+)

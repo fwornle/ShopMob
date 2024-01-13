@@ -6,10 +6,6 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.smob.ui.zeUiBase.BaseFragment
 import com.tanfra.shopmob.smob.ui.zeUiBase.NavigationCommand
 import android.content.Intent
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.view.MenuHost
@@ -17,11 +13,9 @@ import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.features.commonScaffold.presentation.view.ScaffoldScreen
-import com.tanfra.shopmob.features.commonScaffold.presentation.view.TopLevelDestination
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.features.smobPlanning.presentation.obsoleteRemove.PlanningViewModel
 import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
-import com.tanfra.shopmob.smob.data.types.ImmutableList
 import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
@@ -36,42 +30,6 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
         savedInstanceState: Bundle?
     ): View {
 
-        // navigation destinations
-        val smobBottomBarDestinations = ImmutableList(listOf(
-            TopLevelDestination(
-                route = PlanningRoutes.ListsBrowseScreen.route,
-                selectedIcon = R.drawable.ic_baseline_view_list_24,
-                unselectedIcon = R.drawable.ic_baseline_view_list_24,
-                iconName = "Show Lists",
-                title = "ShopMob",
-                goBackFlag = false,
-                fab = null
-            ), TopLevelDestination(
-                route = PlanningRoutes.ListsAddItemScreen.route,
-                selectedIcon = R.drawable.ic_add,
-                unselectedIcon = R.drawable.ic_add,
-                iconName = "New List",
-                title = "Add New SmobList",
-                goBackFlag = true,
-                fab = null
-            ), TopLevelDestination(
-                route = PlanningRoutes.ShopsBrowseScreen.route,
-                selectedIcon = R.drawable.ic_baseline_shopping_cart_24,
-                unselectedIcon = R.drawable.ic_baseline_shopping_cart_24,
-                iconName = "Shops",
-                title = "Shops",
-                goBackFlag = false,
-                fab = null
-            )
-        ))
-
-        // drawer menu destinations
-        val smobDrawerMenuItems = listOf(
-            Pair(Icons.Default.Favorite, "Favorite"),
-            Pair(Icons.Default.Face, "Face"),
-            Pair(Icons.Default.Email, "Email"),
-        )
-
         // construct view (compose)
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
@@ -80,8 +38,8 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
                     viewModel = koinViewModel(),
                     startTitle = PlanningRoutes.PlanningScreens.title,
                     startDestination = PlanningRoutes.PlanningScreens.route,
-                    bottomBarDestinations = smobBottomBarDestinations,
-                    drawerMenuItems = ImmutableList(smobDrawerMenuItems),
+                    getBottomBarDestItems = PlanningRoutes.PlanningScreens.getBottomBarDestinations,
+                    drawerMenuDestItems = PlanningRoutes.PlanningScreens.drawerMenuDestinations,
                 )
             }
 

@@ -23,7 +23,13 @@ class ScaffoldMutationReducer(
                     )
             ScaffoldMutation.SetPreviousScaffold ->
                 currentState.mutateToPreviousScaffold()
-            // Scaffold management mutations
+            is ScaffoldMutation.ResetToScaffold ->
+                currentState.mutateToResetScaffold(
+                    newTitle = mutation.daTitle,
+                    newGoBackFlag = mutation.daFlag,
+                    newFab = mutation.daFab
+                )
+
             is ScaffoldMutation.SetNewFab ->
                 currentState.mutateToNewFab(
                     newFab = mutation.daFab
@@ -89,11 +95,23 @@ class ScaffoldMutationReducer(
         )
     }
 
+    private fun ScaffoldViewState.mutateToResetScaffold(
+        newTitle: String,
+        newGoBackFlag: Boolean,
+        newFab: (@Composable () -> Unit)?
+    ): ScaffoldViewState =
+        copy(
+            titleStack = ImmutableList(listOf(newTitle)),
+            goBackFlagStack = ImmutableList(listOf(newGoBackFlag)),
+            fabStack = ImmutableList(listOf(newFab)),
+        )
+
     private fun ScaffoldViewState.mutateToNewFab(
         newFab: (@Composable () -> Unit)?
     ): ScaffoldViewState {
         val newFabStack = fabStack.items.toMutableList()
-        newFabStack.removeLast()
+
+        if(newFabStack.isNotEmpty()) { newFabStack.removeLast() }
         newFabStack.add(newFab)
 
         return copy(

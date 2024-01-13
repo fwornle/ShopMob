@@ -5,9 +5,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,6 +20,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,7 +39,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.tanfra.shopmob.R
 import com.tanfra.shopmob.app.routes
 import com.tanfra.shopmob.features.commonScaffold.presentation.ScaffoldViewModelMvi
 import com.tanfra.shopmob.features.commonScaffold.presentation.model.ScaffoldAction
@@ -59,8 +56,10 @@ fun ScaffoldScreen(
     viewModel: ScaffoldViewModelMvi,
     startTitle: String,
     startDestination: String,
-    bottomBarDestinations: ImmutableList<TopLevelDestination> = ImmutableList(listOf()),
-    drawerMenuItems: ImmutableList<Pair<ImageVector, String>> = ImmutableList(listOf()),
+    getBottomBarDestItems:
+        (NavHostController, (String, Boolean, (() -> Unit)?) -> Unit)
+        -> ImmutableList<TopLevelDestination> = { _, _ -> ImmutableList(listOf()) },
+    drawerMenuDestItems: ImmutableList<Pair<ImageVector, String>> = ImmutableList(listOf()),
 ) {
 
     // local store
@@ -76,6 +75,10 @@ fun ScaffoldScreen(
         Timber.i("MVI.UI: restoring previous Scaffold parameters")
         viewModel.process(ScaffoldAction.SetPreviousScaffold)
     }
+    val resetToScaffold = { daTitle: String, daFlag: Boolean, daFab: (@Composable () -> Unit)? ->
+        Timber.i("MVI.UI: resetting new Scaffold parameters to ($daTitle, $daFlag, $daFab)")
+        viewModel.process(ScaffoldAction.ResetToScaffold(daTitle, daFlag, daFab))
+    }
     val setNewFab = { newFab: (@Composable () -> Unit)? ->
         Timber.i("MVI.UI: setting new FAB (${newFab.toString()})")
         viewModel.process(ScaffoldAction.SetNewFab(newFab))
@@ -83,6 +86,9 @@ fun ScaffoldScreen(
 
     // navigation root
     val navController: NavHostController = rememberNavController()
+
+    // fetch top-level destinations and add PlanningList FAB (needs navController, etc. - from here)
+    val bottomBarDestinations = remember { getBottomBarDestItems(navController, setNewScaffold) }
 
     // lifecycle aware collection of viewState flow
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -180,7 +186,7 @@ fun ScaffoldScreen(
                     onNavigateToDestination = { route: String ->
                         bottomBarDestinations.items
                             .first { dest -> route == dest.route }
-                            .let { setNewScaffold(it.title, it.goBackFlag, it.fab) }
+                            .let { resetToScaffold(it.title, it.goBackFlag, it.fab) }
                         navController.navigate(route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
@@ -197,7 +203,7 @@ fun ScaffoldScreen(
     ) { paddingValues ->
         NavDrawer(
             modifier = Modifier.padding(paddingValues),
-            drawerMenuItems = drawerMenuItems,
+            drawerMenuItems = drawerMenuDestItems,
             drawerState = drawerState,
             coroutineScope = scope,
         ) {
@@ -220,50 +226,13 @@ fun ScaffoldScreen(
 @Preview
 @Composable
 private fun ScreenScaffoldPreview() {
-
-    // navigation destinations
-    val topLevelDestinations = ImmutableList(listOf(
-        TopLevelDestination(
-            route = PlanningRoutes.ListsBrowseScreen.route,
-            selectedIcon = R.drawable.ic_baseline_view_list_24,
-            unselectedIcon = R.drawable.ic_baseline_view_list_24,
-            iconName = "Show Lists",
-            title = "ShopMob",
-            goBackFlag = false,
-            fab = null,
-        ), TopLevelDestination(
-            route = PlanningRoutes.ListsAddItemScreen.route,
-            selectedIcon = R.drawable.ic_add,
-            unselectedIcon = R.drawable.ic_add,
-            iconName = "New List",
-            title = "Add New SmobList",
-            goBackFlag = false,
-            fab = null,
-        ), TopLevelDestination(
-            route = PlanningRoutes.ShopsBrowseScreen.route,
-            selectedIcon = R.drawable.ic_baseline_shopping_cart_24,
-            unselectedIcon = R.drawable.ic_baseline_shopping_cart_24,
-            iconName = "Shops",
-            title = "Shops",
-            goBackFlag = false,
-            fab = null,
-            )
-    ))
-
-    // drawer menu destinations
-    val drawerMenuDestinations = listOf(
-        Pair(Icons.Default.Favorite, "Favorite"),
-        Pair(Icons.Default.Face, "Face"),
-        Pair(Icons.Default.Email, "Email"),
-    )
-
     MaterialTheme {
         ScaffoldScreen(
             viewModel = koinViewModel(),
             startTitle = "App",
             startDestination = "AppStartDest",
-            bottomBarDestinations = topLevelDestinations,
-            drawerMenuItems = ImmutableList(drawerMenuDestinations)
+            getBottomBarDestItems = PlanningRoutes.PlanningScreens.getBottomBarDestinations,
+            drawerMenuDestItems = PlanningRoutes.PlanningScreens.drawerMenuDestinations
         )
     }
 }

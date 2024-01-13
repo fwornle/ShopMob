@@ -11,6 +11,11 @@ sealed interface ScaffoldAction {
         val newFab: (@Composable () -> Unit)?,
     ): ScaffoldAction
     data object SetPreviousScaffold : ScaffoldAction
+    data class ResetToScaffold(
+        val newTitle: String,
+        val newGoBackFlag: Boolean,
+        val newFab: (@Composable () -> Unit)?,
+    ): ScaffoldAction
     data class SetNewFab(val newFab: (@Composable () -> Unit)?) : ScaffoldAction
 
     // default actions

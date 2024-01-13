@@ -30,6 +30,11 @@ class ScaffoldActionProcessor(
                     action.newFab
                 )
                 ScaffoldAction.SetPreviousScaffold-> setPreviousScaffold()
+                is ScaffoldAction.ResetToScaffold -> resetToScaffold(
+                    action.newTitle,
+                    action.newGoBackFlag,
+                    action.newFab
+                )
                 is ScaffoldAction.SetNewFab -> setNewFab(action.newFab)
 
                 // generic
@@ -56,9 +61,20 @@ class ScaffoldActionProcessor(
         daFab = daFab
     ) to null)
 
-    // set new title in TopAppBar of Scaffold
+    // set previous Scaffold parameters
     private suspend fun FlowCollector<Pair<ScaffoldMutation?, ScaffoldEvent?>>
             .setPreviousScaffold() = emit(ScaffoldMutation.SetPreviousScaffold to null)
+
+    // reset Scaffold parameters to provided values
+    private suspend fun FlowCollector<Pair<ScaffoldMutation?, ScaffoldEvent?>>.resetToScaffold(
+        daTitle : String,
+        daFlag: Boolean,
+        daFab: (@Composable () -> Unit)?,
+    ) = emit(ScaffoldMutation.ResetToScaffold(
+        daTitle = daTitle,
+        daFlag = daFlag,
+        daFab = daFab
+    ) to null)
 
     // set new Fab in Scaffold
     private suspend fun FlowCollector<Pair<ScaffoldMutation?, ScaffoldEvent?>>.setNewFab(

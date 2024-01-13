@@ -11,6 +11,11 @@ sealed interface ScaffoldMutation {
         val daFab: (@Composable () -> Unit)?
     ) : ScaffoldMutation
     data object SetPreviousScaffold : ScaffoldMutation
+    data class ResetToScaffold(
+        val daTitle: String,
+        val daFlag: Boolean,
+        val daFab: (@Composable () -> Unit)?
+    ) : ScaffoldMutation
     data class SetNewFab(val daFab: (@Composable () -> Unit)?) : ScaffoldMutation
 
     // generic content mutations
