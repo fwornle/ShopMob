@@ -160,7 +160,6 @@ fun NavGraphBuilder.routes(
 
         with (PlanningRoutes.ShopsBrowseScreen) {
             composable(route) {
-                setNewScaffold(title, false, null)
                 Screen { shop ->
                     /* navigateToShopDetails */
                     setNewScaffold(shop.name, true, null)

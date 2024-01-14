@@ -116,6 +116,7 @@ fun ScaffoldScreen(
             viewModel.eventFlow.collectLatest { event ->
                 when (event) {
                     is ScaffoldEvent.Refreshing -> { /* TODO */ }  // ???
+                    else -> { /* nothing - not every event is collected here */ }
                 }
             }
         }
@@ -187,6 +188,7 @@ fun ScaffoldScreen(
                         bottomBarDestinations.items
                             .first { dest -> route == dest.route }
                             .let { resetToScaffold(it.title, it.goBackFlag, it.fab) }
+                        Timber.i("MVI.UI: Triggering BottomBar navigation to $route")
                         navController.navigate(route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true

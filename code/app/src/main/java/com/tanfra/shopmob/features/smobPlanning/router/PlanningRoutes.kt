@@ -38,24 +38,24 @@ sealed class PlanningRoutes {
                     route = ListsBrowseScreen.route,
                     selectedIcon = R.drawable.ic_baseline_view_list_24,
                     unselectedIcon = R.drawable.ic_baseline_view_list_24,
-                    iconName = "Show Lists",
-                    title = "ShopMob",
+                    iconName = ListsBrowseScreen.title,
+                    title = ListsBrowseScreen.title,
                     goBackFlag = false,
                     fab = null
                 ), TopLevelDestination(
                     route = ListsAddItemScreen.route,
                     selectedIcon = R.drawable.ic_add,
                     unselectedIcon = R.drawable.ic_add,
-                    iconName = "New List",
-                    title = "Add New SmobList",
+                    iconName = ListsAddItemScreen.title,
+                    title = ListsAddItemScreen.title,
                     goBackFlag = false,
                     fab = null
                 ), TopLevelDestination(
                     route = ShopsBrowseScreen.route,
                     selectedIcon = R.drawable.ic_baseline_shopping_cart_24,
                     unselectedIcon = R.drawable.ic_baseline_shopping_cart_24,
-                    iconName = "Shops",
-                    title = "Shops",
+                    iconName = ShopsBrowseScreen.title,
+                    title = ShopsBrowseScreen.title,
                     goBackFlag = false,
                     fab = null
                 )
