@@ -109,9 +109,16 @@ class ScaffoldMutationReducer(
     private fun ScaffoldViewState.mutateToNewFab(
         newFab: (@Composable () -> Unit)?
     ): ScaffoldViewState {
-        val newFabStack = fabStack.items.toMutableList()
 
-        if(newFabStack.isNotEmpty()) { newFabStack.removeLast() }
+        // short circuit if no FAB has been set (safety - should never happen)
+        if(fabStack.items.isEmpty()) return this
+
+        // guaranteed to have at least one entry in fabStack.items - check if NOP call
+        if(fabStack.items.last() == newFab) return this
+
+        // actually swap out last FAB to new FAB
+        val newFabStack = fabStack.items.toMutableList()
+        newFabStack.removeLast()
         newFabStack.add(newFab)
 
         return copy(

@@ -10,6 +10,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,31 +49,33 @@ fun PlanningListsAddItemContent(
 
     // derived values
     val inputValidPattern = remember { Regex("[a-zA-Z0-9äöüÄÖÜ ]+") }
-    val isNameValid = name.matches(inputValidPattern)
-    val isDescriptionValid = description.matches(inputValidPattern)
+    val isNameValid by remember { derivedStateOf { name.matches(inputValidPattern) } }
+    val isDescriptionValid by remember { derivedStateOf { description.matches(inputValidPattern) } }
 
 
     // activate floating action button (FAB) - if save conditions have been met
-    if(isNameValid) {
-        setFab {
-            FabSaveNewItem {
-                onSaveClicked(
-                    name,
-                    description,
-                    groupItemSelected,
-                )
+    LaunchedEffect(isNameValid) {
+        if(isNameValid) {
+            setFab {
+                FabSaveNewItem {
+                    onSaveClicked(
+                        name,
+                        description,
+                        groupItemSelected,
+                    )
 
-                // reset inputs
-                name = ""
-                description = ""
-                groupItemSelected = Pair("", "")
+                    // reset inputs
+                    name = ""
+                    description = ""
+                    groupItemSelected = Pair("", "")
 
-                // remove FAB
-                setFab(null)
+                    // remove FAB
+                    setFab(null)
+                }
             }
+        } else {
+            setFab(null)
         }
-    } else {
-        setFab(null)
     }
 
     Column(

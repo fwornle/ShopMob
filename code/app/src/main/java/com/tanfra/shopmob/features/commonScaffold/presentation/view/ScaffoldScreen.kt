@@ -182,6 +182,7 @@ fun ScaffoldScreen(
         bottomBar = {
             if(bottomBarDestinations.items.isNotEmpty()) {
                 BottomBar(
+
                     destinations = bottomBarDestinations,
                     currentDestination = navController.currentBackStackEntryAsState().value?.destination,
                     onNavigateToDestination = { route: String ->
