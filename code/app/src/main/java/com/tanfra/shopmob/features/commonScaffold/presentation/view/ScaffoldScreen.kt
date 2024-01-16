@@ -119,7 +119,6 @@ fun ScaffoldScreen(
             viewModel.eventFlow.collectLatest { event ->
                 when (event) {
                     is ScaffoldEvent.Refreshing -> { /* TODO */ }  // ???
-                    else -> { /* nothing - not every event is collected here */ }
                 }
             }
         }
