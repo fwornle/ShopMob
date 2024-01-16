@@ -59,7 +59,9 @@ fun ScaffoldScreen(
     getBottomBarDestItems:
         (NavHostController, (String, Boolean, (() -> Unit)?) -> Unit)
         -> ImmutableList<TopLevelDestination> = { _, _ -> ImmutableList(listOf()) },
-    drawerMenuDestItems: ImmutableList<Pair<ImageVector, String>> = ImmutableList(listOf()),
+    getDrawerMenuDestItems:
+        (NavHostController, (String, Boolean, (() -> Unit)?) -> Unit)
+    -> ImmutableList<Pair<ImageVector, String>> = { _, _ -> ImmutableList(listOf()) },
 ) {
 
     // local store
@@ -87,8 +89,9 @@ fun ScaffoldScreen(
     // navigation root
     val navController: NavHostController = rememberNavController()
 
-    // fetch top-level destinations and add PlanningList FAB (needs navController, etc. - from here)
+    // fetch top-level and drawer menu destinations
     val bottomBarDestinations = remember { getBottomBarDestItems(navController, setNewScaffold) }
+    val drawerMenuDestItems = remember { getDrawerMenuDestItems(navController, setNewScaffold) }
 
     // lifecycle aware collection of viewState flow
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -235,7 +238,7 @@ private fun ScreenScaffoldPreview() {
             startTitle = "App",
             startDestination = "AppStartDest",
             getBottomBarDestItems = PlanningRoutes.PlanningScreens.getBottomBarDestinations,
-            drawerMenuDestItems = PlanningRoutes.PlanningScreens.drawerMenuDestinations
+            getDrawerMenuDestItems = PlanningRoutes.PlanningScreens.getDrawerMenuDestinations
         )
     }
 }

@@ -33,7 +33,7 @@ sealed class PlanningRoutes {
         const val title = "ShopMob"
 
         // initialize planning BottomBar destinations
-        val bottomBarDestinations = mutableListOf(
+        private val bottomBarDestinations = mutableListOf(
                 TopLevelDestination(
                     route = ListsBrowseScreen.route,
                     selectedIcon = R.drawable.ic_baseline_view_list_24,
@@ -82,13 +82,23 @@ sealed class PlanningRoutes {
         }
 
         // planning drawer menu destinations
-        val drawerMenuDestinations = ImmutableList(
-            listOf(
-                Pair(Icons.Default.Favorite, "Favorite"),
-                Pair(Icons.Default.Face, "Face"),
-                Pair(Icons.Default.Email, "Email")
-            )
+        private val drawerMenuDestinations = mutableListOf(
+            Pair(Icons.Default.Favorite, "Favorite"),
+            Pair(Icons.Default.Face, "Face"),
+            Pair(Icons.Default.Email, "Email")
         )
+
+        // getter function to return drawer menu destinations
+        // the latter typically perform "navigation actions" --> need navController --> lambda
+        val getDrawerMenuDestinations = {
+                navController: NavHostController,
+                setNewScaffold: (String, Boolean, (() -> Unit)?) -> Unit
+            ->
+            // adjust content
+
+            // return the (adjusted) drawer menu items as (now) immutable list
+            ImmutableList(drawerMenuDestinations)
+        }
 
     }
 

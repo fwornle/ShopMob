@@ -28,24 +28,19 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-
-        // construct view (compose)
-        return ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                ScaffoldScreen(
-                    viewModel = koinViewModel(),
-                    startTitle = PlanningRoutes.PlanningScreens.title,
-                    startDestination = PlanningRoutes.PlanningScreens.route,
-                    getBottomBarDestItems = PlanningRoutes.PlanningScreens.getBottomBarDestinations,
-                    drawerMenuDestItems = PlanningRoutes.PlanningScreens.drawerMenuDestinations,
-                )
-            }
-
+    ): View = ComposeView(requireContext()).apply {
+        setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+        setContent {
+            ScaffoldScreen(
+                viewModel = koinViewModel(),
+                startTitle = PlanningRoutes.PlanningScreens.title,
+                startDestination = PlanningRoutes.PlanningScreens.route,
+                getBottomBarDestItems = PlanningRoutes.PlanningScreens.getBottomBarDestinations,
+                getDrawerMenuDestItems = PlanningRoutes.PlanningScreens.getDrawerMenuDestinations,
+            )
         }
-
     }
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
