@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.work.Configuration
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import com.tanfra.shopmob.BuildConfig
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.app.Constants.FCM_TOPIC
 import com.tanfra.shopmob.features.common.commonModule
@@ -18,14 +19,15 @@ import com.tanfra.shopmob.smob.data.remote.utils.NetworkConnectionManager
 import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 import com.tanfra.shopmob.smob.data.repo.repoServices
 import com.tanfra.shopmob.smob.domain.useCases
-import com.tanfra.shopmob.smob.ui.vmServices
 import com.tanfra.shopmob.smob.domain.work.SmobAppWork
 import com.tanfra.shopmob.smob.domain.work.wmServices
+import com.tanfra.shopmob.smob.ui.vmServices
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.context.startKoin
 import timber.log.Timber
+import timber.log.Timber.Forest.plant
 
 
 class SmobApp : Application(), KoinComponent, Configuration.Provider {
@@ -48,8 +50,10 @@ class SmobApp : Application(), KoinComponent, Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
 
-        // initialize Timber (logging) lib
-        Timber.plant(Timber.DebugTree())
+        // initialize Timber (logging) lib - in DEBUG mode only (Timber.i not in RELEASE mode)
+        if (BuildConfig.DEBUG) {
+            plant(Timber.DebugTree())
+        }
 
 
         // instantiate viewModels, repos and DBs and inject them as services into consuming classes
