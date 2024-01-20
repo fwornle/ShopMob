@@ -52,7 +52,7 @@ fun BottomBar(
                     Icon(
                         imageVector = ImageVector.vectorResource(icon),
                         modifier = Modifier.size(16.dp),
-                        contentDescription = null
+                        contentDescription = destination.iconName
                     )
                 },
                 label = {
@@ -67,16 +67,3 @@ fun BottomBar(
     }  // NavigationBar
 
 }
-
-// data type for the definition of destinations reachable via the BottomBar
-data class TopLevelDestination(
-    val route: String,
-    val selectedIcon: Int,
-    val unselectedIcon: Int,
-    val iconName: String,
-
-    // behavioral elements
-    val title: String,
-    val goBackFlag: Boolean,
-    val fab: (@Composable () -> Unit)?,
-)

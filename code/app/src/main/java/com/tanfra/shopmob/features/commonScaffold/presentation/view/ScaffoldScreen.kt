@@ -24,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -57,11 +56,11 @@ fun ScaffoldScreen(
     startTitle: String,
     startDestination: String,
     getBottomBarDestItems:
-        (NavHostController, (String, Boolean, (() -> Unit)?) -> Unit)
+        (NavHostController, (String, Boolean, (@Composable () -> Unit)?) -> Unit)
         -> ImmutableList<TopLevelDestination> = { _, _ -> ImmutableList(listOf()) },
     getDrawerMenuDestItems:
-        (NavHostController, (String, Boolean, (() -> Unit)?) -> Unit)
-    -> ImmutableList<Pair<ImageVector, String>> = { _, _ -> ImmutableList(listOf()) },
+        (NavHostController, (String, Boolean, (@Composable () -> Unit)?) -> Unit)
+    -> ImmutableList<TopLevelDestination> = { _, _ -> ImmutableList(listOf()) },
 ) {
 
     // local store
@@ -184,7 +183,6 @@ fun ScaffoldScreen(
         bottomBar = {
             if(bottomBarDestinations.items.isNotEmpty()) {
                 BottomBar(
-
                     destinations = bottomBarDestinations,
                     currentDestination = navController.currentBackStackEntryAsState().value?.destination,
                     onNavigateToDestination = { route: String ->

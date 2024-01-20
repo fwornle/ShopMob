@@ -1,9 +1,5 @@
 package com.tanfra.shopmob.features.smobPlanning.router
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import com.tanfra.shopmob.R
@@ -36,7 +32,8 @@ sealed class PlanningRoutes {
         private val bottomBarDestinations = mutableListOf(
                 TopLevelDestination(
                     route = ListsBrowseScreen.route,
-                    selectedIcon = R.drawable.ic_baseline_view_list_24,
+                    navTo = {},
+                    selectedIcon = R.drawable.list,
                     unselectedIcon = R.drawable.ic_baseline_view_list_24,
                     iconName = ListsBrowseScreen.title,
                     title = ListsBrowseScreen.title,
@@ -44,6 +41,7 @@ sealed class PlanningRoutes {
                     fab = null
                 ), TopLevelDestination(
                     route = ListsAddItemScreen.route,
+                    navTo = {},
                     selectedIcon = R.drawable.ic_add,
                     unselectedIcon = R.drawable.ic_add,
                     iconName = ListsAddItemScreen.title,
@@ -52,6 +50,7 @@ sealed class PlanningRoutes {
                     fab = null
                 ), TopLevelDestination(
                     route = ShopsBrowseScreen.route,
+                    navTo = {},
                     selectedIcon = R.drawable.ic_baseline_shopping_cart_24,
                     unselectedIcon = R.drawable.ic_baseline_shopping_cart_24,
                     iconName = ShopsBrowseScreen.title,
@@ -65,7 +64,7 @@ sealed class PlanningRoutes {
         // the latter typically perform "navigation actions" --> need navController --> lambda
         val getBottomBarDestinations = {
             navController: NavHostController,
-            setNewScaffold: (String, Boolean, (() -> Unit)?) -> Unit
+            setNewScaffold: (String, Boolean, (@Composable () -> Unit)?) -> Unit
             ->
             bottomBarDestinations[0] = bottomBarDestinations[0].copy(
                 fab = {
@@ -83,18 +82,61 @@ sealed class PlanningRoutes {
 
         // planning drawer menu destinations
         private val drawerMenuDestinations = mutableListOf(
-            Pair(Icons.Default.Favorite, "Favorite"),
-            Pair(Icons.Default.Face, "Face"),
-            Pair(Icons.Default.Email, "Email")
+            TopLevelDestination(
+                route = ListsBrowseScreen.route,
+                navTo = {},
+                selectedIcon = R.drawable.list,
+                unselectedIcon = R.drawable.list,
+                iconName = ListsBrowseScreen.title,
+                title = ListsBrowseScreen.title,
+                goBackFlag = false,
+                fab = null
+            ), TopLevelDestination(
+                route = ListsAddItemScreen.route,
+                navTo = {},
+                selectedIcon = R.drawable.ic_baseline_group_24,
+                unselectedIcon = R.drawable.ic_baseline_group_24,
+                iconName = "Administration",
+                title = "Administration",
+                goBackFlag = false,
+                fab = null
+            ), TopLevelDestination(
+                route = ShopsBrowseScreen.route,
+                navTo = {},
+                selectedIcon = R.drawable.ic_baseline_shopping_cart_24,
+                unselectedIcon = R.drawable.ic_baseline_shopping_cart_24,
+                iconName = ShopsBrowseScreen.title,
+                title = ShopsBrowseScreen.title,
+                goBackFlag = false,
+                fab = null
+            )
         )
 
         // getter function to return drawer menu destinations
         // the latter typically perform "navigation actions" --> need navController --> lambda
         val getDrawerMenuDestinations = {
                 navController: NavHostController,
-                setNewScaffold: (String, Boolean, (() -> Unit)?) -> Unit
+                setNewScaffold: (String, Boolean, (@Composable () -> Unit)?) -> Unit
             ->
-            // adjust content
+            // set navigation target for "Shops" screen
+            drawerMenuDestinations[0] = drawerMenuDestinations[0].copy(
+                navTo = {
+                    setNewScaffold(ListsBrowseScreen.title, false) {
+                        /* FAB: navigate to add item screen in order to add new list */
+                        FabAddNewItem {
+                            setNewScaffold(ListsAddItemScreen.title, true, null)
+                            navController.navigate(ListsAddItemScreen.route)
+                        }
+                    }
+                    navController.navigate(ListsBrowseScreen.route)
+                }
+            )
+            drawerMenuDestinations[2] = drawerMenuDestinations[2].copy(
+                navTo = {
+                    setNewScaffold(ShopsBrowseScreen.title, false, null)
+                    navController.navigate(ShopsBrowseScreen.route)
+                }
+            )
 
             // return the (adjusted) drawer menu items as (now) immutable list
             ImmutableList(drawerMenuDestinations)
