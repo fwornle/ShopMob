@@ -83,6 +83,7 @@ android {
     // enable compose
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     // kotlin/compose compatibility matrix: https://developer.android.com/jetpack/androidx/releases/compose-kotlin

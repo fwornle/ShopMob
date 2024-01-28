@@ -55,12 +55,16 @@ fun ScaffoldScreen(
     viewModel: ScaffoldViewModelMvi,
     startTitle: String,
     startDestination: String,
-    getBottomBarDestItems:
-        (NavHostController, (String, Boolean, (@Composable () -> Unit)?) -> Unit)
-        -> ImmutableList<TopLevelDestination> = { _, _ -> ImmutableList(listOf()) },
-    getDrawerMenuDestItems:
-        (NavHostController, (String, Boolean, (@Composable () -> Unit)?) -> Unit)
-    -> ImmutableList<TopLevelDestination> = { _, _ -> ImmutableList(listOf()) },
+    getBottomBarDestItems: (
+        NavHostController,
+        (String, Boolean, (@Composable () -> Unit)?) -> Unit,  // resetToScaffold
+        (String, Boolean, (@Composable () -> Unit)?) -> Unit)  // setNewScaffold
+    -> ImmutableList<TopLevelDestination> = { _, _, _ -> ImmutableList(listOf()) },
+    getDrawerMenuDestItems: (
+        NavHostController,
+        (String, Boolean, (@Composable () -> Unit)?) -> Unit,  // resetToScaffold
+        (String, Boolean, (@Composable () -> Unit)?) -> Unit)  // setNewScaffold
+    -> ImmutableList<TopLevelDestination> = { _, _, _ -> ImmutableList(listOf()) },
 ) {
 
     // local store
@@ -89,8 +93,10 @@ fun ScaffoldScreen(
     val navController: NavHostController = rememberNavController()
 
     // fetch top-level and drawer menu destinations
-    val bottomBarDestinations = remember { getBottomBarDestItems(navController, setNewScaffold) }
-    val drawerMenuDestItems = remember { getDrawerMenuDestItems(navController, setNewScaffold) }
+    val bottomBarDestinations = remember {
+        getBottomBarDestItems(navController, resetToScaffold, setNewScaffold) }
+    val drawerMenuDestItems = remember {
+        getDrawerMenuDestItems(navController, resetToScaffold, setNewScaffold) }
 
     // lifecycle aware collection of viewState flow
     val lifecycleOwner = LocalLifecycleOwner.current
