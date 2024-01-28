@@ -18,13 +18,14 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.tanfra.shopmob.smob.data.types.ImmutableList
+import timber.log.Timber
 
 @Composable
 fun BottomBar(
     destinations: ImmutableList<TopLevelDestination>,
     currentDestination: NavDestination?,
-    onNavigateToDestination: (route: String) -> Unit
 ) {
 
     NavigationBar(
@@ -42,7 +43,12 @@ fun BottomBar(
 
             NavigationBarItem(
                 selected = selected,
-                onClick = { onNavigateToDestination(destination.route) },
+                onClick = {
+                    // install navTo of currently selected destination as onClick
+                    destinations.items
+                        .first { itemDest -> itemDest.route == destination.route }
+                        .let { it.navTo() }
+                          },
                 icon = {
                     val icon = if (selected) {
                         destination.selectedIcon

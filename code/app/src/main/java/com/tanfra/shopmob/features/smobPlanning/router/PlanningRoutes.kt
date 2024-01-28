@@ -21,6 +21,7 @@ import com.tanfra.shopmob.smob.data.types.ImmutableList
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.ui.zeUtils.consolidateListItem
 import org.koin.androidx.compose.koinViewModel
+import timber.log.Timber
 
 sealed class PlanningRoutes {
 
@@ -33,7 +34,7 @@ sealed class PlanningRoutes {
         private val bottomBarDestinations = mutableListOf(
                 TopLevelDestination(
                     route = ListsBrowseScreen.route,
-                    navTo = { /* unused - bottombar navigation via 'route' */ },
+                    navTo = { /* BBarNav - completed by callback 'getBottomBarDestinations' */ },
                     selectedIcon = R.drawable.list,
                     unselectedIcon = R.drawable.ic_baseline_view_list_24,
                     iconName = ListsBrowseScreen.title,
@@ -42,7 +43,7 @@ sealed class PlanningRoutes {
                     fab = null
                 ), TopLevelDestination(
                     route = ListsAddItemScreen.route,
-                    navTo = { /* unused - bottombar navigation via 'route' */ },
+                    navTo = { /* BBarNav - completed by callback 'getBottomBarDestinations' */ },
                     selectedIcon = R.drawable.ic_add,
                     unselectedIcon = R.drawable.ic_add,
                     iconName = ListsAddItemScreen.title,
@@ -51,7 +52,7 @@ sealed class PlanningRoutes {
                     fab = null
                 ), TopLevelDestination(
                     route = ShopsBrowseScreen.route,
-                    navTo = { /* unused - bottombar navigation via 'route' */ },
+                    navTo = { /* BBarNav - completed by callback 'getBottomBarDestinations' */ },
                     selectedIcon = R.drawable.ic_baseline_shopping_cart_24,
                     unselectedIcon = R.drawable.ic_baseline_shopping_cart_24,
                     iconName = ShopsBrowseScreen.title,
@@ -68,7 +69,29 @@ sealed class PlanningRoutes {
             resetToScaffold: (String, Boolean, (@Composable () -> Unit)?) -> Unit,
             setNewScaffold: (String, Boolean, (@Composable () -> Unit)?) -> Unit
             ->
+
+            // define lambda for navigation to top leve destination
+            val navToTopLevelDest = { dest: TopLevelDestination ->
+                // top level navigation --> reset scaffold stack
+                resetToScaffold(
+                    dest.title,
+                    dest.goBackFlag,
+                    dest.fab
+                )
+                Timber.i("MVI.UI: Triggering BottomBar navigation to ${dest.route}")
+                // top level navigation --> reset popUp stack
+                navController.navigate(dest.route) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    restoreState = true
+                    launchSingleTop = true
+                }
+            }
+
+            // configure all destinations
             bottomBarDestinations[0] = bottomBarDestinations[0].copy(
+                navTo = { navToTopLevelDest(bottomBarDestinations[0]) },
                 fab = {
                     /* FAB: navigate to add item screen in order to add new list */
                     FabAddNewItem {
@@ -76,6 +99,14 @@ sealed class PlanningRoutes {
                         navController.navigate(ListsAddItemScreen.route)
                     }
                 }
+            )
+
+            bottomBarDestinations[1] = bottomBarDestinations[1].copy(
+                navTo = { navToTopLevelDest(bottomBarDestinations[1]) }
+            )
+
+            bottomBarDestinations[2] = bottomBarDestinations[2].copy(
+                navTo = { navToTopLevelDest(bottomBarDestinations[2]) }
             )
 
             // return the (adjusted) BottomBarDestinations as (now) immutable list
@@ -132,6 +163,7 @@ sealed class PlanningRoutes {
                             navController.navigate(ListsAddItemScreen.route)
                         }
                     }
+                    Timber.i("MVI.UI: Triggering NavDrawer navigation to $route")
                     // top level navigation --> reset popUp stack
                     navController.navigate(ListsBrowseScreen.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
@@ -146,6 +178,7 @@ sealed class PlanningRoutes {
                 navTo = {
                     // top level navigation --> reset scaffold stack
                     setNewScaffold(ShopsBrowseScreen.title, false, null)
+                    Timber.i("MVI.UI: Triggering NavDrawer navigation to $route")
                     // top level navigation --> reset popUp stack
                     navController.navigate(ShopsBrowseScreen.route) {
                         popUpTo(navController.graph.findStartDestination().id) {

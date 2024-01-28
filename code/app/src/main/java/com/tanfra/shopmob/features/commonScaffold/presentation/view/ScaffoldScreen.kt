@@ -190,20 +190,7 @@ fun ScaffoldScreen(
             if(bottomBarDestinations.items.isNotEmpty()) {
                 BottomBar(
                     destinations = bottomBarDestinations,
-                    currentDestination = navController.currentBackStackEntryAsState().value?.destination,
-                    onNavigateToDestination = { route: String ->
-                        bottomBarDestinations.items
-                            .first { dest -> route == dest.route }
-                            .let { resetToScaffold(it.title, it.goBackFlag, it.fab) }
-                        Timber.i("MVI.UI: Triggering BottomBar navigation to $route")
-                        navController.navigate(route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            restoreState = true
-                            launchSingleTop = true
-                        }
-                    }
+                    currentDestination = navController.currentBackStackEntryAsState().value?.destination
                 )
             }  // any BottomBar destinations at all?
         },
