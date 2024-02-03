@@ -6,6 +6,7 @@ import com.tanfra.shopmob.R
 import com.tanfra.shopmob.features.common.arch.Reducer
 import com.tanfra.shopmob.features.commonScaffold.presentation.model.ScaffoldMutation
 import com.tanfra.shopmob.features.commonScaffold.presentation.view.ScaffoldViewState
+import com.tanfra.shopmob.features.commonScaffold.presentation.view.TopLevelDestination
 import com.tanfra.shopmob.smob.data.types.ImmutableList
 
 class ScaffoldMutationReducer(
@@ -29,10 +30,13 @@ class ScaffoldMutationReducer(
                     newGoBackFlag = mutation.daFlag,
                     newFab = mutation.daFab
                 )
-
             is ScaffoldMutation.SetNewFab ->
                 currentState.mutateToNewFab(
                     newFab = mutation.daFab
+                )
+            is ScaffoldMutation.SetTopLevelDest ->
+                currentState.mutateToTopLevelDestination(
+                    newDest = mutation.daDest
                 )
 
             // generic content mutations
@@ -125,6 +129,11 @@ class ScaffoldMutationReducer(
             fabStack = ImmutableList(newFabStack),
         )
     }
+
+    private fun ScaffoldViewState.mutateToTopLevelDestination(
+        newDest: TopLevelDestination?
+    ): ScaffoldViewState = copy(selTopLevelDest = newDest)
+
 
     private fun ScaffoldViewState.mutateToDismissLostConnection() =
         copy(isConnectivityVisible = false)

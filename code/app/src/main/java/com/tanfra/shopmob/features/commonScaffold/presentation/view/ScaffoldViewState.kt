@@ -9,6 +9,8 @@ data class ScaffoldViewState(
     val titleStack: ImmutableList<String> = ImmutableList(listOf("App")),
     val goBackFlagStack: ImmutableList<Boolean> = ImmutableList(listOf(false)),
     val fabStack: ImmutableList<(@Composable () -> Unit)?> = ImmutableList(listOf(null)),
+    val selTopLevelDest: TopLevelDestination? = null,
+
 
     // generic content
     val isConnectivityVisible: Boolean = false,

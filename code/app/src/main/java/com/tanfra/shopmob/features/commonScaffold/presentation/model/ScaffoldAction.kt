@@ -1,6 +1,7 @@
 package com.tanfra.shopmob.features.commonScaffold.presentation.model
 
 import androidx.compose.runtime.Composable
+import com.tanfra.shopmob.features.commonScaffold.presentation.view.TopLevelDestination
 
 sealed interface ScaffoldAction {
 
@@ -17,6 +18,7 @@ sealed interface ScaffoldAction {
         val newFab: (@Composable () -> Unit)?,
     ): ScaffoldAction
     data class SetNewFab(val newFab: (@Composable () -> Unit)?) : ScaffoldAction
+    data class SetNewTopLevelDest(val daDest: TopLevelDestination?) : ScaffoldAction
 
     // default actions
     data object CheckConnectivity : ScaffoldAction

@@ -1,6 +1,7 @@
 package com.tanfra.shopmob.features.commonScaffold.presentation.model
 
 import androidx.compose.runtime.Composable
+import com.tanfra.shopmob.features.commonScaffold.presentation.view.TopLevelDestination
 
 sealed interface ScaffoldMutation {
 
@@ -17,6 +18,7 @@ sealed interface ScaffoldMutation {
         val daFab: (@Composable () -> Unit)?
     ) : ScaffoldMutation
     data class SetNewFab(val daFab: (@Composable () -> Unit)?) : ScaffoldMutation
+    data class SetTopLevelDest(val daDest: TopLevelDestination?) : ScaffoldMutation
 
     // generic content mutations
     data object ShowLostConnection : ScaffoldMutation

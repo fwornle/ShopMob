@@ -7,6 +7,7 @@ import com.tanfra.shopmob.features.common.monitor.ConnectivityStatus
 import com.tanfra.shopmob.features.commonScaffold.presentation.model.ScaffoldAction
 import com.tanfra.shopmob.features.commonScaffold.presentation.model.ScaffoldEvent
 import com.tanfra.shopmob.features.commonScaffold.presentation.model.ScaffoldMutation
+import com.tanfra.shopmob.features.commonScaffold.presentation.view.TopLevelDestination
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
@@ -36,6 +37,7 @@ class ScaffoldActionProcessor(
                     action.newFab
                 )
                 is ScaffoldAction.SetNewFab -> setNewFab(action.newFab)
+                is ScaffoldAction.SetNewTopLevelDest -> setTopLevelDestination(action.daDest)
 
                 // generic
                 else -> {
@@ -80,6 +82,11 @@ class ScaffoldActionProcessor(
     private suspend fun FlowCollector<Pair<ScaffoldMutation?, ScaffoldEvent?>>.setNewFab(
         daFab : (@Composable () -> Unit)?
     ) = emit(ScaffoldMutation.SetNewFab(daFab) to null)
+
+    // set new destination in Scaffold (sync-ed "active" route in BottomBar and NavDrawer)
+    private suspend fun FlowCollector<Pair<ScaffoldMutation?, ScaffoldEvent?>>.setTopLevelDestination(
+        daDest : TopLevelDestination?
+    ) = emit(ScaffoldMutation.SetTopLevelDest(daDest) to null)
 
     private fun checkConnectivity() =
         connectivityMonitor.statusFlow

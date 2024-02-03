@@ -9,6 +9,8 @@ data class TopLevelDestination(
     val selectedIcon: Int,
     val unselectedIcon: Int,
     val iconName: String,
+    val isBottomBar: Boolean,
+    val isNavDrawer: Boolean,
 
     // behavioral elements
     val title: String,

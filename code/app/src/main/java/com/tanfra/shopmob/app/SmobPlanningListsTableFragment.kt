@@ -35,8 +35,7 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
                 viewModel = koinViewModel(),
                 startTitle = PlanningRoutes.PlanningScreens.title,
                 startDestination = PlanningRoutes.PlanningScreens.route,
-                getBottomBarDestItems = PlanningRoutes.PlanningScreens.getBottomBarDestinations,
-                getDrawerMenuDestItems = PlanningRoutes.PlanningScreens.getDrawerMenuDestinations,
+                getTopLevelDestItems = PlanningRoutes.PlanningScreens.getTopLevelDestinations,
             )
         }
     }

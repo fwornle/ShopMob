@@ -18,14 +18,14 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.tanfra.shopmob.smob.data.types.ImmutableList
-import timber.log.Timber
 
 @Composable
 fun BottomBar(
     destinations: ImmutableList<TopLevelDestination>,
-    currentDestination: NavDestination?,
+    currDest: NavDestination?,
+    selTopLevelDest: TopLevelDestination?,
+    setTopLevelDest: (TopLevelDestination?) -> Unit,
 ) {
 
     NavigationBar(
@@ -35,35 +35,38 @@ fun BottomBar(
             )
             .height(70.dp),
     ) {
-        destinations.items.forEach { destination ->
+        destinations.items.forEach { daDest ->
 
-            val selected = currentDestination
-                ?.hierarchy
-                ?.any { it.route == destination.route } == true
+            // "daDest" (for loop) is treated as "selected", when it can be found in the destination
+            // tree of "currentDestination" (from NavHostController)
+            val selected = currDest?.hierarchy?.any { it.route == daDest.route } == true
+
+            // adjust hoisted state... to update all components depending on selTopLevelDestination
+            if(selected && daDest.route != selTopLevelDest?.route) setTopLevelDest(daDest)
 
             NavigationBarItem(
                 selected = selected,
                 onClick = {
                     // install navTo of currently selected destination as onClick
                     destinations.items
-                        .first { itemDest -> itemDest.route == destination.route }
+                        .first { itemDest -> itemDest.route == daDest.route }
                         .let { it.navTo() }
                           },
                 icon = {
                     val icon = if (selected) {
-                        destination.selectedIcon
+                        daDest.selectedIcon
                     } else {
-                        destination.unselectedIcon
+                        daDest.unselectedIcon
                     }
                     Icon(
                         imageVector = ImageVector.vectorResource(icon),
                         modifier = Modifier.size(16.dp),
-                        contentDescription = destination.iconName
+                        contentDescription = daDest.iconName
                     )
                 },
                 label = {
                     Text(
-                        text = destination.iconName
+                        text = daDest.iconName
                     )
                 }
             )

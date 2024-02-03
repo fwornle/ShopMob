@@ -12,12 +12,11 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.tanfra.shopmob.smob.data.types.ImmutableList
 import kotlinx.coroutines.CoroutineScope
@@ -26,45 +25,54 @@ import kotlinx.coroutines.launch
 @Composable
 fun NavDrawer(
     modifier: Modifier,
-    drawerMenuItems: ImmutableList<TopLevelDestination>,
+    destinations: ImmutableList<TopLevelDestination>,
+    currDest: NavDestination?,
+    selTopLevelDest: TopLevelDestination?,
+    setTopLevelDest: (TopLevelDestination?) -> Unit,
     drawerState: DrawerState,
     coroutineScope: CoroutineScope,
     content: @Composable () -> Unit,
 ) {
-    val selectedItem = remember { mutableStateOf(drawerMenuItems.items[0]) }
-
     ModalNavigationDrawer(
         modifier = modifier,
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
                 Spacer(Modifier.height(12.dp))
-                drawerMenuItems.items.forEach { item ->
 
-                    val selected = item == selectedItem.value
+                destinations.items.forEach { daDest ->
+
+                    // "daDest" (for loop) is treated as "selected", when it can be found in the destination
+                    // tree of "currentDestination" (from NavHostController)
+                    val selected = currDest?.hierarchy?.any { it.route == daDest.route } == true
+
+                    // adjust hoisted state... to update all components depending on selTopLevelDestination
+                    if(selected && daDest.route != selTopLevelDest?.route) setTopLevelDest(daDest)
 
                     NavigationDrawerItem(
                         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
                         icon = @Composable {
                             val icon = if (selected) {
-                                item.selectedIcon
+                                daDest.selectedIcon
                             } else {
-                                item.unselectedIcon
+                                daDest.unselectedIcon
                             }
                             Icon(
                                 imageVector = ImageVector.vectorResource(icon),
                                 modifier = Modifier.size(16.dp),
-                                contentDescription = item.iconName
+                                contentDescription = daDest.iconName
                             )
                         },
-                        label = { Text(item.title) },
+                        label = { Text(daDest.title) },
                         selected = selected,
                         onClick = {
                             coroutineScope.launch { drawerState.close() }
-                            selectedItem.value = item
+
+                            // set (hoisted) state - triggers adjustment of (linked) BottomBar
+                            setTopLevelDest(daDest)
 
                             // navigate to target
-                            item.navTo()
+                            daDest.navTo()
                         }
                     )
                 }

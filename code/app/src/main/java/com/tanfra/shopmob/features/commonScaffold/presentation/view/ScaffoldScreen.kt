@@ -33,7 +33,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -55,16 +54,11 @@ fun ScaffoldScreen(
     viewModel: ScaffoldViewModelMvi,
     startTitle: String,
     startDestination: String,
-    getBottomBarDestItems: (
+    getTopLevelDestItems: (
         NavHostController,
         (String, Boolean, (@Composable () -> Unit)?) -> Unit,  // resetToScaffold
         (String, Boolean, (@Composable () -> Unit)?) -> Unit)  // setNewScaffold
-    -> ImmutableList<TopLevelDestination> = { _, _, _ -> ImmutableList(listOf()) },
-    getDrawerMenuDestItems: (
-        NavHostController,
-        (String, Boolean, (@Composable () -> Unit)?) -> Unit,  // resetToScaffold
-        (String, Boolean, (@Composable () -> Unit)?) -> Unit)  // setNewScaffold
-    -> ImmutableList<TopLevelDestination> = { _, _, _ -> ImmutableList(listOf()) },
+    -> List<TopLevelDestination>,
 ) {
 
     // local store
@@ -88,15 +82,25 @@ fun ScaffoldScreen(
         Timber.i("MVI.UI: setting new FAB (${newFab.toString()})")
         viewModel.process(ScaffoldAction.SetNewFab(newFab))
     }
+    val setTopLevelDest = { newDest: TopLevelDestination? ->
+        Timber.i("MVI.UI: setting new TopLevel destination (${newDest?.route})")
+        viewModel.process(ScaffoldAction.SetNewTopLevelDest(newDest))
+    }
+
 
     // navigation root
     val navController: NavHostController = rememberNavController()
 
-    // fetch top-level and drawer menu destinations
-    val bottomBarDestinations = remember {
-        getBottomBarDestItems(navController, resetToScaffold, setNewScaffold) }
+    // fetch TopLevel navigation destinations
+    val bottomBarDestItems = remember {
+        getTopLevelDestItems(navController, resetToScaffold, setNewScaffold)
+            .filter { dest -> dest.isBottomBar }
+    }
     val drawerMenuDestItems = remember {
-        getDrawerMenuDestItems(navController, resetToScaffold, setNewScaffold) }
+        getTopLevelDestItems(navController, resetToScaffold, setNewScaffold)
+            .filter { dest -> dest.isNavDrawer }
+    }
+
 
     // lifecycle aware collection of viewState flow
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -112,6 +116,7 @@ fun ScaffoldScreen(
     LaunchedEffect(Unit) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
             viewModel.process(ScaffoldAction.CheckConnectivity)
+            viewModel.process(ScaffoldAction.SetNewTopLevelDest(drawerMenuDestItems[0]))
             setNewScaffold(startTitle, false, null)
         }
     }
@@ -132,6 +137,9 @@ fun ScaffoldScreen(
 
     // trace re-composes
     Timber.i("MVI.UI: recomposing 'ScreenScaffold' - titleStack: ${viewState.titleStack.items}")
+
+    // where are we now?
+    val currDest = navController.currentBackStackEntryAsState().value?.destination
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -187,10 +195,12 @@ fun ScaffoldScreen(
             )
         },
         bottomBar = {
-            if(bottomBarDestinations.items.isNotEmpty()) {
+            if(bottomBarDestItems.isNotEmpty()) {
                 BottomBar(
-                    destinations = bottomBarDestinations,
-                    currentDestination = navController.currentBackStackEntryAsState().value?.destination
+                    destinations = ImmutableList(bottomBarDestItems),
+                    currDest = currDest,
+                    selTopLevelDest = viewState.selTopLevelDest,
+                    setTopLevelDest = setTopLevelDest,
                 )
             }  // any BottomBar destinations at all?
         },
@@ -199,7 +209,10 @@ fun ScaffoldScreen(
     ) { paddingValues ->
         NavDrawer(
             modifier = Modifier.padding(paddingValues),
-            drawerMenuItems = drawerMenuDestItems,
+            destinations = ImmutableList(drawerMenuDestItems),
+            currDest = currDest,
+            selTopLevelDest = viewState.selTopLevelDest,
+            setTopLevelDest = setTopLevelDest,
             drawerState = drawerState,
             coroutineScope = scope,
         ) {
@@ -227,8 +240,7 @@ private fun ScreenScaffoldPreview() {
             viewModel = koinViewModel(),
             startTitle = "App",
             startDestination = "AppStartDest",
-            getBottomBarDestItems = PlanningRoutes.PlanningScreens.getBottomBarDestinations,
-            getDrawerMenuDestItems = PlanningRoutes.PlanningScreens.getDrawerMenuDestinations
+            getTopLevelDestItems = PlanningRoutes.PlanningScreens.getTopLevelDestinations,
         )
     }
 }

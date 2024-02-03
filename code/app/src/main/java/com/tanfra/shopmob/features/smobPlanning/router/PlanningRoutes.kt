@@ -17,7 +17,6 @@ import com.tanfra.shopmob.features.smobPlanning.presentation.view.shops.view.Pla
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobProductATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobShopATO
-import com.tanfra.shopmob.smob.data.types.ImmutableList
 import com.tanfra.shopmob.smob.data.types.ItemStatus
 import com.tanfra.shopmob.smob.ui.zeUtils.consolidateListItem
 import org.koin.androidx.compose.koinViewModel
@@ -31,40 +30,60 @@ sealed class PlanningRoutes {
         const val title = "ShopMob"
 
         // initialize planning BottomBar destinations
-        private val bottomBarDestinations = mutableListOf(
+        private val topLevelDestinations = mutableListOf(
                 TopLevelDestination(
                     route = ListsBrowseScreen.route,
                     navTo = { /* BBarNav - completed by callback 'getBottomBarDestinations' */ },
                     selectedIcon = R.drawable.list,
                     unselectedIcon = R.drawable.ic_baseline_view_list_24,
                     iconName = ListsBrowseScreen.title,
+                    isBottomBar = true,
+                    isNavDrawer = true,
                     title = ListsBrowseScreen.title,
                     goBackFlag = false,
                     fab = null
-                ), TopLevelDestination(
+                ),
+                TopLevelDestination(
+                    route = "Administration",
+                    navTo = { /* drawerNav - completed by callback 'getDrawerMenuDestinations' */ },
+                    selectedIcon = R.drawable.ic_baseline_group_24,
+                    unselectedIcon = R.drawable.ic_baseline_group_24,
+                    iconName = "Administration",
+                    isBottomBar = false,
+                    isNavDrawer = true,
+                    title = "Administration",
+                    goBackFlag = false,
+                    fab = null
+                ),
+                TopLevelDestination(
                     route = ListsAddItemScreen.route,
                     navTo = { /* BBarNav - completed by callback 'getBottomBarDestinations' */ },
                     selectedIcon = R.drawable.ic_add,
                     unselectedIcon = R.drawable.ic_add,
                     iconName = ListsAddItemScreen.title,
+                    isBottomBar = true,
+                    isNavDrawer = false,
                     title = ListsAddItemScreen.title,
                     goBackFlag = false,
                     fab = null
-                ), TopLevelDestination(
+                ),
+                TopLevelDestination(
                     route = ShopsBrowseScreen.route,
                     navTo = { /* BBarNav - completed by callback 'getBottomBarDestinations' */ },
                     selectedIcon = R.drawable.ic_baseline_shopping_cart_24,
                     unselectedIcon = R.drawable.ic_baseline_shopping_cart_24,
                     iconName = ShopsBrowseScreen.title,
+                    isBottomBar = true,
+                    isNavDrawer = true,
                     title = ShopsBrowseScreen.title,
                     goBackFlag = false,
                     fab = null
                 )
             )
 
-        // getter function to return BottomBar destinations while adjusting FAB entries
+        // getter function to return TopLevel navigation destinations while adjusting FAB entries
         // the latter typically perform "navigation actions" --> need navController --> lambda
-        val getBottomBarDestinations = {
+        val getTopLevelDestinations = {
             navController: NavHostController,
             resetToScaffold: (String, Boolean, (@Composable () -> Unit)?) -> Unit,
             setNewScaffold: (String, Boolean, (@Composable () -> Unit)?) -> Unit
@@ -78,7 +97,7 @@ sealed class PlanningRoutes {
                     dest.goBackFlag,
                     dest.fab
                 )
-                Timber.i("MVI.UI: Triggering BottomBar navigation to ${dest.route}")
+                Timber.i("MVI.UI: Triggering TopLevel navigation to ${dest.route}")
                 // top level navigation --> reset popUp stack
                 navController.navigate(dest.route) {
                     popUpTo(navController.graph.findStartDestination().id) {
@@ -90,8 +109,8 @@ sealed class PlanningRoutes {
             }
 
             // configure all destinations
-            bottomBarDestinations[0] = bottomBarDestinations[0].copy(
-                navTo = { navToTopLevelDest(bottomBarDestinations[0]) },
+            topLevelDestinations[0] = topLevelDestinations[0].copy(
+                navTo = { navToTopLevelDest(topLevelDestinations[0]) },
                 fab = {
                     /* FAB: navigate to add item screen in order to add new list */
                     FabAddNewItem {
@@ -101,97 +120,21 @@ sealed class PlanningRoutes {
                 }
             )
 
-            bottomBarDestinations[1] = bottomBarDestinations[1].copy(
-                navTo = { navToTopLevelDest(bottomBarDestinations[1]) }
+            topLevelDestinations[1] = topLevelDestinations[1].copy(
+                navTo = { navToTopLevelDest(topLevelDestinations[1]) }
             )
 
-            bottomBarDestinations[2] = bottomBarDestinations[2].copy(
-                navTo = { navToTopLevelDest(bottomBarDestinations[2]) }
+            topLevelDestinations[2] = topLevelDestinations[2].copy(
+                navTo = { navToTopLevelDest(topLevelDestinations[2]) }
             )
 
-            // return the (adjusted) BottomBarDestinations as (now) immutable list
-            ImmutableList(bottomBarDestinations)
-        }
-
-        // planning drawer menu destinations
-        private val drawerMenuDestinations = mutableListOf(
-            TopLevelDestination(
-                route = ListsBrowseScreen.route,
-                navTo = { /* drawerNav - completed by callback 'getDrawerMenuDestinations' */ },
-                selectedIcon = R.drawable.list,
-                unselectedIcon = R.drawable.list,
-                iconName = ListsBrowseScreen.title,
-                title = ListsBrowseScreen.title,
-                goBackFlag = false,
-                fab = null
-            ), TopLevelDestination(
-                route = ListsAddItemScreen.route,
-                navTo = { /* drawerNav - completed by callback 'getDrawerMenuDestinations' */ },
-                selectedIcon = R.drawable.ic_baseline_group_24,
-                unselectedIcon = R.drawable.ic_baseline_group_24,
-                iconName = "Administration",
-                title = "Administration",
-                goBackFlag = false,
-                fab = null
-            ), TopLevelDestination(
-                route = ShopsBrowseScreen.route,
-                navTo = { /* drawerNav - completed by callback 'getDrawerMenuDestinations' */ },
-                selectedIcon = R.drawable.ic_baseline_shopping_cart_24,
-                unselectedIcon = R.drawable.ic_baseline_shopping_cart_24,
-                iconName = ShopsBrowseScreen.title,
-                title = ShopsBrowseScreen.title,
-                goBackFlag = false,
-                fab = null
-            )
-        )
-
-        // getter function to return drawer menu destinations
-        // the latter typically perform "navigation actions" --> need navController --> lambda
-        val getDrawerMenuDestinations = {
-                navController: NavHostController,
-                resetToScaffold: (String, Boolean, (@Composable () -> Unit)?) -> Unit,
-                setNewScaffold: (String, Boolean, (@Composable () -> Unit)?) -> Unit
-            ->
-            // set navigation target for "Shops" screen
-            drawerMenuDestinations[0] = drawerMenuDestinations[0].copy(
-                navTo = {
-                    // top level navigation --> reset scaffold stack
-                    resetToScaffold(ListsBrowseScreen.title, false) {
-                        /* FAB: navigate to add item screen in order to add new list */
-                        FabAddNewItem {
-                            setNewScaffold(ListsAddItemScreen.title, true, null)
-                            navController.navigate(ListsAddItemScreen.route)
-                        }
-                    }
-                    Timber.i("MVI.UI: Triggering NavDrawer navigation to $route")
-                    // top level navigation --> reset popUp stack
-                    navController.navigate(ListsBrowseScreen.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        restoreState = true
-                        launchSingleTop = true
-                    }
-                }
-            )
-            drawerMenuDestinations[2] = drawerMenuDestinations[2].copy(
-                navTo = {
-                    // top level navigation --> reset scaffold stack
-                    setNewScaffold(ShopsBrowseScreen.title, false, null)
-                    Timber.i("MVI.UI: Triggering NavDrawer navigation to $route")
-                    // top level navigation --> reset popUp stack
-                    navController.navigate(ShopsBrowseScreen.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        restoreState = true
-                        launchSingleTop = true
-                    }
-                }
+            topLevelDestinations[3] = topLevelDestinations[3].copy(
+                navTo = { navToTopLevelDest(topLevelDestinations[3]) }
             )
 
-            // return the (adjusted) drawer menu items as (now) immutable list
-            ImmutableList(drawerMenuDestinations)
+            // return adjusted list of TopLevel destinations
+            topLevelDestinations
+
         }
 
     }
