@@ -41,7 +41,7 @@ import com.tanfra.shopmob.app.routes
 import com.tanfra.shopmob.features.commonScaffold.presentation.ScaffoldViewModelMvi
 import com.tanfra.shopmob.features.commonScaffold.presentation.model.ScaffoldAction
 import com.tanfra.shopmob.features.commonScaffold.presentation.model.ScaffoldEvent
-import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
+import com.tanfra.shopmob.features.commonScaffold.router.ScaffoldRoutes
 import com.tanfra.shopmob.smob.data.types.ImmutableList
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -240,7 +240,7 @@ private fun ScreenScaffoldPreview() {
             viewModel = koinViewModel(),
             startTitle = "App",
             startDestination = "AppStartDest",
-            getTopLevelDestItems = PlanningRoutes.PlanningScreens.getTopLevelDestinations,
+            getTopLevelDestItems = ScaffoldRoutes.AppScreens.getTopLevelDestinations,
         )
     }
 }

@@ -13,9 +13,9 @@ import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import com.firebase.ui.auth.AuthUI
 import com.tanfra.shopmob.features.commonScaffold.presentation.view.ScaffoldScreen
+import com.tanfra.shopmob.features.commonScaffold.router.ScaffoldRoutes
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
 import com.tanfra.shopmob.features.smobPlanning.presentation.obsoleteRemove.PlanningViewModel
-import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
 import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.component.KoinComponent
@@ -33,9 +33,9 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
         setContent {
             ScaffoldScreen(
                 viewModel = koinViewModel(),
-                startTitle = PlanningRoutes.PlanningScreens.title,
-                startDestination = PlanningRoutes.PlanningScreens.route,
-                getTopLevelDestItems = PlanningRoutes.PlanningScreens.getTopLevelDestinations,
+                startTitle = ScaffoldRoutes.AppScreens.title,
+                startDestination = ScaffoldRoutes.AppScreens.route,
+                getTopLevelDestItems = ScaffoldRoutes.AppScreens.getTopLevelDestinations,
             )
         }
     }
