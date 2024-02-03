@@ -240,7 +240,7 @@ private fun ScreenScaffoldPreview() {
             viewModel = koinViewModel(),
             startTitle = "App",
             startDestination = "AppStartDest",
-            getTopLevelDestItems = ScaffoldRoutes.AppScreens.getTopLevelDestinations,
+            getTopLevelDestItems = ScaffoldRoutes.ScaffoldScreen.getTopLevelDestinations,
         )
     }
 }

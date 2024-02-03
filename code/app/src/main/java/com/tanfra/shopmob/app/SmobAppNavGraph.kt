@@ -12,6 +12,7 @@ import com.tanfra.shopmob.app.Constants.INVALID_ITEM_ID
 import com.tanfra.shopmob.features.common.view.FabAddNewItem
 import com.tanfra.shopmob.features.common.view.FabSaveNewItem
 import com.tanfra.shopmob.features.commonScaffold.router.ScaffoldRoutes
+import com.tanfra.shopmob.features.smobPlanning.router.AdminRoutes
 import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
 import com.tanfra.shopmob.features.smobPlanning.router.ShopsRoutes
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
@@ -25,7 +26,7 @@ fun NavGraphBuilder.routes(
     // all TopLevel routes
     navigation(
         startDestination = PlanningRoutes.PlanningScreens.route,
-        route = ScaffoldRoutes.AppScreens.route
+        route = ScaffoldRoutes.ScaffoldScreen.route
     ) {
 
         // TopLevel: Planning
@@ -224,6 +225,39 @@ fun NavGraphBuilder.routes(
                         shopId = backStackEntry.arguments
                             ?.getString("shopId") ?: INVALID_ITEM_ID,
                     )
+                }
+            }
+
+        }
+
+        // TopLevel: Administration
+        navigation(
+            startDestination = AdminRoutes.AdminStart.route,
+            route = AdminRoutes.AdminScreens.route
+        ) {
+
+            // (invisible) start-up screen (to allow Scaffold control for actual "startDestion")
+            with(AdminRoutes.AdminStart) {
+                composable(route) {
+
+                    // prepare scaffold of actual "startDestination"
+                    setNewScaffold(AdminRoutes.AdminBrowseScreen.title, false, null)
+
+                    // navigate to actual "startDestination"
+                    navController.navigate(AdminRoutes.AdminBrowseScreen.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        restoreState = true
+                        launchSingleTop = true
+                    }
+
+                }
+            }
+
+            with(AdminRoutes.AdminBrowseScreen) {
+                composable(route) {
+                    Screen()
                 }
             }
 

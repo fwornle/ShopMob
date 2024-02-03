@@ -33,14 +33,12 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
         setContent {
             ScaffoldScreen(
                 viewModel = koinViewModel(),
-                startTitle = ScaffoldRoutes.AppScreens.title,
-                startDestination = ScaffoldRoutes.AppScreens.route,
-                getTopLevelDestItems = ScaffoldRoutes.AppScreens.getTopLevelDestinations,
+                startTitle = ScaffoldRoutes.ScaffoldScreen.title,
+                startDestination = ScaffoldRoutes.ScaffoldScreen.route,
+                getTopLevelDestItems = ScaffoldRoutes.ScaffoldScreen.getTopLevelDestinations,
             )
         }
     }
-
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

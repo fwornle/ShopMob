@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.features.common.view.FabAddNewItem
 import com.tanfra.shopmob.features.commonScaffold.presentation.view.TopLevelDestination
+import com.tanfra.shopmob.features.smobPlanning.router.AdminRoutes
 import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
 import com.tanfra.shopmob.features.smobPlanning.router.ShopsRoutes
 import timber.log.Timber
@@ -13,15 +14,15 @@ import timber.log.Timber
 sealed class ScaffoldRoutes {
 
     // Application screens (TopLevel destinations)
-    data object AppScreens : ScaffoldRoutes() {
+    data object ScaffoldScreen : ScaffoldRoutes() {
         const val route = "app"
         const val title = "App"
 
-        // initialize app BottomBar destinations
+        // initialize app TopLevel destinations (BottomBar and NavDrawer)
         private val topLevelDestinations = mutableListOf(
             TopLevelDestination(
                 route = PlanningRoutes.ListsBrowseScreen.route,
-                navTo = { /* BBarNav - completed by callback 'getBottomBarDestinations' */ },
+                navTo = { /* completed by callback 'getTopLevelDestinations' */ },
                 selectedIcon = R.drawable.list,
                 unselectedIcon = R.drawable.ic_baseline_view_list_24,
                 iconName = PlanningRoutes.ListsBrowseScreen.title,
@@ -32,20 +33,20 @@ sealed class ScaffoldRoutes {
                 fab = null
             ),
             TopLevelDestination(
-                route = "Administration",
-                navTo = { /* drawerNav - completed by callback 'getDrawerMenuDestinations' */ },
+                route = AdminRoutes.AdminBrowseScreen.route,
+                navTo = { /* completed by callback 'getTopLevelDestinations' */ },
                 selectedIcon = R.drawable.ic_baseline_group_24,
                 unselectedIcon = R.drawable.ic_baseline_group_24,
-                iconName = "Administration",
+                iconName = AdminRoutes.AdminBrowseScreen.title,
                 isBottomBar = false,
                 isNavDrawer = true,
-                title = "Administration",
+                title = AdminRoutes.AdminBrowseScreen.title,
                 goBackFlag = false,
                 fab = null
             ),
             TopLevelDestination(
                 route = ShopsRoutes.ShopsBrowseScreen.route,
-                navTo = { /* BBarNav - completed by callback 'getBottomBarDestinations' */ },
+                navTo = { /* completed by callback 'getTopLevelDestinations' */ },
                 selectedIcon = R.drawable.ic_baseline_shopping_cart_24,
                 unselectedIcon = R.drawable.ic_baseline_shopping_cart_24,
                 iconName = ShopsRoutes.ShopsBrowseScreen.title,
@@ -77,9 +78,9 @@ sealed class ScaffoldRoutes {
                 // top level navigation --> reset popUp stack
                 navController.navigate(dest.route) {
                     popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
+//                        saveState = true
                     }
-                    restoreState = true
+//                    restoreState = true
                     launchSingleTop = true
                 }
             }
