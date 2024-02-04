@@ -1,4 +1,4 @@
-package com.tanfra.shopmob.features.smobAdmin.presentation.view
+package com.tanfra.shopmob.features.smobAdmin.presentation.view.browse
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,7 +25,9 @@ import com.tanfra.shopmob.features.common.theme.ShopMobTheme
 import com.tanfra.shopmob.features.common.theme.secondaryLightColor
 
 @Composable
-fun AdminBrowseScreen() {
+fun AdminBrowseScreen(
+    navigateToUserDetails: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -43,7 +45,7 @@ fun AdminBrowseScreen() {
         Spacer(modifier = Modifier.width(16.dp))
 
         Button(
-            onClick = {  },
+            onClick = { navigateToUserDetails() },
             contentPadding = PaddingValues(horizontal = 40.dp, vertical = 5.dp),
             modifier = Modifier.size(width = 250.dp, height = 45.dp)
             ) {
@@ -114,6 +116,8 @@ fun AdminBrowseScreen() {
 @Composable
 fun PreviewAdminSelectorScreen() {
     ShopMobTheme {
-        AdminBrowseScreen()
+        AdminBrowseScreen(
+            navigateToUserDetails = {}
+        )
     }
 }

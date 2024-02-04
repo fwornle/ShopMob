@@ -22,6 +22,13 @@ class AdminMutationReducer(
             else -> currentState // mutation not handled in this reducer --> keep current state
         }
 
+
+    private fun AdminViewState.mutateToShowLoader() =
+        copy(isLoaderVisible = true)
+
+    private fun AdminViewState.mutateToShowLostConnection() =
+        copy(isConnectivityVisible = true)
+
     private fun AdminViewState.mutateToDismissLostConnection() =
         copy(isConnectivityVisible = false)
 
@@ -33,11 +40,5 @@ class AdminMutationReducer(
             errorMessage = resources.getString(R.string.err_generic)
                 .format(exception.message),
         )
-
-    private fun AdminViewState.mutateToShowLostConnection() =
-        copy(isConnectivityVisible = true)
-
-    private fun AdminViewState.mutateToShowLoader() =
-        copy(isLoaderVisible = true)
 
 }

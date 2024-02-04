@@ -2,6 +2,7 @@ package com.tanfra.shopmob.features.smobAdmin.presentation.model
 
 import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 
 sealed interface AdminMutation {
 
@@ -16,6 +17,9 @@ sealed interface AdminMutation {
         val list: SmobListATO,
         val groups: List<SmobGroupATO>
     ) : AdminMutation
+
+    data class ShowUsers(val users: List<SmobUserATO>) : AdminMutation
+    data class ShowUserDetails(val user: SmobUserATO) : AdminMutation
 
     data class ShowGroups(val groups: List<SmobGroupATO>) : AdminMutation
     data class ShowGroupDetails(val group: SmobGroupATO) : AdminMutation

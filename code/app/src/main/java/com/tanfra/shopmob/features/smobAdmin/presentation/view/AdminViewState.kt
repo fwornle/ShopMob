@@ -4,6 +4,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Immutable
 import com.tanfra.shopmob.smob.data.repo.ato.SmobGroupATO
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 
 data class AdminViewState(
 
@@ -21,6 +22,7 @@ data class AdminViewState(
     val groupItems: List<GroupItemState> = listOf(),
     val selectedList: SmobListATO = SmobListATO(),
     val groupItemsOfList: List<SmobGroupATO> = listOf(),
+    val selectedUser: SmobUserATO = SmobUserATO(),
     val selectedGroup: SmobGroupATO = SmobGroupATO(),
 )
 

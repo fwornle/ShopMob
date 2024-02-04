@@ -16,6 +16,7 @@ import com.tanfra.shopmob.features.smobAdmin.router.AdminRoutes
 import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
 import com.tanfra.shopmob.features.smobPlanning.router.ShopsRoutes
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO
+import com.tanfra.shopmob.smob.data.repo.ato.SmobUserATO
 
 fun NavGraphBuilder.routes(
     navController: NavHostController,
@@ -167,7 +168,7 @@ fun NavGraphBuilder.routes(
                 }
             }
 
-        }
+        }  // planningRoutes
 
         // TopLevel: Shops
         navigation(
@@ -228,7 +229,7 @@ fun NavGraphBuilder.routes(
                 }
             }
 
-        }
+        }  // shopRoutes
 
         // TopLevel: Administration
         navigation(
@@ -257,11 +258,28 @@ fun NavGraphBuilder.routes(
 
             with(AdminRoutes.AdminBrowseScreen) {
                 composable(route) {
-                    Screen()
+                    Screen {
+                        /* navigateToUserDetails */
+                        val daUser = SmobApp.currUser ?: SmobUserATO(name = "Not logged in...")
+
+                        setNewScaffold(daUser.name, true, null)
+                        navController.navigate(AdminRoutes.AdminProfileDetailsScreen.route)
+                    }
                 }
             }
 
-        }
+            with(AdminRoutes.AdminProfileDetailsScreen) {
+                composable(route) {
+                    val daUser = SmobApp.currUser ?: SmobUserATO(name = "Not logged in...")
+                    Screen(user = daUser) {
+                        /* goBack */
+                        restorePreviousScaffold()
+                        navController.popBackStack()
+                    }
+                }
+            }
+
+        }  // adminRoutes
 
     }
 

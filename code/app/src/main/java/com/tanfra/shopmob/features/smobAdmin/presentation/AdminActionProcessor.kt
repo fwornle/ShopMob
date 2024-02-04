@@ -10,6 +10,7 @@ import com.tanfra.shopmob.features.smobAdmin.presentation.model.AdminEvent
 import com.tanfra.shopmob.features.smobAdmin.presentation.model.AdminMutation
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobGroupRepository
 import com.tanfra.shopmob.smob.data.repo.repoIf.SmobListRepository
+import com.tanfra.shopmob.smob.data.repo.repoIf.SmobUserRepository
 import com.tanfra.shopmob.smob.data.repo.utils.Resource
 import com.tanfra.shopmob.smob.ui.zeUtils.vibrateDevice
 import kotlinx.coroutines.flow.Flow
@@ -21,6 +22,7 @@ import timber.log.Timber
 class AdminActionProcessor(
     private val context: Context,
     private val listRepository: SmobListRepository,
+    private val userRepository: SmobUserRepository,
     private val groupRepository: SmobGroupRepository,
     private val connectivityMonitor: ConnectivityMonitor,
 ) : ActionProcessor<AdminAction, AdminMutation, AdminEvent> {
@@ -31,8 +33,10 @@ class AdminActionProcessor(
         } else flow {
             when (action) {
                 AdminAction.LoadLists -> loadLists()
+                AdminAction.LoadUsers -> loadUsers()
                 AdminAction.LoadGroups -> loadGroups()
                 AdminAction.RefreshLists -> refreshLists()
+                AdminAction.RefreshLists -> refreshUsers()
                 AdminAction.RefreshGroups -> refreshGroups()
                 AdminAction.IllegalSwipe -> illegalSwipeAction()
                 else -> {
@@ -80,6 +84,27 @@ class AdminActionProcessor(
         }
     }
 
+    // load users from local DB
+    private suspend fun FlowCollector<Pair<AdminMutation?, AdminEvent?>>.loadUsers() {
+        emit(AdminMutation.ShowLoader to null)
+
+        userRepository.getSmobItems().collect {
+            when(it) {
+                Resource.Empty -> {
+                    Timber.i("user flow collection returns empty")
+                    emit(AdminMutation.ShowUsers(users = listOf()) to null)
+                }
+                is Resource.Failure -> {
+                    Timber.i("user flow collection returns error")
+                    emit(AdminMutation.ShowError(exception = it.exception) to null)
+                }
+                is Resource.Success -> {
+                    Timber.i("user flow collection successful")
+                    emit(AdminMutation.ShowUsers(users = it.data) to null)
+                }
+            }
+        }
+    }
 
     // load groups from local DB
     private suspend fun FlowCollector<Pair<AdminMutation?, AdminEvent?>>.loadGroups() {
@@ -104,6 +129,9 @@ class AdminActionProcessor(
 
     // refreshing view (= load lists from backend)
     private suspend fun refreshLists() = listRepository.refreshItemsInLocalDB()
+
+    // refreshing view (= load users from backend)
+    private suspend fun refreshUsers() = userRepository.refreshItemsInLocalDB()
 
     // refreshing view (= load groups from backend)
     private suspend fun refreshGroups() = groupRepository.refreshItemsInLocalDB()
