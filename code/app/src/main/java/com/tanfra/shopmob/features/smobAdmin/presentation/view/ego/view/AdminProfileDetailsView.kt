@@ -112,7 +112,7 @@ internal fun AdminProfileDetailsView(
             )
         }
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(40.dp))
 
     }  // Column
 

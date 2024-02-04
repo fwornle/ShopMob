@@ -7,6 +7,24 @@ allprojects {
     }
 }
 
+// compose performance reports
+// need to run build using the following options:
+// ./gradlew assembleRelease -PcomposeCompilerReports=true
+subprojects {
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        compilerOptions.freeCompilerArgs.addAll(
+            "-P",
+            "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
+                    project.buildDir.absolutePath + "/compose_compiler",
+        )
+        compilerOptions.freeCompilerArgs.addAll(
+            "-P",
+            "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
+                    project.buildDir.absolutePath + "/compose_compiler",
+        )
+    }
+}
+
 plugins {
 
     alias(build.plugins.android.application) apply false

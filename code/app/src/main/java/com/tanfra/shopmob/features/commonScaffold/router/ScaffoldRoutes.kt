@@ -9,6 +9,7 @@ import com.tanfra.shopmob.features.commonScaffold.presentation.view.TopLevelDest
 import com.tanfra.shopmob.features.smobAdmin.router.AdminRoutes
 import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
 import com.tanfra.shopmob.features.smobPlanning.router.ShopsRoutes
+import com.tanfra.shopmob.smob.data.types.ImmutableList
 import timber.log.Timber
 
 sealed class ScaffoldRoutes {
@@ -19,42 +20,44 @@ sealed class ScaffoldRoutes {
         const val title = "App"
 
         // initialize app TopLevel destinations (BottomBar and NavDrawer)
-        private val topLevelDestinations = mutableListOf(
-            TopLevelDestination(
-                route = PlanningRoutes.ListsBrowseScreen.route,
-                navTo = { /* completed by callback 'getTopLevelDestinations' */ },
-                selectedIcon = R.drawable.list,
-                unselectedIcon = R.drawable.ic_baseline_view_list_24,
-                iconName = PlanningRoutes.ListsBrowseScreen.title,
-                isBottomBar = true,
-                isNavDrawer = true,
-                title = PlanningRoutes.ListsBrowseScreen.title,
-                goBackFlag = false,
-                fab = null
-            ),
-            TopLevelDestination(
-                route = AdminRoutes.AdminBrowseScreen.route,
-                navTo = { /* completed by callback 'getTopLevelDestinations' */ },
-                selectedIcon = R.drawable.ic_baseline_group_24,
-                unselectedIcon = R.drawable.ic_baseline_group_24,
-                iconName = AdminRoutes.AdminBrowseScreen.title,
-                isBottomBar = false,
-                isNavDrawer = true,
-                title = AdminRoutes.AdminBrowseScreen.title,
-                goBackFlag = false,
-                fab = null
-            ),
-            TopLevelDestination(
-                route = ShopsRoutes.ShopsBrowseScreen.route,
-                navTo = { /* completed by callback 'getTopLevelDestinations' */ },
-                selectedIcon = R.drawable.ic_baseline_shopping_cart_24,
-                unselectedIcon = R.drawable.ic_baseline_shopping_cart_24,
-                iconName = ShopsRoutes.ShopsBrowseScreen.title,
-                isBottomBar = true,
-                isNavDrawer = true,
-                title = ShopsRoutes.ShopsBrowseScreen.title,
-                goBackFlag = false,
-                fab = null
+        private val topLevelDestinations = ImmutableList(
+            listOf(
+                TopLevelDestination(
+                    route = PlanningRoutes.ListsBrowseScreen.route,
+                    navTo = { /* completed by callback 'getTopLevelDestinations' */ },
+                    selectedIcon = R.drawable.list,
+                    unselectedIcon = R.drawable.ic_baseline_view_list_24,
+                    iconName = PlanningRoutes.ListsBrowseScreen.title,
+                    isBottomBar = true,
+                    isNavDrawer = true,
+                    title = PlanningRoutes.ListsBrowseScreen.title,
+                    goBackFlag = false,
+                    fab = null
+                ),
+                TopLevelDestination(
+                    route = AdminRoutes.AdminBrowseScreen.route,
+                    navTo = { /* completed by callback 'getTopLevelDestinations' */ },
+                    selectedIcon = R.drawable.ic_baseline_group_24,
+                    unselectedIcon = R.drawable.ic_baseline_group_24,
+                    iconName = AdminRoutes.AdminBrowseScreen.title,
+                    isBottomBar = false,
+                    isNavDrawer = true,
+                    title = AdminRoutes.AdminBrowseScreen.title,
+                    goBackFlag = false,
+                    fab = null
+                ),
+                TopLevelDestination(
+                    route = ShopsRoutes.ShopsBrowseScreen.route,
+                    navTo = { /* completed by callback 'getTopLevelDestinations' */ },
+                    selectedIcon = R.drawable.ic_baseline_shopping_cart_24,
+                    unselectedIcon = R.drawable.ic_baseline_shopping_cart_24,
+                    iconName = ShopsRoutes.ShopsBrowseScreen.title,
+                    isBottomBar = true,
+                    isNavDrawer = true,
+                    title = ShopsRoutes.ShopsBrowseScreen.title,
+                    goBackFlag = false,
+                    fab = null
+                )
             )
         )
 
@@ -85,9 +88,12 @@ sealed class ScaffoldRoutes {
                 }
             }
 
+            // make mutable copy
+            val topLevelDestComplete = topLevelDestinations.items.toMutableList()
+
             // configure all destinations
-            topLevelDestinations[0] = topLevelDestinations[0].copy(
-                navTo = { navToTopLevelDest(topLevelDestinations[0]) },
+            topLevelDestComplete[0] = topLevelDestComplete[0].copy(
+                navTo = { navToTopLevelDest(topLevelDestComplete[0]) },
                 fab = {
                     /* FAB: navigate to add item screen in order to add new list */
                     FabAddNewItem {
@@ -97,16 +103,16 @@ sealed class ScaffoldRoutes {
                 }
             )
 
-            topLevelDestinations[1] = topLevelDestinations[1].copy(
-                navTo = { navToTopLevelDest(topLevelDestinations[1]) }
+            topLevelDestComplete[1] = topLevelDestComplete[1].copy(
+                navTo = { navToTopLevelDest(topLevelDestComplete[1]) }
             )
 
-            topLevelDestinations[2] = topLevelDestinations[2].copy(
-                navTo = { navToTopLevelDest(topLevelDestinations[2]) }
+            topLevelDestComplete[2] = topLevelDestComplete[2].copy(
+                navTo = { navToTopLevelDest(topLevelDestComplete[2]) }
             )
 
-            // return adjusted list of TopLevel destinations
-            topLevelDestinations
+            // return adjusted list of TopLevel destinations as immutable list
+            ImmutableList(topLevelDestComplete.toList())
 
         }
 

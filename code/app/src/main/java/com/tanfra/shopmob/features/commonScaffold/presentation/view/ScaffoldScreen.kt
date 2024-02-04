@@ -58,7 +58,7 @@ fun ScaffoldScreen(
         NavHostController,
         (String, Boolean, (@Composable () -> Unit)?) -> Unit,  // resetToScaffold
         (String, Boolean, (@Composable () -> Unit)?) -> Unit)  // setNewScaffold
-    -> List<TopLevelDestination>,
+    -> ImmutableList<TopLevelDestination>,
 ) {
 
     // local store
@@ -94,11 +94,11 @@ fun ScaffoldScreen(
     // fetch TopLevel navigation destinations
     val bottomBarDestItems = remember {
         getTopLevelDestItems(navController, resetToScaffold, setNewScaffold)
-            .filter { dest -> dest.isBottomBar }
+            .items.filter { dest -> dest.isBottomBar }
     }
     val drawerMenuDestItems = remember {
         getTopLevelDestItems(navController, resetToScaffold, setNewScaffold)
-            .filter { dest -> dest.isNavDrawer }
+            .items.filter { dest -> dest.isNavDrawer }
     }
 
 
