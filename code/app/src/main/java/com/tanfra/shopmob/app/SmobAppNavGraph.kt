@@ -12,7 +12,7 @@ import com.tanfra.shopmob.app.Constants.INVALID_ITEM_ID
 import com.tanfra.shopmob.features.common.view.FabAddNewItem
 import com.tanfra.shopmob.features.common.view.FabSaveNewItem
 import com.tanfra.shopmob.features.commonScaffold.router.ScaffoldRoutes
-import com.tanfra.shopmob.features.smobPlanning.router.AdminRoutes
+import com.tanfra.shopmob.features.smobAdmin.router.AdminRoutes
 import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
 import com.tanfra.shopmob.features.smobPlanning.router.ShopsRoutes
 import com.tanfra.shopmob.smob.data.repo.ato.SmobListATO

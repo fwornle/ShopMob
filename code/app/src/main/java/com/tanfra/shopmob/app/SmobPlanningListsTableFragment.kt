@@ -12,6 +12,7 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import com.firebase.ui.auth.AuthUI
+import com.tanfra.shopmob.features.common.theme.ShopMobTheme
 import com.tanfra.shopmob.features.commonScaffold.presentation.view.ScaffoldScreen
 import com.tanfra.shopmob.features.commonScaffold.router.ScaffoldRoutes
 import com.tanfra.shopmob.smob.ui.auth.SmobAuthActivity
@@ -31,12 +32,14 @@ class SmobPlanningListsTableFragment : BaseFragment(), KoinComponent {
     ): View = ComposeView(requireContext()).apply {
         setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
         setContent {
-            ScaffoldScreen(
-                viewModel = koinViewModel(),
-                startTitle = ScaffoldRoutes.ScaffoldScreen.title,
-                startDestination = ScaffoldRoutes.ScaffoldScreen.route,
-                getTopLevelDestItems = ScaffoldRoutes.ScaffoldScreen.getTopLevelDestinations,
-            )
+            ShopMobTheme {
+                ScaffoldScreen(
+                    viewModel = koinViewModel(),
+                    startTitle = ScaffoldRoutes.ScaffoldScreen.title,
+                    startDestination = ScaffoldRoutes.ScaffoldScreen.route,
+                    getTopLevelDestItems = ScaffoldRoutes.ScaffoldScreen.getTopLevelDestinations,
+                )
+            }
         }
     }
 

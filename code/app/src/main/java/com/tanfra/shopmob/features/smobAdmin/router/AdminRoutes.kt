@@ -1,7 +1,7 @@
-package com.tanfra.shopmob.features.smobPlanning.router
+package com.tanfra.shopmob.features.smobAdmin.router
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.tanfra.shopmob.features.smobAdmin.presentation.view.AdminBrowseScreen
 
 sealed class AdminRoutes {
 
@@ -14,15 +14,15 @@ sealed class AdminRoutes {
     // (dummy) screen to initiate navigation logic - NavController just goes through
     data object AdminStart : AdminRoutes() {
         const val route = "adminStart"
-        const val title = "ShopMob Administration"
+        const val title = "Administration"
     }
 
     data object AdminBrowseScreen : AdminRoutes() {
         const val route = "adminBrowsing"
-        const val title = "Administration"
+        const val title = "ShopMob Administration"
 
         @Composable
-        fun Screen() = Text("Administration... coming soon")
+        fun Screen() = AdminBrowseScreen()
     }
 
 }

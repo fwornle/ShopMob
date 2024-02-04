@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import com.tanfra.shopmob.R
 import com.tanfra.shopmob.features.common.view.FabAddNewItem
 import com.tanfra.shopmob.features.commonScaffold.presentation.view.TopLevelDestination
-import com.tanfra.shopmob.features.smobPlanning.router.AdminRoutes
+import com.tanfra.shopmob.features.smobAdmin.router.AdminRoutes
 import com.tanfra.shopmob.features.smobPlanning.router.PlanningRoutes
 import com.tanfra.shopmob.features.smobPlanning.router.ShopsRoutes
 import timber.log.Timber
