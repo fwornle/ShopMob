@@ -61,7 +61,7 @@ class AdminGroupsTableFragment : BaseFragment(), KoinComponent {
         binding.refreshLayout.setOnRefreshListener {
 
             // deactivate SwipeRefreshLayout spinner
-            binding.refreshLayout.setRefreshing(false)
+            binding.refreshLayout.isRefreshing = false
 
             // refresh local DB data from backend (for this list) - also updates 'showNoData'
             viewModel.swipeRefreshGroupDataInLocalDB()

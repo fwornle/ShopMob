@@ -62,7 +62,7 @@ class AdminContactsImportTableFragment : BaseFragment(), KoinComponent {
         binding.refreshLayout.setOnRefreshListener {
 
             // deactivate SwipeRefreshLayout spinner
-            binding.refreshLayout.setRefreshing(false)
+            binding.refreshLayout.isRefreshing = false
 
 
             // fetch contacts data (after asking for permission)

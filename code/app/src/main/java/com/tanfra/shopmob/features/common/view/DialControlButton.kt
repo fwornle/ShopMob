@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -47,10 +48,10 @@ fun DialControlButton(
     onVolumeChanged: (Float) -> Unit = {}
 ) {
 
-    var angle by remember { mutableStateOf(0f) }
-    var dragStartedAngle by remember { mutableStateOf(0f) }
-    var oldAngle by remember { mutableStateOf(angle) }
-    var volume by remember { mutableStateOf(0f) }
+    var angle by remember { mutableFloatStateOf(0f) }
+    var dragStartedAngle by remember { mutableFloatStateOf(0f) }
+    var oldAngle by remember { mutableFloatStateOf(angle) }
+    var volume by remember { mutableFloatStateOf(0f) }
 
     //represents the nob state ON or OFF
     var state by remember { mutableStateOf(false) }
@@ -70,7 +71,7 @@ fun DialControlButton(
         )
     )
 
-    BoxWithConstraints() {
+    BoxWithConstraints {
 
         val width = if (minWidth < 1.dp)
             minSize else minWidth
